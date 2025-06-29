@@ -80,114 +80,110 @@ export function LoginForm() {
 
   if (showOTPForm) {
     return (
-      <Card className="w-full max-w-lg mx-auto">
-        <CardHeader className="text-center">
+      <div className="space-y-6">
+        <div className="text-center space-y-2">
           <div className="flex justify-center mb-4">
             <div className="p-3 rounded-full bg-purple-500/20">
               <Shield className="h-8 w-8 text-purple-400" />
             </div>
           </div>
-          <CardTitle className="text-2xl">Enter verification code</CardTitle>
-          <CardDescription>
+          <h1 className="text-2xl font-semibold tracking-tight">Enter verification code</h1>
+          <p className="text-sm text-muted-foreground">
             We've sent a 6-digit code to <strong>{email}</strong>
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <OTPForm
-            email={email}
-            onSuccess={handleOTPSuccess}
-            onBack={handleBackToEmail}
-          />
-        </CardContent>
-      </Card>
+          </p>
+        </div>
+        
+        <OTPForm
+          email={email}
+          onSuccess={handleOTPSuccess}
+          onBack={handleBackToEmail}
+        />
+      </div>
     )
   }
 
   return (
-    <Card className="w-full max-w-lg mx-auto">
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl">Welcome back</CardTitle>
-        <CardDescription>
+    <div className="space-y-6">
+      <div className="text-center space-y-2">
+        <h1 className="text-2xl font-semibold tracking-tight">Welcome back</h1>
+        <p className="text-sm text-muted-foreground">
           Choose your preferred method to sign in
-          {redirectUrl !== '/' && (
-            <span className="block mt-2 text-sm text-muted-foreground">
-              You'll be redirected after signing in
-            </span>
-          )}
-        </CardDescription>
-      </CardHeader>
-      <CardContent>
-        <Tabs defaultValue="providers" className="w-full">
-          <TabsList className="grid w-full grid-cols-2">
-            <TabsTrigger value="providers">Quick Sign In</TabsTrigger>
-            <TabsTrigger value="email">Email Code</TabsTrigger>
-          </TabsList>
-          
-          <TabsContent value="providers" className="space-y-4 mt-6">
-            <div className="space-y-3">
-              <Button
-                onClick={() => handleProviderSignIn('github')}
-                disabled={isLoading}
-                variant="outline"
-                className="w-full h-12 text-base border-2 hover:border-purple-400 hover:bg-purple-50/10 transition-all duration-200"
-              >
-                <Github className="h-5 w-5 mr-3" />
-                Continue with GitHub
-              </Button>
+        </p>
+        {redirectUrl !== '/' && (
+          <p className="text-xs text-muted-foreground">
+            You'll be redirected after signing in
+          </p>
+        )}
+      </div>
 
-              <Button
-                onClick={() => handleProviderSignIn('google')}
-                disabled={isLoading}
-                variant="outline"
-                className="w-full h-12 text-base border-2 hover:border-purple-400 hover:bg-purple-50/10 transition-all duration-200"
-              >
-                <Mail className="h-5 w-5 mr-3" />
-                Continue with Google
-              </Button>
-            </div>
-          </TabsContent>
-
-          <TabsContent value="email" className="space-y-4 mt-6">
-            <Form {...form}>
-              <form onSubmit={form.handleSubmit(handleEmailSubmit)} className="space-y-4">
-                <FormField
-                  control={form.control}
-                  name="email"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Email address</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder="your.email@example.com"
-                          type="email"
-                          {...field}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <Button
-                  type="submit"
-                  disabled={isLoading}
-                  className="w-full h-12 text-base bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-                >
-                  {isLoading ? 'Sending...' : 'Send verification code'}
-                </Button>
-              </form>
-            </Form>
-          </TabsContent>
-        </Tabs>
-
-        <Separator className="my-6" />
+      <Tabs defaultValue="providers" className="w-full">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="providers">Quick Sign In</TabsTrigger>
+          <TabsTrigger value="email">Email Code</TabsTrigger>
+        </TabsList>
         
-        <div className="text-center">
-          <Link href="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to home
-          </Link>
-        </div>
-      </CardContent>
-    </Card>
+        <TabsContent value="providers" className="space-y-4 mt-6">
+          <div className="space-y-3">
+            <Button
+              onClick={() => handleProviderSignIn('github')}
+              disabled={isLoading}
+              variant="outline"
+              className="w-full"
+            >
+              <Github className="h-4 w-4 mr-2" />
+              Continue with GitHub
+            </Button>
+
+            <Button
+              onClick={() => handleProviderSignIn('google')}
+              disabled={isLoading}
+              variant="outline"
+              className="w-full"
+            >
+              <Mail className="h-4 w-4 mr-2" />
+              Continue with Google
+            </Button>
+          </div>
+        </TabsContent>
+
+        <TabsContent value="email" className="space-y-4 mt-6">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(handleEmailSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email address</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="your.email@example.com"
+                        type="email"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button
+                type="submit"
+                disabled={isLoading}
+                className="w-full"
+              >
+                {isLoading ? 'Sending...' : 'Send verification code'}
+              </Button>
+            </form>
+          </Form>
+        </TabsContent>
+      </Tabs>
+
+      <div className="text-center">
+        <Link href="/" className="inline-flex items-center text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to home
+        </Link>
+      </div>
+    </div>
   )
 }
