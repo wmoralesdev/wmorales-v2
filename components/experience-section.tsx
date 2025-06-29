@@ -52,10 +52,10 @@ export function ExperienceSection() {
     },
     {
       company: "Elaniin",
-      role: "Javascript Fullstack Developer",
+      role: "JavaScript Fullstack Developer",
       period: "Nov 2020 – Jan 2022",
       achievements: [
-        "Developed enterprise software in Javascript and .NET",
+        "Developed enterprise software in JavaScript and .NET",
         "Led migration to cloud infrastructure"
       ]
     },
@@ -82,42 +82,42 @@ export function ExperienceSection() {
           </p>
         </div>
 
-        <div className="space-y-6">
+        <div className="space-y-4">
           {experiences.map((exp, index) => (
-            <Card key={index} className="relative">
-              <CardHeader>
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
-                  <div>
-                    <CardTitle className="text-xl sm:text-2xl flex items-center gap-2">
-                      <Briefcase className="h-5 w-5 text-primary" />
-                      {exp.company}
+            <Card key={index} className="relative hover:shadow-lg transition-all duration-300">
+              <CardContent className="p-6">
+                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-2">
+                      <Briefcase className="h-4 w-4 text-primary" />
+                      <h3 className="text-lg sm:text-xl font-semibold">
+                        {exp.company}
+                      </h3>
                       {exp.current && (
-                        <Badge variant="default" className="ml-2">
+                        <Badge variant="default" className="text-xs">
                           Current
                         </Badge>
                       )}
-                    </CardTitle>
-                    <p className="text-lg text-primary font-medium mt-1">
+                    </div>
+                    <p className="text-primary font-medium mb-3">
                       {exp.role}
                     </p>
+                    <ul className="space-y-1">
+                      {exp.achievements.map((achievement, achievementIndex) => (
+                        <li key={achievementIndex} className="flex items-start gap-2 text-sm">
+                          <div className="w-1 h-1 rounded-full bg-primary mt-2 flex-shrink-0" />
+                          <span className="text-muted-foreground">{achievement}</span>
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                   <div className="flex items-center gap-2 text-muted-foreground">
                     <Calendar className="h-4 w-4" />
-                    <span className="text-sm sm:text-base whitespace-nowrap">
+                    <span className="text-sm whitespace-nowrap">
                       {exp.period}
                     </span>
                   </div>
                 </div>
-              </CardHeader>
-              <CardContent>
-                <ul className="space-y-2">
-                  {exp.achievements.map((achievement, achievementIndex) => (
-                    <li key={achievementIndex} className="flex items-start gap-2">
-                      <div className="w-1.5 h-1.5 rounded-full bg-primary mt-2 flex-shrink-0" />
-                      <span className="text-muted-foreground">{achievement}</span>
-                    </li>
-                  ))}
-                </ul>
               </CardContent>
             </Card>
           ))}

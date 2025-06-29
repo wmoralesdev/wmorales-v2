@@ -5,16 +5,17 @@ import { Code, Globe, GraduationCap, Heart } from "lucide-react";
 export function AboutSection() {
   const skills = [
     ".NET", "JavaScript", "TypeScript", "ReactJS", "NextJS", "NestJS",
-    "PostgreSQL", "MongoDB", "SQL Server", "Tailwind CSS", "Docker", "AWS", "Azure"
+    "PostgreSQL", "MongoDB", "SQL Server", "Tailwind CSS", "Docker", "AWS", "Azure",
+    "ShadCN", "Supabase", "Firebase", "Vercel", "Vercel AI SDK", "Cursor", "Expo",
   ];
 
   const stats = [
-    { icon: Code, label: "Years of Experience", value: "5+" },
+    { icon: Code, label: "Years of experience", value: "5+" },
     { icon: Globe, label: "Countries", value: "10+" },
   ];
 
   return (
-    <section id="about" className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
+    <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
@@ -53,7 +54,11 @@ export function AboutSection() {
             <CardContent>
               <div className="flex flex-wrap gap-2">
                 {skills.map((skill) => (
-                  <Badge key={skill} variant="secondary" className="text-sm">
+                  <Badge
+                    key={skill}
+                    variant="secondary"
+                    className="text-sm px-3 py-1 bg-muted hover:bg-primary hover:text-primary-foreground transition-colors cursor-default"
+                  >
                     {skill}
                   </Badge>
                 ))}
