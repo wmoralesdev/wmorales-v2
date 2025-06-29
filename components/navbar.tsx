@@ -2,18 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  navigationMenuTriggerStyle,
-} from "@/components/ui/navigation-menu";
 import { Menu, Code2 } from "lucide-react";
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
-import { cn } from "@/lib/utils";
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,24 +45,17 @@ export function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
-            <NavigationMenu>
-              <NavigationMenuList>
-                {navItems.map((item) => (
-                  <NavigationMenuItem key={item.name}>
-                    <NavigationMenuLink
-                      className={cn(
-                        navigationMenuTriggerStyle(),
-                        "cursor-pointer"
-                      )}
-                      onClick={() => scrollToSection(item.href)}
-                    >
-                      {item.name}
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                ))}
-              </NavigationMenuList>
-            </NavigationMenu>
+          <div className="hidden md:flex items-center space-x-8">
+            {navItems.map((item) => (
+              <Button
+                key={item.name}
+                variant="ghost"
+                onClick={() => scrollToSection(item.href)}
+                className="text-sm font-medium hover:text-primary transition-colors"
+              >
+                {item.name}
+              </Button>
+            ))}
           </div>
 
           {/* Mobile Navigation */}
@@ -102,4 +86,4 @@ export function Navbar() {
       </div>
     </nav>
   );
-}
+} 
