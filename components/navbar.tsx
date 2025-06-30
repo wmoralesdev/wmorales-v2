@@ -8,22 +8,48 @@ import {
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
+  NavigationMenuTrigger,
   navigationMenuTriggerStyle,
 } from "@/components/ui/navigation-menu";
 import { Menu, Code2 } from "lucide-react";
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import Link from 'next/link';
+
+function ListItem({
+  title,
+  children,
+  href,
+  ...props
+}: React.ComponentPropsWithoutRef<"li"> & { href: string }) {
+  return (
+    <li {...props}>
+      <NavigationMenuLink asChild>
+        <Link href={href}>
+          <div className="text-sm leading-none font-medium">{title}</div>
+          <p className="text-muted-foreground line-clamp-2 text-sm leading-snug">
+            {children}
+          </p>
+        </Link>
+      </NavigationMenuLink>
+    </li>
+  )
+}
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
   const navItems = [
-    { name: "Home", href: "#home" },
-    { name: "About", href: "#about" },
-    { name: "Experience", href: "#experience" },
-    { name: "Contact", href: "#contact" },
+    {
+      name: "Home", href: "/", children: [
+        { name: "About", href: "#about", description: "Quick intro, nothing fancy" },
+        { name: "Experience", href: "#experience", description: "Projects and clients I've worked with" },
+        { name: "Contact", href: "#contact", description: "Don't be shy, say hi!" },
+      ],
+      description: "Welcome to my website! Here you can find information about me, my projects, and how to get in touch."
+    },
     { name: "Guestbook", href: "/guestbook" },
     { name: "Cursor", href: "/cursor" },
   ];
@@ -57,19 +83,62 @@ export function Navbar() {
           <div className="hidden md:block">
             <NavigationMenu>
               <NavigationMenuList>
-                {navItems.map((item) => (
-                  <NavigationMenuItem key={item.name}>
-                    <NavigationMenuLink
-                      className={cn(
-                        navigationMenuTriggerStyle(),
-                        "cursor-pointer"
-                      )}
-                      onClick={() => scrollToSection(item.href)}
-                    >
-                      {item.name}
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                ))}
+                {navItems.map((item) => {
+                  if (item.children) {
+                    return (
+                      <NavigationMenuItem key={item.name}>
+                        <NavigationMenuTrigger
+                          className={cn(
+                            navigationMenuTriggerStyle(),
+                            "cursor-pointer"
+                          )}
+                          onClick={() => scrollToSection(item.href)}
+                        >
+                          {item.name}
+                        </NavigationMenuTrigger>
+                        <NavigationMenuContent>
+                          <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                            <li className="row-span-3">
+                              <NavigationMenuLink asChild>
+                                <a
+                                  className="from-muted/50 to-muted flex h-full w-full flex-col justify-end rounded-md bg-linear-to-b p-6 no-underline outline-hidden select-none focus:shadow-md"
+                                  href="/"
+                                >
+                                  <div className="mt-4 mb-2 text-lg font-bold">
+                                    &lt;/&gt; WM
+                                  </div>
+                                  <p className="text-muted-foreground text-sm leading-tight">
+                                    {item.description}
+                                  </p>
+                                </a>
+                              </NavigationMenuLink>
+                            </li>
+                            {item.children.map((child) => (
+                              <ListItem key={child.name} href={child.href} title={child.name}>
+                                {child.description}
+                              </ListItem>
+                            ))}
+                          </ul>
+                        </NavigationMenuContent>
+                      </NavigationMenuItem>
+                    )
+                  }
+
+                  return (
+                    <NavigationMenuItem key={item.name}>
+                      <NavigationMenuLink
+                        className={cn(
+                          navigationMenuTriggerStyle(),
+                          "cursor-pointer"
+                        )}
+                        onClick={() => scrollToSection(item.href)}
+                      >
+                        {item.name}
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                  )
+
+                })}
               </NavigationMenuList>
             </NavigationMenu>
           </div>
