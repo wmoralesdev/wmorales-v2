@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Github, Mail, LogIn } from "lucide-react";
+import { Github, LogIn, Mail } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface SignInCardProps {
   onSignIn: (provider: 'github' | 'google') => void;
@@ -8,10 +8,10 @@ interface SignInCardProps {
 
 export function SignInCard({ onSignIn }: SignInCardProps) {
   return (
-    <Card className="max-w-md mx-auto">
+    <Card className="mx-auto max-w-md">
       <CardHeader className="text-center">
-        <div className="flex justify-center mb-4">
-          <div className="p-3 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20">
+        <div className="mb-4 flex justify-center">
+          <div className="rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-3">
             <LogIn className="h-8 w-8 text-purple-400" />
           </div>
         </div>
@@ -22,29 +22,29 @@ export function SignInCard({ onSignIn }: SignInCardProps) {
       </CardHeader>
       <CardContent className="space-y-4">
         <Button
+          className="h-12 w-full border-2 text-base transition-all duration-200 hover:border-purple-400 hover:bg-purple-50/10"
           onClick={() => onSignIn('github')}
           variant="outline"
-          className="w-full h-12 text-base border-2 hover:border-purple-400 hover:bg-purple-50/10 transition-all duration-200"
         >
-          <Github className="h-5 w-5 mr-3" />
+          <Github className="mr-3 h-5 w-5" />
           Continue with GitHub
         </Button>
 
         <Button
+          className="h-12 w-full border-2 text-base transition-all duration-200 hover:border-purple-400 hover:bg-purple-50/10"
           onClick={() => onSignIn('google')}
           variant="outline"
-          className="w-full h-12 text-base border-2 hover:border-purple-400 hover:bg-purple-50/10 transition-all duration-200"
         >
-          <Mail className="h-5 w-5 mr-3" />
+          <Mail className="mr-3 h-5 w-5" />
           Continue with Google
         </Button>
 
-        <div className="text-center pt-4">
-          <p className="text-xs text-muted-foreground">
+        <div className="pt-4 text-center">
+          <p className="text-muted-foreground text-xs">
             By signing in, you agree to create a personalized ticket and optionally leave a message
           </p>
         </div>
       </CardContent>
     </Card>
   );
-} 
+}

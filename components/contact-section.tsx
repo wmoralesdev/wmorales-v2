@@ -1,34 +1,34 @@
-"use client";
+'use client';
 
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Mail, Linkedin, Instagram, Github, Coffee } from "lucide-react";
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
+import { Coffee, Github, Instagram, Linkedin, Mail } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export function ContactSection() {
   const socialLinks = [
     {
-      name: "LinkedIn",
+      name: 'LinkedIn',
       icon: Linkedin,
-      href: "https://www.linkedin.com/in/walter-morales-dev/",
-      color: "hover:text-blue-500"
+      href: 'https://www.linkedin.com/in/walter-morales-dev/',
+      color: 'hover:text-blue-500',
     },
     {
-      name: "GitHub",
+      name: 'GitHub',
       icon: Github,
-      href: "https://github.com/wmoralesdev",
-      color: "hover:text-gray-400"
+      href: 'https://github.com/wmoralesdev',
+      color: 'hover:text-gray-400',
     },
     {
-      name: "Instagram",
+      name: 'Instagram',
       icon: Instagram,
-      href: "https://instagram.com/wmorales.dev",
-      color: "hover:text-pink-500"
-    }
+      href: 'https://instagram.com/wmorales.dev',
+      color: 'hover:text-pink-500',
+    },
   ];
 
   const handleEmailClick = () => {
-    window.location.href = "mailto:walterrafael26@gmail.com";
+    window.location.href = 'mailto:walterrafael26@gmail.com';
   };
 
   // Animation variants
@@ -72,12 +72,12 @@ export function ContactSection() {
     rest: {
       scale: 1,
       y: 0,
-      boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
+      boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
     },
     hover: {
       scale: 1.02,
       y: -5,
-      boxShadow: "0 20px 40px rgba(168, 85, 247, 0.15)",
+      boxShadow: '0 20px 40px rgba(168, 85, 247, 0.15)',
       transition: {
         duration: 0.3,
         ease: [0.25, 0.46, 0.45, 0.94],
@@ -113,10 +113,10 @@ export function ContactSection() {
   };
 
   const buttonVariants = {
-    rest: { scale: 1, boxShadow: "0 2px 10px rgba(168, 85, 247, 0.2)" },
+    rest: { scale: 1, boxShadow: '0 2px 10px rgba(168, 85, 247, 0.2)' },
     hover: {
       scale: 1.05,
-      boxShadow: "0 10px 30px rgba(168, 85, 247, 0.3)",
+      boxShadow: '0 10px 30px rgba(168, 85, 247, 0.3)',
       transition: {
         duration: 0.3,
         ease: [0.25, 0.46, 0.45, 0.94],
@@ -126,42 +126,32 @@ export function ContactSection() {
   };
 
   return (
-    <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
+    <section className="px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+      <div className="mx-auto max-w-4xl">
         <motion.div
-          className="text-center mb-12"
+          className="mb-12 text-center"
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
           variants={containerVariants}
+          viewport={{ once: true, amount: 0.3 }}
+          whileInView="visible"
         >
-          <motion.h2
-            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4"
-            variants={itemVariants}
-          >
+          <motion.h2 className="mb-4 font-bold text-3xl sm:text-4xl md:text-5xl" variants={itemVariants}>
             Let's Work Together
           </motion.h2>
-          <motion.p
-            className="text-lg sm:text-xl text-muted-foreground"
-            variants={itemVariants}
-          >
+          <motion.p className="text-lg text-muted-foreground sm:text-xl" variants={itemVariants}>
             Ready to bring your ideas to life? Let's start the conversation.
           </motion.p>
         </motion.div>
 
         <motion.div
-          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          className="grid grid-cols-1 gap-8 md:grid-cols-2"
           initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.3 }}
           variants={containerVariants}
+          viewport={{ once: true, amount: 0.3 }}
+          whileInView="visible"
         >
           {/* Contact Info */}
-          <motion.div
-            variants={cardVariants}
-            whileHover="hover"
-            initial="rest"
-          >
+          <motion.div initial="rest" variants={cardVariants} whileHover="hover">
             <motion.div variants={cardHoverVariants}>
               <Card>
                 <CardHeader>
@@ -175,27 +165,20 @@ export function ContactSection() {
                 <CardContent className="space-y-6">
                   <div>
                     <motion.p
-                      className="text-muted-foreground mb-4"
+                      className="mb-4 text-muted-foreground"
                       initial={{ opacity: 0 }}
-                      whileInView={{ opacity: 1 }}
-                      viewport={{ once: true }}
                       transition={{ delay: 0.5, duration: 0.6 }}
+                      viewport={{ once: true }}
+                      whileInView={{ opacity: 1 }}
                     >
                       Feel free to reach out via email or connect with me on social media.
                     </motion.p>
-                    <motion.div
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <Button
-                        onClick={handleEmailClick}
-                        variant="outline"
-                        className="w-full sm:w-auto"
-                      >
+                    <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
+                      <Button className="w-full sm:w-auto" onClick={handleEmailClick} variant="outline">
                         <motion.div
                           className="flex items-center gap-2"
-                          whileHover={{ x: 2 }}
                           transition={{ duration: 0.2 }}
+                          whileHover={{ x: 2 }}
                         >
                           <Mail className="h-4 w-4" />
                           walterrafael26@gmail.com
@@ -205,12 +188,10 @@ export function ContactSection() {
                   </div>
 
                   <div>
-                    <p className="text-sm text-muted-foreground mb-3">Follow me on:</p>
+                    <p className="mb-3 text-muted-foreground text-sm">Follow me on:</p>
                     <motion.div
                       className="flex gap-4"
                       initial="hidden"
-                      whileInView="visible"
-                      viewport={{ once: true }}
                       variants={{
                         visible: {
                           transition: {
@@ -218,9 +199,12 @@ export function ContactSection() {
                           },
                         },
                       }}
+                      viewport={{ once: true }}
+                      whileInView="visible"
                     >
                       {socialLinks.map((social) => (
                         <motion.div
+                          initial="rest"
                           key={social.name}
                           variants={{
                             hidden: { opacity: 0, scale: 0.5, rotate: -180 },
@@ -230,28 +214,17 @@ export function ContactSection() {
                               rotate: 0,
                               transition: {
                                 duration: 0.5,
-                                type: "spring" as const,
+                                type: 'spring' as const,
                                 stiffness: 200,
                               },
                             },
                           }}
                           whileHover="hover"
                           whileTap="tap"
-                          initial="rest"
                         >
                           <motion.div variants={socialIconVariants}>
-                            <Button
-                              variant="ghost"
-                              size="sm"
-                              asChild
-                              className={`${social.color} transition-colors`}
-                            >
-                              <a
-                                href={social.href}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                aria-label={social.name}
-                              >
+                            <Button asChild className={`${social.color} transition-colors`} size="sm" variant="ghost">
+                              <a aria-label={social.name} href={social.href} rel="noopener noreferrer" target="_blank">
                                 <social.icon className="h-5 w-5" />
                               </a>
                             </Button>
@@ -266,11 +239,7 @@ export function ContactSection() {
           </motion.div>
 
           {/* CTA */}
-          <motion.div
-            variants={cardVariants}
-            whileHover="hover"
-            initial="rest"
-          >
+          <motion.div initial="rest" variants={cardVariants} whileHover="hover">
             <motion.div variants={cardHoverVariants}>
               <Card>
                 <CardHeader>
@@ -281,7 +250,7 @@ export function ContactSection() {
                       }}
                       transition={{
                         duration: 2,
-                        repeat: Infinity,
+                        repeat: Number.POSITIVE_INFINITY,
                         repeatDelay: 5,
                       }}
                     >
@@ -292,25 +261,20 @@ export function ContactSection() {
                 </CardHeader>
                 <CardContent>
                   <motion.p
-                    className="text-muted-foreground mb-6"
+                    className="mb-6 text-muted-foreground"
                     initial={{ opacity: 0 }}
-                    whileInView={{ opacity: 1 }}
-                    viewport={{ once: true }}
                     transition={{ delay: 0.5, duration: 0.6 }}
+                    viewport={{ once: true }}
+                    whileInView={{ opacity: 1 }}
                   >
-                    A coffee chat is the best way to start a new project. Whether you have a
-                    clear vision or just an idea, I'd love to help you build something amazing.
+                    A coffee chat is the best way to start a new project. Whether you have a clear vision or just an
+                    idea, I'd love to help you build something amazing.
                   </motion.p>
-                  <motion.div
-                    variants={buttonVariants}
-                    whileHover="hover"
-                    whileTap="tap"
-                    initial="rest"
-                  >
+                  <motion.div initial="rest" variants={buttonVariants} whileHover="hover" whileTap="tap">
                     <Button
+                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                       onClick={handleEmailClick}
                       size="lg"
-                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
                     >
                       Start a Conversation
                     </Button>
@@ -323,4 +287,4 @@ export function ContactSection() {
       </div>
     </section>
   );
-} 
+}

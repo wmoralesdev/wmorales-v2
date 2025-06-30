@@ -1,70 +1,68 @@
-'use client'
+'use client';
 
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { Button } from '@/components/ui/button'
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form'
-import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@/components/ui/input-otp'
-import { ArrowLeft } from 'lucide-react'
-import { toast } from 'sonner'
-import { authService } from '@/lib/auth'
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ArrowLeft } from 'lucide-react';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { InputOTP, InputOTPGroup, InputOTPSeparator, InputOTPSlot } from '@/components/ui/input-otp';
+import { authService } from '@/lib/auth';
 
 const otpSchema = z.object({
   code: z.string().length(6, 'Verification code must be 6 digits'),
-})
+});
 
-type OTPFormData = z.infer<typeof otpSchema>
+type OTPFormData = z.infer<typeof otpSchema>;
 
 interface OTPFormProps {
-  email: string
-  onSuccess: () => void
-  onBack: () => void
+  email: string;
+  onSuccess: () => void;
+  onBack: () => void;
 }
 
 export function OTPForm({ email, onSuccess, onBack }: OTPFormProps) {
-  const [isLoading, setIsLoading] = useState(false)
-  const [isResending, setIsResending] = useState(false)
+  const [isLoading, setIsLoading] = useState(false);
+  const [isResending, setIsResending] = useState(false);
 
   const form = useForm<OTPFormData>({
     resolver: zodResolver(otpSchema),
     defaultValues: {
       code: '',
     },
-  })
+  });
 
   const handleSubmit = async (data: OTPFormData) => {
     try {
-      setIsLoading(true)
-      await authService.verifyOTP(email, data.code)
-      onSuccess()
-    } catch (error) {
-      console.error('OTP verification error:', error)
-      toast.error('Invalid or expired code. Please try again.')
-      form.reset()
+      setIsLoading(true);
+      await authService.verifyOTP(email, data.code);
+      onSuccess();
+    } catch (_error) {
+      toast.error('Invalid or expired code. Please try again.');
+      form.reset();
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleResendCode = async () => {
     try {
-      setIsResending(true)
-      await authService.signInWithOTP(email)
-      toast.success('New verification code sent!')
-    } catch (error) {
-      console.error('Resend error:', error)
-      toast.error('Failed to resend code. Please try again.')
+      setIsResending(true);
+      await authService.signInWithOTP(email);
+      toast.success('New verification code sent!');
+    } catch (_error) {
+      toast.error('Failed to resend code. Please try again.');
     } finally {
-      setIsResending(false)
+      setIsResending(false);
     }
-  }
+  };
 
   return (
     <div className="space-y-6">
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        <form className="space-y-6" onSubmit={form.handleSubmit(handleSubmit)}>
           <FormField
             control={form.control}
             name="code"
@@ -72,11 +70,7 @@ export function OTPForm({ email, onSuccess, onBack }: OTPFormProps) {
               <FormItem className="flex flex-col items-center space-y-4">
                 <FormLabel className="text-base">Verification Code</FormLabel>
                 <FormControl>
-                  <InputOTP
-                    maxLength={6}
-                    {...field}
-                    disabled={isLoading}
-                  >
+                  <InputOTP maxLength={6} {...field} disabled={isLoading}>
                     <InputOTPGroup>
                       <InputOTPSlot index={0} />
                       <InputOTPSlot index={1} />
@@ -94,11 +88,11 @@ export function OTPForm({ email, onSuccess, onBack }: OTPFormProps) {
               </FormItem>
             )}
           />
-          
+
           <Button
-            type="submit"
+            className="h-12 w-full bg-gradient-to-r from-purple-600 to-pink-600 text-base hover:from-purple-700 hover:to-pink-700"
             disabled={isLoading || form.watch('code').length !== 6}
-            className="w-full h-12 text-base bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+            type="submit"
           >
             {isLoading ? 'Verifying...' : 'Verify code'}
           </Button>
@@ -106,24 +100,15 @@ export function OTPForm({ email, onSuccess, onBack }: OTPFormProps) {
       </Form>
 
       <div className="flex flex-col space-y-4 text-center">
-        <Button
-          variant="ghost"
-          onClick={handleResendCode}
-          disabled={isResending}
-          className="text-sm"
-        >
+        <Button className="text-sm" disabled={isResending} onClick={handleResendCode} variant="ghost">
           {isResending ? 'Sending...' : "Didn't receive the code? Resend"}
         </Button>
-        
-        <Button
-          variant="ghost"
-          onClick={onBack}
-          className="text-sm inline-flex items-center"
-        >
-          <ArrowLeft className="h-4 w-4 mr-2" />
+
+        <Button className="inline-flex items-center text-sm" onClick={onBack} variant="ghost">
+          <ArrowLeft className="mr-2 h-4 w-4" />
           Use different email
         </Button>
       </div>
     </div>
-  )
+  );
 }

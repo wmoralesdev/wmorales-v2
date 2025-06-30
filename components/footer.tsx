@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { motion } from "framer-motion";
+import { motion } from 'framer-motion';
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
@@ -40,75 +40,68 @@ export function Footer() {
     <motion.footer
       className="border-t bg-card"
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.8 }}
       variants={containerVariants}
+      viewport={{ once: true, amount: 0.8 }}
+      whileInView="visible"
     >
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center space-y-4">
-          <motion.div
-            className="flex justify-center items-center gap-2 mb-4"
-            variants={itemVariants}
-          >
+      <div className="mx-auto max-w-6xl px-4 py-12 sm:px-6 lg:px-8">
+        <div className="space-y-4 text-center">
+          <motion.div className="mb-4 flex items-center justify-center gap-2" variants={itemVariants}>
             <motion.div
-              className="w-2 h-2 bg-purple-400 rounded-full"
               animate="animate"
-              variants={dotVariants}
+              className="h-2 w-2 rounded-full bg-purple-400"
               transition={{
                 duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
+                repeat: Number.POSITIVE_INFINITY,
+                ease: 'easeInOut',
               }}
+              variants={dotVariants}
             />
             <motion.p
-              className="text-muted-foreground font-medium"
-              whileHover={{ scale: 1.02 }}
+              className="font-medium text-muted-foreground"
               transition={{ duration: 0.2 }}
+              whileHover={{ scale: 1.02 }}
             >
-              Built with{" "}
+              Built with{' '}
               <motion.span
-                className="inline-block"
                 animate={{ rotate: [0, 10, -10, 0] }}
+                className="inline-block"
                 transition={{
                   duration: 2,
-                  repeat: Infinity,
+                  repeat: Number.POSITIVE_INFINITY,
                   repeatDelay: 5,
                 }}
               >
                 💜
-              </motion.span>
-              {" "}using Next.js & Tailwind CSS
+              </motion.span>{' '}
+              using Next.js & Tailwind CSS
             </motion.p>
             <motion.div
-              className="w-2 h-2 bg-purple-400 rounded-full"
               animate="animate"
-              variants={dotVariants}
+              className="h-2 w-2 rounded-full bg-purple-400"
               transition={{
                 duration: 2,
-                repeat: Infinity,
-                ease: "easeInOut",
+                repeat: Number.POSITIVE_INFINITY,
+                ease: 'easeInOut',
                 delay: 0.5,
               }}
+              variants={dotVariants}
             />
           </motion.div>
 
           <motion.div
-            variants={itemVariants}
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
             transition={{ delay: 0.2 }}
+            variants={itemVariants}
+            viewport={{ once: true }}
+            whileInView="visible"
           >
-            <motion.p
-              className="text-sm text-muted-foreground"
-              whileHover={{ x: 2 }}
-              transition={{ duration: 0.2 }}
-            >
-              Copyright © {currentYear}{" "}
+            <motion.p className="text-muted-foreground text-sm" transition={{ duration: 0.2 }} whileHover={{ x: 2 }}>
+              Copyright © {currentYear}{' '}
               <motion.span
-                className="inline-block bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent font-medium"
-                whileHover={{ scale: 1.05 }}
+                className="inline-block bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text font-medium text-transparent"
                 transition={{ duration: 0.2 }}
+                whileHover={{ scale: 1.05 }}
               >
                 Walter Morales
               </motion.span>
@@ -120,18 +113,18 @@ export function Footer() {
           <motion.div
             className="mt-8"
             initial={{ opacity: 0 }}
-            whileHover={{ opacity: 1 }}
             transition={{ duration: 0.3 }}
+            whileHover={{ opacity: 1 }}
           >
             <motion.p
-              className="text-xs text-muted-foreground/50"
               animate={{
                 opacity: [0.5, 0.7, 0.5],
               }}
+              className="text-muted-foreground/50 text-xs"
               transition={{
                 duration: 3,
-                repeat: Infinity,
-                ease: "easeInOut",
+                repeat: Number.POSITIVE_INFINITY,
+                ease: 'easeInOut',
               }}
             >
               ✨ Made with passion and lots of ☕
@@ -141,4 +134,4 @@ export function Footer() {
       </div>
     </motion.footer>
   );
-} 
+}

@@ -1,12 +1,12 @@
-import { createClient } from './supabase/client'
-import type { User } from '@supabase/supabase-js'
+import type { User } from '@supabase/supabase-js';
+import { createClient } from './supabase/client';
 
-export type AuthProvider = 'github' | 'google'
+export type AuthProvider = 'github' | 'google';
 
 export interface AuthUser extends User {}
 
 export class AuthService {
-  private supabase = createClient()
+  private supabase = createClient();
 
   async signInWithProvider(provider: AuthProvider, redirectTo?: string) {
     const { data, error } = await this.supabase.auth.signInWithOAuth({
@@ -14,13 +14,13 @@ export class AuthService {
       options: {
         redirectTo: `${window.location.origin}/auth/callback${redirectTo ? `?next=${encodeURIComponent(redirectTo)}` : ''}`,
       },
-    })
+    });
 
     if (error) {
-      throw error
+      throw error;
     }
 
-    return data
+    return data;
   }
 
   async signInWithOTP(email: string) {
@@ -29,13 +29,13 @@ export class AuthService {
       options: {
         shouldCreateUser: true,
       },
-    })
+    });
 
     if (error) {
-      throw error
+      throw error;
     }
 
-    return data
+    return data;
   }
 
   async verifyOTP(email: string, token: string) {
@@ -43,33 +43,35 @@ export class AuthService {
       email,
       token,
       type: 'email',
-    })
+    });
 
     if (error) {
-      throw error
+      throw error;
     }
 
-    return data
+    return data;
   }
 
   async signOut() {
-    const { error } = await this.supabase.auth.signOut()
-    
+    const { error } = await this.supabase.auth.signOut();
+
     if (error) {
-      throw error
+      throw error;
     }
   }
 
   async getUser(): Promise<AuthUser | null> {
-    const { data: { user } } = await this.supabase.auth.getUser()
-    return user
+    const {
+      data: { user },
+    } = await this.supabase.auth.getUser();
+    return user;
   }
 
   onAuthStateChange(callback: (user: AuthUser | null) => void) {
-    return this.supabase.auth.onAuthStateChange((event, session) => {
-      callback(session?.user ?? null)
-    })
+    return this.supabase.auth.onAuthStateChange((_event, session) => {
+      callback(session?.user ?? null);
+    });
   }
 }
 
-export const authService = new AuthService()
+export const authService = new AuthService();

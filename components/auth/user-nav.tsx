@@ -1,6 +1,9 @@
-'use client'
+'use client';
 
-import { Button } from '@/components/ui/button'
+import { LogOut } from 'lucide-react';
+import { toast } from 'sonner';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -8,60 +11,51 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { LogOut, User } from 'lucide-react'
-import { useAuth } from './auth-provider'
-import { toast } from 'sonner'
+} from '@/components/ui/dropdown-menu';
+import { useAuth } from './auth-provider';
 
 export function UserNav() {
-  const { user, signOut } = useAuth()
+  const { user, signOut } = useAuth();
 
   if (!user) {
-    return null
+    return null;
   }
 
   const handleSignOut = async () => {
     try {
-      await signOut()
-      toast.success('Signed out successfully')
-    } catch (error) {
-      console.error('Sign out error:', error)
-      toast.error('Failed to sign out')
+      await signOut();
+      toast.success('Signed out successfully');
+    } catch (_error) {
+      toast.error('Failed to sign out');
     }
-  }
+  };
 
   const getInitials = (name: string) => {
     return name
       .split(' ')
       .map((n) => n[0])
       .join('')
-      .toUpperCase()
-  }
+      .toUpperCase();
+  };
 
-  const displayName = user.user_metadata?.full_name || user.email || 'User'
-  const initials = getInitials(displayName)
+  const displayName = user.user_metadata?.full_name || user.email || 'User';
+  const initials = getInitials(displayName);
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+        <Button className="relative h-8 w-8 rounded-full" variant="ghost">
           <Avatar className="h-8 w-8">
-            <AvatarImage
-              src={user.user_metadata?.avatar_url}
-              alt={displayName}
-            />
+            <AvatarImage alt={displayName} src={user.user_metadata?.avatar_url} />
             <AvatarFallback>{initials}</AvatarFallback>
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56" align="end" forceMount>
+      <DropdownMenuContent align="end" className="w-56" forceMount>
         <DropdownMenuLabel className="font-normal">
           <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">{displayName}</p>
-            <p className="text-xs leading-none text-muted-foreground">
-              {user.email}
-            </p>
+            <p className="font-medium text-sm leading-none">{displayName}</p>
+            <p className="text-muted-foreground text-xs leading-none">{user.email}</p>
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
@@ -71,5 +65,5 @@ export function UserNav() {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
