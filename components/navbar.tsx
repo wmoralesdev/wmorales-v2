@@ -15,6 +15,7 @@ import { Menu, Code2 } from "lucide-react";
 import { useRouter } from 'next/navigation';
 import { useState } from "react";
 import { cn } from "@/lib/utils";
+import { SignInButton } from "@/components/auth/sign-in-button";
 import Link from 'next/link';
 
 function ListItem({
@@ -80,7 +81,7 @@ export function Navbar() {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:block">
+          <div className="hidden md:flex items-center gap-4">
             <NavigationMenu>
               <NavigationMenuList>
                 {navItems.map((item) => {
@@ -141,10 +142,12 @@ export function Navbar() {
                 })}
               </NavigationMenuList>
             </NavigationMenu>
+            <SignInButton variant="outline" size="sm" />
           </div>
 
           {/* Mobile Navigation */}
-          <div className="md:hidden">
+          <div className="md:hidden flex items-center gap-2">
+            <SignInButton variant="ghost" size="sm" />
             <Sheet open={isOpen} onOpenChange={setIsOpen}>
               <SheetTrigger asChild>
                 <Button variant="ghost" size="sm">
