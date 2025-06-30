@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Mail, Linkedin, Instagram, Github, Coffee } from "lucide-react";
+import { motion } from "framer-motion";
 
 export function ContactSection() {
   const socialLinks = [
@@ -30,91 +31,295 @@ export function ContactSection() {
     window.location.href = "mailto:walterrafael26@gmail.com";
   };
 
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 40 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.7,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, scale: 0.95, y: 30 },
+    visible: {
+      opacity: 1,
+      scale: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+  };
+
+  const cardHoverVariants = {
+    rest: {
+      scale: 1,
+      y: 0,
+      boxShadow: "0 2px 12px rgba(0, 0, 0, 0.1)",
+    },
+    hover: {
+      scale: 1.02,
+      y: -5,
+      boxShadow: "0 20px 40px rgba(168, 85, 247, 0.15)",
+      transition: {
+        duration: 0.3,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+  };
+
+  const iconVariants = {
+    rest: { rotate: 0, scale: 1 },
+    hover: {
+      rotate: 12,
+      scale: 1.2,
+      transition: {
+        duration: 0.3,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+  };
+
+  const socialIconVariants = {
+    rest: { scale: 1, rotate: 0 },
+    hover: {
+      scale: 1.2,
+      rotate: 360,
+      transition: {
+        duration: 0.5,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+    tap: {
+      scale: 0.9,
+    },
+  };
+
+  const buttonVariants = {
+    rest: { scale: 1, boxShadow: "0 2px 10px rgba(168, 85, 247, 0.2)" },
+    hover: {
+      scale: 1.05,
+      boxShadow: "0 10px 30px rgba(168, 85, 247, 0.3)",
+      transition: {
+        duration: 0.3,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+    tap: { scale: 0.95 },
+  };
+
   return (
     <section className="py-16 sm:py-24 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4">
+        <motion.div
+          className="text-center mb-12"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={containerVariants}
+        >
+          <motion.h2
+            className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4"
+            variants={itemVariants}
+          >
             Let's Work Together
-          </h2>
-          <p className="text-lg sm:text-xl text-muted-foreground">
+          </motion.h2>
+          <motion.p
+            className="text-lg sm:text-xl text-muted-foreground"
+            variants={itemVariants}
+          >
             Ready to bring your ideas to life? Let's start the conversation.
-          </p>
-        </div>
+          </motion.p>
+        </motion.div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <motion.div
+          className="grid grid-cols-1 md:grid-cols-2 gap-8"
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, amount: 0.3 }}
+          variants={containerVariants}
+        >
           {/* Contact Info */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Mail className="h-5 w-5" />
-                Get in Touch
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-6">
-              <div>
-                <p className="text-muted-foreground mb-4">
-                  Feel free to reach out via email or connect with me on social media.
-                </p>
-                <Button
-                  onClick={handleEmailClick}
-                  variant="outline"
-                  className="w-full sm:w-auto"
-                >
-                  <Mail className="h-4 w-4 mr-2" />
-                  walterrafael26@gmail.com
-                </Button>
-              </div>
-
-              <div>
-                <p className="text-sm text-muted-foreground mb-3">Follow me on:</p>
-                <div className="flex gap-4">
-                  {socialLinks.map((social) => (
-                    <Button
-                      key={social.name}
-                      variant="ghost"
-                      size="sm"
-                      asChild
-                      className={`${social.color} transition-colors`}
+          <motion.div
+            variants={cardVariants}
+            whileHover="hover"
+            initial="rest"
+          >
+            <motion.div variants={cardHoverVariants}>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <motion.div variants={iconVariants}>
+                      <Mail className="h-5 w-5" />
+                    </motion.div>
+                    Get in Touch
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-6">
+                  <div>
+                    <motion.p
+                      className="text-muted-foreground mb-4"
+                      initial={{ opacity: 0 }}
+                      whileInView={{ opacity: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.5, duration: 0.6 }}
                     >
-                      <a
-                        href={social.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={social.name}
+                      Feel free to reach out via email or connect with me on social media.
+                    </motion.p>
+                    <motion.div
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <Button
+                        onClick={handleEmailClick}
+                        variant="outline"
+                        className="w-full sm:w-auto"
                       >
-                        <social.icon className="h-5 w-5" />
-                      </a>
-                    </Button>
-                  ))}
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+                        <motion.div
+                          className="flex items-center gap-2"
+                          whileHover={{ x: 2 }}
+                          transition={{ duration: 0.2 }}
+                        >
+                          <Mail className="h-4 w-4" />
+                          walterrafael26@gmail.com
+                        </motion.div>
+                      </Button>
+                    </motion.div>
+                  </div>
+
+                  <div>
+                    <p className="text-sm text-muted-foreground mb-3">Follow me on:</p>
+                    <motion.div
+                      className="flex gap-4"
+                      initial="hidden"
+                      whileInView="visible"
+                      viewport={{ once: true }}
+                      variants={{
+                        visible: {
+                          transition: {
+                            staggerChildren: 0.1,
+                          },
+                        },
+                      }}
+                    >
+                      {socialLinks.map((social) => (
+                        <motion.div
+                          key={social.name}
+                          variants={{
+                            hidden: { opacity: 0, scale: 0.5, rotate: -180 },
+                            visible: {
+                              opacity: 1,
+                              scale: 1,
+                              rotate: 0,
+                              transition: {
+                                duration: 0.5,
+                                type: "spring" as const,
+                                stiffness: 200,
+                              },
+                            },
+                          }}
+                          whileHover="hover"
+                          whileTap="tap"
+                          initial="rest"
+                        >
+                          <motion.div variants={socialIconVariants}>
+                            <Button
+                              variant="ghost"
+                              size="sm"
+                              asChild
+                              className={`${social.color} transition-colors`}
+                            >
+                              <a
+                                href={social.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                aria-label={social.name}
+                              >
+                                <social.icon className="h-5 w-5" />
+                              </a>
+                            </Button>
+                          </motion.div>
+                        </motion.div>
+                      ))}
+                    </motion.div>
+                  </div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
 
           {/* CTA */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Coffee className="h-5 w-5" />
-                Let's Collaborate
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-muted-foreground mb-6">
-                A coffee chat is the best way to start a new project. Whether you have a
-                clear vision or just an idea, I'd love to help you build something amazing.
-              </p>
-              <Button
-                onClick={handleEmailClick}
-                size="lg"
-                className="w-full"
-              >
-                Start a Conversation
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
+          <motion.div
+            variants={cardVariants}
+            whileHover="hover"
+            initial="rest"
+          >
+            <motion.div variants={cardHoverVariants}>
+              <Card>
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <motion.div
+                      animate={{
+                        rotate: [0, 10, -10, 0],
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        repeatDelay: 5,
+                      }}
+                    >
+                      <Coffee className="h-5 w-5" />
+                    </motion.div>
+                    Let's Collaborate
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <motion.p
+                    className="text-muted-foreground mb-6"
+                    initial={{ opacity: 0 }}
+                    whileInView={{ opacity: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.5, duration: 0.6 }}
+                  >
+                    A coffee chat is the best way to start a new project. Whether you have a
+                    clear vision or just an idea, I'd love to help you build something amazing.
+                  </motion.p>
+                  <motion.div
+                    variants={buttonVariants}
+                    whileHover="hover"
+                    whileTap="tap"
+                    initial="rest"
+                  >
+                    <Button
+                      onClick={handleEmailClick}
+                      size="lg"
+                      className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                    >
+                      Start a Conversation
+                    </Button>
+                  </motion.div>
+                </CardContent>
+              </Card>
+            </motion.div>
+          </motion.div>
+        </motion.div>
       </div>
     </section>
   );
