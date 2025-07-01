@@ -6,10 +6,10 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from './auth-provider';
 import { UserNav } from './user-nav';
 
-interface SignInButtonProps {
+type SignInButtonProps = {
   variant?: 'default' | 'outline' | 'ghost';
   size?: 'default' | 'sm' | 'lg';
-}
+};
 
 export function SignInButton({ variant = 'outline', size = 'default' }: SignInButtonProps) {
   const { user, loading } = useAuth();

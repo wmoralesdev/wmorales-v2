@@ -2,9 +2,9 @@ import { Github, LogIn, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
-interface SignInCardProps {
+type SignInCardProps = {
   onSignIn: (provider: 'github' | 'google') => void;
-}
+};
 
 export function SignInCard({ onSignIn }: SignInCardProps) {
   return (

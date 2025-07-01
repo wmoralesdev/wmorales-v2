@@ -3,11 +3,11 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { type AuthUser, authService } from '@/lib/auth';
 
-interface AuthContextType {
+type AuthContextType = {
   user: AuthUser | null;
   loading: boolean;
   signOut: () => Promise<void>;
-}
+};
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

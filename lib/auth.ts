@@ -3,7 +3,7 @@ import { createClient } from './supabase/client';
 
 export type AuthProvider = 'github' | 'google';
 
-export interface AuthUser extends User {}
+export type AuthUser = User;
 
 export class AuthService {
   private supabase = createClient();
