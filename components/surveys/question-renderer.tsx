@@ -1,15 +1,15 @@
 'use client';
 
-import { UseFormReturn } from 'react-hook-form';
+import type { UseFormReturn } from 'react-hook-form';
+import { Checkbox } from '@/components/ui/checkbox';
+import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Checkbox } from '@/components/ui/checkbox';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 
-import type { Question, Option } from '@/lib/types/survey.types';
+import type { Option, Question } from '@/lib/types/survey.types';
 
 type QuestionRendererProps = {
   question: Question;
@@ -28,14 +28,10 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
               <FormItem>
                 <FormLabel>
                   {question.question}
-                  {question.required && <span className="text-destructive ml-1">*</span>}
+                  {question.required && <span className='ml-1 text-destructive'>*</span>}
                 </FormLabel>
                 <FormControl>
-                  <Input
-                    placeholder={question.placeholder}
-                    {...field}
-                    value={field.value || ''}
-                  />
+                  <Input placeholder={question.placeholder} {...field} value={field.value || ''} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -52,12 +48,12 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
               <FormItem>
                 <FormLabel>
                   {question.question}
-                  {question.required && <span className="text-destructive ml-1">*</span>}
+                  {question.required && <span className='ml-1 text-destructive'>*</span>}
                 </FormLabel>
                 <FormControl>
                   <Textarea
-                    placeholder={question.placeholder}
                     className="min-h-[100px]"
+                    placeholder={question.placeholder}
                     {...field}
                     value={field.value || ''}
                   />
@@ -77,21 +73,14 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
               <FormItem>
                 <FormLabel>
                   {question.question}
-                  {question.required && <span className="text-destructive ml-1">*</span>}
+                  {question.required && <span className='ml-1 text-destructive'>*</span>}
                 </FormLabel>
                 <FormControl>
-                  <RadioGroup
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                    className="space-y-2"
-                  >
+                  <RadioGroup className="space-y-2" defaultValue={field.value} onValueChange={field.onChange}>
                     {question.options?.map((option) => (
-                      <div key={option.value} className="flex items-center space-x-2">
-                        <RadioGroupItem value={option.value} id={`${question.id}-${option.value}`} />
-                        <Label 
-                          htmlFor={`${question.id}-${option.value}`}
-                          className="font-normal cursor-pointer"
-                        >
+                      <div className="flex items-center space-x-2" key={option.value}>
+                        <RadioGroupItem id={`${question.id}-${option.value}`} value={option.value} />
+                        <Label className='cursor-pointer font-normal' htmlFor={`${question.id}-${option.value}`}>
                           {option.label}
                         </Label>
                       </div>
@@ -113,15 +102,15 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
               <FormItem>
                 <FormLabel>
                   {question.question}
-                  {question.required && <span className="text-destructive ml-1">*</span>}
+                  {question.required && <span className='ml-1 text-destructive'>*</span>}
                 </FormLabel>
                 <FormControl>
                   <div className="space-y-2">
                     {question.options?.map((option) => (
-                      <div key={option.value} className="flex items-center space-x-2">
+                      <div className="flex items-center space-x-2" key={option.value}>
                         <Checkbox
-                          id={`${question.id}-${option.value}`}
                           checked={field.value?.includes(option.value)}
+                          id={`${question.id}-${option.value}`}
                           onCheckedChange={(checked) => {
                             const currentValue = field.value || [];
                             if (checked) {
@@ -131,10 +120,7 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
                             }
                           }}
                         />
-                        <Label
-                          htmlFor={`${question.id}-${option.value}`}
-                          className="font-normal cursor-pointer"
-                        >
+                        <Label className='cursor-pointer font-normal' htmlFor={`${question.id}-${option.value}`}>
                           {option.label}
                         </Label>
                       </div>
@@ -156,9 +142,9 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
               <FormItem>
                 <FormLabel>
                   {question.question}
-                  {question.required && <span className="text-destructive ml-1">*</span>}
+                  {question.required && <span className='ml-1 text-destructive'>*</span>}
                 </FormLabel>
-                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                <Select defaultValue={field.value} onValueChange={field.onChange}>
                   <FormControl>
                     <SelectTrigger>
                       <SelectValue placeholder={question.placeholder || 'Select an option'} />
