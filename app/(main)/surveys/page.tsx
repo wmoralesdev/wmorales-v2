@@ -2,34 +2,32 @@ import { Suspense } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Skeleton } from '@/components/ui/skeleton';
-import { createClient } from '@/lib/supabase/server';
+import { getActiveSurveys } from '@/app/actions/survey.actions';
 import Link from 'next/link';
 import { ArrowRight, BarChart3 } from 'lucide-react';
 
 async function SurveysList() {
-  const supabase = await createClient();
+  const { data: surveys, error } = await getActiveSurveys();
   
-  // For now, returning mock data - we'll replace with real DB query
-  const surveys = [
-    {
-      id: '1',
-      title: 'Developer Experience Survey',
-      description: 'Help us understand your development workflow and preferences',
-      status: 'active',
-      created_at: new Date().toISOString(),
-    },
-    {
-      id: '2',
-      title: 'Product Feedback',
-      description: 'Share your thoughts on our latest features',
-      status: 'active',
-      created_at: new Date().toISOString(),
-    },
-  ];
+  if (error || !surveys) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-muted-foreground">Failed to load surveys. Please try again later.</p>
+      </div>
+    );
+  }
+
+  if (surveys.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-muted-foreground">No active surveys at the moment.</p>
+      </div>
+    );
+  }
 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-      {surveys.map((survey) => (
+      {surveys.map((survey: any) => (
         <Card key={survey.id} className="hover:shadow-lg transition-shadow">
           <CardHeader>
             <CardTitle>{survey.title}</CardTitle>

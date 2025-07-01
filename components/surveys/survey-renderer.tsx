@@ -12,41 +12,18 @@ import { Form } from '@/components/ui/form';
 import { QuestionRenderer } from './question-renderer';
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { createClient } from '@/lib/supabase/client';
+import { createSurveyResponse, saveSurveyAnswer, completeSurveyResponse } from '@/app/actions/survey.actions';
+import type { Survey, Section, Question, Option } from '@/lib/types/survey.types';
 
-interface Survey {
-  id: string;
-  title: string;
-  description: string;
-  sections: Section[];
-}
-
-interface Section {
-  id: string;
-  path?: string;
-  title: string;
-  description: string;
-  questions: Question[];
-}
-
-interface Question {
-  id: string;
-  question: string;
-  type: 'text' | 'radio' | 'checkbox' | 'select';
-  required?: boolean;
-  placeholder?: string;
-  options?: Option[];
-}
-
-interface Option {
-  label: string;
-  value: string;
-  path?: string;
-}
-
-interface SurveyRendererProps {
-  survey: Survey;
-}
+type SurveyRendererProps = {
+  survey: Survey & {
+    sections: (Section & {
+      questions: (Question & {
+        options?: Option[];
+      })[];
+    })[];
+  };
+};
 
 export function SurveyRenderer({ survey }: SurveyRendererProps) {
   const router = useRouter();
@@ -54,6 +31,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   const [sectionPath, setSectionPath] = useState<string[]>([]);
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [responseId, setResponseId] = useState<string | null>(null);
 
   // Get the current section based on path logic
   const getCurrentSection = (): Section => {
@@ -111,9 +89,16 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   }, [currentSectionIndex]);
 
   const handleNext = async (data: any) => {
-    // Save answers
+    // Save answers locally
     const updatedAnswers = { ...answers, ...data };
     setAnswers(updatedAnswers);
+
+    // Save answers to database for this section
+    if (responseId) {
+      for (const [questionId, answer] of Object.entries(data)) {
+        await saveSurveyAnswer(responseId, questionId, answer as string | string[]);
+      }
+    }
 
     // Check for path redirects based on answers
     let nextPath: string | null = null;
@@ -152,17 +137,27 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
     }
   };
 
+  // Create response when component mounts
+  useEffect(() => {
+    const initResponse = async () => {
+      const result = await createSurveyResponse(survey.id);
+      if (result.data) {
+        setResponseId(result.data.id);
+      }
+    };
+    
+    if (!responseId) {
+      initResponse();
+    }
+  }, [survey.id, responseId]);
+
   const handleSubmit = async (finalAnswers: any) => {
+    if (!responseId) return;
+    
     setIsSubmitting(true);
     try {
-      const supabase = createClient();
-      
-      // TODO: Save to database
-      console.log('Survey submitted:', {
-        surveyId: survey.id,
-        answers: finalAnswers,
-        completedAt: new Date().toISOString(),
-      });
+      // Complete the response (answers were already saved in handleNext)
+      await completeSurveyResponse(responseId);
 
       // Redirect to thank you or results page
       router.push(`/surveys/${survey.id}?completed=true`);

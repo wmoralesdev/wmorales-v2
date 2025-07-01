@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Survey {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  status      String   @default("active")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  sections  SurveySection[]
+  responses SurveyResponse[]
+
+  @@map("surveys")
+}
+
+model SurveySection {
+  id           String  @id @default(uuid())
+  surveyId     String  @map("survey_id")
+  sectionOrder Int     @map("section_order")
+  path         String?
+  title        String
+  description  String?
+  createdAt    DateTime @default(now())
+
+  survey    Survey           @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  questions SurveyQuestion[]
+
+  @@map("survey_sections")
+}
+
+model SurveyQuestion {
+  id            String  @id @default(uuid())
+  sectionId     String  @map("section_id")
+  questionOrder Int     @map("question_order")
+  question      String
+  type          String
+  required      Boolean @default(false)
+  placeholder   String?
+  createdAt     DateTime @default(now())
+
+  section SurveySection             @relation(fields: [sectionId], references: [id], onDelete: Cascade)
+  options SurveyQuestionOption[]
+  answers SurveyAnswer[]
+
+  @@map("survey_questions")
+}
+
+model SurveyQuestionOption {
+  id          String  @id @default(uuid())
+  questionId  String  @map("question_id")
+  optionOrder Int     @map("option_order")
+  label       String
+  value       String
+  path        String?
+  createdAt   DateTime @default(now())
+
+  question       SurveyQuestion        @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  answerOptions  SurveyAnswerOption[]
+
+  @@map("survey_question_options")
+}
+
+model SurveyResponse {
+  id          String    @id @default(uuid())
+  surveyId    String    @map("survey_id")
+  userId      String?   @map("user_id")
+  sessionId   String?   @map("session_id")
+  startedAt   DateTime  @default(now()) @map("started_at")
+  completedAt DateTime? @map("completed_at")
+  createdAt   DateTime  @default(now())
+
+  survey  Survey         @relation(fields: [surveyId], references: [id], onDelete: Cascade)
+  answers SurveyAnswer[]
+
+  @@map("survey_responses")
+}
+
+model SurveyAnswer {
+  id         String   @id @default(uuid())
+  responseId String   @map("response_id")
+  questionId String   @map("question_id")
+  answerText String?  @map("answer_text")
+  createdAt  DateTime @default(now())
+
+  response        SurveyResponse       @relation(fields: [responseId], references: [id], onDelete: Cascade)
+  question        SurveyQuestion       @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  selectedOptions SurveyAnswerOption[]
+
+  @@map("survey_answers")
+}
+
+model SurveyAnswerOption {
+  id        String   @id @default(uuid())
+  answerId  String   @map("answer_id")
+  optionId  String   @map("option_id")
+  createdAt DateTime @default(now())
+
+  answer SurveyAnswer         @relation(fields: [answerId], references: [id], onDelete: Cascade)
+  option SurveyQuestionOption @relation(fields: [optionId], references: [id], onDelete: Cascade)
+
+  @@map("survey_answer_options")
+}

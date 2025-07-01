@@ -9,25 +9,12 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Textarea } from '@/components/ui/textarea';
 
-interface Question {
-  id: string;
-  question: string;
-  type: 'text' | 'radio' | 'checkbox' | 'select' | 'textarea';
-  required?: boolean;
-  placeholder?: string;
-  options?: Option[];
-}
+import type { Question, Option } from '@/lib/types/survey.types';
 
-interface Option {
-  label: string;
-  value: string;
-  path?: string;
-}
-
-interface QuestionRendererProps {
+type QuestionRendererProps = {
   question: Question;
   form: UseFormReturn<any>;
-}
+};
 
 export function QuestionRenderer({ question, form }: QuestionRendererProps) {
   const renderQuestion = () => {
