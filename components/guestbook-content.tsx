@@ -1,9 +1,9 @@
 'use client';
 
-import { Palette, Sparkles } from 'lucide-react';
+import { Palette, Share2, Sparkles } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { createGuestbookEntry, getAllTickets, getUserTicket } from '@/app/actions/guestbook.actions';
+import { createGuestbookEntry, getAllTickets, getUserTicket, updateGuestbookEntry } from '@/app/actions/guestbook.actions';
 import { authService } from '@/lib/auth';
 import { useAuth } from '@/components/auth/auth-provider';
 import { SignInCard } from '@/components/sign-in-card';
@@ -78,20 +78,51 @@ export function GuestbookContent() {
 
     setIsGeneratingColors(true);
     try {
-      const result = await createGuestbookEntry(customMessage);
+      let result;
+      if (userTicket) {
+        // Update existing ticket
+        result = await updateGuestbookEntry(customMessage);
+        toast.success('Your ticket has been updated!');
+      } else {
+        // Create new ticket
+        result = await createGuestbookEntry(customMessage);
+        toast.success('Your unique ticket has been created!');
+      }
+      
       setUserTicket(result.ticket as unknown as TicketData);
       
       // Refresh all tickets
       const updatedTickets = await getAllTickets();
       setAllTickets(updatedTickets as unknown as TicketData[]);
       
-      toast.success('Your unique ticket has been created!');
       setCustomMessage('');
     } catch (error) {
       toast.error('Failed to generate ticket. Please try again.');
       console.error('Generation error:', error);
     } finally {
       setIsGeneratingColors(false);
+    }
+  };
+
+  const handleShareTicket = async () => {
+    if (!userTicket) return;
+    
+    const shareUrl = `${window.location.origin}/guestbook/${userTicket.id}`;
+    
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: 'My Guestbook Ticket',
+          text: `Check out my unique ticket on Walter Morales' guestbook!`,
+          url: shareUrl,
+        });
+      } catch (error) {
+        console.error('Error sharing:', error);
+      }
+    } else {
+      // Fallback to copying to clipboard
+      await navigator.clipboard.writeText(shareUrl);
+      toast.success('Link copied to clipboard!');
     }
   };
 
@@ -120,76 +151,97 @@ export function GuestbookContent() {
 
   return (
     <div className="space-y-8">
-      {/* User Ticket or Generation Form */}
-      {userTicket ? (
+      {/* User Ticket */}
+      {userTicket && (
         <div className="animate-delay-400 animate-fade-in-up">
-          <UserTicket
-            user={{
-              id: userTicket.id,
-              name: userTicket.userName,
-              email: userTicket.userEmail,
-              avatar_url: userTicket.userAvatar || undefined,
-              provider: userTicket.userProvider,
-            }}
-            colors={{
-              primary: userTicket.primaryColor,
-              secondary: userTicket.secondaryColor,
-              accent: userTicket.accentColor,
-              background: userTicket.backgroundColor,
-            }}
-            ticketNumber={userTicket.ticketNumber}
-          />
-          {userTicket.entry.message && (
+          <a
+            href={`/guestbook/${userTicket.id}`}
+            className="group block"
+          >
+            <div className="relative">
+              <UserTicket
+                user={{
+                  id: userTicket.id,
+                  name: userTicket.userName,
+                  email: userTicket.userEmail,
+                  avatar_url: userTicket.userAvatar || undefined,
+                  provider: userTicket.userProvider,
+                }}
+                colors={{
+                  primary: userTicket.primaryColor,
+                  secondary: userTicket.secondaryColor,
+                  accent: userTicket.accentColor,
+                  background: userTicket.backgroundColor,
+                }}
+                ticketNumber={userTicket.ticketNumber}
+              />
+              <div className="absolute inset-0 rounded-2xl bg-white/0 transition-colors group-hover:bg-white/5" />
+            </div>
+          </a>
+          {userTicket.entry.mood && (
             <Card className="mx-auto mt-4 max-w-md">
               <CardContent className="pt-6">
-                <p className="text-center text-muted-foreground text-sm">
-                  Your mood: "{userTicket.entry.mood}"
-                </p>
+                <div className="flex items-center justify-between">
+                  <p className="text-center text-muted-foreground text-sm">
+                    Current mood: "{userTicket.entry.mood}"
+                  </p>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={handleShareTicket}
+                    className="gap-2"
+                  >
+                    <Share2 className="h-4 w-4" />
+                    Share
+                  </Button>
+                </div>
               </CardContent>
             </Card>
           )}
         </div>
-      ) : (
-        <div className="animate-delay-400 animate-fade-in-up">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Palette className="h-5 w-5" />
-                Create Your Unique Ticket
-              </CardTitle>
-              <p className="text-muted-foreground text-sm">
-                Describe your mood, style, or anything that inspires you. Our AI will generate a unique color palette for
-                your ticket.
-              </p>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Textarea
-                className="min-h-24 resize-none"
-                onChange={(e) => setCustomMessage(e.target.value)}
-                placeholder="Tell the AI about your style... (e.g., 'I love sunset colors and ocean vibes' or 'Make it dark and mysterious like a cyberpunk city')"
-                value={customMessage}
-              />
-              <Button
-                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 sm:w-auto"
-                disabled={!customMessage.trim() || isGeneratingColors}
-                onClick={handleGenerateColors}
-              >
-                {isGeneratingColors ? (
-                  <>
-                    <Sparkles className="mr-2 h-4 w-4 animate-spin" />
-                    Generating Your Ticket...
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="mr-2 h-4 w-4" />
-                    Generate My Ticket
-                  </>
-                )}
-              </Button>
-            </CardContent>
-          </Card>
-        </div>
       )}
+
+      {/* Chat Input (always visible) */}
+      <div className="animate-delay-400 animate-fade-in-up">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Palette className="h-5 w-5" />
+              {userTicket ? 'Update Your Ticket' : 'Create Your Unique Ticket'}
+            </CardTitle>
+            <p className="text-muted-foreground text-sm">
+              {userTicket 
+                ? 'Change your mood to generate new colors for your ticket.'
+                : 'Describe your mood, style, or anything that inspires you. Our AI will generate a unique color palette for your ticket.'}
+            </p>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Textarea
+              className="min-h-24 resize-none"
+              onChange={(e) => setCustomMessage(e.target.value)}
+              placeholder="Tell the AI about your style... (e.g., 'I love sunset colors and ocean vibes' or 'Make it dark and mysterious like a cyberpunk city')"
+              value={customMessage}
+            />
+            <Button
+              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 sm:w-auto"
+              disabled={!customMessage.trim() || isGeneratingColors}
+              onClick={handleGenerateColors}
+            >
+              {isGeneratingColors ? (
+                <>
+                  <Sparkles className="mr-2 h-4 w-4 animate-spin" />
+                  {userTicket ? 'Updating Your Ticket...' : 'Generating Your Ticket...'}
+                </>
+              ) : (
+                <>
+                  <Sparkles className="mr-2 h-4 w-4" />
+                  {userTicket ? 'Update My Ticket' : 'Generate My Ticket'}
+                </>
+              )}
+            </Button>
+          </CardContent>
+        </Card>
+      </div>
 
       {/* All Tickets Section */}
       <div className="animate-delay-600 animate-fade-in-up">
@@ -204,25 +256,32 @@ export function GuestbookContent() {
             {allTickets.length > 0 ? (
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {allTickets.map((ticket) => (
-                  <div key={ticket.id} className="transform transition-transform hover:scale-105">
-                                         <UserTicket
-                      user={{
-                        id: ticket.id,
-                        name: ticket.userName,
-                        email: ticket.userEmail,
-                        avatar_url: ticket.userAvatar || undefined,
-                        provider: ticket.userProvider,
-                      }}
-                      colors={{
-                        primary: ticket.primaryColor,
-                        secondary: ticket.secondaryColor,
-                        accent: ticket.accentColor,
-                        background: ticket.backgroundColor,
-                      }}
-                      ticketNumber={ticket.ticketNumber}
-                      scale="small"
-                    />
-                  </div>
+                  <a
+                    key={ticket.id}
+                    href={`/guestbook/${ticket.id}`}
+                    className="group block transform transition-all hover:scale-105"
+                  >
+                    <div className="relative">
+                      <UserTicket
+                        user={{
+                          id: ticket.id,
+                          name: ticket.userName,
+                          email: ticket.userEmail,
+                          avatar_url: ticket.userAvatar || undefined,
+                          provider: ticket.userProvider,
+                        }}
+                        colors={{
+                          primary: ticket.primaryColor,
+                          secondary: ticket.secondaryColor,
+                          accent: ticket.accentColor,
+                          background: ticket.backgroundColor,
+                        }}
+                        ticketNumber={ticket.ticketNumber}
+                        scale="small"
+                      />
+                      <div className="absolute inset-0 rounded-2xl bg-white/0 transition-colors group-hover:bg-white/5" />
+                    </div>
+                  </a>
                 ))}
               </div>
             ) : (

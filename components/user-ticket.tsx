@@ -32,27 +32,27 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
   };
 
   const gradientStyle = hasCustomColors
-    ? { background: `linear-gradient(to right, ${ticketColors.primary}, ${ticketColors.secondary})` }
+    ? { background: `linear-gradient(135deg, ${ticketColors.primary}, ${ticketColors.secondary})` }
     : undefined;
 
-  const footerGradientStyle = hasCustomColors
-    ? { background: `linear-gradient(to right, ${ticketColors.secondary}, ${ticketColors.accent})` }
+  const accentGradientStyle = hasCustomColors
+    ? { background: `linear-gradient(to right, ${ticketColors.primary}20, ${ticketColors.secondary}20)` }
     : undefined;
 
   const currentDate = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
-    month: 'long',
+    month: 'short',
     day: 'numeric',
   });
 
   const getProviderIcon = (provider: string) => {
     switch (provider.toLowerCase()) {
       case 'github':
-        return <Github className="h-4 w-4" />;
+        return <Github className="h-3 w-3" />;
       case 'google':
-        return <Mail className="h-4 w-4" />;
+        return <Mail className="h-3 w-3" />;
       default:
-        return <User className="h-4 w-4" />;
+        return <User className="h-3 w-3" />;
     }
   };
 
@@ -61,91 +61,128 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
   return (
     <div className="flex justify-center">
       <div className="relative">
-        {/* Lanyard String */}
-        {!isSmall && (
-          <div className="-top-8 -translate-x-1/2 absolute left-1/2 transform">
-            <div className="h-8 w-1 rounded-full bg-gradient-to-b from-transparent to-gray-400" />
-          </div>
-        )}
+        {/* Glow Effect */}
+        <div 
+          className="absolute inset-0 rounded-2xl opacity-30 blur-2xl"
+          style={gradientStyle}
+        />
 
         {/* Ticket/Badge */}
-        <Card className={`overflow-hidden border-0 shadow-2xl ${isSmall ? 'w-64' : 'w-80 sm:w-96'}`}>
-          {/* Header with gradient */}
+        <Card 
+          className={`relative overflow-hidden border border-gray-800 shadow-2xl backdrop-blur-sm ${isSmall ? 'w-64' : 'w-80'}`}
+          style={{ backgroundColor: ticketColors.background }}
+        >
+          {/* Decorative Pattern */}
           <div 
-            className={`relative overflow-hidden ${isSmall ? 'p-4' : 'p-6'} text-white ${!hasCustomColors ? 'bg-gradient-to-r from-purple-500 to-pink-500' : ''}`}
-            style={gradientStyle}
-          >
-            <div className={`absolute top-0 right-0 opacity-20 ${isSmall ? 'h-20 w-20' : 'h-32 w-32'}`}>
-              <Sparkles className="h-full w-full" />
-            </div>
-            <div className="relative z-10">
-              {!isSmall && (
-                <div className="mb-4 flex items-center justify-between">
-                  <Badge className="border-0 bg-white/20 text-white" variant="secondary">
-                    GUEST
-                  </Badge>
-                  <Badge className="flex items-center gap-1 border-0 bg-white/20 text-white" variant="secondary">
-                    {getProviderIcon(user.provider)}
-                    {user.provider.toUpperCase()}
-                  </Badge>
-                </div>
-              )}
+            className="absolute inset-0 opacity-5"
+            style={accentGradientStyle}
+          />
 
-              <div className="text-center">
-                <Avatar className={`mx-auto ${isSmall ? 'mb-2 h-12 w-12 border-2' : 'mb-3 h-16 w-16 border-4'} border-white/30`}>
-                  <AvatarImage alt={user.name} src={user.avatar_url} />
-                  <AvatarFallback className={`bg-white/20 font-bold text-white ${isSmall ? 'text-sm' : 'text-xl'}`}>
-                    {user.name
-                      .split(' ')
-                      .map((n) => n[0])
-                      .join('')
-                      .toUpperCase()}
-                  </AvatarFallback>
-                </Avatar>
-                <h3 className={`font-bold ${isSmall ? 'text-base' : 'text-xl'}`}>{user.name}</h3>
-                {!isSmall && <p className="text-sm text-white/80">{user.email}</p>}
+          {/* Content */}
+          <div className="relative z-10">
+            {/* Header Section */}
+            <div className={`${isSmall ? 'p-4' : 'p-6'}`}>
+              <div className="flex items-start justify-between">
+                {/* Avatar and Info */}
+                <div className="flex items-center gap-3">
+                  <Avatar 
+                    className={`${isSmall ? 'h-10 w-10' : 'h-12 w-12'} ring-2 ring-gray-700`}
+                    style={{ 
+                      boxShadow: `0 0 20px ${ticketColors.primary}40` 
+                    }}
+                  >
+                    <AvatarImage alt={user.name} src={user.avatar_url} />
+                    <AvatarFallback 
+                      className="font-semibold text-xs"
+                      style={{ 
+                        background: `linear-gradient(135deg, ${ticketColors.primary}, ${ticketColors.secondary})`,
+                        color: 'white'
+                      }}
+                    >
+                      {user.name
+                        .split(' ')
+                        .map((n) => n[0])
+                        .join('')
+                        .toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <h3 className={`font-semibold ${isSmall ? 'text-sm' : 'text-base'} text-gray-100`}>
+                      {user.name}
+                    </h3>
+                    {!isSmall && (
+                      <p className="text-xs text-gray-400">{user.email}</p>
+                    )}
+                  </div>
+                </div>
+
+                {/* Provider Badge */}
+                <Badge 
+                  variant="outline" 
+                  className="gap-1 border-gray-700 bg-gray-800/50 text-gray-300 px-2 py-0.5 text-xs"
+                >
+                  {getProviderIcon(user.provider)}
+                  {!isSmall && user.provider}
+                </Badge>
               </div>
             </div>
-          </div>
 
-          {/* Body */}
-          <div className={isSmall ? 'p-3' : 'p-6'} style={{ backgroundColor: ticketColors.background }}>
-            <div className={isSmall ? 'space-y-2' : 'space-y-4'}>
-              {!isSmall && (
-                <div className="text-center">
-                  <h4 className="mb-2 font-semibold text-foreground text-lg">Walter Morales Portfolio</h4>
-                  <p className="text-muted-foreground text-sm">Digital Guestbook Visitor</p>
-                </div>
-              )}
+            {/* Divider */}
+            <div 
+              className="h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent"
+            />
 
+            {/* Footer Section */}
+            <div className={`${isSmall ? 'p-3' : 'p-4'} space-y-3`}>
+              {/* Date */}
               {!isSmall && (
-                <div className="flex items-center justify-center gap-2 text-muted-foreground text-sm">
-                  <Calendar className="h-4 w-4" />
+                <div className="flex items-center gap-2 text-gray-400 text-xs">
+                  <Calendar className="h-3 w-3" />
                   <span>{currentDate}</span>
                 </div>
               )}
 
-              <div className={`border-muted border-t border-dashed ${isSmall ? 'pt-2' : 'pt-4'}`}>
-                <div className="text-center">
-                  <p className={`mb-1 text-muted-foreground ${isSmall ? 'text-[10px]' : 'text-xs'}`}>TICKET ID</p>
-                  <code className={`rounded bg-muted px-2 py-1 font-mono text-foreground ${isSmall ? 'text-[10px]' : 'text-xs'}`}>
-                    {ticketNumber || `TEMP-${Date.now().toString().slice(-6)}`}
-                  </code>
+              {/* Ticket Number */}
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div 
+                    className="h-1.5 w-1.5 rounded-full"
+                    style={{ backgroundColor: ticketColors.primary }}
+                  />
+                  <span className={`text-gray-400 ${isSmall ? 'text-[10px]' : 'text-xs'}`}>
+                    TICKET ID
+                  </span>
                 </div>
+                <code 
+                  className={`font-mono ${isSmall ? 'text-[10px]' : 'text-xs'} text-gray-300`}
+                >
+                  {ticketNumber || `TEMP-${Date.now().toString().slice(-6)}`}
+                </code>
               </div>
             </div>
-          </div>
 
-          {/* Footer decoration */}
-          <div 
-            className={`${isSmall ? 'h-1' : 'h-2'} ${!hasCustomColors ? 'bg-gradient-to-r from-purple-600 to-pink-600' : ''}`}
-            style={footerGradientStyle}
-          />
+            {/* Bottom Accent */}
+            <div 
+              className="h-0.5"
+              style={gradientStyle}
+            />
+          </div>
         </Card>
 
-        {/* Shadow/reflection effect */}
+        {/* Decorative Elements */}
         {!isSmall && (
-          <div className="-bottom-1 absolute right-2 left-2 h-4 rounded-full bg-gradient-to-r from-transparent via-black/10 to-transparent blur-sm" />
+          <>
+            {/* Top Right Sparkle */}
+            <Sparkles 
+              className="absolute -top-2 -right-2 h-4 w-4 text-gray-600 opacity-50"
+              style={{ color: ticketColors.accent }}
+            />
+            {/* Bottom Left Sparkle */}
+            <Sparkles 
+              className="absolute -bottom-2 -left-2 h-3 w-3 text-gray-600 opacity-30"
+              style={{ color: ticketColors.primary }}
+            />
+          </>
         )}
       </div>
     </div>
