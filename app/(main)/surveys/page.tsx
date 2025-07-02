@@ -74,7 +74,7 @@ export default function SurveysPage() {
             {[1, 2, 3].map((i) => (
               <Card key={i}>
                 <CardHeader>
-                  <Skeleton className="h-6 w-3/4 mb-2" />
+                  <Skeleton className="mb-2 h-6 w-3/4" />
                   <Skeleton className="h-4 w-full" />
                 </CardHeader>
                 <CardContent>
