@@ -2,7 +2,8 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { AlertCircle, Check, ChevronRight, Loader2, Users } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useReducer } from 'react';
+import { toast } from 'sonner';
 import { getPollResults, votePoll } from '@/app/actions/poll.actions';
 import { PollResultsDashboard } from '@/components/polls/poll-results-dashboard';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -23,38 +24,108 @@ type PollVotingProps = {
   initialUserVotes?: Record<string, string[]>;
 };
 
+// State type for useReducer
+type PollVotingState = {
+  selectedOptions: Record<string, string | string[]>;
+  userVotes: Record<string, string[]>;
+  results: PollResults | null;
+  voting: boolean;
+  showResults: boolean;
+  showDashboard: boolean;
+  totalVoters: number;
+  activeUsers: PollPresence[];
+  validationErrors: string[];
+};
+
+// Action types
+type PollVotingAction =
+  | { type: 'SET_SELECTED_OPTIONS'; payload: Record<string, string | string[]> }
+  | { type: 'UPDATE_SELECTED_OPTION'; payload: { questionId: string; value: string | string[] } }
+  | { type: 'SET_USER_VOTES'; payload: Record<string, string[]> }
+  | { type: 'SET_RESULTS'; payload: PollResults }
+  | { type: 'SET_VOTING'; payload: boolean }
+  | { type: 'SET_SHOW_RESULTS'; payload: boolean }
+  | { type: 'SET_SHOW_DASHBOARD'; payload: boolean }
+  | { type: 'SET_TOTAL_VOTERS'; payload: number }
+  | { type: 'SET_ACTIVE_USERS'; payload: PollPresence[] }
+  | { type: 'SET_VALIDATION_ERRORS'; payload: string[] }
+  | { type: 'CLEAR_VALIDATION_ERROR'; payload: number };
+
+// Reducer function
+function pollVotingReducer(state: PollVotingState, action: PollVotingAction): PollVotingState {
+  switch (action.type) {
+    case 'SET_SELECTED_OPTIONS':
+      return { ...state, selectedOptions: action.payload };
+    case 'UPDATE_SELECTED_OPTION':
+      return {
+        ...state,
+        selectedOptions: {
+          ...state.selectedOptions,
+          [action.payload.questionId]: action.payload.value,
+        },
+      };
+    case 'SET_USER_VOTES':
+      return { ...state, userVotes: action.payload };
+    case 'SET_RESULTS':
+      return { ...state, results: action.payload };
+    case 'SET_VOTING':
+      return { ...state, voting: action.payload };
+    case 'SET_SHOW_RESULTS':
+      return { ...state, showResults: action.payload };
+    case 'SET_SHOW_DASHBOARD':
+      return { ...state, showDashboard: action.payload };
+    case 'SET_TOTAL_VOTERS':
+      return { ...state, totalVoters: action.payload };
+    case 'SET_ACTIVE_USERS':
+      return { ...state, activeUsers: action.payload };
+    case 'SET_VALIDATION_ERRORS':
+      return { ...state, validationErrors: action.payload };
+    case 'CLEAR_VALIDATION_ERROR':
+      return {
+        ...state,
+        validationErrors: state.validationErrors.filter(
+          (err) => !err.includes(`Question ${action.payload + 1}`)
+        ),
+      };
+    default:
+      return state;
+  }
+}
+
 export function PollVoting({ poll, initialResults, initialUserVotes = {} }: PollVotingProps) {
-  const [selectedOptions, setSelectedOptions] = useState<Record<string, string | string[]>>({});
-  const [userVotes, setUserVotes] = useState<Record<string, string[]>>(initialUserVotes);
-  const [results, setResults] = useState<PollResults | null>(initialResults || null);
-  const [voting, setVoting] = useState(false);
-  const [showResults, setShowResults] = useState(false);
-  const [showDashboard, setShowDashboard] = useState(false);
-  const [totalVoters, setTotalVoters] = useState(0);
-  const [activeUsers, setActiveUsers] = useState<PollPresence[]>([]);
-  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  const [state, dispatch] = useReducer(pollVotingReducer, {
+    selectedOptions: {},
+    userVotes: initialUserVotes,
+    results: initialResults || null,
+    voting: false,
+    showResults: false,
+    showDashboard: false,
+    totalVoters: 0,
+    activeUsers: [],
+    validationErrors: [],
+  });
 
   // Check if all questions have been answered
-  const allQuestionsAnswered = poll.questions.every((q) => userVotes[q.id]?.length > 0);
+  const allQuestionsAnswered = poll.questions.every((q) => state.userVotes[q.id]?.length > 0);
 
   // Initialize selected options from user votes
   useEffect(() => {
     const initial: Record<string, string | string[]> = {};
     for (const question of poll.questions) {
-      const votes = userVotes[question.id] || [];
+      const votes = state.userVotes[question.id] || [];
       if (question.type === 'single') {
         initial[question.id] = votes[0] || '';
       } else {
         initial[question.id] = votes;
       }
     }
-    setSelectedOptions(initial);
+    dispatch({ type: 'SET_SELECTED_OPTIONS', payload: initial });
 
     // Show dashboard if all questions are answered
     if (allQuestionsAnswered) {
-      setShowDashboard(true);
+      dispatch({ type: 'SET_SHOW_DASHBOARD', payload: true });
     }
-  }, [poll.questions, userVotes, allQuestionsAnswered]);
+  }, [poll.questions, state.userVotes, allQuestionsAnswered]);
 
   // Subscribe to real-time updates
   useEffect(() => {
@@ -68,13 +139,13 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
           // Fetch fresh results
           const { data } = await getPollResults(poll.id);
           if (data) {
-            setResults(data);
-            setTotalVoters(data.totalVotes);
+            dispatch({ type: 'SET_RESULTS', payload: data });
+            dispatch({ type: 'SET_TOTAL_VOTERS', payload: data.totalVotes });
           }
         }
       },
       (users) => {
-        setActiveUsers(users);
+        dispatch({ type: 'SET_ACTIVE_USERS', payload: users });
       }
     );
 
@@ -86,22 +157,22 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
   // Show results after delay
   useEffect(() => {
     if (poll.showResults && poll.resultsDelay > 0) {
-      const hasVoted = Object.keys(userVotes).length > 0;
+      const hasVoted = Object.keys(state.userVotes).length > 0;
       if (hasVoted) {
         const timer = setTimeout(() => {
-          setShowResults(true);
+          dispatch({ type: 'SET_SHOW_RESULTS', payload: true });
         }, poll.resultsDelay * 1000);
         return () => clearTimeout(timer);
       }
     } else if (poll.showResults) {
-      setShowResults(true);
+      dispatch({ type: 'SET_SHOW_RESULTS', payload: true });
     }
-  }, [poll.showResults, poll.resultsDelay, userVotes]);
+  }, [poll.showResults, poll.resultsDelay, state.userVotes]);
 
   const validateQuestion = useCallback(
     (question: PollQuestion, index: number) => {
-      const answer = selectedOptions[question.id];
-      const hasVoted = userVotes[question.id]?.length > 0;
+      const answer = state.selectedOptions[question.id];
+      const hasVoted = state.userVotes[question.id]?.length > 0;
 
       if (hasVoted) {
         return null;
@@ -122,7 +193,7 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
 
       return null;
     },
-    [selectedOptions, userVotes]
+    [state.selectedOptions, state.userVotes]
   );
 
   const validateAnswers = useCallback(() => {
@@ -151,15 +222,15 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
 
   const shouldProcessQuestion = useCallback(
     (question: PollQuestion) => {
-      const hasAnswered = userVotes[question.id]?.length > 0;
+      const hasAnswered = state.userVotes[question.id]?.length > 0;
       if (hasAnswered) {
         return false;
       }
 
-      const selected = selectedOptions[question.id];
+      const selected = state.selectedOptions[question.id];
       return selected && (Array.isArray(selected) ? selected.length > 0 : true);
     },
-    [userVotes, selectedOptions]
+    [state.userVotes, state.selectedOptions]
   );
 
   const createVotePromises = useCallback(() => {
@@ -168,7 +239,7 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
 
     for (const question of poll.questions) {
       if (shouldProcessQuestion(question)) {
-        const selected = selectedOptions[question.id];
+        const selected = state.selectedOptions[question.id];
         votePromises.push(
           submitVoteForQuestion(question, selected).then((votes) => ({
             questionId: question.id,
@@ -179,10 +250,10 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
     }
 
     return votePromises;
-  }, [poll.questions, shouldProcessQuestion, selectedOptions, submitVoteForQuestion]);
+  }, [poll.questions, shouldProcessQuestion, state.selectedOptions, submitVoteForQuestion]);
 
   const processUnansweredQuestions = useCallback(async () => {
-    const newVotes = { ...userVotes };
+    const newVotes = { ...state.userVotes };
     const votePromises = createVotePromises();
 
     if (votePromises.length === 0) {
@@ -197,30 +268,30 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
     }
 
     return newVotes;
-  }, [userVotes, createVotePromises]);
+  }, [state.userVotes, createVotePromises]);
 
   const handleSubmitAll = useCallback(async () => {
     const errors = validateAnswers();
     if (errors.length > 0) {
-      setValidationErrors(errors);
+      dispatch({ type: 'SET_VALIDATION_ERRORS', payload: errors });
       return;
     }
 
-    setValidationErrors([]);
-    setVoting(true);
+    dispatch({ type: 'SET_VALIDATION_ERRORS', payload: [] });
+    dispatch({ type: 'SET_VOTING', payload: true });
 
     try {
       const newVotes = await processUnansweredQuestions();
-      setUserVotes(newVotes);
+      dispatch({ type: 'SET_USER_VOTES', payload: newVotes });
 
       const { data } = await getPollResults(poll.id);
       if (data) {
-        setResults(data);
+        dispatch({ type: 'SET_RESULTS', payload: data });
       }
 
-      setTimeout(() => setShowDashboard(true), 500);
+      setTimeout(() => dispatch({ type: 'SET_SHOW_DASHBOARD', payload: true }), 500);
     } finally {
-      setVoting(false);
+      dispatch({ type: 'SET_VOTING', payload: false });
     }
   }, [validateAnswers, processUnansweredQuestions, poll.id]);
 
@@ -231,52 +302,55 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
     }
 
     if (question.type === 'single') {
-      setSelectedOptions((prev) => ({ ...prev, [questionId]: value }));
+      dispatch({ 
+        type: 'UPDATE_SELECTED_OPTION', 
+        payload: { questionId, value } 
+      });
     } else {
-      setSelectedOptions((prev) => {
-        const current = (prev[questionId] as string[]) || [];
-        if (checked) {
-          return { ...prev, [questionId]: [...current, value] };
-        }
-        return { ...prev, [questionId]: current.filter((v) => v !== value) };
+      const current = (state.selectedOptions[questionId] as string[]) || [];
+      const newValue = checked
+        ? [...current, value]
+        : current.filter((v) => v !== value);
+      dispatch({ 
+        type: 'UPDATE_SELECTED_OPTION', 
+        payload: { questionId, value: newValue } 
       });
     }
 
     // Clear validation error for this question
-    setValidationErrors((prev) =>
-      prev.filter((err) => !err.includes(`Question ${poll.questions.findIndex((q) => q.id === questionId) + 1}`))
-    );
+    const questionIndex = poll.questions.findIndex((q) => q.id === questionId);
+    dispatch({ type: 'CLEAR_VALIDATION_ERROR', payload: questionIndex });
   };
 
   const hasVoted = (questionId: string) => {
-    return (userVotes[questionId] || []).length > 0;
+    return (state.userVotes[questionId] || []).length > 0;
   };
 
   const getOptionPercentage = (questionId: string, optionId: string) => {
-    if (!results) {
+    if (!state.results) {
       return 0;
     }
-    const question = results.questions.find((q) => q.questionId === questionId);
+    const question = state.results.questions.find((q) => q.questionId === questionId);
     const option = question?.options.find((o) => o.optionId === optionId);
     return option?.percentage || 0;
   };
 
   const getOptionVoteCount = (questionId: string, optionId: string) => {
-    if (!results) {
+    if (!state.results) {
       return 0;
     }
-    const question = results.questions.find((q) => q.questionId === questionId);
+    const question = state.results.questions.find((q) => q.questionId === questionId);
     const option = question?.options.find((o) => o.optionId === optionId);
     return option?.voteCount || 0;
   };
 
-  const canShowResults = showResults && (poll.showResults || hasVoted(poll.questions[0]?.id));
+  const canShowResults = state.showResults && (poll.showResults || hasVoted(poll.questions[0]?.id));
 
   // Broadcast active users count
-  usePollPresence(poll.code, showDashboard ? 0 : activeUsers.length);
+  usePollPresence(poll.code, state.showDashboard ? 0 : state.activeUsers.length);
 
   // Show dashboard if all questions are answered
-  if (showDashboard && results) {
+  if (state.showDashboard && state.results) {
     return (
       <div className="space-y-6">
         {/* Success Message */}
@@ -291,7 +365,7 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
         </Card>
 
         {/* Results Dashboard */}
-        <PollResultsDashboard initialResults={results} pollCode={poll.code} pollId={poll.id} pollTitle={poll.title} />
+        <PollResultsDashboard initialResults={state.results} pollCode={poll.code} pollId={poll.id} pollTitle={poll.title} />
       </div>
     );
   }
@@ -307,11 +381,11 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
         <CardHeader>
           <CardTitle className="text-2xl">{poll.title}</CardTitle>
           {poll.description && <CardDescription className="text-base">{poll.description}</CardDescription>}
-          {canShowResults && totalVoters > 0 && (
+          {canShowResults && state.totalVoters > 0 && (
             <div className="mt-2 flex items-center gap-2 text-muted-foreground text-sm">
               <Users className="h-4 w-4" />
               <span>
-                {totalVoters} {totalVoters === 1 ? 'voter' : 'voters'}
+                {state.totalVoters} {state.totalVoters === 1 ? 'voter' : 'voters'}
               </span>
             </div>
           )}
@@ -327,7 +401,7 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
                 Progress: {answeredQuestions} / {poll.questions.length} questions answered
               </span>
               {allQuestionsAnswered && (
-                <Button onClick={() => setShowDashboard(true)} size="sm" variant="outline">
+                <Button onClick={() => dispatch({ type: 'SET_SHOW_DASHBOARD', payload: true })} size="sm" variant="outline">
                   View Results
                   <ChevronRight className="ml-1 h-4 w-4" />
                 </Button>
@@ -346,12 +420,12 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
       )}
 
       {/* Validation Errors */}
-      {validationErrors.length > 0 && (
+      {state.validationErrors.length > 0 && (
         <Alert variant="destructive">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
             <ul className="list-inside list-disc space-y-1">
-              {validationErrors.map((error) => (
+              {state.validationErrors.map((error) => (
                 <li key={error}>{error}</li>
               ))}
             </ul>
@@ -393,12 +467,12 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
                     <RadioGroup
                       disabled={isAnswered}
                       onValueChange={(value) => handleOptionChange(question.id, value)}
-                      value={selectedOptions[question.id] as string}
+                      value={state.selectedOptions[question.id] as string}
                     >
                       {(question.options || []).map((option) => {
                         const percentage = getOptionPercentage(question.id, option.id);
                         const voteCount = getOptionVoteCount(question.id, option.id);
-                        const isSelected = userVotes[question.id]?.includes(option.id);
+                        const isSelected = state.userVotes[question.id]?.includes(option.id);
 
                         return (
                           <div className="relative" key={option.id}>
@@ -434,8 +508,8 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
                       {(question.options || []).map((option) => {
                         const percentage = getOptionPercentage(question.id, option.id);
                         const voteCount = getOptionVoteCount(question.id, option.id);
-                        const isSelected = userVotes[question.id]?.includes(option.id);
-                        const isChecked = ((selectedOptions[question.id] as string[]) || []).includes(option.id);
+                        const isSelected = state.userVotes[question.id]?.includes(option.id);
+                        const isChecked = ((state.selectedOptions[question.id] as string[]) || []).includes(option.id);
 
                         return (
                           <div className="relative" key={option.id}>
@@ -485,8 +559,8 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
       {hasAnyUnansweredQuestions && (
         <Card>
           <CardContent className="pt-6">
-            <Button className="w-full" disabled={voting} onClick={handleSubmitAll} size="lg">
-              {voting ? (
+            <Button className="w-full" disabled={state.voting} onClick={handleSubmitAll} size="lg">
+              {state.voting ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
                   Submitting Answers...

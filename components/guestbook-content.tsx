@@ -3,7 +3,7 @@
 import { ArrowRight, Palette, Share2, Sparkles, Users } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { createGuestbookEntry, getAllTickets, updateGuestbookEntry } from '@/app/actions/guestbook.actions';
+import { createGuestbookEntry, updateGuestbookEntry } from '@/app/actions/guestbook.actions';
 import { useAuth } from '@/components/auth/auth-provider';
 import { GuestbookLoading } from '@/components/guestbook-loading';
 import { SignInCard } from '@/components/sign-in-card';
@@ -11,7 +11,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { UserTicket } from '@/components/user-ticket';
-import { useGuestbookTickets } from '@/hooks/use-guestbook-tickets';
+import { useGuestbookTicketsSWR } from '@/hooks/use-guestbook-tickets-swr';
 import { authService } from '@/lib/auth';
 import type { TicketData } from '@/lib/types/guestbook.types';
 import { shareTicket } from '@/lib/utils/share';
@@ -20,7 +20,7 @@ export function GuestbookContent() {
   const { user, loading } = useAuth();
   const [customMessage, setCustomMessage] = useState('');
   const [isGeneratingColors, setIsGeneratingColors] = useState(false);
-  const { userTicket, setUserTicket, allTickets, setAllTickets, isLoadingTickets } = useGuestbookTickets();
+  const { userTicket, allTickets, isLoadingTickets, updateUserTicket, refreshTickets } = useGuestbookTicketsSWR(user);
 
   const handleSignIn = async (provider: 'github' | 'google') => {
     try {
@@ -41,11 +41,12 @@ export function GuestbookContent() {
       const result = userTicket ? await updateGuestbookEntry(customMessage) : await createGuestbookEntry(customMessage);
 
       toast.success(userTicket ? 'Your ticket has been updated!' : 'Your unique ticket has been created!');
-      setUserTicket(result.ticket as unknown as TicketData);
-
+      
+      // Update tickets using SWR
+      updateUserTicket(result.ticket as unknown as TicketData);
+      
       // Refresh all tickets
-      const updatedTickets = await getAllTickets();
-      setAllTickets(updatedTickets as unknown as TicketData[]);
+      await refreshTickets();
 
       setCustomMessage('');
     } catch {

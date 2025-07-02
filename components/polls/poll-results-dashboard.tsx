@@ -3,12 +3,12 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { Activity, BarChart3, PieChart, RefreshCw, Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { getPollResults } from '@/app/actions/poll.actions';
+import { usePollResultsSWR } from '@/hooks/use-poll-results-swr';
+import { usePollPresence } from '@/hooks/use-poll-presence';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { usePollPresence } from '@/hooks/use-poll-presence';
-import { type PollPresence, type PollRealtimeEvent, subscribeToPollUpdates } from '@/lib/supabase/realtime';
+import { type PollRealtimeEvent, type PollPresence, subscribeToPollUpdates } from '@/lib/supabase/realtime';
 import type { PollResults } from '@/lib/types/poll.types';
 import { cn } from '@/lib/utils';
 
@@ -20,7 +20,7 @@ type PollResultsDashboardProps = {
 };
 
 export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResults }: PollResultsDashboardProps) {
-  const [results, setResults] = useState<PollResults>(initialResults);
+  const { results, refresh } = usePollResultsSWR(pollId, initialResults);
   const [activeUsers, setActiveUsers] = useState<PollPresence[]>([]);
   const [isUpdating, setIsUpdating] = useState(false);
 
@@ -30,10 +30,7 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
       async (event: PollRealtimeEvent) => {
         if (event.type === 'results_updated' || event.type === 'vote_added') {
           setIsUpdating(true);
-          const { data } = await getPollResults(pollId);
-          if (data) {
-            setResults(data);
-          }
+          await refresh();
           setTimeout(() => setIsUpdating(false), 500);
         }
       },
@@ -45,9 +42,9 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
     return () => {
       channel.unsubscribe();
     };
-  }, [pollCode, pollId]);
+  }, [pollCode, refresh]);
 
-  const totalVoters = results.totalVotes;
+  const totalVoters = results?.totalVotes || 0;
   const activeUsersCount = activeUsers.length;
 
   // Broadcast active users count
@@ -88,7 +85,7 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
             <BarChart3 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="font-bold text-2xl">{results.questions.length}</div>
+            <div className="font-bold text-2xl">{results?.questions.length || 0}</div>
             <p className="text-muted-foreground text-xs">Total questions</p>
           </CardContent>
         </Card>
@@ -117,7 +114,7 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
             </TabsList>
 
             <TabsContent className="mt-6 space-y-6" value="overview">
-              {results.questions.map((question, index) => (
+              {results?.questions.map((question, index) => (
                 <div className="space-y-4" key={question.questionId}>
                   <h3 className="font-semibold text-lg">
                     {index + 1}. {question.question}
@@ -157,7 +154,7 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
             </TabsContent>
 
             <TabsContent className="mt-6 space-y-6" value="details">
-              {results.questions.map((question, index) => (
+              {results?.questions.map((question, index) => (
                 <Card key={question.questionId}>
                   <CardHeader>
                     <CardTitle className="text-base">
