@@ -8,11 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePollPresence } from '@/hooks/use-poll-presence';
-import {
-  type PollPresence,
-  type PollRealtimeEvent,
-  subscribeToPollUpdates,
-} from '@/lib/supabase/realtime';
+import { type PollPresence, type PollRealtimeEvent, subscribeToPollUpdates } from '@/lib/supabase/realtime';
 import type { PollResults } from '@/lib/types/poll.types';
 import { cn } from '@/lib/utils';
 

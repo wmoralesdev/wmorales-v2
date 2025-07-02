@@ -59,24 +59,20 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
   const isSmall = scale === 'small';
 
   return (
-    <div className="flex justify-center">
-      <div className="relative">
+    <div className="flex w-full justify-center">
+      <div className="relative w-full">
         {/* Glow Effect */}
-        <div 
-          className="absolute inset-0 rounded-2xl opacity-30 blur-2xl"
-          style={gradientStyle}
-        />
+        <div className="absolute inset-0 rounded-2xl opacity-30 blur-2xl" style={gradientStyle} />
 
         {/* Ticket/Badge */}
-        <Card 
-          className={`relative overflow-hidden border border-gray-800 shadow-2xl backdrop-blur-sm ${isSmall ? 'w-64' : 'w-80'}`}
+        <Card
+          className={
+            'relative mx-0 w-full overflow-hidden border border-gray-800 px-0 pt-0 shadow-2xl backdrop-blur-sm'
+          }
           style={{ backgroundColor: ticketColors.background }}
         >
           {/* Decorative Pattern */}
-          <div 
-            className="absolute inset-0 opacity-5"
-            style={accentGradientStyle}
-          />
+          <div className="absolute inset-0 opacity-5" style={accentGradientStyle} />
 
           {/* Content */}
           <div className="relative z-10">
@@ -85,18 +81,18 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
               <div className="flex items-start justify-between">
                 {/* Avatar and Info */}
                 <div className="flex items-center gap-3">
-                  <Avatar 
+                  <Avatar
                     className={`${isSmall ? 'h-10 w-10' : 'h-12 w-12'} ring-2 ring-gray-700`}
-                    style={{ 
-                      boxShadow: `0 0 20px ${ticketColors.primary}40` 
+                    style={{
+                      boxShadow: `0 0 20px ${ticketColors.primary}40`,
                     }}
                   >
                     <AvatarImage alt={user.name} src={user.avatar_url} />
-                    <AvatarFallback 
+                    <AvatarFallback
                       className="font-semibold text-xs"
-                      style={{ 
+                      style={{
                         background: `linear-gradient(135deg, ${ticketColors.primary}, ${ticketColors.secondary})`,
-                        color: 'white'
+                        color: 'white',
                       }}
                     >
                       {user.name
@@ -107,19 +103,15 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
                     </AvatarFallback>
                   </Avatar>
                   <div>
-                    <h3 className={`font-semibold ${isSmall ? 'text-sm' : 'text-base'} text-gray-100`}>
-                      {user.name}
-                    </h3>
-                    {!isSmall && (
-                      <p className="text-xs text-gray-400">{user.email}</p>
-                    )}
+                    <h3 className={`font-semibold ${isSmall ? 'text-sm' : 'text-base'} text-gray-100`}>{user.name}</h3>
+                    {!isSmall && <p className="text-gray-400 text-xs">{user.email}</p>}
                   </div>
                 </div>
 
                 {/* Provider Badge */}
-                <Badge 
-                  variant="outline" 
-                  className="gap-1 border-gray-700 bg-gray-800/50 text-gray-300 px-2 py-0.5 text-xs"
+                <Badge
+                  className="gap-1 border-gray-700 bg-gray-800/50 px-2 py-0.5 text-gray-300 text-xs"
+                  variant="outline"
                 >
                   {getProviderIcon(user.provider)}
                   {!isSmall && user.provider}
@@ -128,9 +120,7 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
             </div>
 
             {/* Divider */}
-            <div 
-              className="h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent"
-            />
+            <div className="h-px bg-gradient-to-r from-transparent via-gray-700 to-transparent" />
 
             {/* Footer Section */}
             <div className={`${isSmall ? 'p-3' : 'p-4'} space-y-3`}>
@@ -145,27 +135,17 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
               {/* Ticket Number */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div 
-                    className="h-1.5 w-1.5 rounded-full"
-                    style={{ backgroundColor: ticketColors.primary }}
-                  />
-                  <span className={`text-gray-400 ${isSmall ? 'text-[10px]' : 'text-xs'}`}>
-                    TICKET ID
-                  </span>
+                  <div className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: ticketColors.primary }} />
+                  <span className={`text-gray-400 ${isSmall ? 'text-[10px]' : 'text-xs'}`}>TICKET ID</span>
                 </div>
-                <code 
-                  className={`font-mono ${isSmall ? 'text-[10px]' : 'text-xs'} text-gray-300`}
-                >
+                <code className={`font-mono ${isSmall ? 'text-[10px]' : 'text-xs'} text-gray-300`}>
                   {ticketNumber || `TEMP-${Date.now().toString().slice(-6)}`}
                 </code>
               </div>
             </div>
 
             {/* Bottom Accent */}
-            <div 
-              className="h-0.5"
-              style={gradientStyle}
-            />
+            <div className="h-0.5" style={gradientStyle} />
           </div>
         </Card>
 
@@ -173,13 +153,13 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
         {!isSmall && (
           <>
             {/* Top Right Sparkle */}
-            <Sparkles 
-              className="absolute -top-2 -right-2 h-4 w-4 text-gray-600 opacity-50"
+            <Sparkles
+              className="-top-2 -right-2 absolute h-4 w-4 text-gray-600 opacity-50"
               style={{ color: ticketColors.accent }}
             />
             {/* Bottom Left Sparkle */}
-            <Sparkles 
-              className="absolute -bottom-2 -left-2 h-3 w-3 text-gray-600 opacity-30"
+            <Sparkles
+              className="-bottom-2 -left-2 absolute h-3 w-3 text-gray-600 opacity-30"
               style={{ color: ticketColors.primary }}
             />
           </>

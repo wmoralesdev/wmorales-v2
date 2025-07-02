@@ -1,12 +1,12 @@
 'use client';
 
-import { SurveyRenderer } from '@/components/surveys/survey-renderer';
-import { getSurveyWithSections } from '@/app/actions/survey.actions';
-import { useEffect, useState } from 'react';
-import { useParams } from 'next/navigation';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Alert, AlertDescription } from '@/components/ui/alert';
 import { AlertCircle } from 'lucide-react';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
+import { getSurveyWithSections } from '@/app/actions/survey.actions';
+import { SurveyRenderer } from '@/components/surveys/survey-renderer';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Skeleton } from '@/components/ui/skeleton';
 import type { SurveyWithSections } from '@/lib/types/survey.types';
 
 export default function SurveyFillPage() {
@@ -20,7 +20,7 @@ export default function SurveyFillPage() {
       try {
         const surveyId = params.id as string;
         const result = await getSurveyWithSections(surveyId);
-        
+
         if (result.error || !result.data) {
           setError(result.error || 'Failed to load survey');
         } else {
@@ -39,8 +39,8 @@ export default function SurveyFillPage() {
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
-        <Skeleton className="h-12 w-3/4 mb-4" />
-        <Skeleton className="h-6 w-full mb-8" />
+        <Skeleton className="mb-4 h-12 w-3/4" />
+        <Skeleton className="mb-8 h-6 w-full" />
         <div className="space-y-4">
           <Skeleton className="h-32 w-full" />
           <Skeleton className="h-32 w-full" />

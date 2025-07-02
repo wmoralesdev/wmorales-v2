@@ -80,7 +80,7 @@ export function PollsList({ polls }: PollsListProps) {
                 <div className="flex flex-col items-end gap-2">
                   <Badge variant={poll.isActive ? 'default' : 'secondary'}>{poll.isActive ? 'Active' : 'Closed'}</Badge>
                   {currentActiveUsers > 0 && poll.isActive && (
-                    <Badge className='gap-1 border-green-600 text-green-600' variant="outline">
+                    <Badge className="gap-1 border-green-600 text-green-600" variant="outline">
                       <div className="h-2 w-2 animate-pulse rounded-full bg-green-600" />
                       {currentActiveUsers} live
                     </Badge>

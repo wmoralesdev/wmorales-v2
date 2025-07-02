@@ -251,8 +251,8 @@ export async function getPollResults(pollId: string) {
       where: {
         pollId,
         votes: {
-          some: {} // Has at least one vote
-        }
+          some: {}, // Has at least one vote
+        },
       },
     });
 
@@ -294,10 +294,7 @@ export async function getUserVotes(pollId: string) {
     const sessions = await prisma.pollSession.findMany({
       where: {
         pollId,
-        OR: [
-          { sessionId },
-          ...(user ? [{ userId: user.id }] : [])
-        ]
+        OR: [{ sessionId }, ...(user ? [{ userId: user.id }] : [])],
       },
       include: {
         votes: {
@@ -314,7 +311,7 @@ export async function getUserVotes(pollId: string) {
     }
 
     // Merge votes from all sessions (in case user has voted from multiple devices)
-    const allVotes = sessions.flatMap(session => session.votes);
+    const allVotes = sessions.flatMap((session) => session.votes);
 
     // Group votes by question
     const votesByQuestion = allVotes.reduce(

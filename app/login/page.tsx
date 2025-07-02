@@ -116,7 +116,7 @@ function LoginContent() {
           />
           <motion.div
             animate="animate"
-            className='absolute right-1/4 bottom-1/4 h-80 w-80 rounded-full bg-pink-500 opacity-20 blur-3xl'
+            className="absolute right-1/4 bottom-1/4 h-80 w-80 rounded-full bg-pink-500 opacity-20 blur-3xl"
             transition={{ delay: 2 }}
             variants={orbVariants}
           />
@@ -149,7 +149,7 @@ function LoginContent() {
                     opacity: 1,
                     transition: { delay: 0.6 + index * 0.1 },
                   }}
-                  className='cursor-default rounded-full border border-purple-300/30 px-3 py-1'
+                  className="cursor-default rounded-full border border-purple-300/30 px-3 py-1"
                   custom={index}
                   initial="rest"
                   key={tech}

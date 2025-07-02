@@ -1,16 +1,22 @@
 'use client';
 
 import { Palette, Share2, Sparkles } from 'lucide-react';
+import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
-import { createGuestbookEntry, getAllTickets, getUserTicket, updateGuestbookEntry } from '@/app/actions/guestbook.actions';
-import { authService } from '@/lib/auth';
+import {
+  createGuestbookEntry,
+  getAllTickets,
+  getUserTicket,
+  updateGuestbookEntry,
+} from '@/app/actions/guestbook.actions';
 import { useAuth } from '@/components/auth/auth-provider';
 import { SignInCard } from '@/components/sign-in-card';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { UserTicket } from '@/components/user-ticket';
+import { authService } from '@/lib/auth';
 
 type TicketData = {
   id: string;
@@ -42,11 +48,8 @@ export function GuestbookContent() {
   useEffect(() => {
     async function loadTickets() {
       try {
-        const [userTicketData, allTicketsData] = await Promise.all([
-          getUserTicket(),
-          getAllTickets(),
-        ]);
-        
+        const [userTicketData, allTicketsData] = await Promise.all([getUserTicket(), getAllTickets()]);
+
         if (userTicketData) {
           setUserTicket(userTicketData as unknown as TicketData);
         }
@@ -88,13 +91,13 @@ export function GuestbookContent() {
         result = await createGuestbookEntry(customMessage);
         toast.success('Your unique ticket has been created!');
       }
-      
+
       setUserTicket(result.ticket as unknown as TicketData);
-      
+
       // Refresh all tickets
       const updatedTickets = await getAllTickets();
       setAllTickets(updatedTickets as unknown as TicketData[]);
-      
+
       setCustomMessage('');
     } catch (error) {
       toast.error('Failed to generate ticket. Please try again.');
@@ -106,9 +109,9 @@ export function GuestbookContent() {
 
   const handleShareTicket = async () => {
     if (!userTicket) return;
-    
+
     const shareUrl = `${window.location.origin}/guestbook/${userTicket.id}`;
-    
+
     if (navigator.share) {
       try {
         await navigator.share({
@@ -152,95 +155,87 @@ export function GuestbookContent() {
   return (
     <div className="space-y-8">
       {/* User Ticket */}
-      {userTicket && (
-        <div className="animate-delay-400 animate-fade-in-up">
-          <a
-            href={`/guestbook/${userTicket.id}`}
-            className="group block"
-          >
-            <div className="relative">
-              <UserTicket
-                user={{
-                  id: userTicket.id,
-                  name: userTicket.userName,
-                  email: userTicket.userEmail,
-                  avatar_url: userTicket.userAvatar || undefined,
-                  provider: userTicket.userProvider,
-                }}
-                colors={{
-                  primary: userTicket.primaryColor,
-                  secondary: userTicket.secondaryColor,
-                  accent: userTicket.accentColor,
-                  background: userTicket.backgroundColor,
-                }}
-                ticketNumber={userTicket.ticketNumber}
-              />
-              <div className="absolute inset-0 rounded-2xl bg-white/0 transition-colors group-hover:bg-white/5" />
-            </div>
-          </a>
-          {userTicket.entry.mood && (
-            <Card className="mx-auto mt-4 max-w-md">
-              <CardContent className="pt-6">
-                <div className="flex items-center justify-between">
-                  <p className="text-center text-muted-foreground text-sm">
-                    Current mood: "{userTicket.entry.mood}"
-                  </p>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleShareTicket}
-                    className="gap-2"
-                  >
-                    <Share2 className="h-4 w-4" />
-                    Share
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          )}
-        </div>
-      )}
+      <div className="flex w-full flex-col items-center gap-4 lg:flex-row lg:items-start lg:justify-center">
+        {userTicket && (
+          <div className="animate-delay-400 animate-fade-in-up">
+            <Link className="group block" href={`/guestbook/${userTicket.id}`}>
+              <div className="relative">
+                <UserTicket
+                  colors={{
+                    primary: userTicket.primaryColor,
+                    secondary: userTicket.secondaryColor,
+                    accent: userTicket.accentColor,
+                    background: userTicket.backgroundColor,
+                  }}
+                  ticketNumber={userTicket.ticketNumber}
+                  user={{
+                    id: userTicket.id,
+                    name: userTicket.userName,
+                    email: userTicket.userEmail,
+                    avatar_url: userTicket.userAvatar || undefined,
+                    provider: userTicket.userProvider,
+                  }}
+                />
+                <div className="absolute inset-0 rounded-2xl bg-white/0 transition-colors group-hover:bg-white/5" />
+              </div>
+            </Link>
+            {userTicket.entry?.mood && (
+              <Card className="mx-auto mt-4 max-w-md">
+                <CardContent className="">
+                  <div className="flex items-center justify-between">
+                    <p className="text-center text-muted-foreground text-sm">Current mood: "{userTicket.entry.mood}"</p>
+                    <Button className="gap-2" onClick={handleShareTicket} size="sm" variant="ghost">
+                      <Share2 className="h-4 w-4" />
+                      Share
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            )}
+          </div>
+        )}
 
-      {/* Chat Input (always visible) */}
-      <div className="animate-delay-400 animate-fade-in-up">
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2">
-              <Palette className="h-5 w-5" />
-              {userTicket ? 'Update Your Ticket' : 'Create Your Unique Ticket'}
-            </CardTitle>
-            <p className="text-muted-foreground text-sm">
-              {userTicket 
-                ? 'Change your mood to generate new colors for your ticket.'
-                : 'Describe your mood, style, or anything that inspires you. Our AI will generate a unique color palette for your ticket.'}
-            </p>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <Textarea
-              className="min-h-24 resize-none"
-              onChange={(e) => setCustomMessage(e.target.value)}
-              placeholder="Tell the AI about your style... (e.g., 'I love sunset colors and ocean vibes' or 'Make it dark and mysterious like a cyberpunk city')"
-              value={customMessage}
-            />
-            <Button
-              className="w-full bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 sm:w-auto"
-              disabled={!customMessage.trim() || isGeneratingColors}
-              onClick={handleGenerateColors}
-            >
-              {isGeneratingColors ? (
-                <>
-                  <Sparkles className="mr-2 h-4 w-4 animate-spin" />
-                  {userTicket ? 'Updating Your Ticket...' : 'Generating Your Ticket...'}
-                </>
-              ) : (
-                <>
-                  <Sparkles className="mr-2 h-4 w-4" />
-                  {userTicket ? 'Update My Ticket' : 'Generate My Ticket'}
-                </>
-              )}
-            </Button>
-          </CardContent>
-        </Card>
+        {/* Chat Input (always visible) */}
+        <div className="flex-1 animate-delay-400 animate-fade-in-up">
+          <Card>
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2">
+                <Palette className="h-5 w-5" />
+                {userTicket ? 'Update Your Ticket' : 'Create Your Unique Ticket'}
+              </CardTitle>
+              <p className="text-muted-foreground text-sm">
+                {userTicket
+                  ? 'Change your mood to generate new colors for your ticket.'
+                  : 'Describe your mood, style, or anything that inspires you. Our AI will generate a unique color palette for your ticket.'}
+              </p>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <Textarea
+                className="min-h-24 resize-none"
+                onChange={(e) => setCustomMessage(e.target.value)}
+                placeholder="Tell the AI about your style... (e.g., 'I love sunset colors and ocean vibes'"
+                value={customMessage}
+              />
+              <Button
+                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 sm:w-auto"
+                disabled={!customMessage.trim() || isGeneratingColors}
+                onClick={handleGenerateColors}
+              >
+                {isGeneratingColors ? (
+                  <>
+                    <Sparkles className="mr-2 h-4 w-4 animate-spin" />
+                    {userTicket ? 'Updating your ticket...' : 'Generating your ticket...'}
+                  </>
+                ) : (
+                  <>
+                    <Sparkles className="mr-2 h-4 w-4" />
+                    {userTicket ? 'Update my ticket' : 'Generate my ticket'}
+                  </>
+                )}
+              </Button>
+            </CardContent>
+          </Card>
+        </div>
       </div>
 
       {/* All Tickets Section */}
@@ -257,12 +252,20 @@ export function GuestbookContent() {
               <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                 {allTickets.map((ticket) => (
                   <a
-                    key={ticket.id}
-                    href={`/guestbook/${ticket.id}`}
                     className="group block transform transition-all hover:scale-105"
+                    href={`/guestbook/${ticket.id}`}
+                    key={ticket.id}
                   >
                     <div className="relative">
                       <UserTicket
+                        colors={{
+                          primary: ticket.primaryColor,
+                          secondary: ticket.secondaryColor,
+                          accent: ticket.accentColor,
+                          background: ticket.backgroundColor,
+                        }}
+                        scale="small"
+                        ticketNumber={ticket.ticketNumber}
                         user={{
                           id: ticket.id,
                           name: ticket.userName,
@@ -270,14 +273,6 @@ export function GuestbookContent() {
                           avatar_url: ticket.userAvatar || undefined,
                           provider: ticket.userProvider,
                         }}
-                        colors={{
-                          primary: ticket.primaryColor,
-                          secondary: ticket.secondaryColor,
-                          accent: ticket.accentColor,
-                          background: ticket.backgroundColor,
-                        }}
-                        ticketNumber={ticket.ticketNumber}
-                        scale="small"
                       />
                       <div className="absolute inset-0 rounded-2xl bg-white/0 transition-colors group-hover:bg-white/5" />
                     </div>
@@ -285,9 +280,7 @@ export function GuestbookContent() {
                 ))}
               </div>
             ) : (
-              <p className="py-8 text-center text-muted-foreground">
-                Be the first to create a ticket!
-              </p>
+              <p className="py-8 text-center text-muted-foreground">Be the first to create a ticket!</p>
             )}
           </CardContent>
         </Card>

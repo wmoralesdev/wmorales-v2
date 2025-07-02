@@ -1,11 +1,11 @@
-import { Metadata } from 'next';
+import { Sparkles } from 'lucide-react';
+import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getTicketById } from '@/app/actions/guestbook.actions';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { UserTicket } from '@/components/user-ticket';
-import { Sparkles } from 'lucide-react';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -62,21 +62,12 @@ export default async function TicketPage({ params }: Props) {
           {/* Header */}
           <div className="text-center">
             <h1 className="mb-4 font-bold text-4xl">Digital Guestbook</h1>
-            <p className="mx-auto max-w-2xl text-muted-foreground text-lg">
-              {ticket.userName}'s unique ticket
-            </p>
+            <p className="mx-auto max-w-2xl text-lg text-muted-foreground">{ticket.userName}'s unique ticket</p>
           </div>
 
           {/* Ticket Display */}
           <div className="animate-fade-in-up">
             <UserTicket
-              user={{
-                id: ticket.id,
-                name: ticket.userName,
-                email: ticket.userEmail,
-                avatar_url: ticket.userAvatar || undefined,
-                provider: ticket.userProvider,
-              }}
               colors={{
                 primary: ticket.primaryColor,
                 secondary: ticket.secondaryColor,
@@ -84,6 +75,13 @@ export default async function TicketPage({ params }: Props) {
                 background: ticket.backgroundColor,
               }}
               ticketNumber={ticket.ticketNumber}
+              user={{
+                id: ticket.id,
+                name: ticket.userName,
+                email: ticket.userEmail,
+                avatar_url: ticket.userAvatar || undefined,
+                provider: ticket.userProvider,
+              }}
             />
           </div>
 

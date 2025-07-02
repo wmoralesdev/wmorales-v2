@@ -1,8 +1,8 @@
 'use server';
 
-import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers';
+import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
 
 export async function getActiveSurveys() {
@@ -15,7 +15,7 @@ export async function getActiveSurveys() {
         createdAt: 'desc',
       },
     });
-    
+
     return { data: surveys, error: null };
   } catch (error) {
     console.error('Error fetching active surveys:', error);
@@ -58,8 +58,10 @@ export async function getSurveyWithSections(surveyId: string) {
 export async function createSurveyResponse(surveyId: string) {
   try {
     const supabase = await createClient();
-    const { data: { user } } = await supabase.auth.getUser();
-    
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
     const sessionId = user?.id ? null : crypto.randomUUID();
 
     const response = await prisma.surveyResponse.create({
@@ -77,11 +79,7 @@ export async function createSurveyResponse(surveyId: string) {
   }
 }
 
-export async function saveSurveyAnswer(
-  responseId: string,
-  questionId: string,
-  answer: string | string[]
-) {
+export async function saveSurveyAnswer(responseId: string, questionId: string, answer: string | string[]) {
   try {
     // Create the answer
     const surveyAnswer = await prisma.surveyAnswer.create({
@@ -129,7 +127,7 @@ export async function completeSurveyResponse(responseId: string) {
 
     // Revalidate the survey page to update results
     revalidatePath('/surveys');
-    
+
     return { data: response, error: null };
   } catch (error) {
     console.error('Error completing response:', error);
@@ -165,7 +163,7 @@ export async function getSurveyResults(surveyId: string) {
     for (const response of responses) {
       for (const answer of response.answers) {
         const questionId = answer.questionId;
-        
+
         if (!questionStats.has(questionId)) {
           questionStats.set(questionId, {
             question: answer.question,
@@ -183,13 +181,13 @@ export async function getSurveyResults(surveyId: string) {
       }
     }
 
-    return { 
-      data: { 
-        totalResponses, 
+    return {
+      data: {
+        totalResponses,
         responses,
-        questionStats: Array.from(questionStats.entries()) 
-      }, 
-      error: null 
+        questionStats: Array.from(questionStats.entries()),
+      },
+      error: null,
     };
   } catch (error) {
     console.error('Error fetching survey results:', error);

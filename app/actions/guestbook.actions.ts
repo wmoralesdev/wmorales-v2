@@ -25,7 +25,7 @@ async function generateTicketNumber(): Promise<string> {
 
   let nextNumber = 1;
   if (lastTicket) {
-    const lastNumber = parseInt(lastTicket.ticketNumber.split('-')[1], 10);
+    const lastNumber = Number.parseInt(lastTicket.ticketNumber.split('-')[1], 10);
     nextNumber = lastNumber + 1;
   }
 
@@ -36,7 +36,7 @@ async function generateTicketNumber(): Promise<string> {
 export async function generateColorPalette(mood: string): Promise<ColorPalette> {
   try {
     const { object } = await generateObject({
-      model: openai('gpt-o4-mini'),
+      model: openai('o4-mini'),
       schema: colorPaletteSchema,
       prompt: `Generate a color palette based on this mood/style description: "${mood}". 
       
@@ -45,6 +45,7 @@ export async function generateColorPalette(mood: string): Promise<ColorPalette> 
       - Suitable for a gradient effect
       - Reflect the emotional tone or aesthetic described
       - Work well in a dark mode interface
+      - Have a high contrast between the primary and secondary colors
       
       Return hex color values.`,
     });
@@ -75,7 +76,7 @@ export async function createGuestbookEntry(mood: string, message?: string) {
 
   // Generate color palette
   const colors = await generateColorPalette(mood);
-  
+
   // Generate ticket number
   const ticketNumber = await generateTicketNumber();
 

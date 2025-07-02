@@ -9,7 +9,9 @@ export default async function PollPage({ params }: { params: Promise<{ code: str
 
   // Check authentication
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
 
   if (!user) {
     // Redirect to login with return URL

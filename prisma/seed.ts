@@ -142,7 +142,7 @@ async function main() {
   console.log(`Created survey with ID: ${survey.id}`);
   console.log('Survey title:', survey.title);
   console.log('\nTo test the survey, visit:');
-  console.log(`- Survey list: http://localhost:3000/surveys`);
+  console.log('- Survey list: http://localhost:3000/surveys');
   console.log(`- Fill survey: http://localhost:3000/surveys/${survey.id}/fill`);
   console.log(`- View results: http://localhost:3000/surveys/${survey.id}`);
 }

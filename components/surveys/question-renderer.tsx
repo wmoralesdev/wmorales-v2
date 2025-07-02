@@ -28,7 +28,7 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
               <FormItem>
                 <FormLabel>
                   {question.question}
-                  {question.required && <span className='ml-1 text-destructive'>*</span>}
+                  {question.required && <span className="ml-1 text-destructive">*</span>}
                 </FormLabel>
                 <FormControl>
                   <Input placeholder={question.placeholder} {...field} value={field.value || ''} />
@@ -48,7 +48,7 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
               <FormItem>
                 <FormLabel>
                   {question.question}
-                  {question.required && <span className='ml-1 text-destructive'>*</span>}
+                  {question.required && <span className="ml-1 text-destructive">*</span>}
                 </FormLabel>
                 <FormControl>
                   <Textarea
@@ -73,14 +73,14 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
               <FormItem>
                 <FormLabel>
                   {question.question}
-                  {question.required && <span className='ml-1 text-destructive'>*</span>}
+                  {question.required && <span className="ml-1 text-destructive">*</span>}
                 </FormLabel>
                 <FormControl>
                   <RadioGroup className="space-y-2" defaultValue={field.value} onValueChange={field.onChange}>
                     {question.options?.map((option) => (
                       <div className="flex items-center space-x-2" key={option.value}>
                         <RadioGroupItem id={`${question.id}-${option.value}`} value={option.value} />
-                        <Label className='cursor-pointer font-normal' htmlFor={`${question.id}-${option.value}`}>
+                        <Label className="cursor-pointer font-normal" htmlFor={`${question.id}-${option.value}`}>
                           {option.label}
                         </Label>
                       </div>
@@ -102,7 +102,7 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
               <FormItem>
                 <FormLabel>
                   {question.question}
-                  {question.required && <span className='ml-1 text-destructive'>*</span>}
+                  {question.required && <span className="ml-1 text-destructive">*</span>}
                 </FormLabel>
                 <FormControl>
                   <div className="space-y-2">
@@ -120,7 +120,7 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
                             }
                           }}
                         />
-                        <Label className='cursor-pointer font-normal' htmlFor={`${question.id}-${option.value}`}>
+                        <Label className="cursor-pointer font-normal" htmlFor={`${question.id}-${option.value}`}>
                           {option.label}
                         </Label>
                       </div>
@@ -142,7 +142,7 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
               <FormItem>
                 <FormLabel>
                   {question.question}
-                  {question.required && <span className='ml-1 text-destructive'>*</span>}
+                  {question.required && <span className="ml-1 text-destructive">*</span>}
                 </FormLabel>
                 <Select defaultValue={field.value} onValueChange={field.onChange}>
                   <FormControl>

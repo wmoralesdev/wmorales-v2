@@ -1,19 +1,19 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import * as z from 'zod';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { Progress } from '@/components/ui/progress';
-import { Form } from '@/components/ui/form';
-import { QuestionRenderer } from './question-renderer';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { createSurveyResponse, saveSurveyAnswer, completeSurveyResponse } from '@/app/actions/survey.actions';
-import type { Survey, Section, Question, Option } from '@/lib/types/survey.types';
+import { useEffect, useState } from 'react';
+import { useForm } from 'react-hook-form';
+import * as z from 'zod';
+import { completeSurveyResponse, createSurveyResponse, saveSurveyAnswer } from '@/app/actions/survey.actions';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Form } from '@/components/ui/form';
+import { Progress } from '@/components/ui/progress';
+import type { Option, Question, Section, Survey } from '@/lib/types/survey.types';
+import { QuestionRenderer } from './question-renderer';
 
 type SurveyRendererProps = {
   survey: Survey & {
@@ -41,8 +41,8 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
 
     // Find section by path
     const currentPath = sectionPath[currentSectionIndex - 1];
-    const section = survey.sections.find(s => s.path === currentPath);
-    
+    const section = survey.sections.find((s) => s.path === currentPath);
+
     if (!section) {
       // Fallback to sequential navigation
       return survey.sections[currentSectionIndex] || survey.sections[survey.sections.length - 1];
@@ -58,10 +58,10 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   // Create dynamic schema based on current section questions
   const createSchema = (questions: Question[]) => {
     const schemaObject: Record<string, any> = {};
-    
-    questions.forEach(question => {
+
+    questions.forEach((question) => {
       if (question.type === 'text') {
-        schemaObject[question.id] = question.required 
+        schemaObject[question.id] = question.required
           ? z.string().min(1, 'This field is required')
           : z.string().optional();
       } else if (question.type === 'radio' || question.type === 'select') {
@@ -102,11 +102,11 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
 
     // Check for path redirects based on answers
     let nextPath: string | null = null;
-    
+
     for (const [questionId, answer] of Object.entries(data)) {
-      const question = currentSection.questions.find(q => q.id === questionId);
+      const question = currentSection.questions.find((q) => q.id === questionId);
       if (question && question.options) {
-        const selectedOption = question.options.find(opt => opt.value === answer);
+        const selectedOption = question.options.find((opt) => opt.value === answer);
         if (selectedOption && selectedOption.path) {
           nextPath = selectedOption.path;
           break;
@@ -120,8 +120,9 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
     }
 
     // Check if we're at the last section
-    const isLastSection = currentSectionIndex >= survey.sections.length - 1 || 
-                         (nextPath && !survey.sections.find(s => s.path === nextPath));
+    const isLastSection =
+      currentSectionIndex >= survey.sections.length - 1 ||
+      (nextPath && !survey.sections.find((s) => s.path === nextPath));
 
     if (isLastSection) {
       await handleSubmit(updatedAnswers);
@@ -145,7 +146,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
         setResponseId(result.data.id);
       }
     };
-    
+
     if (!responseId) {
       initResponse();
     }
@@ -153,7 +154,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
 
   const handleSubmit = async (finalAnswers: any) => {
     if (!responseId) return;
-    
+
     setIsSubmitting(true);
     try {
       // Complete the response (answers were already saved in handleNext)
@@ -169,25 +170,25 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-3xl">
+    <div className="container mx-auto max-w-3xl px-4 py-8">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">{survey.title}</h1>
+        <h1 className="mb-2 font-bold text-3xl">{survey.title}</h1>
         <p className="text-muted-foreground">{survey.description}</p>
       </div>
 
       <div className="mb-6">
-        <Progress value={progress} className="h-2" />
-        <p className="text-sm text-muted-foreground mt-2">
+        <Progress className="h-2" value={progress} />
+        <p className="mt-2 text-muted-foreground text-sm">
           Section {currentSectionIndex + 1} of {totalSections}
         </p>
       </div>
 
       <AnimatePresence mode="wait">
         <motion.div
-          key={currentSection.id}
-          initial={{ opacity: 0, x: 20 }}
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: -20 }}
+          initial={{ opacity: 0, x: 20 }}
+          key={currentSection.id}
           transition={{ duration: 0.3 }}
         >
           <Card>
@@ -197,36 +198,30 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
             </CardHeader>
             <CardContent>
               <Form {...form}>
-                <form onSubmit={form.handleSubmit(handleNext)} className="space-y-6">
+                <form className="space-y-6" onSubmit={form.handleSubmit(handleNext)}>
                   {currentSection.questions.map((question) => (
                     <motion.div
-                      key={question.id}
-                      initial={{ opacity: 0, y: 10 }}
                       animate={{ opacity: 1, y: 0 }}
+                      initial={{ opacity: 0, y: 10 }}
+                      key={question.id}
                       transition={{ delay: 0.1 }}
                     >
-                      <QuestionRenderer
-                        question={question}
-                        form={form}
-                      />
+                      <QuestionRenderer form={form} question={question} />
                     </motion.div>
                   ))}
 
                   <div className="flex justify-between pt-6">
                     <Button
+                      disabled={currentSectionIndex === 0}
+                      onClick={handleBack}
                       type="button"
                       variant={'outline' as const}
-                      onClick={handleBack}
-                      disabled={currentSectionIndex === 0}
                     >
                       <ArrowLeft className="mr-2 h-4 w-4" />
                       Back
                     </Button>
 
-                    <Button
-                      type="submit"
-                      disabled={isSubmitting}
-                    >
+                    <Button disabled={isSubmitting} type="submit">
                       {currentSectionIndex >= survey.sections.length - 1 ? (
                         <>
                           Submit
