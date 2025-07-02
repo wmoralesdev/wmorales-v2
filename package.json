@@ -9,11 +9,11 @@
     "lint": "next lint",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
-    "prisma:seed": "prisma db seed",
-    "seed:poll": "tsx prisma/seed-poll.ts"
+    "prisma:seed": "prisma db seed"
   },
   "prisma": {
-    "seed": "tsx prisma/seed.ts"
+    "seed": "tsx prisma/seed.ts",
+    "seed:poll": "tsx prisma/seed-poll.ts"
   },
   "dependencies": {
     "@hookform/resolvers": "^5.1.1",
