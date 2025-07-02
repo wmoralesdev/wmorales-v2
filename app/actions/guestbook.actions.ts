@@ -36,7 +36,7 @@ async function generateTicketNumber(): Promise<string> {
 export async function generateColorPalette(mood: string): Promise<ColorPalette> {
   try {
     const { object } = await generateObject({
-      model: openai('gpt-3.5-turbo'),
+      model: openai('gpt-o4-mini'),
       schema: colorPaletteSchema,
       prompt: `Generate a color palette based on this mood/style description: "${mood}". 
       

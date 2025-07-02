@@ -1,13 +1,17 @@
 import type { Metadata } from 'next';
 import { AuthGuard } from '@/components/auth/auth-guard';
 import { GuestbookContent } from '@/components/guestbook-content';
+import { createClient } from '@/lib/supabase/server';
 
 export const metadata: Metadata = {
   title: 'Guestbook - Walter Morales',
   description: 'Sign my digital guestbook and customize your unique ticket with AI.',
 };
 
-export default function GuestbookPage() {
+export default async function GuestbookPage() {
+  const supabase = await createClient();
+  const { data: user } = await supabase.auth.getUser();
+
   return (
     <AuthGuard>
       <div className="min-h-screen pt-16">
@@ -19,7 +23,7 @@ export default function GuestbookPage() {
               </span>
             </h1>
             <p className="animate-delay-200 animate-fade-in-up text-lg text-muted-foreground sm:text-xl">
-              Sign in and leave your mark with a personalized ticket
+              {user ? 'Here is your ticket' : 'Sign in and leave your mark with a personalized ticket'}
             </p>
           </div>
 
