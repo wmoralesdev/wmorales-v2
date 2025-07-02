@@ -155,3 +155,72 @@ export async function getAllTickets() {
 
   return tickets;
 }
+
+// Update an existing guestbook entry with new message
+export async function updateGuestbookEntry(mood: string, message?: string) {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  if (!user) {
+    throw new Error('User not authenticated');
+  }
+
+  // Find existing entry
+  const existingEntry = await prisma.guestbookEntry.findFirst({
+    where: { userId: user.id },
+    include: { ticket: true },
+  });
+
+  if (!existingEntry) {
+    throw new Error('No existing ticket found');
+  }
+
+  // Generate new color palette based on new mood
+  const colors = await generateColorPalette(mood);
+
+  // Update entry and ticket
+  const result = await prisma.$transaction(async (tx) => {
+    // Update guestbook entry
+    const entry = await tx.guestbookEntry.update({
+      where: { id: existingEntry.id },
+      data: {
+        mood,
+        message,
+      },
+    });
+
+    // Update ticket colors
+    const ticket = await tx.guestbookTicket.update({
+      where: { entryId: entry.id },
+      data: {
+        primaryColor: colors.primaryColor,
+        secondaryColor: colors.secondaryColor,
+        accentColor: colors.accentColor,
+        backgroundColor: colors.backgroundColor,
+      },
+    });
+
+    return { entry, ticket };
+  });
+
+  return result;
+}
+
+// Get a specific ticket by ID
+export async function getTicketById(ticketId: string) {
+  const ticket = await prisma.guestbookTicket.findUnique({
+    where: { id: ticketId },
+    include: {
+      entry: {
+        select: {
+          message: true,
+          mood: true,
+        },
+      },
+    },
+  });
+
+  return ticket;
+}
