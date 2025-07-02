@@ -114,3 +114,90 @@ model SurveyAnswerOption {
 
   @@map("survey_answer_options")
 }
+
+// Live Polls Models
+model Poll {
+  id              String    @id @default(uuid())
+  title           String
+  description     String?
+  code            String    @unique @default(cuid()) // Short code for sharing
+  isActive        Boolean   @default(true) @map("is_active")
+  allowMultiple   Boolean   @default(false) @map("allow_multiple") // Allow multiple votes per session
+  showResults     Boolean   @default(true) @map("show_results") // Show results to voters
+  resultsDelay    Int       @default(0) @map("results_delay") // Delay in seconds before showing results
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  closedAt        DateTime? @map("closed_at")
+
+  questions PollQuestion[]
+  sessions  PollSession[]
+
+  @@index([code])
+  @@map("polls")
+}
+
+model PollQuestion {
+  id            String  @id @default(uuid())
+  pollId        String  @map("poll_id")
+  questionOrder Int     @map("question_order")
+  question      String
+  type          String  @default("single") // single, multiple
+  maxSelections Int?    @map("max_selections") // For multiple choice
+  createdAt     DateTime @default(now())
+
+  poll    Poll         @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  options PollOption[]
+  votes   PollVote[]
+
+  @@map("poll_questions")
+}
+
+model PollOption {
+  id          String   @id @default(uuid())
+  questionId  String   @map("question_id")
+  optionOrder Int      @map("option_order")
+  label       String
+  value       String
+  color       String?  // For visual representation
+  emoji       String?  // Optional emoji for the option
+  createdAt   DateTime @default(now())
+
+  question PollQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  votes    PollVote[]
+
+  @@map("poll_options")
+}
+
+model PollVote {
+  id         String   @id @default(uuid())
+  sessionId  String   @map("session_id")
+  questionId String   @map("question_id")
+  optionId   String   @map("option_id")
+  createdAt  DateTime @default(now())
+
+  session  PollSession  @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  question PollQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
+  option   PollOption   @relation(fields: [optionId], references: [id], onDelete: Cascade)
+
+  @@unique([sessionId, questionId, optionId]) // Prevent duplicate votes
+  @@index([questionId])
+  @@index([optionId])
+  @@map("poll_votes")
+}
+
+model PollSession {
+  id         String   @id @default(uuid())
+  pollId     String   @map("poll_id")
+  sessionId  String   @map("session_id") // Browser session ID
+  userId     String?  @map("user_id") // Optional if user is logged in
+  userAgent  String?  @map("user_agent")
+  ipHash     String?  @map("ip_hash") // Hashed IP for fraud prevention
+  createdAt  DateTime @default(now())
+
+  poll  Poll       @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  votes PollVote[]
+
+  @@unique([pollId, sessionId])
+  @@index([pollId])
+  @@map("poll_sessions")
+}
