@@ -4,6 +4,7 @@ import crypto from 'node:crypto';
 import { revalidatePath } from 'next/cache';
 import { cookies, headers } from 'next/headers';
 import { prisma } from '@/lib/prisma';
+import { broadcastPollUpdate } from '@/lib/supabase/realtime-server';
 import { createClient } from '@/lib/supabase/server';
 
 // Helper to get or create session ID
@@ -119,6 +120,12 @@ export async function createPollSession(pollId: string) {
     const {
       data: { user },
     } = await supabase.auth.getUser();
+
+    // Require authentication
+    if (!user) {
+      return { data: null, error: 'Authentication required' };
+    }
+
     const headersList = await headers();
 
     // Check if session already exists
@@ -140,7 +147,7 @@ export async function createPollSession(pollId: string) {
       data: {
         pollId,
         sessionId,
-        userId: user?.id || null,
+        userId: user.id, // Always use authenticated user ID
         userAgent: headersList.get('user-agent'),
         ipHash: await getHashedIp(),
       },
@@ -203,8 +210,13 @@ export async function votePoll(pollId: string, questionId: string, optionIds: st
       skipDuplicates: true,
     });
 
-    // Broadcast update via Supabase (we'll set this up next)
-    // This will be picked up by the realtime subscription
+    // Broadcast update via Supabase
+    await broadcastPollUpdate(question.poll.code, {
+      type: 'vote_added',
+      pollId,
+      questionId,
+      timestamp: new Date().toISOString(),
+    });
 
     revalidatePath(`/polls/${question.poll.code}`);
 
@@ -234,15 +246,19 @@ export async function getPollResults(pollId: string) {
       },
     });
 
-    const totalVotes = await prisma.pollVote.count({
+    // Count unique voters (unique sessions that have voted)
+    const uniqueVoters = await prisma.pollSession.count({
       where: {
-        question: { pollId },
+        pollId,
+        votes: {
+          some: {} // Has at least one vote
+        }
       },
     });
 
     const formattedResults = {
       pollId,
-      totalVotes,
+      totalVotes: uniqueVoters, // Changed to unique voters count
       questions: results.map((question) => ({
         questionId: question.id,
         question: question.question,
@@ -269,13 +285,19 @@ export async function getPollResults(pollId: string) {
 export async function getUserVotes(pollId: string) {
   try {
     const sessionId = await getSessionId();
+    const supabase = await createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-    const session = await prisma.pollSession.findUnique({
+    // Find sessions by both sessionId and userId
+    const sessions = await prisma.pollSession.findMany({
       where: {
-        pollId_sessionId: {
-          pollId,
-          sessionId,
-        },
+        pollId,
+        OR: [
+          { sessionId },
+          ...(user ? [{ userId: user.id }] : [])
+        ]
       },
       include: {
         votes: {
@@ -287,17 +309,22 @@ export async function getUserVotes(pollId: string) {
       },
     });
 
-    if (!session) {
+    if (sessions.length === 0) {
       return { data: {}, error: null };
     }
 
+    // Merge votes from all sessions (in case user has voted from multiple devices)
+    const allVotes = sessions.flatMap(session => session.votes);
+
     // Group votes by question
-    const votesByQuestion = session.votes.reduce(
+    const votesByQuestion = allVotes.reduce(
       (acc, vote) => {
         if (!acc[vote.questionId]) {
           acc[vote.questionId] = [];
         }
-        acc[vote.questionId].push(vote.optionId);
+        if (!acc[vote.questionId].includes(vote.optionId)) {
+          acc[vote.questionId].push(vote.optionId);
+        }
         return acc;
       },
       {} as Record<string, string[]>
@@ -319,10 +346,47 @@ export async function closePoll(pollId: string) {
       },
     });
 
+    // Broadcast poll closed event
+    await broadcastPollUpdate(poll.code, {
+      type: 'poll_closed',
+      pollId,
+      timestamp: new Date().toISOString(),
+    });
+
     revalidatePath(`/polls/${poll.code}`);
 
     return { data: poll, error: null };
   } catch (error) {
     return { data: null, error: 'Failed to close poll' };
+  }
+}
+
+// New function to get active user count for a poll
+export async function getPollActiveUsers(pollCode: string) {
+  try {
+    // This is a placeholder - in a real implementation, you'd track active websocket connections
+    // For now, we'll count recent sessions (last 5 minutes)
+    const fiveMinutesAgo = new Date();
+    fiveMinutesAgo.setMinutes(fiveMinutesAgo.getMinutes() - 5);
+
+    const poll = await prisma.poll.findUnique({
+      where: { code: pollCode },
+      select: { id: true },
+    });
+
+    if (!poll) return { data: 0, error: null };
+
+    const activeSessions = await prisma.pollSession.count({
+      where: {
+        pollId: poll.id,
+        createdAt: {
+          gte: fiveMinutesAgo,
+        },
+      },
+    });
+
+    return { data: activeSessions, error: null };
+  } catch (error) {
+    return { data: 0, error: 'Failed to get active users' };
   }
 }

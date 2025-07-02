@@ -10,6 +10,8 @@ We use **OpenAI GPT-3.5 Turbo** for color palette generation because:
 - Excellent at understanding mood/style descriptions
 - Reliable structured output generation
 
+**Revision: now using GPT-4o-mini**
+
 ## Setup Steps
 
 ### 1. Get OpenAI API Key

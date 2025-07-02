@@ -3,9 +3,10 @@
 import { motion } from 'framer-motion';
 import { Code2 } from 'lucide-react';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { LoginForm } from '@/components/auth/login-form';
 
-export default function LoginPage() {
+function LoginContent() {
   // Animation variants from animations.md
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -164,5 +165,13 @@ export default function LoginPage() {
         </motion.div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LoginContent />
+    </Suspense>
   );
 }

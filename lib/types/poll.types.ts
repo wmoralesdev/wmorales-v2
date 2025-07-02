@@ -68,6 +68,7 @@ export type PollResults = {
     questionId: string;
     question: string;
     type: string;
+    totalQuestionVotes: number;
     options: {
       optionId: string;
       label: string;

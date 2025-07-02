@@ -1,10 +1,20 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { getPollByCode, getPollResults, getUserVotes } from '@/app/actions/poll.actions';
 import { PollVoting } from '@/components/polls/poll-voting';
+import { createClient } from '@/lib/supabase/server';
 import type { PollWithQuestions } from '@/lib/types/poll.types';
 
 export default async function PollPage({ params }: { params: Promise<{ code: string }> }) {
   const { code } = await params;
+
+  // Check authentication
+  const supabase = await createClient();
+  const { data: { user } } = await supabase.auth.getUser();
+
+  if (!user) {
+    // Redirect to login with return URL
+    redirect(`/login?returnTo=/polls/${code}`);
+  }
 
   const { data: poll, error } = await getPollByCode(code);
 
