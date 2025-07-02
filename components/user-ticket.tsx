@@ -15,16 +15,29 @@ type UserTicketProps = {
     primary: string;
     secondary: string;
     accent: string;
+    background?: string;
   };
+  ticketNumber?: string;
+  scale?: 'normal' | 'small';
 };
 
-export function UserTicket({ user, colors }: UserTicketProps) {
-  // Default colors if no custom colors provided
-  const ticketColors = colors || {
-    primary: 'from-purple-500 to-pink-500',
-    secondary: 'from-purple-600 to-pink-600',
-    accent: 'purple-400',
+export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: UserTicketProps) {
+  // Use inline styles for dynamic colors
+  const hasCustomColors = !!colors;
+  const ticketColors = {
+    primary: hasCustomColors ? colors.primary : '#8b5cf6',
+    secondary: hasCustomColors ? colors.secondary : '#ec4899',
+    accent: hasCustomColors ? colors.accent : '#a78bfa',
+    background: hasCustomColors ? colors.background || '#1f1f23' : '#1f1f23',
   };
+
+  const gradientStyle = hasCustomColors
+    ? { background: `linear-gradient(to right, ${ticketColors.primary}, ${ticketColors.secondary})` }
+    : undefined;
+
+  const footerGradientStyle = hasCustomColors
+    ? { background: `linear-gradient(to right, ${ticketColors.secondary}, ${ticketColors.accent})` }
+    : undefined;
 
   const currentDate = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
@@ -43,36 +56,45 @@ export function UserTicket({ user, colors }: UserTicketProps) {
     }
   };
 
+  const isSmall = scale === 'small';
+
   return (
     <div className="flex justify-center">
       <div className="relative">
         {/* Lanyard String */}
-        <div className="-top-8 -translate-x-1/2 absolute left-1/2 transform">
-          <div className="h-8 w-1 rounded-full bg-gradient-to-b from-transparent to-gray-400" />
-        </div>
+        {!isSmall && (
+          <div className="-top-8 -translate-x-1/2 absolute left-1/2 transform">
+            <div className="h-8 w-1 rounded-full bg-gradient-to-b from-transparent to-gray-400" />
+          </div>
+        )}
 
         {/* Ticket/Badge */}
-        <Card className="w-80 overflow-hidden border-0 shadow-2xl sm:w-96">
+        <Card className={`overflow-hidden border-0 shadow-2xl ${isSmall ? 'w-64' : 'w-80 sm:w-96'}`}>
           {/* Header with gradient */}
-          <div className={`bg-gradient-to-r ${ticketColors.primary} relative overflow-hidden p-6 text-white`}>
-            <div className="absolute top-0 right-0 h-32 w-32 opacity-20">
+          <div 
+            className={`relative overflow-hidden ${isSmall ? 'p-4' : 'p-6'} text-white ${!hasCustomColors ? 'bg-gradient-to-r from-purple-500 to-pink-500' : ''}`}
+            style={gradientStyle}
+          >
+            <div className={`absolute top-0 right-0 opacity-20 ${isSmall ? 'h-20 w-20' : 'h-32 w-32'}`}>
               <Sparkles className="h-full w-full" />
             </div>
             <div className="relative z-10">
-              <div className="mb-4 flex items-center justify-between">
-                <Badge className="border-0 bg-white/20 text-white" variant="secondary">
-                  GUEST
-                </Badge>
-                <Badge className="flex items-center gap-1 border-0 bg-white/20 text-white" variant="secondary">
-                  {getProviderIcon(user.provider)}
-                  {user.provider.toUpperCase()}
-                </Badge>
-              </div>
+              {!isSmall && (
+                <div className="mb-4 flex items-center justify-between">
+                  <Badge className="border-0 bg-white/20 text-white" variant="secondary">
+                    GUEST
+                  </Badge>
+                  <Badge className="flex items-center gap-1 border-0 bg-white/20 text-white" variant="secondary">
+                    {getProviderIcon(user.provider)}
+                    {user.provider.toUpperCase()}
+                  </Badge>
+                </div>
+              )}
 
               <div className="text-center">
-                <Avatar className="mx-auto mb-3 h-16 w-16 border-4 border-white/30">
+                <Avatar className={`mx-auto ${isSmall ? 'mb-2 h-12 w-12 border-2' : 'mb-3 h-16 w-16 border-4'} border-white/30`}>
                   <AvatarImage alt={user.name} src={user.avatar_url} />
-                  <AvatarFallback className="bg-white/20 font-bold text-white text-xl">
+                  <AvatarFallback className={`bg-white/20 font-bold text-white ${isSmall ? 'text-sm' : 'text-xl'}`}>
                     {user.name
                       .split(' ')
                       .map((n) => n[0])
@@ -80,30 +102,34 @@ export function UserTicket({ user, colors }: UserTicketProps) {
                       .toUpperCase()}
                   </AvatarFallback>
                 </Avatar>
-                <h3 className="font-bold text-xl">{user.name}</h3>
-                <p className="text-sm text-white/80">{user.email}</p>
+                <h3 className={`font-bold ${isSmall ? 'text-base' : 'text-xl'}`}>{user.name}</h3>
+                {!isSmall && <p className="text-sm text-white/80">{user.email}</p>}
               </div>
             </div>
           </div>
 
           {/* Body */}
-          <div className="bg-card p-6">
-            <div className="space-y-4">
-              <div className="text-center">
-                <h4 className="mb-2 font-semibold text-foreground text-lg">Walter Morales Portfolio</h4>
-                <p className="text-muted-foreground text-sm">Digital Guestbook Visitor</p>
-              </div>
-
-              <div className="flex items-center justify-center gap-2 text-muted-foreground text-sm">
-                <Calendar className="h-4 w-4" />
-                <span>{currentDate}</span>
-              </div>
-
-              <div className="border-muted border-t border-dashed pt-4">
+          <div className={isSmall ? 'p-3' : 'p-6'} style={{ backgroundColor: ticketColors.background }}>
+            <div className={isSmall ? 'space-y-2' : 'space-y-4'}>
+              {!isSmall && (
                 <div className="text-center">
-                  <p className="mb-2 text-muted-foreground text-xs">TICKET ID</p>
-                  <code className="rounded bg-muted px-2 py-1 font-mono text-foreground text-xs">
-                    {user.id.toUpperCase()}-{Date.now().toString().slice(-6)}
+                  <h4 className="mb-2 font-semibold text-foreground text-lg">Walter Morales Portfolio</h4>
+                  <p className="text-muted-foreground text-sm">Digital Guestbook Visitor</p>
+                </div>
+              )}
+
+              {!isSmall && (
+                <div className="flex items-center justify-center gap-2 text-muted-foreground text-sm">
+                  <Calendar className="h-4 w-4" />
+                  <span>{currentDate}</span>
+                </div>
+              )}
+
+              <div className={`border-muted border-t border-dashed ${isSmall ? 'pt-2' : 'pt-4'}`}>
+                <div className="text-center">
+                  <p className={`mb-1 text-muted-foreground ${isSmall ? 'text-[10px]' : 'text-xs'}`}>TICKET ID</p>
+                  <code className={`rounded bg-muted px-2 py-1 font-mono text-foreground ${isSmall ? 'text-[10px]' : 'text-xs'}`}>
+                    {ticketNumber || `TEMP-${Date.now().toString().slice(-6)}`}
                   </code>
                 </div>
               </div>
@@ -111,11 +137,16 @@ export function UserTicket({ user, colors }: UserTicketProps) {
           </div>
 
           {/* Footer decoration */}
-          <div className={`h-2 bg-gradient-to-r ${ticketColors.secondary}`} />
+          <div 
+            className={`${isSmall ? 'h-1' : 'h-2'} ${!hasCustomColors ? 'bg-gradient-to-r from-purple-600 to-pink-600' : ''}`}
+            style={footerGradientStyle}
+          />
         </Card>
 
         {/* Shadow/reflection effect */}
-        <div className="-bottom-1 absolute right-2 left-2 h-4 rounded-full bg-gradient-to-r from-transparent via-black/10 to-transparent blur-sm" />
+        {!isSmall && (
+          <div className="-bottom-1 absolute right-2 left-2 h-4 rounded-full bg-gradient-to-r from-transparent via-black/10 to-transparent blur-sm" />
+        )}
       </div>
     </div>
   );

@@ -201,3 +201,42 @@ model PollSession {
   @@index([pollId])
   @@map("poll_sessions")
 }
+
+// Guestbook Models
+model GuestbookEntry {
+  id        String   @id @default(uuid())
+  userId    String   @map("user_id")
+  message   String?  @db.Text
+  mood      String?  @db.Text // The mood/style description used for AI generation
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  ticket GuestbookTicket?
+
+  @@index([userId])
+  @@index([createdAt])
+  @@map("guestbook_entries")
+}
+
+model GuestbookTicket {
+  id              String   @id @default(uuid())
+  ticketNumber    String   @unique @map("ticket_number") // Format: C-000000
+  entryId         String   @unique @map("entry_id")
+  userId          String   @map("user_id")
+  userName        String   @map("user_name")
+  userEmail       String   @map("user_email")
+  userAvatar      String?  @map("user_avatar")
+  userProvider    String   @map("user_provider") // github or google
+  primaryColor    String   @map("primary_color") // Gradient start color
+  secondaryColor  String   @map("secondary_color") // Gradient end color
+  accentColor     String   @map("accent_color") // Accent color
+  backgroundColor String   @map("background_color") // Card background
+  createdAt       DateTime @default(now())
+
+  entry GuestbookEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
+
+  @@index([ticketNumber])
+  @@index([userId])
+  @@index([createdAt])
+  @@map("guestbook_tickets")
+}
