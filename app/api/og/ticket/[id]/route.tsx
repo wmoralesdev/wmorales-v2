@@ -2,7 +2,7 @@ import { ImageResponse } from '@vercel/og';
 
 export const runtime = 'edge';
 
-export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
+export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params;
 
@@ -203,8 +203,7 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
         height: 630,
       }
     );
-  } catch (error) {
-    console.error('Failed to generate OG image:', error);
+  } catch (_error) {
     return new Response('Failed to generate image', { status: 500 });
   }
 }

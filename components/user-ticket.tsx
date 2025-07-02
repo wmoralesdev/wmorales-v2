@@ -21,42 +21,50 @@ type UserTicketProps = {
   scale?: 'normal' | 'small';
 };
 
-export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: UserTicketProps) {
-  // Use inline styles for dynamic colors
+const getProviderIcon = (provider: string) => {
+  switch (provider.toLowerCase()) {
+    case 'github':
+      return <Github className="h-3 w-3" />;
+    case 'google':
+      return <Mail className="h-3 w-3" />;
+    default:
+      return <User className="h-3 w-3" />;
+  }
+};
+
+const getTicketColors = (colors?: UserTicketProps['colors']) => {
   const hasCustomColors = !!colors;
-  const ticketColors = {
+  return {
     primary: hasCustomColors ? colors.primary : '#8b5cf6',
     secondary: hasCustomColors ? colors.secondary : '#ec4899',
     accent: hasCustomColors ? colors.accent : '#a78bfa',
     background: hasCustomColors ? colors.background || '#1f1f23' : '#1f1f23',
+    hasCustom: hasCustomColors,
   };
+};
 
-  const gradientStyle = hasCustomColors
+const getTicketStyles = (ticketColors: ReturnType<typeof getTicketColors>) => {
+  const gradientStyle = ticketColors.hasCustom
     ? { background: `linear-gradient(135deg, ${ticketColors.primary}, ${ticketColors.secondary})` }
     : undefined;
 
-  const accentGradientStyle = hasCustomColors
+  const accentGradientStyle = ticketColors.hasCustom
     ? { background: `linear-gradient(to right, ${ticketColors.primary}20, ${ticketColors.secondary}20)` }
     : undefined;
+
+  return { gradientStyle, accentGradientStyle };
+};
+
+export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: UserTicketProps) {
+  const ticketColors = getTicketColors(colors);
+  const { gradientStyle, accentGradientStyle } = getTicketStyles(ticketColors);
+  const isSmall = scale === 'small';
 
   const currentDate = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
     month: 'short',
     day: 'numeric',
   });
-
-  const getProviderIcon = (provider: string) => {
-    switch (provider.toLowerCase()) {
-      case 'github':
-        return <Github className="h-3 w-3" />;
-      case 'google':
-        return <Mail className="h-3 w-3" />;
-      default:
-        return <User className="h-3 w-3" />;
-    }
-  };
-
-  const isSmall = scale === 'small';
 
   return (
     <div className="flex w-full justify-center">

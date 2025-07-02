@@ -48,7 +48,8 @@ function ChartContainer({
     <ChartContext.Provider value={{ config }}>
       <div
         className={cn(
-          'flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke='#ccc']]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke='#fff']]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-polar-grid_[stroke='#ccc']]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke='#ccc']]:stroke-border [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-sector]:outline-hidden [&_.recharts-surface]:outline-hidden',
+          // biome-ignore lint/nursery/useSortedClasses: breaks the build
+          "flex aspect-video justify-center text-xs [&_.recharts-cartesian-grid_line[stroke= [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground'#ccc']]:stroke-border/50 [&_.recharts-dot[stroke= [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border'#fff']]:stroke-transparent [&_.recharts-polar-grid_[stroke= [&_.recharts-layer]:outline-hidden'#ccc']]:stroke-border [&_.recharts-reference-line_[stroke= [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted'#ccc']]:stroke-border [&_.recharts-sector[stroke='#fff']]:stroke-transparent [&_.recharts-sector]:outline-hidden [&_.recharts-surface]:outline-hidden",
           className
         )}
         data-chart={chartId}
@@ -56,16 +57,14 @@ function ChartContainer({
         {...props}
       >
         <ChartStyle config={config} id={chartId} />
-        <RechartsPrimitive.ResponsiveContainer>
-          {children}
-        </RechartsPrimitive.ResponsiveContainer>
+        <RechartsPrimitive.ResponsiveContainer>{children}</RechartsPrimitive.ResponsiveContainer>
       </div>
     </ChartContext.Provider>
-  )
+  );
 }
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
-  const colorConfig = Object.entries(config).filter(([, config]) => config.theme || config.color);
+  const colorConfig = Object.entries(config).filter(([, config2]) => config2.theme || config2.color);
 
   if (!colorConfig.length) {
     return null;
@@ -73,6 +72,7 @@ const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
 
   return (
     <style
+      // biome-ignore lint/security/noDangerouslySetInnerHtml: shadcn convention
       dangerouslySetInnerHTML={{
         __html: Object.entries(THEMES)
           .map(
@@ -97,7 +97,7 @@ const ChartTooltip = RechartsPrimitive.Tooltip;
 
 function ChartTooltipContent({
   active,
-  payload,
+  payload = [],
   className,
   indicator = 'dot',
   hideLabel = false,
@@ -116,6 +116,9 @@ function ChartTooltipContent({
     indicator?: 'line' | 'dot' | 'dashed';
     nameKey?: string;
     labelKey?: string;
+    label: string;
+    // biome-ignore lint/suspicious/noExplicitAny: lib controlled
+    payload: any;
   }) {
   const { config } = useChart();
 
@@ -156,7 +159,9 @@ function ChartTooltipContent({
     >
       {nestLabel ? null : tooltipLabel}
       <div className="grid gap-1.5">
-        {payload.map((item, index) => {
+        {/** biome-ignore lint/suspicious/noExplicitAny: lib controlled */}
+        {/** biome-ignore lint/complexity/noExcessiveCognitiveComplexity: shadcn convention */}
+        {payload.map((item: any, index: number) => {
           const key = `${nameKey || item.name || item.dataKey || 'value'}`;
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
           const indicatorColor = color || item.payload.fill || item.color;
@@ -225,7 +230,9 @@ function ChartLegendContent({
   verticalAlign = 'bottom',
   nameKey,
 }: React.ComponentProps<'div'> &
-  Pick<RechartsPrimitive.LegendProps, 'payload' | 'verticalAlign'> & {
+  Pick<RechartsPrimitive.LegendProps, 'verticalAlign'> & {
+    // biome-ignore lint/suspicious/noExplicitAny: lib controlled
+    payload: any;
     hideIcon?: boolean;
     nameKey?: string;
   }) {
@@ -237,7 +244,8 @@ function ChartLegendContent({
 
   return (
     <div className={cn('flex items-center justify-center gap-4', verticalAlign === 'top' ? 'pb-3' : 'pt-3', className)}>
-      {payload.map((item) => {
+      {/** biome-ignore lint/suspicious/noExplicitAny: lib controlled */}
+      {payload.map((item: any) => {
         const key = `${nameKey || item.dataKey || 'value'}`;
         const itemConfig = getPayloadConfigFromPayload(config, item, key);
 

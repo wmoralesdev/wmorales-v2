@@ -14,7 +14,7 @@ import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { usePollPresence } from '@/hooks/use-poll-presence';
 import { type PollPresence, type PollRealtimeEvent, subscribeToPollUpdates } from '@/lib/supabase/realtime';
-import type { PollResults, PollWithQuestions } from '@/lib/types/poll.types';
+import type { PollQuestion, PollResults, PollWithQuestions } from '@/lib/types/poll.types';
 import { cn } from '@/lib/utils';
 
 type PollVotingProps = {
@@ -98,27 +98,108 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
     }
   }, [poll.showResults, poll.resultsDelay, userVotes]);
 
-  const validateAnswers = () => {
-    const errors: string[] = [];
-
-    for (const question of poll.questions) {
+  const validateQuestion = useCallback(
+    (question: PollQuestion, index: number) => {
       const answer = selectedOptions[question.id];
       const hasVoted = userVotes[question.id]?.length > 0;
 
-      if (!hasVoted) {
-        if (question.type === 'single' && !answer) {
-          errors.push(`Question ${poll.questions.indexOf(question) + 1} requires an answer`);
-        } else if (question.type === 'multiple' && (!answer || (answer as string[]).length === 0)) {
-          errors.push(`Question ${poll.questions.indexOf(question) + 1} requires at least one selection`);
+      if (hasVoted) {
+        return null;
+      }
+
+      const questionNumber = index + 1;
+
+      if (question.type === 'single' && !answer) {
+        return `Question ${questionNumber} requires an answer`;
+      }
+
+      if (question.type === 'multiple') {
+        const hasSelection = answer && (answer as string[]).length > 0;
+        if (!hasSelection) {
+          return `Question ${questionNumber} requires at least one selection`;
         }
+      }
+
+      return null;
+    },
+    [selectedOptions, userVotes]
+  );
+
+  const validateAnswers = useCallback(() => {
+    const errors: string[] = [];
+
+    for (let i = 0; i < poll.questions.length; i++) {
+      const error = validateQuestion(poll.questions[i], i);
+      if (error) {
+        errors.push(error);
       }
     }
 
     return errors;
-  };
+  }, [poll.questions, validateQuestion]);
+
+  const submitVoteForQuestion = useCallback(
+    async (question: PollQuestion, selected: string | string[]) => {
+      const result = await votePoll(poll.id, question.id, selected);
+      if (!result.error) {
+        return Array.isArray(selected) ? selected : [selected];
+      }
+      return null;
+    },
+    [poll.id]
+  );
+
+  const shouldProcessQuestion = useCallback(
+    (question: PollQuestion) => {
+      const hasAnswered = userVotes[question.id]?.length > 0;
+      if (hasAnswered) {
+        return false;
+      }
+
+      const selected = selectedOptions[question.id];
+      return selected && (Array.isArray(selected) ? selected.length > 0 : true);
+    },
+    [userVotes, selectedOptions]
+  );
+
+  const createVotePromises = useCallback(() => {
+    // biome-ignore lint/suspicious/noExplicitAny: form data is dynamic
+    const votePromises: Promise<any>[] = [];
+
+    for (const question of poll.questions) {
+      if (shouldProcessQuestion(question)) {
+        const selected = selectedOptions[question.id];
+        votePromises.push(
+          submitVoteForQuestion(question, selected).then((votes) => ({
+            questionId: question.id,
+            votes,
+          }))
+        );
+      }
+    }
+
+    return votePromises;
+  }, [poll.questions, shouldProcessQuestion, selectedOptions, submitVoteForQuestion]);
+
+  const processUnansweredQuestions = useCallback(async () => {
+    const newVotes = { ...userVotes };
+    const votePromises = createVotePromises();
+
+    if (votePromises.length === 0) {
+      return newVotes;
+    }
+
+    const voteResults = await Promise.all(votePromises);
+    for (const result of voteResults) {
+      if (result.votes) {
+        newVotes[result.questionId] = result.votes;
+      }
+    }
+
+    return newVotes;
+  }, [userVotes, createVotePromises]);
 
   const handleSubmitAll = useCallback(async () => {
-    // Validate all unanswered questions
     const errors = validateAnswers();
     if (errors.length > 0) {
       setValidationErrors(errors);
@@ -129,39 +210,25 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
     setVoting(true);
 
     try {
-      // Submit votes for all unanswered questions
-      const newVotes = { ...userVotes };
-
-      for (const question of poll.questions) {
-        if (!userVotes[question.id] || userVotes[question.id].length === 0) {
-          const selected = selectedOptions[question.id];
-          if (selected && (Array.isArray(selected) ? selected.length > 0 : true)) {
-            const result = await votePoll(poll.id, question.id, selected);
-            if (!result.error) {
-              newVotes[question.id] = Array.isArray(selected) ? selected : [selected];
-            }
-          }
-        }
-      }
-
+      const newVotes = await processUnansweredQuestions();
       setUserVotes(newVotes);
 
-      // Fetch fresh results
       const { data } = await getPollResults(poll.id);
       if (data) {
         setResults(data);
       }
 
-      // Show dashboard
       setTimeout(() => setShowDashboard(true), 500);
     } finally {
       setVoting(false);
     }
-  }, [poll, selectedOptions, userVotes]);
+  }, [validateAnswers, processUnansweredQuestions, poll.id]);
 
   const handleOptionChange = (questionId: string, value: string, checked?: boolean) => {
     const question = poll.questions.find((q) => q.id === questionId);
-    if (!question) return;
+    if (!question) {
+      return;
+    }
 
     if (question.type === 'single') {
       setSelectedOptions((prev) => ({ ...prev, [questionId]: value }));
@@ -186,14 +253,18 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
   };
 
   const getOptionPercentage = (questionId: string, optionId: string) => {
-    if (!results) return 0;
+    if (!results) {
+      return 0;
+    }
     const question = results.questions.find((q) => q.questionId === questionId);
     const option = question?.options.find((o) => o.optionId === optionId);
     return option?.percentage || 0;
   };
 
   const getOptionVoteCount = (questionId: string, optionId: string) => {
-    if (!results) return 0;
+    if (!results) {
+      return 0;
+    }
     const question = results.questions.find((q) => q.questionId === questionId);
     const option = question?.options.find((o) => o.optionId === optionId);
     return option?.voteCount || 0;
@@ -280,8 +351,8 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
             <ul className="list-inside list-disc space-y-1">
-              {validationErrors.map((error, index) => (
-                <li key={index}>{error}</li>
+              {validationErrors.map((error) => (
+                <li key={error}>{error}</li>
               ))}
             </ul>
           </AlertDescription>

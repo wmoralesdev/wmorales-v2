@@ -1,75 +1,33 @@
 'use client';
 
-import { Palette, Share2, Sparkles } from 'lucide-react';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { Palette, Sparkles } from 'lucide-react';
+import { useState } from 'react';
 import { toast } from 'sonner';
-import {
-  createGuestbookEntry,
-  getAllTickets,
-  getUserTicket,
-  updateGuestbookEntry,
-} from '@/app/actions/guestbook.actions';
+import { createGuestbookEntry, getAllTickets, updateGuestbookEntry } from '@/app/actions/guestbook.actions';
 import { useAuth } from '@/components/auth/auth-provider';
+import { GuestbookLoading } from '@/components/guestbook-loading';
+import { GuestbookUserTicket } from '@/components/guestbook-user-ticket';
 import { SignInCard } from '@/components/sign-in-card';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { UserTicket } from '@/components/user-ticket';
+import { useGuestbookTickets } from '@/hooks/use-guestbook-tickets';
 import { authService } from '@/lib/auth';
-
-type TicketData = {
-  id: string;
-  ticketNumber: string;
-  userName: string;
-  userEmail: string;
-  userAvatar: string | null;
-  userProvider: string;
-  primaryColor: string;
-  secondaryColor: string;
-  accentColor: string;
-  backgroundColor: string;
-  createdAt: Date;
-  entry: {
-    message: string | null;
-    mood: string | null;
-  };
-};
+import type { TicketData } from '@/lib/types/guestbook.types';
+import { shareTicket } from '@/lib/utils/share';
 
 export function GuestbookContent() {
   const { user, loading } = useAuth();
   const [customMessage, setCustomMessage] = useState('');
   const [isGeneratingColors, setIsGeneratingColors] = useState(false);
-  const [userTicket, setUserTicket] = useState<TicketData | null>(null);
-  const [allTickets, setAllTickets] = useState<TicketData[]>([]);
-  const [isLoadingTickets, setIsLoadingTickets] = useState(true);
-
-  // Load user ticket and all tickets
-  useEffect(() => {
-    async function loadTickets() {
-      try {
-        const [userTicketData, allTicketsData] = await Promise.all([getUserTicket(), getAllTickets()]);
-
-        if (userTicketData) {
-          setUserTicket(userTicketData as unknown as TicketData);
-        }
-        setAllTickets(allTicketsData as unknown as TicketData[]);
-      } catch (error) {
-        console.error('Failed to load tickets:', error);
-      } finally {
-        setIsLoadingTickets(false);
-      }
-    }
-
-    loadTickets();
-  }, [user]);
+  const { userTicket, setUserTicket, allTickets, setAllTickets, isLoadingTickets } = useGuestbookTickets();
 
   const handleSignIn = async (provider: 'github' | 'google') => {
     try {
       await authService.signInWithProvider(provider);
-    } catch (error) {
+    } catch {
       toast.error('Failed to sign in. Please try again.');
-      console.error('Sign in error:', error);
     }
   };
 
@@ -81,17 +39,9 @@ export function GuestbookContent() {
 
     setIsGeneratingColors(true);
     try {
-      let result;
-      if (userTicket) {
-        // Update existing ticket
-        result = await updateGuestbookEntry(customMessage);
-        toast.success('Your ticket has been updated!');
-      } else {
-        // Create new ticket
-        result = await createGuestbookEntry(customMessage);
-        toast.success('Your unique ticket has been created!');
-      }
+      const result = userTicket ? await updateGuestbookEntry(customMessage) : await createGuestbookEntry(customMessage);
 
+      toast.success(userTicket ? 'Your ticket has been updated!' : 'Your unique ticket has been created!');
       setUserTicket(result.ticket as unknown as TicketData);
 
       // Refresh all tickets
@@ -99,49 +49,21 @@ export function GuestbookContent() {
       setAllTickets(updatedTickets as unknown as TicketData[]);
 
       setCustomMessage('');
-    } catch (error) {
+    } catch {
       toast.error('Failed to generate ticket. Please try again.');
-      console.error('Generation error:', error);
     } finally {
       setIsGeneratingColors(false);
     }
   };
 
   const handleShareTicket = async () => {
-    if (!userTicket) return;
-
-    const shareUrl = `${window.location.origin}/guestbook/${userTicket.id}`;
-
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: 'My Guestbook Ticket',
-          text: `Check out my unique ticket on Walter Morales' guestbook!`,
-          url: shareUrl,
-        });
-      } catch (error) {
-        console.error('Error sharing:', error);
-      }
-    } else {
-      // Fallback to copying to clipboard
-      await navigator.clipboard.writeText(shareUrl);
-      toast.success('Link copied to clipboard!');
+    if (userTicket) {
+      await shareTicket(userTicket.id);
     }
   };
 
   if (loading || isLoadingTickets) {
-    return (
-      <div className="animate-fade-in-up space-y-8">
-        <Card className="mx-auto max-w-md">
-          <CardContent className="py-12">
-            <div className="flex items-center justify-center">
-              <Sparkles className="h-8 w-8 animate-pulse text-purple-400" />
-            </div>
-            <p className="mt-4 text-center text-muted-foreground">Loading guestbook...</p>
-          </CardContent>
-        </Card>
-      </div>
-    );
+    return <GuestbookLoading />;
   }
 
   if (!user) {
@@ -156,44 +78,7 @@ export function GuestbookContent() {
     <div className="space-y-8">
       {/* User Ticket */}
       <div className="flex w-full flex-col items-center gap-4 lg:flex-row lg:items-start lg:justify-center">
-        {userTicket && (
-          <div className="animate-delay-400 animate-fade-in-up">
-            <Link className="group block" href={`/guestbook/${userTicket.id}`}>
-              <div className="relative">
-                <UserTicket
-                  colors={{
-                    primary: userTicket.primaryColor,
-                    secondary: userTicket.secondaryColor,
-                    accent: userTicket.accentColor,
-                    background: userTicket.backgroundColor,
-                  }}
-                  ticketNumber={userTicket.ticketNumber}
-                  user={{
-                    id: userTicket.id,
-                    name: userTicket.userName,
-                    email: userTicket.userEmail,
-                    avatar_url: userTicket.userAvatar || undefined,
-                    provider: userTicket.userProvider,
-                  }}
-                />
-                <div className="absolute inset-0 rounded-2xl bg-white/0 transition-colors group-hover:bg-white/5" />
-              </div>
-            </Link>
-            {userTicket.entry?.mood && (
-              <Card className="mx-auto mt-4 max-w-md">
-                <CardContent className="">
-                  <div className="flex items-center justify-between">
-                    <p className="text-center text-muted-foreground text-sm">Current mood: "{userTicket.entry.mood}"</p>
-                    <Button className="gap-2" onClick={handleShareTicket} size="sm" variant="ghost">
-                      <Share2 className="h-4 w-4" />
-                      Share
-                    </Button>
-                  </div>
-                </CardContent>
-              </Card>
-            )}
-          </div>
-        )}
+        {userTicket && <GuestbookUserTicket onShare={handleShareTicket} userTicket={userTicket} />}
 
         {/* Chat Input (always visible) */}
         <div className="flex-1 animate-delay-400 animate-fade-in-up">

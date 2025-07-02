@@ -1,9 +1,87 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { Briefcase, Calendar } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent } from '@/components/ui/card';
+
+// Animation variants with correct TypeScript types
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const headerVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, x: -30 },
+  visible: {
+    opacity: 1,
+    x: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
+const cardHoverVariants: Variants = {
+  rest: {
+    scale: 1,
+    x: 0,
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
+  },
+  hover: {
+    scale: 1.01,
+    x: 8,
+    boxShadow: '0 8px 25px rgba(168, 85, 247, 0.12)',
+    transition: {
+      duration: 0.3,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
+const iconVariants: Variants = {
+  rest: { rotate: 0, scale: 1 },
+  hover: {
+    rotate: 15,
+    scale: 1.1,
+    transition: {
+      duration: 0.3,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
+const badgeVariants: Variants = {
+  rest: { scale: 1, rotate: 0 },
+  hover: {
+    scale: 1.05,
+    rotate: 1,
+    transition: {
+      duration: 0.2,
+      type: 'spring' as const,
+      stiffness: 300,
+    },
+  },
+};
 
 export function ExperienceSection() {
   const experiences = [
@@ -64,84 +142,6 @@ export function ExperienceSection() {
     },
   ];
 
-  // Animation variants with correct TypeScript types
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const headerVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, x: -30 },
-    visible: {
-      opacity: 1,
-      x: 0,
-      transition: {
-        duration: 0.5,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-  };
-
-  const cardHoverVariants = {
-    rest: {
-      scale: 1,
-      x: 0,
-      boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
-    },
-    hover: {
-      scale: 1.01,
-      x: 8,
-      boxShadow: '0 8px 25px rgba(168, 85, 247, 0.12)',
-      transition: {
-        duration: 0.3,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-  };
-
-  const iconVariants = {
-    rest: { rotate: 0, scale: 1 },
-    hover: {
-      rotate: 15,
-      scale: 1.1,
-      transition: {
-        duration: 0.3,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-  };
-
-  const badgeVariants = {
-    rest: { scale: 1, rotate: 0 },
-    hover: {
-      scale: 1.05,
-      rotate: 1,
-      transition: {
-        duration: 0.2,
-        type: 'spring' as const,
-        stiffness: 300,
-      },
-    },
-  };
-
   return (
     <section className="bg-muted/30 px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
       <div className="mx-auto max-w-4xl">
@@ -178,7 +178,13 @@ export function ExperienceSection() {
 
           <div className="space-y-3">
             {experiences.map((exp, index) => (
-              <motion.div className="relative" initial="rest" key={index} variants={cardVariants} whileHover="hover">
+              <motion.div
+                className="relative"
+                initial="rest"
+                key={exp.company.concat(exp.role)}
+                variants={cardVariants}
+                whileHover="hover"
+              >
                 {/* Timeline dot */}
                 <motion.div
                   className="absolute top-4 left-3 z-10 h-2 w-2 rounded-full border-2 border-background bg-purple-400"
@@ -244,7 +250,7 @@ export function ExperienceSection() {
                               <motion.li
                                 className="flex items-start gap-2 text-xs sm:text-sm"
                                 initial={{ opacity: 0, x: -10 }}
-                                key={achievementIndex}
+                                key={achievement}
                                 transition={{
                                   delay: index * 0.08 + achievementIndex * 0.05 + 0.5,
                                   duration: 0.3,

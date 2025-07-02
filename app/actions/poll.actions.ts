@@ -82,7 +82,7 @@ export async function createPoll(data: {
     });
 
     return { data: poll, error: null };
-  } catch (error) {
+  } catch (_error) {
     return { data: null, error: 'Failed to create poll' };
   }
 }
@@ -108,7 +108,7 @@ export async function getPollByCode(code: string) {
     }
 
     return { data: poll, error: null };
-  } catch (error) {
+  } catch (_error) {
     return { data: null, error: 'Failed to fetch poll' };
   }
 }
@@ -154,14 +154,14 @@ export async function createPollSession(pollId: string) {
     });
 
     return { data: session, error: null };
-  } catch (error) {
+  } catch (_error) {
     return { data: null, error: 'Failed to create session' };
   }
 }
 
 export async function votePoll(pollId: string, questionId: string, optionIds: string | string[]) {
   try {
-    const sessionId = await getSessionId();
+    const _sessionId = await getSessionId();
 
     // Get or create session
     const sessionResult = await createPollSession(pollId);
@@ -221,7 +221,7 @@ export async function votePoll(pollId: string, questionId: string, optionIds: st
     revalidatePath(`/polls/${question.poll.code}`);
 
     return { data: votes, error: null };
-  } catch (error) {
+  } catch (_error) {
     return { data: null, error: 'Failed to submit vote' };
   }
 }
@@ -277,7 +277,7 @@ export async function getPollResults(pollId: string) {
     };
 
     return { data: formattedResults, error: null };
-  } catch (error) {
+  } catch (_error) {
     return { data: null, error: 'Failed to fetch results' };
   }
 }
@@ -328,7 +328,7 @@ export async function getUserVotes(pollId: string) {
     );
 
     return { data: votesByQuestion, error: null };
-  } catch (error) {
+  } catch (_error) {
     return { data: null, error: 'Failed to fetch votes' };
   }
 }
@@ -353,7 +353,7 @@ export async function closePoll(pollId: string) {
     revalidatePath(`/polls/${poll.code}`);
 
     return { data: poll, error: null };
-  } catch (error) {
+  } catch (_error) {
     return { data: null, error: 'Failed to close poll' };
   }
 }
@@ -371,7 +371,9 @@ export async function getPollActiveUsers(pollCode: string) {
       select: { id: true },
     });
 
-    if (!poll) return { data: 0, error: null };
+    if (!poll) {
+      return { data: 0, error: null };
+    }
 
     const activeSessions = await prisma.pollSession.count({
       where: {
@@ -383,7 +385,7 @@ export async function getPollActiveUsers(pollCode: string) {
     });
 
     return { data: activeSessions, error: null };
-  } catch (error) {
+  } catch (_error) {
     return { data: 0, error: 'Failed to get active users' };
   }
 }

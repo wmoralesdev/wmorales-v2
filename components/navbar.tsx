@@ -1,21 +1,13 @@
 'use client';
 
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
-import { Code2, Menu, Sparkles } from 'lucide-react';
+import { Code2, Menu } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { SignInButton } from '@/components/auth/sign-in-button';
 import { Button } from '@/components/ui/button';
-import {
-  NavigationMenu,
-  NavigationMenuContent,
-  NavigationMenuItem,
-  NavigationMenuLink,
-  NavigationMenuList,
-  NavigationMenuTrigger,
-} from '@/components/ui/navigation-menu';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
 
@@ -83,7 +75,7 @@ const mobileMenuVariants: Variants = {
 export function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [scrolled, _setScrolled] = useState(false);
 
   const navItems = [
     { name: 'Home', href: '/' },
@@ -128,10 +120,10 @@ export function Navbar() {
           <div className="hidden items-center space-x-8 md:flex">
             {navItems.map((item, index) => (
               <MotionLink
-                href={item.href}
                 animate="visible"
                 className="relative"
                 custom={index}
+                href={item.href}
                 initial="hidden"
                 key={item.name}
                 variants={menuItemVariants}
@@ -196,25 +188,25 @@ export function Navbar() {
                       variants={mobileMenuVariants}
                     >
                       {navItems.map((item, index) => (
-                        <motion.div
+                        <MotionLink
                           animate="visible"
                           custom={index}
+                          href={item.href}
                           initial="hidden"
                           key={item.name}
                           variants={menuItemVariants}
                         >
                           <Button
                             className={`w-full justify-start text-left ${
-                              activeSection === item.href.slice(1) ? 'bg-purple-400/10 text-purple-400' : ''
+                              pathname === item.href ? 'bg-purple-400/10 text-purple-400' : ''
                             }`}
-                            onClick={() => scrollToSection(item.href)}
                             variant="ghost"
                           >
                             <motion.span transition={{ duration: 0.2 }} whileHover={{ x: 5 }}>
                               {item.name}
                             </motion.span>
                           </Button>
-                        </motion.div>
+                        </MotionLink>
                       ))}
                     </motion.div>
                   </SheetContent>

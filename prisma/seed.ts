@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Create a contact info survey
-  const survey = await prisma.survey.create({
+  const _survey = await prisma.survey.create({
     data: {
       title: 'Contact Information Survey',
       description: 'Please share your contact details so we can get in touch.',
@@ -138,21 +138,13 @@ async function main() {
       },
     },
   });
-
-  console.log(`Created survey with ID: ${survey.id}`);
-  console.log('Survey title:', survey.title);
-  console.log('\nTo test the survey, visit:');
-  console.log('- Survey list: http://localhost:3000/surveys');
-  console.log(`- Fill survey: http://localhost:3000/surveys/${survey.id}/fill`);
-  console.log(`- View results: http://localhost:3000/surveys/${survey.id}`);
 }
 
 main()
   .then(async () => {
     await prisma.$disconnect();
   })
-  .catch(async (e) => {
-    console.error('Error seeding database:', e);
+  .catch(async (_e) => {
     await prisma.$disconnect();
     process.exit(1);
   });

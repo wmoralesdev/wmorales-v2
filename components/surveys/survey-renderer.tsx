@@ -6,6 +6,7 @@ import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 import * as z from 'zod';
 import { completeSurveyResponse, createSurveyResponse, saveSurveyAnswer } from '@/app/actions/survey.actions';
 import { Button } from '@/components/ui/button';
@@ -29,26 +30,24 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   const router = useRouter();
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [sectionPath, setSectionPath] = useState<string[]>([]);
+  // biome-ignore lint/suspicious/noExplicitAny: answers are built by engine, we can't type it
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [responseId, setResponseId] = useState<string | null>(null);
 
-  // Get the current section based on path logic
   const getCurrentSection = (): Section => {
     if (currentSectionIndex === 0) {
       return survey.sections[0];
     }
 
-    // Find section by path
     const currentPath = sectionPath[currentSectionIndex - 1];
     const section = survey.sections.find((s) => s.path === currentPath);
 
     if (!section) {
-      // Fallback to sequential navigation
-      return survey.sections[currentSectionIndex] || survey.sections[survey.sections.length - 1];
+      return survey.sections[currentSectionIndex] || survey.sections.at(-1);
     }
 
-    return section;
+    return section as Section;
   };
 
   const currentSection = getCurrentSection();
@@ -56,24 +55,29 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   const progress = ((currentSectionIndex + 1) / totalSections) * 100;
 
   // Create dynamic schema based on current section questions
-  const createSchema = (questions: Question[]) => {
-    const schemaObject: Record<string, any> = {};
-
-    questions.forEach((question) => {
-      if (question.type === 'text') {
-        schemaObject[question.id] = question.required
-          ? z.string().min(1, 'This field is required')
-          : z.string().optional();
-      } else if (question.type === 'radio' || question.type === 'select') {
-        schemaObject[question.id] = question.required
-          ? z.string().min(1, 'Please select an option')
-          : z.string().optional();
-      } else if (question.type === 'checkbox') {
-        schemaObject[question.id] = question.required
+  const getQuestionSchema = (question: Question): z.ZodTypeAny => {
+    const schemas = {
+      text: () => (question.required ? z.string().min(1, 'This field is required') : z.string().optional()),
+      textarea: () => (question.required ? z.string().min(1, 'This field is required') : z.string().optional()),
+      radio: () => (question.required ? z.string().min(1, 'Please select an option') : z.string().optional()),
+      select: () => (question.required ? z.string().min(1, 'Please select an option') : z.string().optional()),
+      checkbox: () =>
+        question.required
           ? z.array(z.string()).min(1, 'Please select at least one option')
-          : z.array(z.string()).optional();
-      }
-    });
+          : z.array(z.string()).optional(),
+    } as const;
+
+    return schemas[question.type]?.() ?? z.string().optional();
+  };
+
+  const createSchema = (questions: Question[]) => {
+    const schemaObject = questions.reduce(
+      (acc, question) => {
+        acc[question.id] = getQuestionSchema(question);
+        return acc;
+      },
+      {} as Record<string, z.ZodTypeAny>
+    );
 
     return z.object(schemaObject);
   };
@@ -86,8 +90,27 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   // Update form when section changes
   useEffect(() => {
     form.reset(answers);
-  }, [currentSectionIndex]);
+  }, [answers, form.reset]);
 
+  // biome-ignore lint/suspicious/noExplicitAny: form data is dynamic based on questions
+  const findNextPath = (data: Record<string, any>): string | null => {
+    for (const [questionId, answer] of Object.entries(data)) {
+      const question = currentSection.questions.find((q) => q.id === questionId);
+      const selectedOption = question?.options?.find((opt) => opt.value === answer);
+      if (selectedOption?.path) {
+        return selectedOption.path;
+      }
+    }
+    return null;
+  };
+  const isLastSection = (nextPath: string | null): boolean => {
+    return (
+      currentSectionIndex >= survey.sections.length - 1 ||
+      Boolean(nextPath && !survey.sections.find((s) => s.path === nextPath))
+    );
+  };
+
+  // biome-ignore lint/suspicious/noExplicitAny: form data is dynamic based on questions
   const handleNext = async (data: any) => {
     // Save answers locally
     const updatedAnswers = { ...answers, ...data };
@@ -95,36 +118,20 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
 
     // Save answers to database for this section
     if (responseId) {
-      for (const [questionId, answer] of Object.entries(data)) {
-        await saveSurveyAnswer(responseId, questionId, answer as string | string[]);
-      }
+      await Promise.all(
+        Object.entries(data).map(([questionId, answer]) =>
+          saveSurveyAnswer(responseId, questionId, answer as string | string[])
+        )
+      );
     }
 
-    // Check for path redirects based on answers
-    let nextPath: string | null = null;
-
-    for (const [questionId, answer] of Object.entries(data)) {
-      const question = currentSection.questions.find((q) => q.id === questionId);
-      if (question && question.options) {
-        const selectedOption = question.options.find((opt) => opt.value === answer);
-        if (selectedOption && selectedOption.path) {
-          nextPath = selectedOption.path;
-          break;
-        }
-      }
-    }
-
-    // Navigate to next section
+    // Check for path redirects and navigate
+    const nextPath = findNextPath(data);
     if (nextPath) {
       setSectionPath([...sectionPath.slice(0, currentSectionIndex), nextPath]);
     }
 
-    // Check if we're at the last section
-    const isLastSection =
-      currentSectionIndex >= survey.sections.length - 1 ||
-      (nextPath && !survey.sections.find((s) => s.path === nextPath));
-
-    if (isLastSection) {
+    if (isLastSection(nextPath)) {
       await handleSubmit(updatedAnswers);
     } else {
       setCurrentSectionIndex(currentSectionIndex + 1);
@@ -152,8 +159,12 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
     }
   }, [survey.id, responseId]);
 
-  const handleSubmit = async (finalAnswers: any) => {
-    if (!responseId) return;
+  // biome-ignore lint/suspicious/noExplicitAny: answers are built by engine, we can't type it
+  // biome-ignore lint/suspicious/noExplicitAny: final answers are dynamic
+  const handleSubmit = async (_finalAnswers: any) => {
+    if (!responseId) {
+      return;
+    }
 
     setIsSubmitting(true);
     try {
@@ -162,8 +173,8 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
 
       // Redirect to thank you or results page
       router.push(`/surveys/${survey.id}?completed=true`);
-    } catch (error) {
-      console.error('Error submitting survey:', error);
+    } catch (_error) {
+      toast.error('Failed to submit survey');
     } finally {
       setIsSubmitting(false);
     }

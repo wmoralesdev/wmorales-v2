@@ -58,10 +58,12 @@ function Carousel({
   const [canScrollPrev, setCanScrollPrev] = React.useState(false);
   const [canScrollNext, setCanScrollNext] = React.useState(false);
 
-  const onSelect = React.useCallback((api: CarouselApi) => {
-    if (!api) return;
-    setCanScrollPrev(api.canScrollPrev());
-    setCanScrollNext(api.canScrollNext());
+  const onSelect = React.useCallback((api2: CarouselApi) => {
+    if (!api2) {
+      return;
+    }
+    setCanScrollPrev(api2.canScrollPrev());
+    setCanScrollNext(api2.canScrollNext());
   }, []);
 
   const scrollPrev = React.useCallback(() => {
@@ -86,12 +88,16 @@ function Carousel({
   );
 
   React.useEffect(() => {
-    if (!(api && setApi)) return;
+    if (!(api && setApi)) {
+      return;
+    }
     setApi(api);
   }, [api, setApi]);
 
   React.useEffect(() => {
-    if (!api) return;
+    if (!api) {
+      return;
+    }
     onSelect(api);
     api.on('reInit', onSelect);
     api.on('select', onSelect);
@@ -114,16 +120,17 @@ function Carousel({
         canScrollNext,
       }}
     >
-      <div
+      <section
         aria-roledescription="carousel"
         className={cn('relative', className)}
         data-slot="carousel"
         onKeyDownCapture={handleKeyDown}
+        // biome-ignore lint/a11y/useSemanticElements: shadcn convention
         role="region"
         {...props}
       >
         {children}
-      </div>
+      </section>
     </CarouselContext.Provider>
   );
 }

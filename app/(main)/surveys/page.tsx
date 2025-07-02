@@ -27,6 +27,7 @@ async function SurveysList() {
 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {/** biome-ignore lint/suspicious/noExplicitAny: form data is dynamic */}
       {surveys.map((survey: any) => (
         <Card className="transition-shadow hover:shadow-lg" key={survey.id}>
           <CardHeader>

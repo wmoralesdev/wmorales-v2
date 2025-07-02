@@ -101,20 +101,15 @@ async function seedPoll() {
     },
   });
 
-  console.log(`Created poll with code: ${poll.code}`);
-  console.log(`View poll at: http://localhost:3000/polls/${poll.code}`);
-
   return poll;
 }
 
 // Run the seed
 seedPoll()
-  .then(async (poll) => {
-    console.log('Poll seeded successfully!');
+  .then(async (_poll) => {
     await prisma.$disconnect();
   })
-  .catch(async (e) => {
-    console.error('Error seeding poll:', e);
+  .catch(async (_e) => {
     await prisma.$disconnect();
     process.exit(1);
   });

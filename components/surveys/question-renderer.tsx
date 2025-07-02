@@ -9,10 +9,11 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
-import type { Option, Question } from '@/lib/types/survey.types';
+import type { Question } from '@/lib/types/survey.types';
 
 type QuestionRendererProps = {
   question: Question;
+  // biome-ignore lint/suspicious/noExplicitAny: form is built by engine, we can't type it
   form: UseFormReturn<any>;
 };
 

@@ -1,7 +1,6 @@
 'use server';
 
 import { revalidatePath } from 'next/cache';
-import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
 
@@ -17,8 +16,7 @@ export async function getActiveSurveys() {
     });
 
     return { data: surveys, error: null };
-  } catch (error) {
-    console.error('Error fetching active surveys:', error);
+  } catch (_error) {
     return { data: null, error: 'Failed to fetch surveys' };
   }
 }
@@ -49,8 +47,7 @@ export async function getSurveyWithSections(surveyId: string) {
     }
 
     return { data: survey, error: null };
-  } catch (error) {
-    console.error('Error fetching survey:', error);
+  } catch (_error) {
     return { data: null, error: 'Failed to fetch survey' };
   }
 }
@@ -73,8 +70,7 @@ export async function createSurveyResponse(surveyId: string) {
     });
 
     return { data: response, error: null };
-  } catch (error) {
-    console.error('Error creating survey response:', error);
+  } catch (_error) {
     return { data: null, error: 'Failed to create response' };
   }
 }
@@ -110,8 +106,7 @@ export async function saveSurveyAnswer(responseId: string, questionId: string, a
     }
 
     return { data: surveyAnswer, error: null };
-  } catch (error) {
-    console.error('Error saving answer:', error);
+  } catch (_error) {
     return { data: null, error: 'Failed to save answer' };
   }
 }
@@ -129,10 +124,47 @@ export async function completeSurveyResponse(responseId: string) {
     revalidatePath('/surveys');
 
     return { data: response, error: null };
-  } catch (error) {
-    console.error('Error completing response:', error);
+  } catch (_error) {
     return { data: null, error: 'Failed to complete response' };
   }
+}
+
+// biome-ignore lint/suspicious/noExplicitAny: form data is dynamic
+function processAnswerResponses(answer: any, questionStats: Map<string, any>) {
+  const questionId = answer.questionId;
+
+  if (!questionStats.has(questionId)) {
+    questionStats.set(questionId, {
+      question: answer.question,
+      responses: [],
+    });
+  }
+
+  const questionData = questionStats.get(questionId);
+
+  if (answer.answerText) {
+    questionData.responses.push(answer.answerText);
+    return;
+  }
+
+  if (answer.selectedOptions.length > 0) {
+    for (const selectedOption of answer.selectedOptions) {
+      questionData.responses.push(selectedOption.option.value);
+    }
+  }
+}
+
+// biome-ignore lint/suspicious/noExplicitAny: form data is dynamic
+function buildQuestionStats(responses: any[]) {
+  const questionStats = new Map();
+
+  for (const response of responses) {
+    for (const answer of response.answers) {
+      processAnswerResponses(answer, questionStats);
+    }
+  }
+
+  return Array.from(questionStats.entries());
 }
 
 export async function getSurveyResults(surveyId: string) {
@@ -156,41 +188,18 @@ export async function getSurveyResults(surveyId: string) {
       },
     });
 
-    // Process results for analytics
     const totalResponses = responses.length;
-    const questionStats = new Map();
-
-    for (const response of responses) {
-      for (const answer of response.answers) {
-        const questionId = answer.questionId;
-
-        if (!questionStats.has(questionId)) {
-          questionStats.set(questionId, {
-            question: answer.question,
-            responses: [],
-          });
-        }
-
-        if (answer.answerText) {
-          questionStats.get(questionId).responses.push(answer.answerText);
-        } else if (answer.selectedOptions.length > 0) {
-          for (const selectedOption of answer.selectedOptions) {
-            questionStats.get(questionId).responses.push(selectedOption.option.value);
-          }
-        }
-      }
-    }
+    const questionStats = buildQuestionStats(responses);
 
     return {
       data: {
         totalResponses,
         responses,
-        questionStats: Array.from(questionStats.entries()),
+        questionStats,
       },
       error: null,
     };
-  } catch (error) {
-    console.error('Error fetching survey results:', error);
+  } catch (_error) {
     return { data: null, error: 'Failed to fetch results' };
   }
 }

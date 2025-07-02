@@ -45,7 +45,7 @@ export function PollsList({ polls }: PollsListProps) {
       await navigator.clipboard.writeText(`${window.location.origin}/polls/${code}`);
       setCopiedCode(code);
       setTimeout(() => setCopiedCode(null), 2000);
-    } catch (err) {
+    } catch (_err) {
       // Fallback for older browsers
       const textArea = document.createElement('textarea');
       textArea.value = `${window.location.origin}/polls/${code}`;
@@ -57,7 +57,7 @@ export function PollsList({ polls }: PollsListProps) {
         document.execCommand('copy');
         setCopiedCode(code);
         setTimeout(() => setCopiedCode(null), 2000);
-      } catch (copyErr) {
+      } catch (_copyErr) {
         // Copy failed
       }
       document.body.removeChild(textArea);

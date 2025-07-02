@@ -26,7 +26,7 @@ export default function SurveyFillPage() {
         } else {
           setSurvey(result.data as SurveyWithSections);
         }
-      } catch (err) {
+      } catch (_err) {
         setError('Failed to load survey');
       } finally {
         setLoading(false);

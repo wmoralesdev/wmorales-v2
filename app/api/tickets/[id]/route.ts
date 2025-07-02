@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import { getTicketById } from '@/app/actions/guestbook.actions';
 
-export async function GET(request: Request, context: { params: Promise<{ id: string }> }) {
+export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params;
     const ticket = await getTicketById(id);
@@ -11,8 +11,7 @@ export async function GET(request: Request, context: { params: Promise<{ id: str
     }
 
     return NextResponse.json(ticket);
-  } catch (error) {
-    console.error('Failed to fetch ticket:', error);
+  } catch (_error) {
     return NextResponse.json({ error: 'Failed to fetch ticket' }, { status: 500 });
   }
 }

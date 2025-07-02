@@ -1,4 +1,4 @@
-import type { RealtimeChannel, RealtimePresenceState } from '@supabase/supabase-js';
+import type { RealtimeChannel } from '@supabase/supabase-js';
 import { createClient } from './client';
 
 export type PollRealtimeEvent = {
@@ -31,7 +31,7 @@ export function subscribeToPollUpdates(
     .on('presence', { event: 'sync' }, () => {
       if (onPresenceUpdate) {
         const state = channel.presenceState();
-        const users = Object.values(state).flat() as PollPresence[];
+        const users = Object.values(state).flat() as unknown as PollPresence[];
         onPresenceUpdate(users);
       }
     })
@@ -50,16 +50,17 @@ export function subscribeToPollUpdates(
 }
 
 // Client-side only broadcast function
-export async function broadcastPollUpdate(pollCode: string, event: PollRealtimeEvent) {
+// biome-ignore lint/suspicious/useAwait: async because server process needs to be async
+export async function broadcastPollUpdate(_pollCode: string, _event: PollRealtimeEvent) {
   // This function should only be called from server actions
   // For client-side, updates happen through subscriptions
   if (typeof window !== 'undefined') {
-    console.warn('broadcastPollUpdate should only be called from server-side');
     return;
   }
 }
 
 // Helper to get session ID (client-side)
+// biome-ignore lint/suspicious/useAwait: async because server process needs to be async
 async function getSessionId() {
   // Check if we're on the client
   if (typeof window !== 'undefined') {

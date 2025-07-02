@@ -21,7 +21,7 @@ export default async function SurveyResultsPage({ params }: { params: Promise<{ 
   const { id } = await params;
 
   const { data: survey, error: surveyError } = await getSurveyWithSections(id);
-  const { data: results, error: resultsError } = await getSurveyResults(id);
+  const { data: results } = await getSurveyResults(id);
 
   if (surveyError || !survey) {
     notFound();
@@ -31,7 +31,8 @@ export default async function SurveyResultsPage({ params }: { params: Promise<{ 
 
   // Process results for display
   const processedResults =
-    results?.questionStats?.map(([questionId, stats]: [string, any]) => {
+    // biome-ignore lint/suspicious/noExplicitAny: lib controlled
+    results?.questionStats?.map(([_questionId, stats]: [string, any]) => {
       const question = stats.question;
       const responses = stats.responses;
 
@@ -76,7 +77,9 @@ export default async function SurveyResultsPage({ params }: { params: Promise<{ 
         </Card>
       ) : (
         <div className="grid gap-6">
+          {/** biome-ignore lint/suspicious/noExplicitAny: lib controlled */}
           {processedResults.map((result: any, index: number) => (
+            // biome-ignore lint/suspicious/noArrayIndexKey: shadcn convention
             <Card key={index}>
               <CardHeader>
                 <CardTitle className="text-xl">{result.question.question}</CardTitle>
@@ -86,6 +89,7 @@ export default async function SurveyResultsPage({ params }: { params: Promise<{ 
                 {(result.type === 'radio' || result.type === 'select') && (
                   <div className="space-y-4">
                     <div className="space-y-3">
+                      {/** biome-ignore lint/suspicious/noExplicitAny: lib controlled */}
                       {result.chartData.map((item: any) => (
                         <div className="space-y-1" key={item.value}>
                           <div className="flex items-center justify-between text-sm">
@@ -112,8 +116,13 @@ export default async function SurveyResultsPage({ params }: { params: Promise<{ 
                               labelLine={false}
                               outerRadius={80}
                             >
-                              {result.chartData.map((entry: any, idx: number) => (
-                                <Cell fill={COLORS[idx % COLORS.length]} key={`cell-${idx}`} />
+                              {/** biome-ignore lint/suspicious/noExplicitAny: lib controlled */}
+                              {result.chartData.map((_entry: any, idx: number) => (
+                                <Cell
+                                  fill={COLORS[idx % COLORS.length]}
+                                  // biome-ignore lint/suspicious/noArrayIndexKey: shadcn convention
+                                  key={`cell-${idx}`}
+                                />
                               ))}
                             </Pie>
                             <Tooltip />
@@ -146,6 +155,7 @@ export default async function SurveyResultsPage({ params }: { params: Promise<{ 
                 {result.type === 'checkbox' && (
                   <div className="space-y-4">
                     <div className="space-y-3">
+                      {/** biome-ignore lint/suspicious/noExplicitAny: lib controlled */}
                       {result.chartData.map((item: any) => (
                         <div className="space-y-1" key={item.value}>
                           <div className="flex items-center justify-between text-sm">

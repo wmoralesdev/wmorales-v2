@@ -16,17 +16,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Get initial user
-    authService.getUser().then((user) => {
-      setUser(user);
+    authService.getUser().then((user2) => {
+      setUser(user2);
       setLoading(false);
     });
 
-    // Listen for auth changes
     const {
       data: { subscription },
-    } = authService.onAuthStateChange((user) => {
-      setUser(user);
+    } = authService.onAuthStateChange((user2) => {
+      setUser(user2);
       setLoading(false);
     });
 

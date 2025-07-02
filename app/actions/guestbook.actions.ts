@@ -1,6 +1,7 @@
 'use server';
 
 import { openai } from '@ai-sdk/openai';
+import type { GuestbookEntry, GuestbookTicket } from '@prisma/client';
 import { generateObject } from 'ai';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
@@ -51,8 +52,7 @@ export async function generateColorPalette(mood: string): Promise<ColorPalette> 
     });
 
     return object;
-  } catch (error) {
-    console.error('Failed to generate colors:', error);
+  } catch (_error) {
     // Fallback colors
     return {
       primaryColor: '#8b5cf6',
@@ -158,7 +158,13 @@ export async function getAllTickets() {
 }
 
 // Update an existing guestbook entry with new message
-export async function updateGuestbookEntry(mood: string, message?: string) {
+export async function updateGuestbookEntry(
+  mood: string,
+  message?: string
+): Promise<{
+  entry: GuestbookEntry;
+  ticket: GuestbookTicket;
+}> {
   const supabase = await createClient();
   const {
     data: { user },
