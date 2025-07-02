@@ -1,6 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
+import { AnimatePresence, motion } from 'framer-motion';
 import { ArrowLeft, Github, Mail, Shield } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -36,6 +37,68 @@ export function LoginForm() {
       email: '',
     },
   });
+
+  // Animation variants
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.08,
+        delayChildren: 0.1,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: {
+        duration: 0.6,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+  };
+
+  const buttonVariants = {
+    rest: { scale: 1 },
+    hover: {
+      scale: 1.02,
+      transition: {
+        duration: 0.2,
+        type: 'spring' as const,
+        stiffness: 300,
+      },
+    },
+    tap: {
+      scale: 0.98,
+    },
+  };
+
+  const iconVariants = {
+    rest: { rotate: 0 },
+    hover: {
+      rotate: 15,
+      transition: {
+        duration: 0.3,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    },
+  };
+
+  const shieldVariants = {
+    animate: {
+      scale: [1, 1.05, 1],
+      rotate: [0, 5, -5, 0],
+      transition: {
+        duration: 3,
+        repeat: Number.POSITIVE_INFINITY,
+        repeatDelay: 2,
+      },
+    },
+  };
 
   const handleProviderSignIn = async (provider: 'github' | 'google') => {
     try {
@@ -76,95 +139,144 @@ export function LoginForm() {
 
   if (showOTPForm) {
     return (
-      <div className="space-y-6">
-        <div className="space-y-2 text-center">
-          <div className="mb-4 flex justify-center">
-            <div className="rounded-full bg-purple-500/20 p-3">
+      <motion.div animate="visible" className="space-y-6" initial="hidden" variants={containerVariants}>
+        <motion.div className="space-y-2 text-center" variants={itemVariants}>
+          <motion.div className="mb-4 flex justify-center" transition={{ duration: 0.2 }} whileHover={{ scale: 1.05 }}>
+            <motion.div animate="animate" className="rounded-full bg-purple-500/20 p-3" variants={shieldVariants}>
               <Shield className="h-8 w-8 text-purple-400" />
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
           <h1 className="font-semibold text-2xl tracking-tight">Enter verification code</h1>
           <p className="text-muted-foreground text-sm">
             We've sent a 6-digit code to <strong>{email}</strong>
           </p>
-        </div>
+        </motion.div>
 
-        <OTPForm email={email} onBack={handleBackToEmail} onSuccess={handleOTPSuccess} />
-      </div>
+        <motion.div variants={itemVariants}>
+          <OTPForm email={email} onBack={handleBackToEmail} onSuccess={handleOTPSuccess} />
+        </motion.div>
+      </motion.div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-2 text-center">
+    <motion.div animate="visible" className="space-y-6" initial="hidden" variants={containerVariants}>
+      <motion.div className="space-y-2 text-center" variants={itemVariants}>
         <h1 className="font-semibold text-2xl tracking-tight">Welcome back</h1>
         <p className="text-muted-foreground text-sm">Choose your preferred method to sign in</p>
-        {redirectUrl !== '/' && <p className="text-muted-foreground text-xs">You'll be redirected after signing in</p>}
-      </div>
-
-      <Tabs className="w-full" defaultValue="providers">
-        <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="providers">Quick Sign In</TabsTrigger>
-          <TabsTrigger value="email">Email Code</TabsTrigger>
-        </TabsList>
-
-        <TabsContent className="mt-6 space-y-4" value="providers">
-          <div className="space-y-3">
-            <Button
-              className="w-full"
-              disabled={isLoading}
-              onClick={() => handleProviderSignIn('github')}
-              variant="outline"
+        <AnimatePresence>
+          {redirectUrl !== '/' && (
+            <motion.p
+              animate={{ opacity: 1, height: 'auto' }}
+              className="text-muted-foreground text-xs"
+              exit={{ opacity: 0, height: 0 }}
+              initial={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3 }}
             >
-              <Github className="mr-2 h-4 w-4" />
-              Continue with GitHub
-            </Button>
+              You'll be redirected after signing in
+            </motion.p>
+          )}
+        </AnimatePresence>
+      </motion.div>
 
-            <Button
-              className="w-full"
-              disabled={isLoading}
-              onClick={() => handleProviderSignIn('google')}
-              variant="outline"
-            >
-              <Mail className="mr-2 h-4 w-4" />
-              Continue with Google
-            </Button>
-          </div>
-        </TabsContent>
+      <motion.div variants={itemVariants}>
+        <Tabs className="w-full" defaultValue="providers">
+          <TabsList className="grid w-full grid-cols-2">
+            <TabsTrigger value="providers">Quick Sign In</TabsTrigger>
+            <TabsTrigger value="email">Email Code</TabsTrigger>
+          </TabsList>
 
-        <TabsContent className="mt-6 space-y-4" value="email">
-          <Form {...form}>
-            <form className="space-y-4" onSubmit={form.handleSubmit(handleEmailSubmit)}>
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email address</FormLabel>
-                    <FormControl>
-                      <Input placeholder="your.email@example.com" type="email" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <Button className="w-full" disabled={isLoading} type="submit">
-                {isLoading ? 'Sending...' : 'Send verification code'}
-              </Button>
-            </form>
-          </Form>
-        </TabsContent>
-      </Tabs>
+          <TabsContent className="mt-6 space-y-4" value="providers">
+            <motion.div animate="visible" className="space-y-3" initial="hidden" variants={containerVariants}>
+              <motion.div initial="rest" variants={buttonVariants} whileHover="hover" whileTap="tap">
+                <Button
+                  className="w-full"
+                  disabled={isLoading}
+                  onClick={() => handleProviderSignIn('github')}
+                  variant="outline"
+                >
+                  <motion.div className="mr-2" variants={iconVariants}>
+                    <Github className="h-4 w-4" />
+                  </motion.div>
+                  Continue with GitHub
+                </Button>
+              </motion.div>
 
-      <div className="text-center">
-        <Link
-          className="inline-flex items-center text-muted-foreground text-sm transition-colors hover:text-foreground"
-          href="/"
-        >
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          Back to home
-        </Link>
-      </div>
-    </div>
+              <motion.div initial="rest" variants={buttonVariants} whileHover="hover" whileTap="tap">
+                <Button
+                  className="w-full"
+                  disabled={isLoading}
+                  onClick={() => handleProviderSignIn('google')}
+                  variant="outline"
+                >
+                  <motion.div className="mr-2" variants={iconVariants}>
+                    <Mail className="h-4 w-4" />
+                  </motion.div>
+                  Continue with Google
+                </Button>
+              </motion.div>
+            </motion.div>
+          </TabsContent>
+
+          <TabsContent className="mt-6 space-y-4" value="email">
+            <Form {...form}>
+              <motion.form
+                animate="visible"
+                className="space-y-4"
+                initial="hidden"
+                onSubmit={form.handleSubmit(handleEmailSubmit)}
+                variants={containerVariants}
+              >
+                <motion.div variants={itemVariants}>
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Email address</FormLabel>
+                        <FormControl>
+                          <motion.div transition={{ duration: 0.2 }} whileFocus={{ scale: 1.02 }}>
+                            <Input placeholder="your.email@example.com" type="email" {...field} />
+                          </motion.div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </motion.div>
+                <motion.div initial="rest" variants={buttonVariants} whileHover="hover" whileTap="tap">
+                  <Button className="w-full" disabled={isLoading} type="submit">
+                    {isLoading ? (
+                      <motion.span
+                        animate={{ opacity: [1, 0.5, 1] }}
+                        transition={{ duration: 1.5, repeat: Number.POSITIVE_INFINITY }}
+                      >
+                        Sending...
+                      </motion.span>
+                    ) : (
+                      'Send verification code'
+                    )}
+                  </Button>
+                </motion.div>
+              </motion.form>
+            </Form>
+          </TabsContent>
+        </Tabs>
+      </motion.div>
+
+      <motion.div className="text-center" variants={itemVariants}>
+        <motion.div className="inline-block" transition={{ duration: 0.2 }} whileHover={{ x: -5 }}>
+          <Link
+            className="inline-flex items-center text-muted-foreground text-sm transition-colors hover:text-foreground"
+            href="/"
+          >
+            <motion.div className="mr-2" transition={{ duration: 0.2 }} whileHover={{ x: -2 }}>
+              <ArrowLeft className="h-4 w-4" />
+            </motion.div>
+            Back to home
+          </Link>
+        </motion.div>
+      </motion.div>
+    </motion.div>
   );
 }

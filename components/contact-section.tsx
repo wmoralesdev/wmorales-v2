@@ -126,7 +126,7 @@ export function ContactSection() {
   };
 
   return (
-    <section className="px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+    <section className="min-h-[75vh] px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
       <div className="mx-auto max-w-4xl">
         <motion.div
           className="mb-12 text-center"

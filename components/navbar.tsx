@@ -1,27 +1,22 @@
 'use client';
 
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
-import { Code2, Menu } from 'lucide-react';
+import { Code2, Menu, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 
 import { SignInButton } from '@/components/auth/sign-in-button';
 import { Button } from '@/components/ui/button';
-import { NavigationMenuLink } from '@/components/ui/navigation-menu';
-import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-
-function _ListItem({ title, children, href, ...props }: React.ComponentPropsWithoutRef<'li'> & { href: string }) {
-  return (
-    <li {...props}>
-      <NavigationMenuLink asChild>
-        <Link href={href}>
-          <div className="font-medium text-sm leading-none">{title}</div>
-          <p className="line-clamp-2 text-muted-foreground text-sm leading-snug">{children}</p>
-        </Link>
-      </NavigationMenuLink>
-    </li>
-  );
-}
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '@/components/ui/navigation-menu';
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { cn } from '@/lib/utils';
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -33,6 +28,24 @@ export function Navbar() {
     { name: 'About', href: '#about' },
     { name: 'Experience', href: '#experience' },
     { name: 'Contact', href: '#contact' },
+  ];
+
+  const otherPages = [
+    {
+      title: 'Guestbook',
+      href: '/guestbook',
+      description: 'Leave a message and see what others have written',
+    },
+    {
+      title: 'Cursor Ambassador',
+      href: '/cursor',
+      description: 'My journey as a Cursor AI ambassador',
+    },
+    {
+      title: 'Surveys',
+      href: '/surveys',
+      description: 'Participate in quick surveys and polls',
+    },
   ];
 
   // Handle scroll for navbar background
@@ -122,12 +135,28 @@ export function Navbar() {
     },
   };
 
+  const dropdownItemVariants: Variants = {
+    hidden: { opacity: 0, y: -10 },
+    visible: (i: number) => ({
+      opacity: 1,
+      y: 0,
+      transition: {
+        delay: i * 0.05,
+        duration: 0.3,
+        ease: [0.25, 0.46, 0.45, 0.94],
+      },
+    }),
+  };
+
   return (
     <motion.nav
       animate="visible"
-      className={`fixed top-0 right-0 left-0 z-50 transition-all duration-300 ${
-        scrolled ? 'bg-background/95 shadow-lg backdrop-blur-md' : 'bg-background/80 backdrop-blur-md'
-      } border-b`}
+      className={cn(
+        'fixed top-0 right-0 left-0 z-50 transition-all duration-300 border-b',
+        scrolled
+          ? 'bg-background/95 shadow-lg backdrop-blur-md'
+          : 'bg-background/80 backdrop-blur-md',
+      )}
       initial="hidden"
       variants={navVariants}
     >
@@ -164,9 +193,8 @@ export function Navbar() {
                 variants={menuItemVariants}
               >
                 <Button
-                  className={`relative font-medium text-sm transition-colors ${
-                    activeSection === item.href.slice(1) ? 'text-purple-400' : 'hover:text-purple-400'
-                  }`}
+                  className={`relative font-medium text-sm transition-colors ${activeSection === item.href.slice(1) ? 'text-purple-400' : 'hover:text-purple-400'
+                    }`}
                   onClick={() => scrollToSection(item.href)}
                   variant="ghost"
                 >
@@ -192,12 +220,73 @@ export function Navbar() {
                 </Button>
               </motion.div>
             ))}
+
+            {/* Other Pages Navigation Menu */}
+            <motion.div
+              animate="visible"
+              className="relative"
+              custom={navItems.length}
+              initial="hidden"
+              variants={menuItemVariants}
+            >
+              <NavigationMenu>
+                <NavigationMenuList>
+                  <NavigationMenuItem>
+                    <NavigationMenuTrigger className="bg-transparent hover:bg-accent hover:text-purple-400">
+                      <motion.div
+                        className="flex items-center gap-1"
+                        transition={{ duration: 0.2 }}
+                        whileHover={{ scale: 1.05 }}
+                      >
+                        <Sparkles className="h-4 w-4" />
+                        <span>More</span>
+                      </motion.div>
+                    </NavigationMenuTrigger>
+                    <NavigationMenuContent>
+                      <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-[.75fr_1fr]">
+                        {otherPages.map((page, index) => (
+                          <motion.li
+                            animate="visible"
+                            custom={index}
+                            initial="hidden"
+                            key={page.title}
+                            variants={dropdownItemVariants}
+                          >
+                            <NavigationMenuLink asChild>
+                              <Link
+                                className={cn(
+                                  'block select-none space-y-1 rounded-md p-3 leading-none no-underline outline-none transition-colors hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground'
+                                )}
+                                href={page.href}
+                              >
+                                <motion.div transition={{ duration: 0.2 }} whileHover={{ x: 5 }}>
+                                  <div className="font-medium text-purple-400 text-sm leading-none">{page.title}</div>
+                                  <p className="line-clamp-2 text-muted-foreground text-sm leading-snug">
+                                    {page.description}
+                                  </p>
+                                </motion.div>
+                              </Link>
+                            </NavigationMenuLink>
+                          </motion.li>
+                        ))}
+                      </ul>
+                    </NavigationMenuContent>
+                  </NavigationMenuItem>
+                </NavigationMenuList>
+              </NavigationMenu>
+            </motion.div>
+
+            {/* Sign In Button */}
+            <motion.div animate="visible" custom={navItems.length + 1} initial="hidden" variants={menuItemVariants}>
+              <SignInButton variant="ghost" />
+            </motion.div>
           </div>
 
           {/* Mobile Navigation */}
           <div className="flex items-center gap-2 md:hidden">
             <SignInButton size="sm" variant="ghost" />
             <Sheet onOpenChange={setIsOpen} open={isOpen}>
+              <SheetTitle className="sr-only">Menu</SheetTitle>
               <SheetTrigger asChild>
                 <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                   <Button size="sm" variant="ghost">
@@ -226,9 +315,8 @@ export function Navbar() {
                           variants={menuItemVariants}
                         >
                           <Button
-                            className={`w-full justify-start text-left ${
-                              activeSection === item.href.slice(1) ? 'bg-purple-400/10 text-purple-400' : ''
-                            }`}
+                            className={`w-full justify-start text-left ${activeSection === item.href.slice(1) ? 'bg-purple-400/10 text-purple-400' : ''
+                              }`}
                             onClick={() => scrollToSection(item.href)}
                             variant="ghost"
                           >
@@ -238,6 +326,40 @@ export function Navbar() {
                           </Button>
                         </motion.div>
                       ))}
+
+                      {/* Separator */}
+                      <div className="my-2 h-px bg-border" />
+
+                      {/* Other Pages in Mobile */}
+                      <div className="space-y-1">
+                        <p className="px-3 font-medium text-muted-foreground text-xs">Other Pages</p>
+                        {otherPages.map((page, index) => (
+                          <motion.div
+                            animate="visible"
+                            custom={navItems.length + index}
+                            initial="hidden"
+                            key={page.title}
+                            variants={menuItemVariants}
+                          >
+                            <Link href={page.href}>
+                              <Button
+                                className="w-full justify-start text-left"
+                                onClick={() => setIsOpen(false)}
+                                variant="ghost"
+                              >
+                                <motion.span
+                                  className="flex items-center gap-2"
+                                  transition={{ duration: 0.2 }}
+                                  whileHover={{ x: 5 }}
+                                >
+                                  <Sparkles className="h-4 w-4 text-purple-400" />
+                                  {page.title}
+                                </motion.span>
+                              </Button>
+                            </Link>
+                          </motion.div>
+                        ))}
+                      </div>
                     </motion.div>
                   </SheetContent>
                 )}

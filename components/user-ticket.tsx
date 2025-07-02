@@ -3,7 +3,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Badge } from '@/components/ui/badge';
 import { Card } from '@/components/ui/card';
 
-interface UserTicketProps {
+type UserTicketProps = {
   user: {
     id: string;
     name: string;
@@ -16,7 +16,7 @@ interface UserTicketProps {
     secondary: string;
     accent: string;
   };
-}
+};
 
 export function UserTicket({ user, colors }: UserTicketProps) {
   // Default colors if no custom colors provided
