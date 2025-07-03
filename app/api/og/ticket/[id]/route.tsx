@@ -20,6 +20,12 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
     const ticket = await response.json();
     console.log('OG: ticket data', ticket);
 
+    // Validate required fields
+    if (!(ticket.primaryColor && ticket.userName && ticket.ticketNumber)) {
+      console.log('OG: missing required ticket fields');
+      return new Response('Invalid ticket data', { status: 400 });
+    }
+
     return new ImageResponse(
       <div
         style={{
@@ -303,6 +309,9 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
       {
         width: 1200,
         height: 630,
+        headers: {
+          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+        },
       }
     );
   } catch (error) {

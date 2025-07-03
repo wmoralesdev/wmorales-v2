@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+
+# Allow OG image generation routes for social media crawlers
+Allow: /api/og/*
+
+Sitemap: https://wmorales-v2.vercel.app/sitemap.xml 

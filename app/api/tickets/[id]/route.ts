@@ -1,17 +1,32 @@
-import { NextResponse } from 'next/server';
+import { type NextRequest, NextResponse } from 'next/server';
 import { getTicketById } from '@/app/actions/guestbook.actions';
 
-export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
+export async function GET(_request: NextRequest, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params;
+
     const ticket = await getTicketById(id);
 
     if (!ticket) {
       return NextResponse.json({ error: 'Ticket not found' }, { status: 404 });
     }
 
-    return NextResponse.json(ticket);
-  } catch (_error) {
-    return NextResponse.json({ error: 'Failed to fetch ticket' }, { status: 500 });
+    return NextResponse.json({
+      id: ticket.id,
+      ticketNumber: ticket.ticketNumber,
+      userName: ticket.userName,
+      userEmail: ticket.userEmail,
+      userAvatar: ticket.userAvatar,
+      userProvider: ticket.userProvider,
+      primaryColor: ticket.primaryColor,
+      secondaryColor: ticket.secondaryColor,
+      accentColor: ticket.accentColor,
+      backgroundColor: ticket.backgroundColor,
+      createdAt: ticket.createdAt,
+      entry: ticket.entry,
+    });
+  } catch (error) {
+    console.error('Error fetching ticket:', error);
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
