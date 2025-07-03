@@ -1,9 +1,103 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { Coffee, Github, Instagram, Linkedin, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+// Animation variants
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 40 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.7,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
+const cardVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.95, y: 30 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
+const cardHoverVariants: Variants = {
+  rest: {
+    scale: 1,
+    y: 0,
+    boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
+  },
+  hover: {
+    scale: 1.02,
+    y: -5,
+    boxShadow: '0 20px 40px rgba(168, 85, 247, 0.15)',
+    transition: {
+      duration: 0.3,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
+const iconVariants: Variants = {
+  rest: { rotate: 0, scale: 1 },
+  hover: {
+    rotate: 12,
+    scale: 1.2,
+    transition: {
+      duration: 0.3,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
+const socialIconVariants: Variants = {
+  rest: { scale: 1, rotate: 0 },
+  hover: {
+    scale: 1.2,
+    rotate: 360,
+    transition: {
+      duration: 0.5,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+  tap: {
+    scale: 0.9,
+  },
+};
+
+const buttonVariants: Variants = {
+  rest: { scale: 1, boxShadow: '0 2px 10px rgba(168, 85, 247, 0.2)' },
+  hover: {
+    scale: 1.05,
+    boxShadow: '0 10px 30px rgba(168, 85, 247, 0.3)',
+    transition: {
+      duration: 0.3,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+  tap: { scale: 0.95 },
+};
 
 export function ContactSection() {
   const socialLinks = [
@@ -29,100 +123,6 @@ export function ContactSection() {
 
   const handleEmailClick = () => {
     window.location.href = 'mailto:walterrafael26@gmail.com';
-  };
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.7,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-  };
-
-  const cardVariants = {
-    hidden: { opacity: 0, scale: 0.95, y: 30 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-  };
-
-  const cardHoverVariants = {
-    rest: {
-      scale: 1,
-      y: 0,
-      boxShadow: '0 2px 12px rgba(0, 0, 0, 0.1)',
-    },
-    hover: {
-      scale: 1.02,
-      y: -5,
-      boxShadow: '0 20px 40px rgba(168, 85, 247, 0.15)',
-      transition: {
-        duration: 0.3,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-  };
-
-  const iconVariants = {
-    rest: { rotate: 0, scale: 1 },
-    hover: {
-      rotate: 12,
-      scale: 1.2,
-      transition: {
-        duration: 0.3,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-  };
-
-  const socialIconVariants = {
-    rest: { scale: 1, rotate: 0 },
-    hover: {
-      scale: 1.2,
-      rotate: 360,
-      transition: {
-        duration: 0.5,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-    tap: {
-      scale: 0.9,
-    },
-  };
-
-  const buttonVariants = {
-    rest: { scale: 1, boxShadow: '0 2px 10px rgba(168, 85, 247, 0.2)' },
-    hover: {
-      scale: 1.05,
-      boxShadow: '0 10px 30px rgba(168, 85, 247, 0.3)',
-      transition: {
-        duration: 0.3,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-    tap: { scale: 0.95 },
   };
 
   return (

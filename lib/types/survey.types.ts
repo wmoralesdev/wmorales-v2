@@ -78,10 +78,12 @@ export type Section = {
   questions: Question[];
 };
 
-export type SurveyWithSections = Survey & {
-  sections: (SurveySection & {
-    questions: (SurveyQuestion & {
-      options: SurveyQuestionOption[];
-    })[];
+export type SurveySectionWithQuestions = SurveySection & {
+  questions: (SurveyQuestion & {
+    options: SurveyQuestionOption[];
   })[];
+};
+
+export type SurveyWithSections = Survey & {
+  sections: SurveySectionWithQuestions[];
 };

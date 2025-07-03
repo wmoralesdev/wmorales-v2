@@ -1,76 +1,76 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { Code2 } from 'lucide-react';
 import Link from 'next/link';
 import { LoginForm } from '@/components/auth/login-form';
 
+// Animation variants from animations.md
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
+const badgeVariants: Variants = {
+  rest: { scale: 1, rotate: 0 },
+  hover: {
+    scale: 1.1,
+    rotate: 2,
+    transition: {
+      duration: 0.2,
+      type: 'spring' as const,
+      stiffness: 300,
+    },
+  },
+  tap: {
+    scale: 0.95,
+    rotate: -2,
+  },
+};
+
+const orbVariants: Variants = {
+  animate: {
+    scale: [1, 1.1, 1],
+    opacity: [0.6, 0.8, 0.6],
+    transition: {
+      duration: 8,
+      repeat: Number.POSITIVE_INFINITY,
+      ease: 'easeInOut',
+    },
+  },
+};
+
+const iconRotateVariants: Variants = {
+  rest: { rotate: 0, scale: 1 },
+  hover: {
+    rotate: 360,
+    scale: 1.2,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
 export function LoginPageContent() {
-  // Animation variants from animations.md
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-  };
-
-  const badgeVariants = {
-    rest: { scale: 1, rotate: 0 },
-    hover: {
-      scale: 1.1,
-      rotate: 2,
-      transition: {
-        duration: 0.2,
-        type: 'spring' as const,
-        stiffness: 300,
-      },
-    },
-    tap: {
-      scale: 0.95,
-      rotate: -2,
-    },
-  };
-
-  const orbVariants = {
-    animate: {
-      scale: [1, 1.1, 1],
-      opacity: [0.6, 0.8, 0.6],
-      transition: {
-        duration: 8,
-        repeat: Number.POSITIVE_INFINITY,
-        ease: 'easeInOut',
-      },
-    },
-  };
-
-  const iconRotateVariants = {
-    rest: { rotate: 0, scale: 1 },
-    hover: {
-      rotate: 360,
-      scale: 1.2,
-      transition: {
-        duration: 0.6,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-  };
-
   return (
     <div className="grid min-h-svh lg:grid-cols-2">
       <motion.div

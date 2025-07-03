@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { ArrowLeft } from 'lucide-react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -24,6 +24,58 @@ type OTPFormProps = {
   onBack: () => void;
 };
 
+// Animation variants
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.5,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
+const buttonVariants: Variants = {
+  rest: { scale: 1 },
+  hover: {
+    scale: 1.02,
+    transition: {
+      duration: 0.2,
+      type: 'spring' as const,
+      stiffness: 300,
+    },
+  },
+  tap: {
+    scale: 0.98,
+  },
+};
+
+const slotVariants: Variants = {
+  hidden: { scale: 0, opacity: 0 },
+  visible: (i: number) => ({
+    scale: 1,
+    opacity: 1,
+    transition: {
+      delay: i * 0.1,
+      duration: 0.3,
+      type: 'spring' as const,
+      stiffness: 200,
+    },
+  }),
+};
+
 export function OTPForm({ email, onSuccess, onBack }: OTPFormProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isResending, setIsResending] = useState(false);
@@ -34,58 +86,6 @@ export function OTPForm({ email, onSuccess, onBack }: OTPFormProps) {
       code: '',
     },
   });
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.5,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-  };
-
-  const buttonVariants = {
-    rest: { scale: 1 },
-    hover: {
-      scale: 1.02,
-      transition: {
-        duration: 0.2,
-        type: 'spring' as const,
-        stiffness: 300,
-      },
-    },
-    tap: {
-      scale: 0.98,
-    },
-  };
-
-  const slotVariants = {
-    hidden: { scale: 0, opacity: 0 },
-    visible: (i: number) => ({
-      scale: 1,
-      opacity: 1,
-      transition: {
-        delay: i * 0.1,
-        duration: 0.3,
-        type: 'spring' as const,
-        stiffness: 200,
-      },
-    }),
-  };
 
   const handleSubmit = async (data: OTPFormData) => {
     try {

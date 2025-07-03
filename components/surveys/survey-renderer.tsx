@@ -13,17 +13,11 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form } from '@/components/ui/form';
 import { Progress } from '@/components/ui/progress';
-import type { Option, Question, Section, Survey } from '@/lib/types/survey.types';
+import type { Question, SurveyQuestion, SurveySection, SurveyWithSections } from '@/lib/types/survey.types';
 import { QuestionRenderer } from './question-renderer';
 
 type SurveyRendererProps = {
-  survey: Survey & {
-    sections: (Section & {
-      questions: (Question & {
-        options?: Option[];
-      })[];
-    })[];
-  };
+  survey: SurveyWithSections;
 };
 
 export function SurveyRenderer({ survey }: SurveyRendererProps) {
@@ -35,7 +29,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [responseId, setResponseId] = useState<string | null>(null);
 
-  const getCurrentSection = (): Section => {
+  const getCurrentSection = (): SurveySection => {
     if (currentSectionIndex === 0) {
       return survey.sections[0];
     }
@@ -47,7 +41,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
       return survey.sections[currentSectionIndex] || survey.sections.at(-1);
     }
 
-    return section as Section;
+    return section;
   };
 
   const currentSection = getCurrentSection();
@@ -55,7 +49,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   const progress = ((currentSectionIndex + 1) / totalSections) * 100;
 
   // Create dynamic schema based on current section questions
-  const getQuestionSchema = (question: Question): z.ZodTypeAny => {
+  const getQuestionSchema = (question: SurveyQuestion): z.ZodTypeAny => {
     const schemas = {
       text: () => (question.required ? z.string().min(1, 'This field is required') : z.string().optional()),
       textarea: () => (question.required ? z.string().min(1, 'This field is required') : z.string().optional()),
@@ -70,7 +64,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
     return schemas[question.type]?.() ?? z.string().optional();
   };
 
-  const createSchema = (questions: Question[]) => {
+  const createSchema = (questions: SurveyQuestion[]) => {
     const schemaObject = questions.reduce(
       (acc, question) => {
         acc[question.id] = getQuestionSchema(question);
@@ -83,7 +77,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   };
 
   const form = useForm({
-    resolver: zodResolver(createSchema(currentSection.questions)),
+    resolver: zodResolver(createSchema(currentSection.questions ?? [])),
     defaultValues: answers,
   });
 
@@ -95,7 +89,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   // biome-ignore lint/suspicious/noExplicitAny: form data is dynamic based on questions
   const findNextPath = (data: Record<string, any>): string | null => {
     for (const [questionId, answer] of Object.entries(data)) {
-      const question = currentSection.questions.find((q) => q.id === questionId);
+      const question = currentSection.questions?.find((q) => q.id === questionId);
       const selectedOption = question?.options?.find((opt) => opt.value === answer);
       if (selectedOption?.path) {
         return selectedOption.path;
@@ -210,14 +204,14 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
             <CardContent>
               <Form {...form}>
                 <form className="space-y-6" onSubmit={form.handleSubmit(handleNext)}>
-                  {currentSection.questions.map((question) => (
+                  {currentSection.questions?.map((question) => (
                     <motion.div
                       animate={{ opacity: 1, y: 0 }}
                       initial={{ opacity: 0, y: 10 }}
                       key={question.id}
                       transition={{ delay: 0.1 }}
                     >
-                      <QuestionRenderer form={form} question={question} />
+                      <QuestionRenderer form={form} question={question as unknown as Question} />
                     </motion.div>
                   ))}
 

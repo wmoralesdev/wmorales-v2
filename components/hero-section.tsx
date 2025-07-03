@@ -1,96 +1,96 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { ChevronDown, Sparkle } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+
+// Animation variants
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.2,
+      delayChildren: 0.3,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 50 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.8,
+      ease: 'easeOut',
+    },
+  },
+};
+
+const titleVariants: Variants = {
+  hidden: { opacity: 0, scale: 0.8 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: {
+      duration: 1,
+      ease: 'easeOut',
+    },
+  },
+};
+
+const buttonVariants: Variants = {
+  rest: { scale: 1, boxShadow: '0 10px 25px rgba(168, 85, 247, 0.25)' },
+  hover: {
+    scale: 1.05,
+    boxShadow: '0 20px 40px rgba(168, 85, 247, 0.4)',
+    transition: {
+      duration: 0.3,
+      ease: 'easeOut',
+    },
+  },
+  tap: { scale: 0.95 },
+};
+
+const sparkleVariants: Variants = {
+  animate: {
+    rotate: 360,
+    transition: {
+      duration: 4,
+      repeat: Number.POSITIVE_INFINITY,
+      ease: 'linear',
+    },
+  },
+};
+
+const particleVariants: Variants = {
+  animate: {
+    y: [-10, 10, -10],
+    x: [-5, 5, -5],
+    transition: {
+      duration: 6,
+      repeat: Number.POSITIVE_INFINITY,
+      ease: 'easeInOut',
+    },
+  },
+};
+
+const orbVariants: Variants = {
+  animate: {
+    scale: [1, 1.1, 1],
+    opacity: [0.6, 0.8, 0.6],
+    transition: {
+      duration: 8,
+      repeat: Number.POSITIVE_INFINITY,
+      ease: 'easeInOut',
+    },
+  },
+};
 
 export function HeroSection() {
   const scrollToAbout = () => {
     document.querySelector('#about')?.scrollIntoView({ behavior: 'smooth' });
-  };
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.2,
-        delayChildren: 0.3,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 50 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.8,
-        ease: 'easeOut',
-      },
-    },
-  };
-
-  const titleVariants = {
-    hidden: { opacity: 0, scale: 0.8 },
-    visible: {
-      opacity: 1,
-      scale: 1,
-      transition: {
-        duration: 1,
-        ease: 'easeOut',
-      },
-    },
-  };
-
-  const buttonVariants = {
-    rest: { scale: 1, boxShadow: '0 10px 25px rgba(168, 85, 247, 0.25)' },
-    hover: {
-      scale: 1.05,
-      boxShadow: '0 20px 40px rgba(168, 85, 247, 0.4)',
-      transition: {
-        duration: 0.3,
-        ease: 'easeOut',
-      },
-    },
-    tap: { scale: 0.95 },
-  };
-
-  const sparkleVariants = {
-    animate: {
-      rotate: 360,
-      transition: {
-        duration: 4,
-        repeat: Number.POSITIVE_INFINITY,
-        ease: 'linear',
-      },
-    },
-  };
-
-  const particleVariants = {
-    animate: {
-      y: [-10, 10, -10],
-      x: [-5, 5, -5],
-      transition: {
-        duration: 6,
-        repeat: Number.POSITIVE_INFINITY,
-        ease: 'easeInOut',
-      },
-    },
-  };
-
-  const orbVariants = {
-    animate: {
-      scale: [1, 1.1, 1],
-      opacity: [0.6, 0.8, 0.6],
-      transition: {
-        duration: 8,
-        repeat: Number.POSITIVE_INFINITY,
-        ease: 'easeInOut',
-      },
-    },
   };
 
   return (

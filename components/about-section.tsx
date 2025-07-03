@@ -1,9 +1,73 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, type Variants } from 'framer-motion';
 import { Code, Globe, GraduationCap, Heart } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+
+// Animation variants
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+      delayChildren: 0.2,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 30 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: 'easeOut',
+    },
+  },
+};
+
+const cardHoverVariants: Variants = {
+  rest: { scale: 1, y: 0 },
+  hover: {
+    scale: 1.05,
+    y: -5,
+    transition: {
+      duration: 0.3,
+      ease: 'easeOut',
+    },
+  },
+};
+
+const skillBadgeVariants: Variants = {
+  rest: { scale: 1, rotate: 0 },
+  hover: {
+    scale: 1.1,
+    rotate: 2,
+    transition: {
+      duration: 0.2,
+      ease: 'easeOut',
+    },
+  },
+  tap: {
+    scale: 0.95,
+    rotate: -2,
+  },
+};
+
+const iconVariants: Variants = {
+  rest: { rotate: 0, scale: 1 },
+  hover: {
+    rotate: 360,
+    scale: 1.2,
+    transition: {
+      duration: 0.6,
+      ease: 'easeInOut',
+    },
+  },
+};
 
 export function AboutSection() {
   const skills = [
@@ -33,70 +97,6 @@ export function AboutSection() {
     { icon: Code, label: 'Years of experience', value: '5+' },
     { icon: Globe, label: 'Countries', value: '10+' },
   ];
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.1,
-        delayChildren: 0.2,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 30 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: 'easeOut',
-      },
-    },
-  };
-
-  const cardHoverVariants = {
-    rest: { scale: 1, y: 0 },
-    hover: {
-      scale: 1.05,
-      y: -5,
-      transition: {
-        duration: 0.3,
-        ease: 'easeOut',
-      },
-    },
-  };
-
-  const skillBadgeVariants = {
-    rest: { scale: 1, rotate: 0 },
-    hover: {
-      scale: 1.1,
-      rotate: 2,
-      transition: {
-        duration: 0.2,
-        ease: 'easeOut',
-      },
-    },
-    tap: {
-      scale: 0.95,
-      rotate: -2,
-    },
-  };
-
-  const iconVariants = {
-    rest: { rotate: 0, scale: 1 },
-    hover: {
-      rotate: 360,
-      scale: 1.2,
-      transition: {
-        duration: 0.6,
-        ease: 'easeInOut',
-      },
-    },
-  };
 
   return (
     <section className="px-4 py-16 sm:px-6 sm:py-24 lg:px-8">

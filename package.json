@@ -16,6 +16,11 @@
     "seed": "tsx prisma/seed.ts",
     "seed:poll": "tsx prisma/seed-poll.ts"
   },
+  "pnpm": {
+    "overrides": {
+      "react-is": "^19.0.0-rc-69d4b800-20241021"
+    }
+  },
   "dependencies": {
     "@ai-sdk/openai": "^1.3.22",
     "@hookform/resolvers": "^5.1.1",

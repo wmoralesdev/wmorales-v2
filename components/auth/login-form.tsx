@@ -1,7 +1,7 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { AnimatePresence, motion } from 'framer-motion';
+import { AnimatePresence, motion, type Variants } from 'framer-motion';
 import { ArrowLeft, Github, Mail, Shield } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
@@ -22,6 +22,68 @@ const emailSchema = z.object({
 
 type EmailFormData = z.infer<typeof emailSchema>;
 
+// Animation variants
+const containerVariants: Variants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.08,
+      delayChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: {
+      duration: 0.6,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
+const buttonVariants: Variants = {
+  rest: { scale: 1 },
+  hover: {
+    scale: 1.02,
+    transition: {
+      duration: 0.2,
+      type: 'spring' as const,
+      stiffness: 300,
+    },
+  },
+  tap: {
+    scale: 0.98,
+  },
+};
+
+const iconVariants: Variants = {
+  rest: { rotate: 0 },
+  hover: {
+    rotate: 15,
+    transition: {
+      duration: 0.3,
+      ease: [0.25, 0.46, 0.45, 0.94],
+    },
+  },
+};
+
+const shieldVariants: Variants = {
+  animate: {
+    scale: [1, 1.05, 1],
+    rotate: [0, 5, -5, 0],
+    transition: {
+      duration: 3,
+      repeat: Number.POSITIVE_INFINITY,
+      repeatDelay: 2,
+    },
+  },
+};
+
 export function LoginForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -37,68 +99,6 @@ export function LoginForm() {
       email: '',
     },
   });
-
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: {
-        staggerChildren: 0.08,
-        delayChildren: 0.1,
-      },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: {
-        duration: 0.6,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-  };
-
-  const buttonVariants = {
-    rest: { scale: 1 },
-    hover: {
-      scale: 1.02,
-      transition: {
-        duration: 0.2,
-        type: 'spring' as const,
-        stiffness: 300,
-      },
-    },
-    tap: {
-      scale: 0.98,
-    },
-  };
-
-  const iconVariants = {
-    rest: { rotate: 0 },
-    hover: {
-      rotate: 15,
-      transition: {
-        duration: 0.3,
-        ease: [0.25, 0.46, 0.45, 0.94],
-      },
-    },
-  };
-
-  const shieldVariants = {
-    animate: {
-      scale: [1, 1.05, 1],
-      rotate: [0, 5, -5, 0],
-      transition: {
-        duration: 3,
-        repeat: Number.POSITIVE_INFINITY,
-        repeatDelay: 2,
-      },
-    },
-  };
 
   const handleProviderSignIn = async (provider: 'github' | 'google') => {
     try {
