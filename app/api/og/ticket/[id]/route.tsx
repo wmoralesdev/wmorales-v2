@@ -92,7 +92,7 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
               height: '2px',
               borderTop: '2px dashed #3f3f46',
             }}
-            tw="mx-12 relative"
+            tw="mx-12 relative flex"
           >
             {/* Left hole */}
             <div
@@ -136,6 +136,7 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
             <div tw="flex">
               {[...new Array(6)].map((_, i) => (
                 <div
+                  // biome-ignore lint/suspicious/noArrayIndexKey: index will stay constant
                   key={`pattern-${i}`}
                   style={{
                     height: `${40 - i * 5}px`,
