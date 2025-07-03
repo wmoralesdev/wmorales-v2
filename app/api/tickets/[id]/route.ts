@@ -26,7 +26,6 @@ export async function GET(_request: NextRequest, context: { params: Promise<{ id
       entry: ticket.entry,
     });
   } catch (error) {
-    console.error('Error fetching ticket:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }
