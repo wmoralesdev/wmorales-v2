@@ -5,16 +5,20 @@ export const runtime = 'edge';
 export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await context.params;
+    console.log('OG: ticket id', id);
 
     // Fetch ticket data from a regular API endpoint
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
     const response = await fetch(`${baseUrl}/api/tickets/${id}`);
+    console.log('OG: fetch status', response.status);
 
     if (!response.ok) {
+      console.log('OG: ticket not found');
       return new Response('Ticket not found', { status: 404 });
     }
 
     const ticket = await response.json();
+    console.log('OG: ticket data', ticket);
 
     return new ImageResponse(
       <div
@@ -301,7 +305,8 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
         height: 630,
       }
     );
-  } catch (_error) {
+  } catch (error) {
+    console.error('OG: error', error);
     return new Response('Failed to generate image', { status: 500 });
   }
 }
