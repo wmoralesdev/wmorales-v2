@@ -25,7 +25,7 @@ export async function GET(_request: NextRequest, context: { params: Promise<{ id
       createdAt: ticket.createdAt,
       entry: ticket.entry,
     });
-  } catch (error) {
+  } catch {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

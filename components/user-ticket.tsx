@@ -46,6 +46,14 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
   const ticketColors = getTicketColors(colors);
   const isSmall = scale === 'small';
 
+  const generateKeyFromColors = () => {
+    if (!colors) {
+      return ticketNumber || '';
+    };
+
+    return `${Object.values(colors).join('-')}-${ticketNumber || ''}`;
+  };
+
   return (
     <div className="flex w-full justify-center">
       <div className="relative w-full max-w-[600px]">
@@ -159,9 +167,12 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
                   <div className="flex items-baseline gap-3">
                     <span
                       className={`font-bold font-mono ${isSmall ? 'text-2xl' : 'text-3xl'}`}
+                      key={generateKeyFromColors()}
                       style={{
                         background: `linear-gradient(to right, ${ticketColors.primary}, ${ticketColors.secondary})`,
+                        backgroundClip: 'text',
                         WebkitBackgroundClip: 'text',
+                        color: 'transparent',
                         WebkitTextFillColor: 'transparent',
                       }}
                     >
