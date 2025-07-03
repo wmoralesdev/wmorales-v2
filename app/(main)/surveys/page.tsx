@@ -64,7 +64,7 @@ export default function SurveysPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="mb-2 font-bold text-4xl">Active surveys</h1>
-        <p className="text-muted-foreground">Participate in our surveys to help shape the future of our products</p>
+        <p className="text-muted-foreground">Participate in our surveys to help shape the future of our community</p>
       </div>
 
       <Suspense

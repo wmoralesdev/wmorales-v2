@@ -24,6 +24,9 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
           height: '100%',
           background: '#0a0a0a',
           position: 'relative',
+          padding: '60px',
+          alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         {/* Background Pattern */}
@@ -34,78 +37,148 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
             left: 0,
             right: 0,
             bottom: 0,
-            backgroundImage: `linear-gradient(to right, ${ticket.primaryColor}20, ${ticket.secondaryColor}20)`,
+            opacity: 0.05,
+            backgroundImage: `linear-gradient(${ticket.primaryColor} 1px, transparent 1px), linear-gradient(90deg, ${ticket.primaryColor} 1px, transparent 1px)`,
+            backgroundSize: '50px 50px',
           }}
         />
 
-        {/* Main Content */}
+        {/* Main Ticket */}
         <div
           style={{
             display: 'flex',
-            flexDirection: 'row',
-            alignItems: 'center',
-            justifyContent: 'center',
-            width: '100%',
-            height: '100%',
-            padding: '60px',
-            gap: '60px',
+            flexDirection: 'column',
+            background: ticket.backgroundColor || '#1f1f23',
+            width: '900px',
+            height: '450px',
+            overflow: 'hidden',
+            boxShadow: '0 40px 80px rgba(0, 0, 0, 0.6)',
+            position: 'relative',
+            // Simulating cut corners with borders
+            borderRadius: '40px',
           }}
         >
-          {/* Ticket */}
+          {/* Gradient Glow */}
+          <div
+            style={{
+              position: 'absolute',
+              top: '-50%',
+              left: '-50%',
+              right: '-50%',
+              bottom: '-50%',
+              background: `radial-gradient(circle at 30% 30%, ${ticket.primaryColor}20, transparent 60%)`,
+            }}
+          />
+
+          {/* Grid Pattern on Ticket */}
+          <div
+            style={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              opacity: 0.03,
+              backgroundImage: `linear-gradient(${ticket.primaryColor} 1px, transparent 1px), linear-gradient(90deg, ${ticket.primaryColor} 1px, transparent 1px)`,
+              backgroundSize: '30px 30px',
+            }}
+          />
+
+          {/* Content Container */}
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
-              background: ticket.backgroundColor || '#1f1f23',
-              borderRadius: '24px',
-              overflow: 'hidden',
-              boxShadow: '0 20px 40px rgba(0, 0, 0, 0.4)',
-              width: '400px',
+              height: '100%',
+              position: 'relative',
             }}
           >
-            {/* Ticket Header */}
+            {/* Header */}
             <div
               style={{
                 display: 'flex',
-                flexDirection: 'column',
+                justifyContent: 'space-between',
                 alignItems: 'center',
-                justifyContent: 'center',
-                padding: '40px',
-                background: `linear-gradient(to right, ${ticket.primaryColor}, ${ticket.secondaryColor})`,
-                color: 'white',
-                position: 'relative',
+                padding: '40px 50px 30px',
               }}
             >
-              {/* Provider Badge */}
-              <div
-                style={{
-                  position: 'absolute',
-                  top: '20px',
-                  right: '20px',
-                  background: 'rgba(255, 255, 255, 0.2)',
-                  padding: '8px 16px',
-                  borderRadius: '999px',
-                  fontSize: '14px',
-                  fontWeight: 600,
-                  textTransform: 'uppercase',
-                }}
-              >
-                {ticket.userProvider}
+              {/* Branding */}
+              <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <div
+                  style={{
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '12px',
+                    background: `linear-gradient(135deg, ${ticket.primaryColor}, ${ticket.secondaryColor})`,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '24px',
+                  }}
+                >
+                  ✨
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div
+                    style={{
+                      fontSize: '16px',
+                      fontWeight: 700,
+                      color: '#e4e4e7',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.1em',
+                    }}
+                  >
+                    Walter Morales
+                  </div>
+                  <div style={{ fontSize: '12px', color: '#71717a' }}>Digital Guestbook</div>
+                </div>
               </div>
 
-              {/* Avatar */}
+              {/* Provider Badge */}
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '80px',
-                  height: '80px',
+                  gap: '8px',
+                  background: 'rgba(255, 255, 255, 0.08)',
+                  padding: '12px 20px',
+                  borderRadius: '999px',
+                  fontSize: '14px',
+                  fontWeight: 600,
+                  color: '#e4e4e7',
+                  textTransform: 'uppercase',
+                }}
+              >
+                {ticket.userProvider === 'github' ? '🐙' : '📧'}
+                <span>{ticket.userProvider}</span>
+              </div>
+            </div>
+
+            {/* User Section */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '32px',
+                padding: '20px 50px',
+                flex: 1,
+              }}
+            >
+              {/* Avatar */}
+              <div
+                style={{
+                  width: '120px',
+                  height: '120px',
                   borderRadius: '50%',
-                  background: 'rgba(255, 255, 255, 0.3)',
-                  marginBottom: '16px',
-                  fontSize: '32px',
+                  background: `linear-gradient(135deg, ${ticket.primaryColor}, ${ticket.secondaryColor})`,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  fontSize: '48px',
                   fontWeight: 'bold',
+                  color: 'white',
+                  boxShadow: `0 0 60px ${ticket.primaryColor}40`,
+                  border: '4px solid rgba(255, 255, 255, 0.1)',
                 }}
               >
                 {ticket.userName
@@ -115,86 +188,111 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
                   .toUpperCase()}
               </div>
 
-              {/* Name */}
-              <h2 style={{ fontSize: '24px', fontWeight: 'bold', margin: 0 }}>{ticket.userName}</h2>
-              <p style={{ fontSize: '14px', opacity: 0.8, marginTop: '4px' }}>{ticket.userEmail}</p>
+              {/* User Info */}
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <h1
+                  style={{
+                    fontSize: '42px',
+                    fontWeight: 'bold',
+                    color: 'white',
+                    margin: 0,
+                    lineHeight: 1,
+                  }}
+                >
+                  {ticket.userName}
+                </h1>
+                <p style={{ fontSize: '18px', color: '#a1a1aa', margin: 0 }}>{ticket.userEmail}</p>
+              </div>
             </div>
 
-            {/* Ticket Body */}
+            {/* Perforated Line */}
             <div
               style={{
                 display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center',
-                padding: '32px',
-                color: '#e4e4e7',
+                height: '2px',
+                borderTop: '2px dashed #3f3f46',
+                margin: '0 50px',
+                position: 'relative',
               }}
             >
-              <p style={{ fontSize: '14px', opacity: 0.6, marginBottom: '8px' }}>TICKET ID</p>
-              <code
-                style={{
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  padding: '8px 16px',
-                  borderRadius: '8px',
-                  fontSize: '16px',
-                  fontFamily: 'monospace',
-                }}
-              >
-                {ticket.ticketNumber}
-              </code>
-            </div>
-
-            {/* Footer */}
-            <div
-              style={{
-                height: '8px',
-                background: `linear-gradient(to right, ${ticket.secondaryColor}, ${ticket.accentColor})`,
-              }}
-            />
-          </div>
-
-          {/* Text Content */}
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '24px',
-              color: 'white',
-              maxWidth: '400px',
-            }}
-          >
-            <h1
-              style={{
-                fontSize: '48px',
-                fontWeight: 'bold',
-                margin: 0,
-                lineHeight: 1.1,
-              }}
-            >
-              Digital Guestbook
-            </h1>
-            <p
-              style={{
-                fontSize: '20px',
-                opacity: 0.8,
-                margin: 0,
-              }}
-            >
-              Walter Morales Portfolio
-            </p>
-            {ticket.entry?.mood && (
+              {/* Left hole */}
               <div
                 style={{
-                  marginTop: '12px',
-                  padding: '16px',
-                  background: 'rgba(255, 255, 255, 0.1)',
-                  borderRadius: '12px',
+                  position: 'absolute',
+                  left: '-60px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '50%',
+                  background: '#0a0a0a',
                 }}
-              >
-                <p style={{ fontSize: '16px', opacity: 0.6, marginBottom: '8px' }}>Mood:</p>
-                <p style={{ fontSize: '18px', fontStyle: 'italic' }}>"{ticket.entry.mood}"</p>
+              />
+              {/* Right hole */}
+              <div
+                style={{
+                  position: 'absolute',
+                  right: '-60px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '50%',
+                  background: '#0a0a0a',
+                }}
+              />
+            </div>
+
+            {/* Ticket Number Section */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '30px 50px 40px',
+              }}
+            >
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                <div
+                  style={{
+                    fontSize: '12px',
+                    color: '#71717a',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                  }}
+                >
+                  Ticket Number
+                </div>
+                <div
+                  style={{
+                    fontSize: '36px',
+                    fontWeight: 'bold',
+                    fontFamily: 'monospace',
+                    background: `linear-gradient(to right, ${ticket.primaryColor}, ${ticket.secondaryColor})`,
+                    backgroundClip: 'text',
+                    color: 'transparent',
+                  }}
+                >
+                  #{ticket.ticketNumber}
+                </div>
               </div>
-            )}
+
+              {/* Visual Pattern */}
+              <div style={{ display: 'flex', gap: '4px' }}>
+                {[...new Array(6)].map((_, i) => (
+                  <div
+                    // biome-ignore lint/suspicious/noArrayIndexKey: shadcn convention
+                    key={`pattern-${i}`}
+                    style={{
+                      width: '4px',
+                      height: `${40 - i * 5}px`,
+                      background: `linear-gradient(to bottom, ${ticket.primaryColor}${(100 - i * 15).toString(16)}, transparent)`,
+                      borderRadius: '2px',
+                    }}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </div>
       </div>,

@@ -1,15 +1,14 @@
 'use client';
 
-import { Palette, Sparkles } from 'lucide-react';
+import { ArrowRight, Palette, Share2, Sparkles, Users } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { createGuestbookEntry, getAllTickets, updateGuestbookEntry } from '@/app/actions/guestbook.actions';
 import { useAuth } from '@/components/auth/auth-provider';
 import { GuestbookLoading } from '@/components/guestbook-loading';
-import { GuestbookUserTicket } from '@/components/guestbook-user-ticket';
 import { SignInCard } from '@/components/sign-in-card';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
 import { UserTicket } from '@/components/user-ticket';
 import { useGuestbookTickets } from '@/hooks/use-guestbook-tickets';
@@ -68,107 +67,169 @@ export function GuestbookContent() {
 
   if (!user) {
     return (
-      <div className="animate-delay-400 animate-fade-in-up">
+      <div className="mx-auto max-w-4xl animate-delay-400 animate-fade-in-up">
         <SignInCard onSignIn={handleSignIn} />
       </div>
     );
   }
 
   return (
-    <div className="space-y-8">
-      {/* User Ticket */}
-      <div className="flex w-full flex-col items-center gap-4 lg:flex-row lg:items-start lg:justify-center">
-        {userTicket && <GuestbookUserTicket onShare={handleShareTicket} userTicket={userTicket} />}
+    <div className="space-y-12">
+      {/* User Section */}
+      <div className="mx-auto max-w-6xl">
+        <div className="grid gap-8 lg:grid-cols-2 lg:gap-12">
+          {/* User Ticket */}
+          <div className="animate-fade-in-up">
+            {userTicket ? (
+              <div className="space-y-4">
+                <UserTicket
+                  colors={{
+                    primary: userTicket.primaryColor,
+                    secondary: userTicket.secondaryColor,
+                    accent: userTicket.accentColor,
+                    background: userTicket.backgroundColor,
+                  }}
+                  ticketNumber={userTicket.ticketNumber}
+                  user={{
+                    id: userTicket.id,
+                    name: userTicket.userName,
+                    email: userTicket.userEmail,
+                    avatar_url: userTicket.userAvatar || undefined,
+                    provider: userTicket.userProvider,
+                  }}
+                />
+                <div className="flex justify-center">
+                  <Button
+                    className="gap-2"
+                    onClick={handleShareTicket}
+                    size="sm"
+                    variant="outline"
+                  >
+                    <Share2 className="h-4 w-4" />
+                    Share Ticket
+                  </Button>
+                </div>
+              </div>
+            ) : (
+              <Card className="border-gray-800 bg-gray-900/50 backdrop-blur-sm">
+                <CardContent className="flex min-h-[400px] flex-col items-center justify-center p-12 text-center">
+                  <div className="mb-4 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-4">
+                    <Sparkles className="h-8 w-8 text-purple-400" />
+                  </div>
+                  <h3 className="mb-2 font-semibold text-xl">No Ticket Yet</h3>
+                  <p className="text-gray-400">Create your first ticket by describing your mood</p>
+                </CardContent>
+              </Card>
+            )}
+          </div>
 
-        {/* Chat Input (always visible) */}
-        <div className="flex-1 animate-delay-400 animate-fade-in-up">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Palette className="h-5 w-5" />
-                {userTicket ? 'Update Your Ticket' : 'Create Your Unique Ticket'}
-              </CardTitle>
-              <p className="text-muted-foreground text-sm">
-                {userTicket
-                  ? 'Change your mood to generate new colors for your ticket.'
-                  : 'Describe your mood, style, or anything that inspires you. Our AI will generate a unique color palette for your ticket.'}
-              </p>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <Textarea
-                className="min-h-24 resize-none"
-                onChange={(e) => setCustomMessage(e.target.value)}
-                placeholder="Tell the AI about your style... (e.g., 'I love sunset colors and ocean vibes'"
-                value={customMessage}
-              />
-              <Button
-                className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:from-purple-600 hover:to-pink-600 sm:w-auto"
-                disabled={!customMessage.trim() || isGeneratingColors}
-                onClick={handleGenerateColors}
-              >
-                {isGeneratingColors ? (
-                  <>
-                    <Sparkles className="mr-2 h-4 w-4 animate-spin" />
-                    {userTicket ? 'Updating your ticket...' : 'Generating your ticket...'}
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="mr-2 h-4 w-4" />
-                    {userTicket ? 'Update my ticket' : 'Generate my ticket'}
-                  </>
-                )}
-              </Button>
-            </CardContent>
-          </Card>
+          {/* Generate/Update Form */}
+          <div className="animate-delay-200 animate-fade-in-up">
+            <Card className="h-full border-gray-800 bg-gray-900/50 backdrop-blur-sm">
+              <CardHeader className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <div className="rounded-lg bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-2">
+                    <Palette className="h-5 w-5 text-purple-400" />
+                  </div>
+                  <h2 className="font-semibold text-xl">
+                    {userTicket ? 'Update Your Ticket' : 'Create Your Ticket'}
+                  </h2>
+                </div>
+                <p className="text-gray-400 text-sm">
+                  {userTicket
+                    ? 'Change your mood to regenerate colors'
+                    : 'Tell us your mood and get a unique color palette'}
+                </p>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="space-y-2">
+                  <Textarea
+                    className="min-h-32 resize-none border-gray-700 bg-gray-800/50 placeholder:text-gray-500"
+                    onChange={(e) => setCustomMessage(e.target.value)}
+                    placeholder="Describe your current mood, favorite colors, or what inspires you..."
+                    value={customMessage}
+                  />
+                  <p className="text-gray-500 text-xs">
+                    Examples: "Feeling like a sunset over the ocean" or "Energetic and vibrant like a neon city"
+                  </p>
+                </div>
+                <Button
+                  className="w-full gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
+                  disabled={!customMessage.trim() || isGeneratingColors}
+                  onClick={handleGenerateColors}
+                  size="lg"
+                >
+                  {isGeneratingColors ? (
+                    <>
+                      <Sparkles className="h-4 w-4 animate-spin" />
+                      {userTicket ? 'Updating...' : 'Generating...'}
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="h-4 w-4" />
+                      {userTicket ? 'Update Ticket' : 'Generate Ticket'}
+                      <ArrowRight className="h-4 w-4" />
+                    </>
+                  )}
+                </Button>
+              </CardContent>
+            </Card>
+          </div>
         </div>
       </div>
 
-      {/* All Tickets Section */}
-      <div className="animate-delay-600 animate-fade-in-up">
-        <Card>
-          <CardHeader>
-            <CardTitle>Recent Tickets</CardTitle>
-            <p className="text-muted-foreground text-sm">
-              {allTickets.length} unique {allTickets.length === 1 ? 'ticket' : 'tickets'} created
-            </p>
-          </CardHeader>
-          <CardContent>
-            {allTickets.length > 0 ? (
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {allTickets.map((ticket) => (
-                  <a
-                    className="group block transform transition-all hover:scale-105"
-                    href={`/guestbook/${ticket.id}`}
-                    key={ticket.id}
-                  >
-                    <div className="relative">
-                      <UserTicket
-                        colors={{
-                          primary: ticket.primaryColor,
-                          secondary: ticket.secondaryColor,
-                          accent: ticket.accentColor,
-                          background: ticket.backgroundColor,
-                        }}
-                        scale="small"
-                        ticketNumber={ticket.ticketNumber}
-                        user={{
-                          id: ticket.id,
-                          name: ticket.userName,
-                          email: ticket.userEmail,
-                          avatar_url: ticket.userAvatar || undefined,
-                          provider: ticket.userProvider,
-                        }}
-                      />
-                      <div className="absolute inset-0 rounded-2xl bg-white/0 transition-colors group-hover:bg-white/5" />
-                    </div>
-                  </a>
-                ))}
-              </div>
-            ) : (
-              <p className="py-8 text-center text-muted-foreground">Be the first to create a ticket!</p>
-            )}
-          </CardContent>
-        </Card>
+      {/* Recent Tickets Section */}
+      <div className="animate-delay-400 animate-fade-in-up">
+        <div className="mb-8 text-center">
+          <div className="mb-4 inline-flex items-center justify-center">
+            <div className="rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-2">
+              <Users className="h-6 w-6 text-purple-400" />
+            </div>
+          </div>
+          <h2 className="mb-2 font-bold text-3xl">Community Tickets</h2>
+          <p className="text-gray-400">
+            {allTickets.length} unique {allTickets.length === 1 ? 'ticket' : 'tickets'} created by our visitors
+          </p>
+        </div>
+
+        {allTickets.length > 0 ? (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {allTickets.map((ticket, index) => (
+              <a
+                className="group relative block transform transition-all hover:scale-[1.02]"
+                href={`/guestbook/${ticket.id}`}
+                key={ticket.id}
+              >
+                <div className="animate-fade-in-up" style={{ animationDelay: `${index * 50}ms` }}>
+                  <UserTicket
+                    colors={{
+                      primary: ticket.primaryColor,
+                      secondary: ticket.secondaryColor,
+                      accent: ticket.accentColor,
+                      background: ticket.backgroundColor,
+                    }}
+                    scale="small"
+                    ticketNumber={ticket.ticketNumber}
+                    user={{
+                      id: ticket.id,
+                      name: ticket.userName,
+                      email: ticket.userEmail,
+                      avatar_url: ticket.userAvatar || undefined,
+                      provider: ticket.userProvider,
+                    }}
+                  />
+                  <div className="absolute inset-0 rounded-[32px] bg-white/0 transition-all group-hover:bg-white/5" />
+                </div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <Card className="border-gray-800 bg-gray-900/50 backdrop-blur-sm">
+            <CardContent className="py-16 text-center">
+              <p className="text-gray-400">Be the first to create a ticket!</p>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
