@@ -341,8 +341,7 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
         },
       }
     );
-  } catch (error) {
-    // Error occurred during image generation
+  } catch {
     return new Response('Failed to generate image', { status: 500 });
   }
 }

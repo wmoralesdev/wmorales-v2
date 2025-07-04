@@ -32,13 +32,11 @@ export async function middleware(request: NextRequest) {
     },
   });
 
-  // Refresh session if expired - required for Server Components
   const {
     // biome-ignore lint/correctness/noUnusedVariables: needed to refresh session
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Handle auth callback
   if (request.nextUrl.pathname === '/auth/callback') {
     return supabaseResponse;
   }

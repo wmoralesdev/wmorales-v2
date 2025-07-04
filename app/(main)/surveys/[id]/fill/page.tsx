@@ -19,5 +19,9 @@ export default async function SurveyFillPage({ params }: PageProps) {
 
   const survey = result.data as SurveyWithSections;
 
-  return <SurveyRenderer survey={survey} />;
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900">
+      <SurveyRenderer survey={survey} />
+    </div>
+  );
 }

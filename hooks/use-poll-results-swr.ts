@@ -14,15 +14,11 @@ export function usePollResultsSWR(pollId: string, initialData?: PollResults | nu
     error,
     mutate,
     isLoading,
-  } = useSWR<PollResults | null>(
-    `poll-results-${pollId}`,
-    () => fetchPollResults(pollId),
-    {
-      fallbackData: initialData,
-      refreshInterval: 5000, // Auto-refresh every 5 seconds for real-time updates
-      revalidateOnFocus: false,
-    }
-  );
+  } = useSWR<PollResults | null>(`poll-results-${pollId}`, () => fetchPollResults(pollId), {
+    fallbackData: initialData,
+    refreshInterval: 5000, // Auto-refresh every 5 seconds for real-time updates
+    revalidateOnFocus: false,
+  });
 
   return {
     results: data,

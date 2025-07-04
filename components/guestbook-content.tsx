@@ -24,7 +24,7 @@ export function GuestbookContent() {
 
   const handleSignIn = async (provider: 'github' | 'google') => {
     try {
-      await authService.signInWithProvider(provider);
+      await authService.signInWithProvider(provider, '/guestbook');
     } catch {
       toast.error('Failed to sign in. Please try again.');
     }
@@ -41,10 +41,10 @@ export function GuestbookContent() {
       const result = userTicket ? await updateGuestbookEntry(customMessage) : await createGuestbookEntry(customMessage);
 
       toast.success(userTicket ? 'Your ticket has been updated!' : 'Your unique ticket has been created!');
-      
+
       // Update tickets using SWR
       updateUserTicket(result.ticket as unknown as TicketData);
-      
+
       // Refresh all tickets
       await refreshTickets();
 
@@ -62,14 +62,74 @@ export function GuestbookContent() {
     }
   };
 
+  const renderRecentTickets = () => {
+    return (
+      <div className="animate-delay-400 animate-fade-in-up">
+        <div className="mb-8 text-center">
+          <div className="mb-4 inline-flex items-center justify-center">
+            <div className="rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-2">
+              <Users className="h-6 w-6 text-purple-400" />
+            </div>
+          </div>
+          <h2 className="mb-2 font-bold text-3xl">Community tickets</h2>
+          <p className="text-gray-400">
+            {allTickets.length} unique {allTickets.length === 1 ? 'ticket' : 'tickets'} created by our visitors
+          </p>
+        </div>
+
+        {allTickets.length > 0 ? (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {allTickets.map((ticket, index) => (
+              <a
+                className="group relative block transform transition-all hover:scale-[1.02]"
+                href={`/guestbook/${ticket.id}`}
+                key={ticket.id}
+              >
+                <div className="animate-fade-in-up" style={{ animationDelay: `${index * 50}ms` }}>
+                  <UserTicket
+                    colors={{
+                      primary: ticket.primaryColor,
+                      secondary: ticket.secondaryColor,
+                      accent: ticket.accentColor,
+                      background: ticket.backgroundColor,
+                    }}
+                    scale="small"
+                    ticketNumber={ticket.ticketNumber}
+                    user={{
+                      id: ticket.id,
+                      name: ticket.userName,
+                      email: ticket.userEmail,
+                      avatar_url: ticket.userAvatar || undefined,
+                      provider: ticket.userProvider,
+                    }}
+                  />
+                  <div className="absolute inset-0 rounded-[32px] bg-white/0 transition-all group-hover:bg-white/5" />
+                </div>
+              </a>
+            ))}
+          </div>
+        ) : (
+          <Card className="border-gray-800 bg-gray-900/50 backdrop-blur-sm">
+            <CardContent className="py-16 text-center">
+              <p className="text-gray-400">Be the first to create a ticket!</p>
+            </CardContent>
+          </Card>
+        )}
+      </div>
+    );
+  };
+
   if (loading || isLoadingTickets) {
     return <GuestbookLoading />;
   }
 
   if (!user) {
     return (
-      <div className="mx-auto max-w-4xl animate-delay-400 animate-fade-in-up">
-        <SignInCard onSignIn={handleSignIn} />
+      <div className="space-y-12">
+        <div className="mx-auto max-w-4xl animate-delay-400 animate-fade-in-up">
+          <SignInCard onSignIn={handleSignIn} />
+        </div>
+        {renderRecentTickets()}
       </div>
     );
   }
@@ -100,12 +160,7 @@ export function GuestbookContent() {
                   }}
                 />
                 <div className="flex justify-center">
-                  <Button
-                    className="gap-2"
-                    onClick={handleShareTicket}
-                    size="sm"
-                    variant="outline"
-                  >
+                  <Button className="gap-2" onClick={handleShareTicket} size="sm" variant="outline">
                     <Share2 className="h-4 w-4" />
                     Share Ticket
                   </Button>
@@ -132,9 +187,7 @@ export function GuestbookContent() {
                   <div className="rounded-lg bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-2">
                     <Palette className="h-5 w-5 text-purple-400" />
                   </div>
-                  <h2 className="font-semibold text-xl">
-                    {userTicket ? 'Update Your Ticket' : 'Create Your Ticket'}
-                  </h2>
+                  <h2 className="font-semibold text-xl">{userTicket ? 'Update your ticket' : 'Create your ticket'}</h2>
                 </div>
                 <p className="text-gray-400 text-sm">
                   {userTicket
@@ -180,58 +233,7 @@ export function GuestbookContent() {
       </div>
 
       {/* Recent Tickets Section */}
-      <div className="animate-delay-400 animate-fade-in-up">
-        <div className="mb-8 text-center">
-          <div className="mb-4 inline-flex items-center justify-center">
-            <div className="rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-2">
-              <Users className="h-6 w-6 text-purple-400" />
-            </div>
-          </div>
-          <h2 className="mb-2 font-bold text-3xl">Community Tickets</h2>
-          <p className="text-gray-400">
-            {allTickets.length} unique {allTickets.length === 1 ? 'ticket' : 'tickets'} created by our visitors
-          </p>
-        </div>
-
-        {allTickets.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {allTickets.map((ticket, index) => (
-              <a
-                className="group relative block transform transition-all hover:scale-[1.02]"
-                href={`/guestbook/${ticket.id}`}
-                key={ticket.id}
-              >
-                <div className="animate-fade-in-up" style={{ animationDelay: `${index * 50}ms` }}>
-                  <UserTicket
-                    colors={{
-                      primary: ticket.primaryColor,
-                      secondary: ticket.secondaryColor,
-                      accent: ticket.accentColor,
-                      background: ticket.backgroundColor,
-                    }}
-                    scale="small"
-                    ticketNumber={ticket.ticketNumber}
-                    user={{
-                      id: ticket.id,
-                      name: ticket.userName,
-                      email: ticket.userEmail,
-                      avatar_url: ticket.userAvatar || undefined,
-                      provider: ticket.userProvider,
-                    }}
-                  />
-                  <div className="absolute inset-0 rounded-[32px] bg-white/0 transition-all group-hover:bg-white/5" />
-                </div>
-              </a>
-            ))}
-          </div>
-        ) : (
-          <Card className="border-gray-800 bg-gray-900/50 backdrop-blur-sm">
-            <CardContent className="py-16 text-center">
-              <p className="text-gray-400">Be the first to create a ticket!</p>
-            </CardContent>
-          </Card>
-        )}
-      </div>
+      {renderRecentTickets()}
     </div>
   );
 }

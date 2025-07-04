@@ -3,7 +3,6 @@ import { getAllTickets, getUserTicket } from '@/app/actions/guestbook.actions';
 import type { AuthUser } from '@/lib/auth';
 import type { TicketData } from '@/lib/types/guestbook.types';
 
-// Fetcher function for all tickets
 const fetchAllTickets = async () => {
   const tickets = await getAllTickets();
   return tickets as unknown as TicketData[];
@@ -11,7 +10,9 @@ const fetchAllTickets = async () => {
 
 // Fetcher function for user ticket
 const fetchUserTicket = async (userId: string | undefined) => {
-  if (!userId) return null;
+  if (!userId) {
+    return null;
+  }
   const ticket = await getUserTicket();
   return ticket as unknown as TicketData | null;
 };
@@ -38,7 +39,7 @@ export function useGuestbookTicketsSWR(user: AuthUser | null) {
   });
 
   // Combined loading state
-  const isLoadingTickets = !allTickets && !allTicketsError;
+  const isLoadingTickets = !(allTickets || allTicketsError);
   const isLoadingUserTicket = user && !userTicket && !userTicketError;
 
   // Function to refresh both tickets
@@ -50,10 +51,12 @@ export function useGuestbookTicketsSWR(user: AuthUser | null) {
   const updateUserTicket = (newTicket: TicketData) => {
     // Update user ticket
     mutateUserTicket(newTicket, false);
-    
+
     // Update in all tickets list
     mutateAllTickets((tickets?: TicketData[]) => {
-      if (!tickets) return [newTicket];
+      if (!tickets) {
+        return [newTicket];
+      }
       const index = tickets.findIndex((t: TicketData) => t.userEmail === newTicket.userEmail);
       if (index >= 0) {
         const updated = [...tickets];

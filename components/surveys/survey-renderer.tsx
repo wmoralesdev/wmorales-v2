@@ -175,7 +175,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   };
 
   return (
-    <div className="container mx-auto max-w-3xl px-4 py-8">
+    <div className="app-container">
       <div className="mb-8">
         <h1 className="mb-2 font-bold text-3xl">{survey.title}</h1>
         <p className="text-muted-foreground">{survey.description}</p>

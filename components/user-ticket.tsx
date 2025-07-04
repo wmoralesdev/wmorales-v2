@@ -49,7 +49,7 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
   const generateKeyFromColors = () => {
     if (!colors) {
       return ticketNumber || '';
-    };
+    }
 
     return `${Object.values(colors).join('-')}-${ticketNumber || ''}`;
   };
@@ -94,11 +94,11 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
           <div className="relative">
             {/* Header Section */}
             <div className={`${isSmall ? 'px-6 py-4' : 'px-8 py-6'} pb-0`}>
-              <div className='mb-6 flex items-center justify-between'>
+              <div className="mb-6 flex items-center justify-between">
                 {/* Conference Branding */}
                 <div className="flex items-center gap-2">
                   <div
-                    className='flex h-8 w-8 items-center justify-center rounded-lg'
+                    className="flex h-8 w-8 items-center justify-center rounded-lg"
                     style={{
                       background: `linear-gradient(135deg, ${ticketColors.primary}, ${ticketColors.secondary})`,
                     }}
@@ -106,14 +106,14 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
                     <Sparkles className="h-4 w-4 text-white" />
                   </div>
                   <div>
-                    <h3 className='font-bold text-gray-300 text-xs uppercase tracking-wider'>Walter Morales</h3>
+                    <h3 className="font-bold text-gray-300 text-xs uppercase tracking-wider">Walter Morales</h3>
                     <p className="text-[10px] text-gray-500">Digital Guestbook</p>
                   </div>
                 </div>
 
                 {/* Provider Badge */}
                 <Badge
-                  className='gap-1 border-0 bg-gray-800/60 px-3 py-1 text-gray-300 text-xs backdrop-blur-sm'
+                  className="gap-1 border-0 bg-gray-800/60 px-3 py-1 text-gray-300 text-xs backdrop-blur-sm"
                   variant="secondary"
                 >
                   {getProviderIcon(user.provider)}
@@ -154,16 +154,16 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
             </div>
 
             {/* Perforated Line */}
-            <div className='relative mx-8 h-0 border-gray-700 border-t-2 border-dashed'>
-              <div className='-left-10 -translate-y-1/2 absolute top-1/2 h-6 w-6 rounded-full bg-black' />
-              <div className='-right-10 -translate-y-1/2 absolute top-1/2 h-6 w-6 rounded-full bg-black' />
+            <div className="relative mx-8 h-0 border-gray-700 border-t-2 border-dashed">
+              <div className="-left-10 -translate-y-1/2 absolute top-1/2 h-6 w-6 rounded-full bg-black" />
+              <div className="-right-10 -translate-y-1/2 absolute top-1/2 h-6 w-6 rounded-full bg-black" />
             </div>
 
             {/* Ticket Number Section */}
             <div className={`${isSmall ? 'px-6 py-4' : 'px-8 py-6'} pt-6`}>
               <div className="flex items-end justify-between">
                 <div>
-                  <p className='mb-2 text-[10px] text-gray-500 uppercase tracking-wider'>Ticket Number</p>
+                  <p className="mb-2 text-[10px] text-gray-500 uppercase tracking-wider">Ticket Number</p>
                   <div className="flex items-baseline gap-3">
                     <span
                       className={`font-bold font-mono ${isSmall ? 'text-2xl' : 'text-3xl'}`}
@@ -187,7 +187,7 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
                     const height = Math.max(20, 100 - i * 25);
                     return (
                       <div
-                        className='h-8 w-1'
+                        className="h-8 w-1"
                         key={`pattern-bar-height-${height}`}
                         style={{
                           background: `linear-gradient(to bottom, ${ticketColors.primary}${height.toString(16)}, transparent)`,
@@ -203,7 +203,7 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
 
         {/* Corner Accent */}
         <div
-          className='-top-2 -right-2 absolute h-16 w-16 rounded-full opacity-20'
+          className="-top-2 -right-2 absolute h-16 w-16 rounded-full opacity-20"
           style={{
             background: `radial-gradient(circle, ${ticketColors.accent}, transparent 70%)`,
           }}

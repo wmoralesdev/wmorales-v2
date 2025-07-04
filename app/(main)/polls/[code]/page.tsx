@@ -7,14 +7,12 @@ import type { PollWithQuestions } from '@/lib/types/poll.types';
 export default async function PollPage({ params }: { params: Promise<{ code: string }> }) {
   const { code } = await params;
 
-  // Check authentication
   const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
   if (!user) {
-    // Redirect to login with return URL
     redirect(`/login?returnTo=/polls/${code}`);
   }
 
@@ -24,14 +22,12 @@ export default async function PollPage({ params }: { params: Promise<{ code: str
     notFound();
   }
 
-  // Get initial results
   const { data: results } = await getPollResults(poll.id);
 
-  // Get user's votes
   const { data: userVotes } = await getUserVotes(poll.id);
 
   return (
-    <div className="container mx-auto max-w-3xl px-4 py-8">
+    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900">
       <PollVoting
         initialResults={results || undefined}
         initialUserVotes={userVotes || undefined}

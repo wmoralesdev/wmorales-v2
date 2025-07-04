@@ -6,7 +6,7 @@ import { Navbar } from '@/components/navbar';
 
 export default function Home() {
   return (
-    <>
+    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900">
       <Navbar />
       <div id="home">
         <HeroSection />
@@ -20,6 +20,6 @@ export default function Home() {
       <div id="contact">
         <ContactSection />
       </div>
-    </>
+    </div>
   );
 }

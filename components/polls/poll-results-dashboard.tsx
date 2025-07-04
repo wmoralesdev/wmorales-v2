@@ -1,14 +1,15 @@
 'use client';
 
+import type { RealtimeChannel } from '@supabase/supabase-js';
 import { AnimatePresence, motion } from 'framer-motion';
 import { Activity, BarChart3, PieChart, RefreshCw, Users } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { usePollResultsSWR } from '@/hooks/use-poll-results-swr';
-import { usePollPresence } from '@/hooks/use-poll-presence';
+import { useEffect, useRef, useState } from 'react';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { type PollRealtimeEvent, type PollPresence, subscribeToPollUpdates } from '@/lib/supabase/realtime';
+import { usePollResultsSWR } from '@/hooks/use-poll-results-swr';
+import { type PollPresence, type PollRealtimeEvent, subscribeToPollUpdates } from '@/lib/supabase/realtime';
 import type { PollResults } from '@/lib/types/poll.types';
 import { cn } from '@/lib/utils';
 
@@ -19,36 +20,81 @@ type PollResultsDashboardProps = {
   initialResults: PollResults;
 };
 
+function getInitials(name?: string): string {
+  if (!name) {
+    return 'UN';
+  }
+
+  return name
+    .split(' ')
+    .map((n) => n[0])
+    .join('')
+    .toUpperCase()
+    .slice(0, 2);
+}
+
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(timer);
+  }, [value, delay]);
+
+  return debouncedValue;
+}
+
 export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResults }: PollResultsDashboardProps) {
   const { results, refresh } = usePollResultsSWR(pollId, initialResults);
   const [activeUsers, setActiveUsers] = useState<PollPresence[]>([]);
   const [isUpdating, setIsUpdating] = useState(false);
+  const channelRef = useRef<RealtimeChannel | null>(null);
+  const isMountedRef = useRef(true);
+  const refreshRef = useRef(refresh);
+
+  // Debounce active users updates to prevent excessive re-renders with many users
+  const debouncedActiveUsers = useDebounce(activeUsers, 500);
+
+  // Keep refresh ref current
+  refreshRef.current = refresh;
 
   useEffect(() => {
+    isMountedRef.current = true;
+
+    // Clean up any existing channel
+    if (channelRef.current) {
+      channelRef.current.unsubscribe();
+    }
+
     const channel = subscribeToPollUpdates(
       pollCode,
       async (event: PollRealtimeEvent) => {
         if (event.type === 'results_updated' || event.type === 'vote_added') {
           setIsUpdating(true);
-          await refresh();
+          await refreshRef.current();
           setTimeout(() => setIsUpdating(false), 500);
         }
       },
       (users) => {
-        setActiveUsers(users);
+        if (isMountedRef.current) {
+          setActiveUsers(users);
+        }
       }
     );
 
+    channelRef.current = channel;
+
     return () => {
-      channel.unsubscribe();
+      isMountedRef.current = false;
+      if (channelRef.current) {
+        channelRef.current.unsubscribe();
+        channelRef.current = null;
+      }
     };
-  }, [pollCode, refresh]);
+  }, [pollCode]);
 
   const totalVoters = results?.totalVotes || 0;
-  const activeUsersCount = activeUsers.length;
-
-  // Broadcast active users count
-  usePollPresence(pollCode, activeUsersCount);
+  const activeUsersCount = debouncedActiveUsers.length;
 
   return (
     <div className="space-y-6">
@@ -217,22 +263,26 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
           <CardContent>
             <div className="flex flex-wrap gap-2">
               <AnimatePresence>
-                {activeUsers.slice(0, 50).map((user) => (
+                {debouncedActiveUsers.slice(0, 20).map((user) => (
                   <motion.div
                     animate={{ opacity: 1, scale: 1 }}
-                    className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 font-medium text-primary text-xs"
                     exit={{ opacity: 0, scale: 0.8 }}
                     initial={{ opacity: 0, scale: 0.8 }}
                     key={user.sessionId}
                     transition={{ duration: 0.2 }}
                   >
-                    {user.sessionId.substring(0, 2).toUpperCase()}
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage alt={user.userName || 'User'} src={user.userAvatar} />
+                      <AvatarFallback className="bg-primary/10 text-primary text-xs">
+                        {getInitials(user.userName)}
+                      </AvatarFallback>
+                    </Avatar>
                   </motion.div>
                 ))}
               </AnimatePresence>
-              {activeUsersCount > 50 && (
+              {activeUsersCount > 20 && (
                 <div className="flex h-8 items-center rounded-full bg-muted px-3 text-muted-foreground text-xs">
-                  +{activeUsersCount - 50} more
+                  +{activeUsersCount - 20} more
                 </div>
               )}
             </div>

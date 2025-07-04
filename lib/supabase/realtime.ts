@@ -14,6 +14,10 @@ export type PollPresence = {
   userId?: string;
   sessionId: string;
   joinedAt: string;
+  // User information for avatar display
+  userEmail?: string;
+  userName?: string;
+  userAvatar?: string;
 };
 
 export function subscribeToPollUpdates(
@@ -23,8 +27,42 @@ export function subscribeToPollUpdates(
 ): RealtimeChannel {
   const supabase = createClient();
 
+  // Track presence immediately when creating the channel
+  const setupPresence = async () => {
+    try {
+      const {
+        data: { user },
+        error: authError,
+      } = await supabase.auth.getUser();
+
+      if (authError) {
+        return null;
+      }
+
+      const sessionId = await getSessionId();
+      const presenceData: Partial<PollPresence> = {
+        sessionId,
+        joinedAt: new Date().toISOString(),
+      };
+
+      // Add user information if authenticated
+      if (user) {
+        presenceData.userId = user.id;
+        presenceData.userEmail = user.email;
+        presenceData.userName = user.user_metadata?.full_name || user.email;
+        presenceData.userAvatar = user.user_metadata?.avatar_url;
+      }
+
+      return presenceData;
+    } catch {
+      return null;
+    }
+  };
+
+  const channelName = `poll-${pollCode}`;
+
   const channel = supabase
-    .channel(`poll:${pollCode}`)
+    .channel(channelName)
     .on('broadcast', { event: 'poll_update' }, ({ payload }) => {
       onUpdate(payload as PollRealtimeEvent);
     })
@@ -35,14 +73,26 @@ export function subscribeToPollUpdates(
         onPresenceUpdate(users);
       }
     })
+    .on('presence', { event: 'join' }, () => {
+      if (onPresenceUpdate) {
+        const state = channel.presenceState();
+        const users = Object.values(state).flat() as unknown as PollPresence[];
+        onPresenceUpdate(users);
+      }
+    })
+    .on('presence', { event: 'leave' }, () => {
+      if (onPresenceUpdate) {
+        const state = channel.presenceState();
+        const users = Object.values(state).flat() as unknown as PollPresence[];
+        onPresenceUpdate(users);
+      }
+    })
     .subscribe(async (status) => {
       if (status === 'SUBSCRIBED' && onPresenceUpdate) {
-        // Track user presence
-        const sessionId = await getSessionId();
-        await channel.track({
-          sessionId,
-          joinedAt: new Date().toISOString(),
-        });
+        const presenceData = await setupPresence();
+        if (presenceData) {
+          await channel.track(presenceData);
+        }
       }
     });
 

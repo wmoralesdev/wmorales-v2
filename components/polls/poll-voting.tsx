@@ -3,7 +3,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { AlertCircle, Check, ChevronRight, Loader2, Users } from 'lucide-react';
 import { useCallback, useEffect, useReducer } from 'react';
-import { toast } from 'sonner';
 import { getPollResults, votePoll } from '@/app/actions/poll.actions';
 import { PollResultsDashboard } from '@/components/polls/poll-results-dashboard';
 import { Alert, AlertDescription } from '@/components/ui/alert';
@@ -13,7 +12,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { usePollPresence } from '@/hooks/use-poll-presence';
 import { type PollPresence, type PollRealtimeEvent, subscribeToPollUpdates } from '@/lib/supabase/realtime';
 import type { PollQuestion, PollResults, PollWithQuestions } from '@/lib/types/poll.types';
 import { cn } from '@/lib/utils';
@@ -83,9 +81,7 @@ function pollVotingReducer(state: PollVotingState, action: PollVotingAction): Po
     case 'CLEAR_VALIDATION_ERROR':
       return {
         ...state,
-        validationErrors: state.validationErrors.filter(
-          (err) => !err.includes(`Question ${action.payload + 1}`)
-        ),
+        validationErrors: state.validationErrors.filter((err) => !err.includes(`Question ${action.payload + 1}`)),
       };
     default:
       return state;
@@ -105,10 +101,8 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
     validationErrors: [],
   });
 
-  // Check if all questions have been answered
   const allQuestionsAnswered = poll.questions.every((q) => state.userVotes[q.id]?.length > 0);
 
-  // Initialize selected options from user votes
   useEffect(() => {
     const initial: Record<string, string | string[]> = {};
     for (const question of poll.questions) {
@@ -121,22 +115,18 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
     }
     dispatch({ type: 'SET_SELECTED_OPTIONS', payload: initial });
 
-    // Show dashboard if all questions are answered
     if (allQuestionsAnswered) {
       dispatch({ type: 'SET_SHOW_DASHBOARD', payload: true });
     }
   }, [poll.questions, state.userVotes, allQuestionsAnswered]);
 
-  // Subscribe to real-time updates
   useEffect(() => {
     const channel = subscribeToPollUpdates(
       poll.code,
       async (event: PollRealtimeEvent) => {
         if (event.type === 'poll_closed') {
-          // Refresh the page if poll is closed
           window.location.reload();
         } else {
-          // Fetch fresh results
           const { data } = await getPollResults(poll.id);
           if (data) {
             dispatch({ type: 'SET_RESULTS', payload: data });
@@ -154,7 +144,6 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
     };
   }, [poll.code, poll.id]);
 
-  // Show results after delay
   useEffect(() => {
     if (poll.showResults && poll.resultsDelay > 0) {
       const hasVoted = Object.keys(state.userVotes).length > 0;
@@ -302,18 +291,16 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
     }
 
     if (question.type === 'single') {
-      dispatch({ 
-        type: 'UPDATE_SELECTED_OPTION', 
-        payload: { questionId, value } 
+      dispatch({
+        type: 'UPDATE_SELECTED_OPTION',
+        payload: { questionId, value },
       });
     } else {
       const current = (state.selectedOptions[questionId] as string[]) || [];
-      const newValue = checked
-        ? [...current, value]
-        : current.filter((v) => v !== value);
-      dispatch({ 
-        type: 'UPDATE_SELECTED_OPTION', 
-        payload: { questionId, value: newValue } 
+      const newValue = checked ? [...current, value] : current.filter((v) => v !== value);
+      dispatch({
+        type: 'UPDATE_SELECTED_OPTION',
+        payload: { questionId, value: newValue },
       });
     }
 
@@ -346,13 +333,10 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
 
   const canShowResults = state.showResults && (poll.showResults || hasVoted(poll.questions[0]?.id));
 
-  // Broadcast active users count
-  usePollPresence(poll.code, state.showDashboard ? 0 : state.activeUsers.length);
-
   // Show dashboard if all questions are answered
   if (state.showDashboard && state.results) {
     return (
-      <div className="space-y-6">
+      <div className="app-container">
         {/* Success Message */}
         <Card>
           <CardHeader>
@@ -365,7 +349,12 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
         </Card>
 
         {/* Results Dashboard */}
-        <PollResultsDashboard initialResults={state.results} pollCode={poll.code} pollId={poll.id} pollTitle={poll.title} />
+        <PollResultsDashboard
+          initialResults={state.results}
+          pollCode={poll.code}
+          pollId={poll.id}
+          pollTitle={poll.title}
+        />
       </div>
     );
   }
@@ -375,7 +364,7 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
   const hasAnyUnansweredQuestions = answeredQuestions < poll.questions.length;
 
   return (
-    <div className="space-y-6">
+    <div className="app-container">
       {/* Poll Header */}
       <Card>
         <CardHeader>
@@ -401,7 +390,11 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
                 Progress: {answeredQuestions} / {poll.questions.length} questions answered
               </span>
               {allQuestionsAnswered && (
-                <Button onClick={() => dispatch({ type: 'SET_SHOW_DASHBOARD', payload: true })} size="sm" variant="outline">
+                <Button
+                  onClick={() => dispatch({ type: 'SET_SHOW_DASHBOARD', payload: true })}
+                  size="sm"
+                  variant="outline"
+                >
                   View Results
                   <ChevronRight className="ml-1 h-4 w-4" />
                 </Button>
