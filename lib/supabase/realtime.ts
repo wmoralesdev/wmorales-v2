@@ -150,3 +150,51 @@ export async function broadcastActiveUsers(pollCode: string, count: number) {
     payload: { [pollCode]: count },
   });
 }
+
+// Guestbook Realtime Types
+export type GuestbookRealtimeEvent = {
+  type: 'ticket_created' | 'ticket_updated' | 'ticket_deleted';
+  ticket: {
+    id: string;
+    ticketNumber: string;
+    userName: string;
+    userEmail: string;
+    userAvatar: string | null;
+    userProvider: string;
+    primaryColor: string;
+    secondaryColor: string;
+    accentColor: string;
+    backgroundColor: string;
+    createdAt: string;
+  };
+  timestamp: string;
+};
+
+// Subscribe to guestbook tickets updates
+export function subscribeToGuestbookUpdates(
+  onUpdate: (event: GuestbookRealtimeEvent) => void,
+  onPresenceUpdate?: (activeViewers: number) => void
+): RealtimeChannel {
+  const supabase = createClient();
+
+  const channel = supabase
+    .channel('guestbook:tickets')
+    .on('broadcast', { event: 'ticket_update' }, ({ payload }) => {
+      onUpdate(payload as GuestbookRealtimeEvent);
+    })
+    .on('presence', { event: 'sync' }, () => {
+      if (onPresenceUpdate) {
+        const state = channel.presenceState();
+        const viewersCount = Object.keys(state).length;
+        onPresenceUpdate(viewersCount);
+      }
+    })
+    .subscribe(async (status) => {
+      if (status === 'SUBSCRIBED' && onPresenceUpdate) {
+        const sessionId = await getSessionId();
+        await channel.track({ sessionId, joinedAt: new Date().toISOString() });
+      }
+    });
+
+  return channel;
+}

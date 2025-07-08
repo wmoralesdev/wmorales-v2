@@ -6,6 +6,7 @@ import { generateObject } from 'ai';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
+import { broadcastGuestbookUpdate } from '@/lib/supabase/realtime-server';
 
 // Color palette schema for AI generation
 const colorPaletteSchema = z.object({
@@ -117,6 +118,25 @@ export async function createGuestbookEntry(mood: string, message?: string) {
     return { entry, ticket };
   });
 
+  // Broadcast the new ticket creation
+  await broadcastGuestbookUpdate({
+    type: 'ticket_created',
+    ticket: {
+      id: result.ticket.id,
+      ticketNumber: result.ticket.ticketNumber,
+      userName: result.ticket.userName,
+      userEmail: result.ticket.userEmail,
+      userAvatar: result.ticket.userAvatar,
+      userProvider: result.ticket.userProvider,
+      primaryColor: result.ticket.primaryColor,
+      secondaryColor: result.ticket.secondaryColor,
+      accentColor: result.ticket.accentColor,
+      backgroundColor: result.ticket.backgroundColor,
+      createdAt: result.ticket.createdAt.toISOString(),
+    },
+    timestamp: new Date().toISOString(),
+  });
+
   return result;
 }
 
@@ -210,6 +230,25 @@ export async function updateGuestbookEntry(
     });
 
     return { entry, ticket };
+  });
+
+  // Broadcast the ticket update
+  await broadcastGuestbookUpdate({
+    type: 'ticket_updated',
+    ticket: {
+      id: result.ticket.id,
+      ticketNumber: result.ticket.ticketNumber,
+      userName: result.ticket.userName,
+      userEmail: result.ticket.userEmail,
+      userAvatar: result.ticket.userAvatar,
+      userProvider: result.ticket.userProvider,
+      primaryColor: result.ticket.primaryColor,
+      secondaryColor: result.ticket.secondaryColor,
+      accentColor: result.ticket.accentColor,
+      backgroundColor: result.ticket.backgroundColor,
+      createdAt: result.ticket.createdAt.toISOString(),
+    },
+    timestamp: new Date().toISOString(),
   });
 
   return result;

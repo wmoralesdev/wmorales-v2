@@ -160,19 +160,19 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
             </TabsList>
 
             <TabsContent className="mt-6 space-y-6" value="overview">
-              {results?.questions.map((question, index) => (
+              {results?.questions.map((question: any, index: number) => (
                 <div className="space-y-4" key={question.questionId}>
                   <h3 className="font-semibold text-lg">
                     {index + 1}. {question.question}
                   </h3>
                   <div className="space-y-3">
-                    {question.options.map((option) => (
+                    {question.options.map((option: any) => (
                       <motion.div
                         animate={{ opacity: 1, x: 0 }}
                         className="space-y-2"
                         initial={{ opacity: 0, x: -20 }}
                         key={option.optionId}
-                        transition={{ duration: 0.3 }}
+                        transition={{ delay: index * 0.1 + 0.2 }}
                       >
                         <div className="flex items-center justify-between">
                           <div className="flex items-center gap-2">
@@ -200,7 +200,7 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
             </TabsContent>
 
             <TabsContent className="mt-6 space-y-6" value="details">
-              {results?.questions.map((question, index) => (
+              {results?.questions.map((question: any, index: number) => (
                 <Card key={question.questionId}>
                   <CardHeader>
                     <CardTitle className="text-base">
@@ -213,8 +213,8 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
                   <CardContent>
                     <div className="space-y-2">
                       {question.options
-                        .sort((a, b) => b.voteCount - a.voteCount)
-                        .map((option, optionIndex) => (
+                        .sort((a: any, b: any) => b.voteCount - a.voteCount)
+                        .map((option: any, optionIndex: number) => (
                           <div
                             className={cn(
                               'flex items-center justify-between rounded-lg p-3',

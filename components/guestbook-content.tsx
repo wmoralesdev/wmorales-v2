@@ -1,11 +1,12 @@
 'use client';
 
-import { ArrowRight, Palette, Share2, Sparkles, Users } from 'lucide-react';
+import { ArrowRight, Palette, Share2, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 import { createGuestbookEntry, updateGuestbookEntry } from '@/app/actions/guestbook.actions';
 import { useAuth } from '@/components/auth/auth-provider';
 import { GuestbookLoading } from '@/components/guestbook-loading';
+import { GuestbookTicketsCarousel } from '@/components/guestbook-tickets-carousel';
 import { SignInCard } from '@/components/sign-in-card';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
@@ -38,7 +39,9 @@ export function GuestbookContent() {
 
     setIsGeneratingColors(true);
     try {
-      const result = userTicket ? await updateGuestbookEntry(customMessage) : await createGuestbookEntry(customMessage);
+      const result = userTicket 
+        ? await updateGuestbookEntry(customMessage) 
+        : await createGuestbookEntry(customMessage);
 
       toast.success(userTicket ? 'Your ticket has been updated!' : 'Your unique ticket has been created!');
 
@@ -62,63 +65,6 @@ export function GuestbookContent() {
     }
   };
 
-  const renderRecentTickets = () => {
-    return (
-      <div className="animate-delay-400 animate-fade-in-up">
-        <div className="mb-8 text-center">
-          <div className="mb-4 inline-flex items-center justify-center">
-            <div className="rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-2">
-              <Users className="h-6 w-6 text-purple-400" />
-            </div>
-          </div>
-          <h2 className="mb-2 font-bold text-3xl">Community tickets</h2>
-          <p className="text-gray-400">
-            {allTickets.length} unique {allTickets.length === 1 ? 'ticket' : 'tickets'} created by our visitors
-          </p>
-        </div>
-
-        {allTickets.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {allTickets.map((ticket, index) => (
-              <a
-                className="group relative block transform transition-all hover:scale-[1.02]"
-                href={`/guestbook/${ticket.id}`}
-                key={ticket.id}
-              >
-                <div className="animate-fade-in-up" style={{ animationDelay: `${index * 50}ms` }}>
-                  <UserTicket
-                    colors={{
-                      primary: ticket.primaryColor,
-                      secondary: ticket.secondaryColor,
-                      accent: ticket.accentColor,
-                      background: ticket.backgroundColor,
-                    }}
-                    scale="small"
-                    ticketNumber={ticket.ticketNumber}
-                    user={{
-                      id: ticket.id,
-                      name: ticket.userName,
-                      email: ticket.userEmail,
-                      avatar_url: ticket.userAvatar || undefined,
-                      provider: ticket.userProvider,
-                    }}
-                  />
-                  <div className="absolute inset-0 rounded-[32px] bg-white/0 transition-all group-hover:bg-white/5" />
-                </div>
-              </a>
-            ))}
-          </div>
-        ) : (
-          <Card className="border-gray-800 bg-gray-900/50 backdrop-blur-sm">
-            <CardContent className="py-16 text-center">
-              <p className="text-gray-400">Be the first to create a ticket!</p>
-            </CardContent>
-          </Card>
-        )}
-      </div>
-    );
-  };
-
   if (loading || isLoadingTickets) {
     return <GuestbookLoading />;
   }
@@ -129,7 +75,7 @@ export function GuestbookContent() {
         <div className="mx-auto max-w-4xl animate-delay-400 animate-fade-in-up">
           <SignInCard onSignIn={handleSignIn} />
         </div>
-        {renderRecentTickets()}
+        <GuestbookTicketsCarousel initialTickets={allTickets} maxTickets={25} />
       </div>
     );
   }
@@ -232,8 +178,8 @@ export function GuestbookContent() {
         </div>
       </div>
 
-      {/* Recent Tickets Section */}
-      {renderRecentTickets()}
+      {/* Recent Tickets Section - Now using carousel with realtime updates */}
+      <GuestbookTicketsCarousel initialTickets={allTickets} maxTickets={25} />
     </div>
   );
 }
