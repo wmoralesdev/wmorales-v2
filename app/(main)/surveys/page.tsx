@@ -65,7 +65,7 @@ export default function SurveysPage() {
     <div className="min-h-screen bg-gradient-to-b from-black to-gray-900">
       <InnerHero
         description="Participate in our surveys to help shape the future of our community"
-        icon={Sparkles}
+        icon={BarChart3}
         title="Active Surveys"
       />
 

@@ -1,4 +1,4 @@
-import { Sparkles } from 'lucide-react';
+import { Activity } from 'lucide-react';
 import { InnerHero } from '@/components/inner-hero';
 import { PollsList } from '@/components/polls/polls-list';
 import { Card, CardContent } from '@/components/ui/card';
@@ -29,7 +29,7 @@ export default async function PollsPage() {
     <div className="min-h-screen bg-gradient-to-b from-black to-gray-900">
       <InnerHero
         description="Vote with fellow attendees and see the results in real-time"
-        icon={Sparkles}
+        icon={Activity}
         title="Live Polls"
       />
 

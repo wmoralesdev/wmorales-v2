@@ -106,7 +106,7 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
                     <Sparkles className="h-4 w-4 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-300 text-xs uppercase tracking-wider">Walter Morales</h3>
+                    <h3 className="font-bold text-gray-300 text-xs uppercase tracking-wider">Cursor meetup</h3>
                     <p className="text-[10px] text-gray-500">Digital Guestbook</p>
                   </div>
                 </div>

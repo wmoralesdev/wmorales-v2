@@ -221,7 +221,7 @@ export function GuestbookContent() {
                   ) : (
                     <>
                       <Sparkles className="h-4 w-4" />
-                      {userTicket ? 'Update Ticket' : 'Generate Ticket'}
+                      {userTicket ? 'Update ticket' : 'Generate ticket'}
                       <ArrowRight className="h-4 w-4" />
                     </>
                   )}
