@@ -1,5 +1,5 @@
 import { Activity } from 'lucide-react';
-import { InnerHero } from '@/components/inner-hero';
+import { InnerHero } from '@/components/common/inner-hero';
 import { PollsList } from '@/components/polls/polls-list';
 import { Card, CardContent } from '@/components/ui/card';
 import { prisma } from '@/lib/prisma';

@@ -1,8 +1,8 @@
 import { Share2 } from 'lucide-react';
 import Link from 'next/link';
+import { UserTicket } from '@/components/guestbook/user-ticket';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { UserTicket } from '@/components/user-ticket';
 import type { TicketData } from '@/lib/types/guestbook.types';
 
 type GuestbookUserTicketProps = {

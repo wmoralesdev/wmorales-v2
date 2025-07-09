@@ -1,25 +1,17 @@
-import { AboutSection } from '@/components/about-section';
-import { ContactSection } from '@/components/contact-section';
-import { ExperienceSection } from '@/components/experience-section';
-import { HeroSection } from '@/components/hero-section';
-import { Navbar } from '@/components/navbar';
+import { ExperienceSection } from '@/components/landing/experience-section';
+import { HeroSection } from '@/components/landing/hero-section';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900">
-      <Navbar />
-      <div id="home">
-        <HeroSection />
-      </div>
-      <div id="about">
-        <AboutSection />
-      </div>
-      <div id="experience">
-        <ExperienceSection />
-      </div>
-      <div id="contact">
-        <ContactSection />
-      </div>
+    <div className="min-h-screen bg-black">
+      <main>
+        <div id="home">
+          <HeroSection />
+        </div>
+        <div id="experience">
+          <ExperienceSection />
+        </div>
+      </main>
     </div>
   );
 }

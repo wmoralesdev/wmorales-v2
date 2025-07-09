@@ -1,7 +1,7 @@
 import { Sparkles } from 'lucide-react';
 import type { Metadata } from 'next';
-import { GuestbookContent } from '@/components/guestbook-content';
-import { InnerHero } from '@/components/inner-hero';
+import { InnerHero } from '@/components/common/inner-hero';
+import { GuestbookContent } from '@/components/guestbook/guestbook-content';
 
 export const metadata: Metadata = {
   title: 'Guestbook - Walter Morales',

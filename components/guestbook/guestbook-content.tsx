@@ -5,13 +5,13 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { createGuestbookEntry, updateGuestbookEntry } from '@/app/actions/guestbook.actions';
 import { useAuth } from '@/components/auth/auth-provider';
-import { GuestbookLoading } from '@/components/guestbook-loading';
-import { GuestbookTicketsCarousel } from '@/components/guestbook-tickets-carousel';
-import { SignInCard } from '@/components/sign-in-card';
+import { GuestbookLoading } from '@/components/guestbook/guestbook-loading';
+import { GuestbookTicketsCarousel } from '@/components/guestbook/guestbook-tickets-carousel';
+import { SignInCard } from '@/components/guestbook/sign-in-card';
+import { UserTicket } from '@/components/guestbook/user-ticket';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Textarea } from '@/components/ui/textarea';
-import { UserTicket } from '@/components/user-ticket';
 import { useGuestbookTicketsSWR } from '@/hooks/use-guestbook-tickets-swr';
 import { authService } from '@/lib/auth';
 import type { TicketData } from '@/lib/types/guestbook.types';
@@ -39,9 +39,7 @@ export function GuestbookContent() {
 
     setIsGeneratingColors(true);
     try {
-      const result = userTicket 
-        ? await updateGuestbookEntry(customMessage) 
-        : await createGuestbookEntry(customMessage);
+      const result = userTicket ? await updateGuestbookEntry(customMessage) : await createGuestbookEntry(customMessage);
 
       toast.success(userTicket ? 'Your ticket has been updated!' : 'Your unique ticket has been created!');
 
@@ -146,6 +144,15 @@ export function GuestbookContent() {
                   <Textarea
                     className="min-h-32 resize-none border-gray-700 bg-gray-800/50 placeholder:text-gray-500"
                     onChange={(e) => setCustomMessage(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (
+                        e.key === 'Enter' &&
+                        (e.ctrlKey || e.metaKey)
+                      ) {
+                        e.preventDefault();
+                        handleGenerateColors();
+                      }
+                    }}
                     placeholder="Describe your current mood, favorite colors, or what inspires you..."
                     value={customMessage}
                   />

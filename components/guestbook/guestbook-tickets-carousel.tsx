@@ -1,18 +1,17 @@
 'use client';
 
-import { ChevronLeft, ChevronRight, Users } from 'lucide-react';
+import { Users } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { Button } from '@/components/ui/button';
+import { UserTicket } from '@/components/guestbook/user-ticket';
 import { Card, CardContent } from '@/components/ui/card';
 import {
   Carousel,
+  type CarouselApi,
   CarouselContent,
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-  type CarouselApi,
 } from '@/components/ui/carousel';
-import { UserTicket } from '@/components/user-ticket';
 import { useGuestbookRealtime } from '@/hooks/use-guestbook-realtime';
 import type { TicketData } from '@/lib/types/guestbook.types';
 
@@ -21,10 +20,7 @@ interface GuestbookTicketsCarouselProps {
   maxTickets?: number;
 }
 
-export function GuestbookTicketsCarousel({
-  initialTickets = [],
-  maxTickets = 25,
-}: GuestbookTicketsCarouselProps) {
+export function GuestbookTicketsCarousel({ initialTickets = [], maxTickets = 25 }: GuestbookTicketsCarouselProps) {
   const { tickets, activeViewers } = useGuestbookRealtime(initialTickets, maxTickets);
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);

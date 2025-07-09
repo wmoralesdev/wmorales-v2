@@ -41,6 +41,10 @@
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
   --radius-xl: calc(var(--radius) + 4px);
+
+  --font-display: var(--display-family);
+  --font-text: var(--text-family);
+  --font-mono: var(--mono-family);
 }
 
 :root {
@@ -76,6 +80,9 @@
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
+
+  --display-weight: 500;
+  --text-weight: 400;
 }
 
 .dark {
@@ -122,6 +129,18 @@
 
   .app-container {
     @apply container max-w-3xl! mx-auto space-y-6 px-4 py-8;
+  }
+
+  .font-display {
+    font-weight: var(--display-weight);
+  }
+
+  .font-text {
+    font-weight: var(--text-weight);
+  }
+
+  p,a,span,button,div {
+    @apply font-text;
   }
 }
 

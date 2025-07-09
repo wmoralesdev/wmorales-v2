@@ -3,9 +3,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getTicketById } from '@/app/actions/guestbook.actions';
+import { UserTicket } from '@/components/guestbook/user-ticket';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
-import { UserTicket } from '@/components/user-ticket';
 
 type Props = {
   params: Promise<{ id: string }>;

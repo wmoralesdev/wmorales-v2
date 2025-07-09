@@ -2,7 +2,7 @@ import { ArrowRight, BarChart3, Sparkles } from 'lucide-react';
 import Link from 'next/link';
 import { Suspense } from 'react';
 import { getActiveSurveys } from '@/app/actions/survey.actions';
-import { InnerHero } from '@/components/inner-hero';
+import { InnerHero } from '@/components/common/inner-hero';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
