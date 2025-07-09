@@ -4,6 +4,7 @@ import { PollsList } from '@/components/polls/polls-list';
 import { Card, CardContent } from '@/components/ui/card';
 import { prisma } from '@/lib/prisma';
 
+export { metadata } from './metadata';
 export const dynamic = 'force-dynamic';
 
 async function getPolls() {

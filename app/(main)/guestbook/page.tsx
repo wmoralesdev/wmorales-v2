@@ -1,12 +1,8 @@
 import { Sparkles } from 'lucide-react';
-import type { Metadata } from 'next';
 import { InnerHero } from '@/components/common/inner-hero';
 import { GuestbookContent } from '@/components/guestbook/guestbook-content';
 
-export const metadata: Metadata = {
-  title: 'Guestbook - Walter Morales',
-  description: 'Sign my digital guestbook and customize your unique ticket with AI.',
-};
+export { metadata } from './metadata';
 
 export default function GuestbookPage() {
   return (
