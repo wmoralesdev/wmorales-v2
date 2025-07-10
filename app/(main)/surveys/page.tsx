@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 
+export { metadata } from './metadata';
+
 async function SurveysList() {
   const { data: surveys, error } = await getActiveSurveys();
 

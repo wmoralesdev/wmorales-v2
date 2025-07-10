@@ -1,0 +1,25 @@
+{
+  "name": "Walter Morales - Sr Software Engineer & Cursor Ambassador",
+  "short_name": "Walter Morales",
+  "description": "Sr Software Engineer and pioneering Cursor Ambassador from El Salvador. Building impactful digital solutions.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#8b5cf6",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/wm.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/wm.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["developer", "portfolio", "technology"]
+}

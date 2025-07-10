@@ -6,6 +6,7 @@ import { getTicketById } from '@/app/actions/guestbook.actions';
 import { UserTicket } from '@/components/guestbook/user-ticket';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { createMetadata, siteConfig } from '@/lib/metadata';
 
 type Props = {
   params: Promise<{ id: string }>;
@@ -16,35 +17,43 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const ticket = await getTicketById(id);
 
   if (!ticket) {
-    return {
+    return createMetadata({
       title: 'Ticket Not Found',
-    };
+      description: 'The requested ticket could not be found.',
+    });
   }
 
-  const ogImageUrl = `${process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000'}/api/og/ticket/${ticket.id}`;
+  const ogImageUrl = `${siteConfig.url}/api/og/ticket/${ticket.id}`;
+  const title = `${ticket.userName}'s Guestbook Ticket`;
+  const description = `Check out ${ticket.userName}'s unique AI-generated ticket on Walter Morales' digital guestbook. Each ticket features personalized colors based on mood.`;
 
-  return {
-    title: `${ticket.userName}'s Guestbook Ticket`,
-    description: `Check out ${ticket.userName}'s unique ticket on Walter Morales' digital guestbook.`,
+  return createMetadata({
+    title,
+    description,
     openGraph: {
-      title: `${ticket.userName}'s Guestbook Ticket`,
-      description: `Check out ${ticket.userName}'s unique ticket on Walter Morales' digital guestbook.`,
+      title: `${title} | ${siteConfig.name}`,
+      description,
+      url: `${siteConfig.url}/guestbook/${ticket.id}`,
+      type: 'article',
       images: [
         {
           url: ogImageUrl,
           width: 1200,
           height: 630,
-          alt: `${ticket.userName}'s Guestbook Ticket`,
+          alt: title,
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
-      title: `${ticket.userName}'s Guestbook Ticket`,
-      description: `Check out ${ticket.userName}'s unique ticket on Walter Morales' digital guestbook.`,
+      title: `${title} | ${siteConfig.name}`,
+      description,
       images: [ogImageUrl],
     },
-  };
+    alternates: {
+      canonical: `${siteConfig.url}/guestbook/${ticket.id}`,
+    },
+  });
 }
 
 export default async function TicketPage({ params }: Props) {

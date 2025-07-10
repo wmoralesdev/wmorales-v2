@@ -15,10 +15,11 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
-import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+
+export { metadata } from './metadata';
 
 // Animation variants
 const containerVariants: Variants = {
