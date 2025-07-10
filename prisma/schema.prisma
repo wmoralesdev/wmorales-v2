@@ -241,3 +241,37 @@ model GuestbookTicket {
   @@index([createdAt])
   @@map("guestbook_tickets")
 }
+
+// Events Models
+model Event {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  qrCode      String   @unique @default(cuid()) // Short QR code for scanning
+  isActive    Boolean  @default(true) @map("is_active")
+  maxImages   Int      @default(15) @map("max_images") // Maximum images per user
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  endsAt      DateTime? @map("ends_at")
+
+  images EventImage[]
+
+  @@index([qrCode])
+  @@map("events")
+}
+
+model EventImage {
+  id        String   @id @default(uuid())
+  eventId   String   @map("event_id")
+  userId    String   @map("user_id")
+  imageUrl  String   @map("image_url")
+  caption   String?
+  createdAt DateTime @default(now())
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+  @@index([userId])
+  @@index([createdAt])
+  @@map("event_images")
+}

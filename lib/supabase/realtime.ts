@@ -170,6 +170,20 @@ export type GuestbookRealtimeEvent = {
   timestamp: string;
 };
 
+// Events Realtime Types
+export type EventRealtimeEvent = {
+  type: 'image_uploaded' | 'image_deleted';
+  eventId: string;
+  image?: {
+    id: string;
+    imageUrl: string;
+    caption?: string;
+    createdAt: string;
+  };
+  imageId?: string;
+  timestamp: string;
+};
+
 // Subscribe to guestbook tickets updates
 export function subscribeToGuestbookUpdates(
   onUpdate: (event: GuestbookRealtimeEvent) => void,
@@ -181,6 +195,36 @@ export function subscribeToGuestbookUpdates(
     .channel('guestbook:tickets')
     .on('broadcast', { event: 'ticket_update' }, ({ payload }) => {
       onUpdate(payload as GuestbookRealtimeEvent);
+    })
+    .on('presence', { event: 'sync' }, () => {
+      if (onPresenceUpdate) {
+        const state = channel.presenceState();
+        const viewersCount = Object.keys(state).length;
+        onPresenceUpdate(viewersCount);
+      }
+    })
+    .subscribe(async (status) => {
+      if (status === 'SUBSCRIBED' && onPresenceUpdate) {
+        const sessionId = await getSessionId();
+        await channel.track({ sessionId, joinedAt: new Date().toISOString() });
+      }
+    });
+
+  return channel;
+}
+
+// Subscribe to event updates
+export function subscribeToEventUpdates(
+  eventId: string,
+  onUpdate: (event: EventRealtimeEvent) => void,
+  onPresenceUpdate?: (activeViewers: number) => void
+): RealtimeChannel {
+  const supabase = createClient();
+
+  const channel = supabase
+    .channel(`event:${eventId}`)
+    .on('broadcast', { event: 'event_update' }, ({ payload }) => {
+      onUpdate(payload as EventRealtimeEvent);
     })
     .on('presence', { event: 'sync' }, () => {
       if (onPresenceUpdate) {
