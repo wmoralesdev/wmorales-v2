@@ -5,6 +5,9 @@ import { usePathname, useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { useAuth } from './auth-provider';
 import { UserNav } from './user-nav';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { createClient } from '@/lib/supabase/client';
+import Image from 'next/image';
 
 type SignInButtonProps = {
   variant?: 'default' | 'outline' | 'ghost';
@@ -13,11 +16,26 @@ type SignInButtonProps = {
 
 export function SignInButton({ variant = 'outline', size = 'default' }: SignInButtonProps) {
   const { user, loading } = useAuth();
-  const router = useRouter();
   const pathname = usePathname();
 
-  const handleSignIn = () => {
-    router.push(`/login?redirectTo=${encodeURIComponent(pathname)}`);
+  const supabase = createClient();
+
+  const handleSignInWithGoogle = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}?redirectTo=${encodeURIComponent(pathname)}`,
+      },
+    });
+  };
+
+  const handleSignInWithGitHub = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: `${window.location.origin}?redirectTo=${encodeURIComponent(pathname)}`,
+      },
+    });
   };
 
   if (loading) {
@@ -33,9 +51,23 @@ export function SignInButton({ variant = 'outline', size = 'default' }: SignInBu
   }
 
   return (
-    <Button onClick={handleSignIn} size={size} variant={variant}>
-      <LogIn className="mr-2 h-4 w-4" />
-      Sign In
-    </Button>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="ghost">
+          <LogIn className="h-4 w-4" />
+          Sign In
+        </Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="end">
+        <DropdownMenuItem onClick={handleSignInWithGoogle}>
+          <Image src="/google.svg" alt="Google" width={16} height={16} />
+          Google
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={handleSignInWithGitHub}>
+          <Image src="/github.svg" alt="GitHub" width={16} height={16} />
+          GitHub
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

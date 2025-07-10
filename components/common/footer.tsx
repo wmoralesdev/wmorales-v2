@@ -47,7 +47,7 @@ export function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="relative mt-32 overflow-hidden bg-black">
+    <footer className="relative overflow-hidden bg-black">
       {/* Top gradient accent */}
       <div className='absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent' />
 

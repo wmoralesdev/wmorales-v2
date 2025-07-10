@@ -3,11 +3,11 @@ import type { Metadata } from 'next';
 // Site configuration
 export const siteConfig = {
   name: 'Walter Morales',
-  title: 'Walter Morales - Sr Software Engineer & Cursor Ambassador',
+  title: 'Walter Morales | Software Engineer',
   shortTitle: 'Walter Morales',
   description:
-    'Sr Software Engineer and pioneering Cursor Ambassador from El Salvador. Building impactful digital solutions with 5+ years of experience in .NET, JavaScript, TypeScript, React, and cloud technologies.',
-  shortDescription: 'Sr Software Engineer & Cursor Ambassador from El Salvador',
+    'Software Engineer and pioneering Cursor Ambassador from El Salvador. Building impactful digital solutions with 5+ years of experience in .NET, JavaScript, TypeScript, React, and cloud technologies.',
+  shortDescription: 'Software Engineer & Cursor Ambassador from El Salvador',
   url: process.env.NEXT_PUBLIC_APP_URL || 'https://waltermorales.dev',
   ogImage: '/og-image.png', // You should create this
   author: {

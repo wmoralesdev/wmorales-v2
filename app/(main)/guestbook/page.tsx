@@ -6,7 +6,7 @@ export { metadata } from './metadata';
 
 export default function GuestbookPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <InnerHero
         description="Create your unique conference-style ticket with AI-generated colors based on your mood"
@@ -15,7 +15,7 @@ export default function GuestbookPage() {
       />
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 pb-16">
+      <div className="container mx-auto px-4 pb-16 pt-16">
         <GuestbookContent />
       </div>
     </div>

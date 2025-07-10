@@ -5,7 +5,7 @@ export { metadata } from './metadata';
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen">
       <main>
         <div id="home">
           <HeroSection />

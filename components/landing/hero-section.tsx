@@ -45,26 +45,6 @@ export function HeroSection() {
 
   return (
     <section className="relative min-h-screen overflow-hidden px-4 pt-24 pb-16 sm:px-6 lg:px-8">
-      {/* Subtle gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black opacity-50" />
-
-      {/* Animated mesh gradient */}
-      <motion.div
-        animate={{
-          background: [
-            'radial-gradient(circle at 20% 50%, rgba(147, 51, 234, 0.15) 0%, transparent 50%)',
-            'radial-gradient(circle at 80% 50%, rgba(168, 85, 247, 0.15) 0%, transparent 50%)',
-            'radial-gradient(circle at 50% 50%, rgba(196, 181, 253, 0.15) 0%, transparent 50%)',
-          ],
-        }}
-        className="absolute inset-0"
-        transition={{
-          duration: 10,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: 'easeInOut',
-        }}
-      />
-
       <div className="relative z-10 mx-auto max-w-7xl">
         <div className='grid min-h-[calc(100vh-8rem)] grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16'>
           {/* Left side - Text content */}
@@ -76,8 +56,11 @@ export function HeroSection() {
           >
             <motion.div className="space-y-6" variants={itemVariants}>
               <div className='flex items-center justify-center gap-2 lg:justify-start'>
-                <Sparkle className="h-5 w-5 text-purple-400" />
-                <span className='font-medium text-purple-400 text-sm'>Available for new projects</span>
+                <div className="relative">
+                  <div className="h-3 w-3 rounded-full bg-green-500" />
+                  <div className="absolute inset-0 h-3 w-3 animate-ping rounded-full bg-green-500" />
+                </div>
+                <span className='font-medium text-green-400 text-sm'>Available for new projects</span>
               </div>
 
               <h1 className='font-bold text-4xl tracking-tight sm:text-5xl lg:text-6xl'>

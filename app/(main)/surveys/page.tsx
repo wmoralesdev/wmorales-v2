@@ -64,14 +64,14 @@ async function SurveysList() {
 
 export default function SurveysPage() {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900">
+    <div className="min-h-screen">
       <InnerHero
         description="Participate in our surveys to help shape the future of our community"
         icon={BarChart3}
         title="Active Surveys"
       />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 pt-16">
         <Suspense
           fallback={
             <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">

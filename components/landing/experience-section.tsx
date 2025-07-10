@@ -147,26 +147,6 @@ export function ExperienceSection() {
 
   return (
     <section className="relative min-h-screen overflow-hidden px-4 pt-24 pb-16 sm:px-6 lg:px-8">
-      {/* Background gradient matching hero section style */}
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black opacity-50" />
-
-      {/* Animated mesh gradient for consistency */}
-      <motion.div
-        animate={{
-          background: [
-            'radial-gradient(circle at 30% 20%, rgba(147, 51, 234, 0.1) 0%, transparent 50%)',
-            'radial-gradient(circle at 70% 80%, rgba(168, 85, 247, 0.1) 0%, transparent 50%)',
-            'radial-gradient(circle at 50% 50%, rgba(196, 181, 253, 0.1) 0%, transparent 50%)',
-          ],
-        }}
-        className="absolute inset-0"
-        transition={{
-          duration: 15,
-          repeat: Number.POSITIVE_INFINITY,
-          ease: 'easeInOut',
-        }}
-      />
-
       <div className="relative z-10 mx-auto max-w-5xl">
         <motion.div
           className="mb-16 text-center"

@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
-import { Menu } from 'lucide-react';
+import { Menu, User } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
@@ -13,6 +13,7 @@ import { cn } from '@/lib/utils';
 import Image from 'next/image';
 import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '../ui/navigation-menu';
 import { Clock } from './clock';
+import { DropdownMenu, DropdownMenuTrigger } from '../ui/dropdown-menu';
 
 const MotionMenuItem = motion(NavigationMenuItem);
 
@@ -62,7 +63,6 @@ const mobileMenuVariants: Variants = {
     },
   },
 };
-
 export function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
@@ -97,7 +97,7 @@ export function Navbar() {
             height={24}
             priority
             quality={100}
-            src="/wm.ico"
+            src="/wm.svg"
             width={24}
           />
         </div>

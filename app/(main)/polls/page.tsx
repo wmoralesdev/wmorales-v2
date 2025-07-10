@@ -27,14 +27,14 @@ export default async function PollsPage() {
   const polls = await getPolls();
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900">
+    <div className="min-h-screen">
       <InnerHero
         description="Vote with fellow attendees and see the results in real-time"
         icon={Activity}
         title="Live Polls"
       />
 
-      <div className="container mx-auto px-4 py-8">
+      <div className="container mx-auto px-4 py-8 pt-16">
         {polls.length === 0 ? (
           <Card>
             <CardContent className="py-8">
