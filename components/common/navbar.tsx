@@ -230,7 +230,7 @@ export function Navbar() {
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
                   <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
-                    <li className="row-span-2">
+                    <li className="row-span-3">
                       <NavigationMenuLink
                         asChild
                         href="/cursor"
@@ -269,6 +269,19 @@ export function Navbar() {
                         </div>
                         <p className="text-muted-foreground text-sm leading-tight">
                           Vote in real-time polls. See what others think.
+                        </p>
+                      </NavigationMenuLink>
+                    </li>
+                    <li>
+                      <NavigationMenuLink
+                        className="flex h-full w-full from-muted/50 to-muted"
+                        href="/events"
+                      >
+                        <div>
+                          Events
+                        </div>
+                        <p className="text-muted-foreground text-sm leading-tight">
+                          See what&apos;s coming up. Join the fun and upload your pictures at the events.
                         </p>
                       </NavigationMenuLink>
                     </li>

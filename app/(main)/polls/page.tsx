@@ -27,7 +27,7 @@ export default async function PollsPage() {
   const polls = await getPolls();
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
       <InnerHero
         description="Vote with fellow attendees and see the results in real-time"
         icon={Activity}
@@ -36,10 +36,11 @@ export default async function PollsPage() {
 
       <div className="container mx-auto px-4 py-8 pt-16">
         {polls.length === 0 ? (
-          <Card>
+          <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl'>
             <CardContent className="py-8">
-              <p className="text-center text-muted-foreground">
-                No polls created yet. Run <code className="rounded bg-muted px-2 py-1">pnpm seed:poll</code> to create a
+              <p className="text-center text-gray-400">
+                No polls created yet. Run{' '}
+                <code className="rounded bg-purple-500/20 px-2 py-1 text-purple-300">pnpm seed:poll</code> to create a
                 sample poll.
               </p>
             </CardContent>

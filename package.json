@@ -11,7 +11,8 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:seed": "prisma db seed",
-    "prisma:seed-poll": "tsx prisma/seed-poll.ts"
+    "prisma:seed-poll": "tsx prisma/seed-poll.ts",
+    "prisma:seed-events": "tsx prisma/seed-events.ts"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts",

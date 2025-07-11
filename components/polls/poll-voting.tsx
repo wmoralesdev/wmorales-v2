@@ -338,15 +338,21 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
     return (
       <div className="app-container">
         {/* Success Message */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-green-600">
-              <Check className="h-5 w-5" />
-              Thank you for voting!
-            </CardTitle>
-            <CardDescription>Your responses have been recorded. View the live results below.</CardDescription>
-          </CardHeader>
-        </Card>
+        <motion.div animate={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 20 }} transition={{ duration: 0.5 }}>
+          <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
+            <CardHeader>
+              <CardTitle className="flex items-center gap-2 text-green-400">
+                <div className="rounded-full bg-green-500/20 p-2">
+                  <Check className="h-5 w-5" />
+                </div>
+                Thank you for voting!
+              </CardTitle>
+              <CardDescription className="text-gray-400">
+                Your responses have been recorded. View the live results below.
+              </CardDescription>
+            </CardHeader>
+          </Card>
+        </motion.div>
 
         {/* Results Dashboard */}
         <PollResultsDashboard
@@ -366,55 +372,66 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
   return (
     <div className="app-container">
       {/* Poll Header */}
-      <Card>
-        <CardHeader>
-          <CardTitle className="text-2xl">{poll.title}</CardTitle>
-          {poll.description && <CardDescription className="text-base">{poll.description}</CardDescription>}
-          {canShowResults && state.totalVoters > 0 && (
-            <div className="mt-2 flex items-center gap-2 text-muted-foreground text-sm">
-              <Users className="h-4 w-4" />
-              <span>
-                {state.totalVoters} {state.totalVoters === 1 ? 'voter' : 'voters'}
-              </span>
-            </div>
-          )}
-        </CardHeader>
-      </Card>
+      <motion.div animate={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 20 }} transition={{ duration: 0.5 }}>
+        <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
+          <CardHeader>
+            <CardTitle className="text-2xl text-white">{poll.title}</CardTitle>
+            {poll.description && (
+              <CardDescription className="text-base text-gray-400">{poll.description}</CardDescription>
+            )}
+            {canShowResults && state.totalVoters > 0 && (
+              <div className="mt-2 flex items-center gap-2 text-gray-500 text-sm">
+                <Users className="h-4 w-4" />
+                <span>
+                  {state.totalVoters} {state.totalVoters === 1 ? 'voter' : 'voters'}
+                </span>
+              </div>
+            )}
+          </CardHeader>
+        </Card>
+      </motion.div>
 
       {/* Progress Indicator */}
       {poll.questions.length > 1 && (
-        <Card>
-          <CardContent className="py-4">
-            <div className="flex items-center justify-between">
-              <span className="text-muted-foreground text-sm">
-                Progress: {answeredQuestions} / {poll.questions.length} questions answered
-              </span>
-              {allQuestionsAnswered && (
-                <Button
-                  onClick={() => dispatch({ type: 'SET_SHOW_DASHBOARD', payload: true })}
-                  size="sm"
-                  variant="outline"
-                >
-                  View Results
-                  <ChevronRight className="ml-1 h-4 w-4" />
-                </Button>
-              )}
-            </div>
-            <div className="mt-2 h-2 overflow-hidden rounded-full bg-secondary">
-              <motion.div
-                animate={{ width: `${(answeredQuestions / poll.questions.length) * 100}%` }}
-                className="h-full bg-primary"
-                initial={{ width: 0 }}
-                transition={{ duration: 0.3 }}
-              />
-            </div>
-          </CardContent>
-        </Card>
+        <motion.div
+          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+        >
+          <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
+            <CardContent className="py-4">
+              <div className="flex items-center justify-between">
+                <span className="text-gray-400 text-sm">
+                  Progress: {answeredQuestions} / {poll.questions.length} questions answered
+                </span>
+                {allQuestionsAnswered && (
+                  <Button
+                    className="border-purple-500/30 bg-purple-500/20 text-purple-300 hover:bg-purple-500/30"
+                    onClick={() => dispatch({ type: 'SET_SHOW_DASHBOARD', payload: true })}
+                    size="sm"
+                    variant="outline"
+                  >
+                    View Results
+                    <ChevronRight className="ml-1 h-4 w-4" />
+                  </Button>
+                )}
+              </div>
+              <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-800/50">
+                <motion.div
+                  animate={{ width: `${(answeredQuestions / poll.questions.length) * 100}%` }}
+                  className="h-full bg-gradient-to-r from-purple-500 to-purple-600"
+                  initial={{ width: 0 }}
+                  transition={{ duration: 0.3 }}
+                />
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
       )}
 
       {/* Validation Errors */}
       {state.validationErrors.length > 0 && (
-        <Alert variant="destructive">
+        <Alert className='border-red-500/30 bg-red-500/10 text-red-400'>
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
             <ul className="list-inside list-disc space-y-1">
@@ -438,21 +455,23 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
               key={question.id}
               transition={{ delay: index * 0.1 }}
             >
-              <Card className={cn(isAnswered && 'opacity-75')}>
+              <Card className={cn('border-gray-800 bg-gray-900/80 backdrop-blur-xl', isAnswered && 'opacity-75')}>
                 <CardHeader>
                   <div className="flex items-start justify-between">
-                    <CardTitle className="text-lg">
+                    <CardTitle className="text-lg text-white">
                       {index + 1}. {question.question}
                     </CardTitle>
                     {isAnswered && (
-                      <Badge className="gap-1" variant="secondary">
+                      <Badge className="gap-1 border-green-500/30 bg-green-500/20 text-green-400" variant="secondary">
                         <Check className="h-3 w-3" />
                         Answered
                       </Badge>
                     )}
                   </div>
                   {question.type === 'multiple' && question.maxSelections && (
-                    <CardDescription>Select up to {question.maxSelections} options</CardDescription>
+                    <CardDescription className="text-gray-400">
+                      Select up to {question.maxSelections} options
+                    </CardDescription>
                   )}
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -469,15 +488,18 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
 
                         return (
                           <div className="relative" key={option.id}>
-                            <div className="flex items-center space-x-2 rounded-lg p-3 transition-colors hover:bg-accent/50">
-                              <RadioGroupItem id={option.id} value={option.id} />
-                              <Label className="flex flex-1 cursor-pointer items-center gap-2" htmlFor={option.id}>
+                            <div className='flex items-center space-x-2 rounded-lg border border-transparent p-3 transition-colors hover:border-purple-500/30 hover:bg-purple-500/10'>
+                              <RadioGroupItem className="text-purple-400" id={option.id} value={option.id} />
+                              <Label
+                                className="flex flex-1 cursor-pointer items-center gap-2 text-gray-300"
+                                htmlFor={option.id}
+                              >
                                 {option.emoji && <span className="text-xl">{option.emoji}</span>}
                                 <span>{option.label}</span>
-                                {isSelected && <Check className="ml-auto h-4 w-4 text-primary" />}
+                                {isSelected && <Check className="ml-auto h-4 w-4 text-purple-400" />}
                               </Label>
                               {canShowResults && (
-                                <span className="font-medium text-sm">
+                                <span className='font-medium text-gray-400 text-sm'>
                                   {percentage}% ({voteCount})
                                 </span>
                               )}
@@ -486,7 +508,10 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
                               <div className="-z-10 absolute bottom-0 left-0 h-full overflow-hidden rounded-lg">
                                 <motion.div
                                   animate={{ width: `${percentage}%` }}
-                                  className={cn('h-full', option.color || 'bg-primary/10')}
+                                  className={cn(
+                                    'h-full',
+                                    option.color || 'bg-gradient-to-r from-purple-500/20 to-purple-600/20'
+                                  )}
                                   initial={{ width: 0 }}
                                   transition={{ duration: 0.5, ease: 'easeOut' }}
                                 />
@@ -506,7 +531,7 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
 
                         return (
                           <div className="relative" key={option.id}>
-                            <div className="flex items-center space-x-2 rounded-lg p-3 transition-colors hover:bg-accent/50">
+                            <div className="flex items-center space-x-2 rounded-lg p-3 transition-colors hover:bg-purple-500/10 border border-transparent hover:border-purple-500/30">
                               <Checkbox
                                 checked={isChecked}
                                 disabled={isAnswered}
@@ -514,14 +539,15 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
                                 onCheckedChange={(checked) =>
                                   handleOptionChange(question.id, option.id, checked as boolean)
                                 }
+                                className="text-purple-400 data-[state=checked]:bg-purple-500 data-[state=checked]:border-purple-500"
                               />
-                              <Label className="flex flex-1 cursor-pointer items-center gap-2" htmlFor={option.id}>
+                              <Label className="flex flex-1 cursor-pointer items-center gap-2 text-gray-300" htmlFor={option.id}>
                                 {option.emoji && <span className="text-xl">{option.emoji}</span>}
                                 <span>{option.label}</span>
-                                {isSelected && <Check className="ml-auto h-4 w-4 text-primary" />}
+                                {isSelected && <Check className="ml-auto h-4 w-4 text-purple-400" />}
                               </Label>
                               {canShowResults && (
-                                <span className="font-medium text-sm">
+                                <span className="font-medium text-sm text-gray-400">
                                   {percentage}% ({voteCount})
                                 </span>
                               )}
@@ -530,7 +556,7 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
                               <div className="-z-10 absolute bottom-0 left-0 h-full overflow-hidden rounded-lg">
                                 <motion.div
                                   animate={{ width: `${percentage}%` }}
-                                  className={cn('h-full', option.color || 'bg-primary/10')}
+                                  className={cn('h-full', option.color || 'bg-gradient-to-r from-purple-500/20 to-purple-600/20')}
                                   initial={{ width: 0 }}
                                   transition={{ duration: 0.5, ease: 'easeOut' }}
                                 />
@@ -550,26 +576,37 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
 
       {/* Single Submit Button */}
       {hasAnyUnansweredQuestions && (
-        <Card>
-          <CardContent className="pt-6">
-            <Button className="w-full" disabled={state.voting} onClick={handleSubmitAll} size="lg">
-              {state.voting ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Submitting Answers...
-                </>
-              ) : (
-                <>
-                  Submit All Answers
-                  <ChevronRight className="ml-2 h-4 w-4" />
-                </>
-              )}
-            </Button>
-            <p className="mt-2 text-center text-muted-foreground text-sm">
-              Make sure to answer all questions before submitting
-            </p>
-          </CardContent>
-        </Card>
+        <motion.div
+          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+        >
+          <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl'>
+            <CardContent className="pt-6">
+              <Button
+                className='w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25'
+                disabled={state.voting}
+                onClick={handleSubmitAll}
+                size="lg"
+              >
+                {state.voting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Submitting Answers...
+                  </>
+                ) : (
+                  <>
+                    Submit All Answers
+                    <ChevronRight className="ml-2 h-4 w-4" />
+                  </>
+                )}
+              </Button>
+              <p className="mt-2 text-center text-gray-500 text-sm">
+                Make sure to answer all questions before submitting
+              </p>
+            </CardContent>
+          </Card>
+        </motion.div>
       )}
     </div>
   );

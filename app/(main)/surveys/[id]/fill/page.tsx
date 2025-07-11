@@ -56,7 +56,7 @@ export default async function SurveyFillPage({ params }: PageProps) {
   const survey = result.data as SurveyWithSections;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black to-gray-900">
+    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
       <SurveyRenderer survey={survey} />
     </div>
   );

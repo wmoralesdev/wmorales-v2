@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Check } from 'lucide-react';
+import { ArrowLeft, ArrowRight, Check, Info } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -12,7 +12,6 @@ import { completeSurveyResponse, createSurveyResponse, saveSurveyAnswer } from '
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Form } from '@/components/ui/form';
-import { Progress } from '@/components/ui/progress';
 import type { Question, SurveyQuestion, SurveySection, SurveyWithSections } from '@/lib/types/survey.types';
 import { QuestionRenderer } from './question-renderer';
 
@@ -175,75 +174,115 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   };
 
   return (
-    <div className="app-container">
-      <div className="mb-8">
-        <h1 className="mb-2 font-bold text-3xl">{survey.title}</h1>
-        <p className="text-muted-foreground">{survey.description}</p>
-      </div>
+    <div className='app-container mx-auto max-w-4xl'>
+      <motion.div
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-8 text-center"
+        initial={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.5 }}
+      >
+        <h1 className='mb-2 bg-gradient-to-r from-white to-purple-400 bg-clip-text font-bold text-3xl text-transparent'>
+          {survey.title}
+        </h1>
+        <p className="text-gray-400">{survey.description}</p>
+      </motion.div>
 
-      <div className="mb-6">
-        <Progress className="h-2" value={progress} />
-        <p className="mt-2 text-muted-foreground text-sm">
+      <motion.div
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-8"
+        initial={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.5, delay: 0.1 }}
+      >
+        <div className="relative h-2 overflow-hidden rounded-full bg-gray-800/50">
+          <motion.div
+            animate={{ width: `${progress}%` }}
+            className="h-full bg-gradient-to-r from-purple-500 to-purple-600"
+            initial={{ width: 0 }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
+        <p className='mt-2 text-center text-gray-500 text-sm'>
           Section {currentSectionIndex + 1} of {totalSections}
         </p>
-      </div>
+      </motion.div>
 
       <AnimatePresence mode="wait">
         <motion.div
           animate={{ opacity: 1, x: 0 }}
+          className="space-y-6"
           exit={{ opacity: 0, x: -20 }}
           initial={{ opacity: 0, x: 20 }}
           key={currentSection.id}
           transition={{ duration: 0.3 }}
         >
-          <Card>
-            <CardHeader>
-              <CardTitle>{currentSection.title}</CardTitle>
-              <CardDescription>{currentSection.description}</CardDescription>
+          {/* Section Header Card */}
+          <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl'>
+            <CardHeader className='py-4 text-center'>
+              <CardTitle className='flex items-center justify-center gap-2 text-white'>
+                <Info className="h-5 w-5 text-purple-400" />
+                {currentSection.title}
+              </CardTitle>
+              {currentSection.description && (
+                <CardDescription className='mt-2 text-gray-400'>{currentSection.description}</CardDescription>
+              )}
             </CardHeader>
-            <CardContent>
-              <Form {...form}>
-                <form className="space-y-6" onSubmit={form.handleSubmit(handleNext)}>
-                  {currentSection.questions?.map((question) => (
-                    <motion.div
-                      animate={{ opacity: 1, y: 0 }}
-                      initial={{ opacity: 0, y: 10 }}
-                      key={question.id}
-                      transition={{ delay: 0.1 }}
-                    >
-                      <QuestionRenderer form={form} question={question as unknown as Question} />
-                    </motion.div>
-                  ))}
+          </Card>
 
-                  <div className="flex justify-between pt-6">
+          {/* Questions Form */}
+          <Form {...form}>
+            <form className="space-y-4" onSubmit={form.handleSubmit(handleNext)}>
+              {currentSection.questions?.map((question, index) => (
+                <motion.div
+                  animate={{ opacity: 1, y: 0 }}
+                  initial={{ opacity: 0, y: 20 }}
+                  key={question.id}
+                  transition={{ delay: 0.1 * (index + 1) }}
+                >
+                  <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all duration-300 hover:border-purple-500/30'>
+                    <CardContent className="pt-4 pb-6">
+                      <QuestionRenderer form={form} question={question as unknown as Question} />
+                    </CardContent>
+                  </Card>
+                </motion.div>
+              ))}
+
+              {/* Navigation Buttons */}
+              <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl'>
+                <CardContent className="pt-4 pb-4">
+                  <div className="flex justify-between">
                     <Button
+                      className="border-gray-700 bg-gray-800/50 text-gray-300 hover:bg-gray-800 hover:text-white disabled:opacity-50"
                       disabled={currentSectionIndex === 0}
                       onClick={handleBack}
                       type="button"
-                      variant={'outline' as const}
+                      variant="outline"
                     >
                       <ArrowLeft className="mr-2 h-4 w-4" />
                       Back
                     </Button>
 
-                    <Button disabled={isSubmitting} type="submit">
+                    <Button
+                      className='bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25'
+                      disabled={isSubmitting}
+                      type="submit"
+                    >
                       {currentSectionIndex >= survey.sections.length - 1 ? (
                         <>
-                          Submit
+                          Submit Survey
                           <Check className="ml-2 h-4 w-4" />
                         </>
                       ) : (
                         <>
-                          Next
+                          Next Section
                           <ArrowRight className="ml-2 h-4 w-4" />
                         </>
                       )}
                     </Button>
                   </div>
-                </form>
-              </Form>
-            </CardContent>
-          </Card>
+                </CardContent>
+              </Card>
+            </form>
+          </Form>
         </motion.div>
       </AnimatePresence>
     </div>
