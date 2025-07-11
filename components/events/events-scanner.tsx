@@ -6,9 +6,10 @@ import { Html5QrcodeScanner } from 'html5-qrcode';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Camera, CameraOff, AlertCircle, CheckCircle } from 'lucide-react';
+import { Camera, CameraOff, AlertCircle, CheckCircle, Sparkles, QrCode } from 'lucide-react';
 import { getEventByQRCode } from '@/app/actions/events.actions';
 import { toast } from 'sonner';
+import { motion } from 'framer-motion';
 
 export function EventsScanner() {
   const [isScanning, setIsScanning] = useState(false);
@@ -98,93 +99,136 @@ export function EventsScanner() {
 
   if (hasPermission === false) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <CameraOff className="h-5 w-5 text-destructive" />
-            Camera Access Required
-          </CardTitle>
-          <CardDescription>
-            Camera permission is required to scan QR codes
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-4">
-          <Alert>
-            <AlertCircle className="h-4 w-4" />
-            <AlertDescription>
-              Please allow camera access in your browser settings and try again.
-            </AlertDescription>
-          </Alert>
-          <Button onClick={startScanning} className="w-full">
-            <Camera className="h-4 w-4 mr-2" />
-            Try Again
-          </Button>
-        </CardContent>
-      </Card>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Card className="bg-gray-900/80 backdrop-blur-xl border-gray-800 overflow-hidden">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-white">
+              <CameraOff className="h-5 w-5 text-red-400" />
+              Camera Access Required
+            </CardTitle>
+            <CardDescription className="text-gray-400">
+              Camera permission is required to scan QR codes
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <Alert className="bg-red-500/10 border-red-500/30">
+              <AlertCircle className="h-4 w-4 text-red-400" />
+              <AlertDescription className="text-red-300">
+                Please allow camera access in your browser settings and try again.
+              </AlertDescription>
+            </Alert>
+            <Button 
+              onClick={startScanning} 
+              className="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+            >
+              <Camera className="h-4 w-4 mr-2" />
+              Try Again
+            </Button>
+          </CardContent>
+        </Card>
+      </motion.div>
     );
   }
 
   if (!isScanning) {
     return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Camera className="h-5 w-5" />
-            Ready to Scan
-          </CardTitle>
-          <CardDescription>
-            Click the button below to start scanning QR codes
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Button onClick={startScanning} className="w-full" size="lg">
-            <Camera className="h-4 w-4 mr-2" />
-            Start Scanner
-          </Button>
-        </CardContent>
-      </Card>
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        <Card className="bg-gray-900/80 backdrop-blur-xl border-gray-800 overflow-hidden">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2 text-white">
+              <Camera className="h-5 w-5 text-purple-400" />
+              Ready to Scan
+              <Sparkles className="h-4 w-4 text-purple-400 animate-pulse" />
+            </CardTitle>
+            <CardDescription className="text-gray-400">
+              Click the button below to start scanning QR codes
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <Button 
+              onClick={startScanning} 
+              className="w-full bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg hover:shadow-purple-500/25 transition-all duration-300" 
+              size="lg"
+            >
+              <Camera className="h-4 w-4 mr-2" />
+              Start Scanner
+            </Button>
+          </CardContent>
+        </Card>
+      </motion.div>
     );
   }
 
   return (
-    <div className="space-y-4">
+    <motion.div 
+      className="space-y-4"
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <div className="relative">
         <div 
           ref={containerRef}
           id="qr-reader"
-          className="w-full max-w-md mx-auto rounded-lg overflow-hidden"
+          className="w-full max-w-md mx-auto rounded-xl overflow-hidden border border-purple-500/30 shadow-2xl shadow-purple-500/20"
         />
         
         {isProcessing && (
-          <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-lg">
-            <div className="bg-background p-4 rounded-lg flex items-center gap-2">
-              <CheckCircle className="h-5 w-5 text-green-500 animate-pulse" />
-              <span>Processing...</span>
-            </div>
+          <div className="absolute inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center rounded-xl">
+            <motion.div 
+              className="bg-gray-900/90 backdrop-blur-xl border border-purple-500/30 p-6 rounded-xl flex items-center gap-3"
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.3 }}
+            >
+              <CheckCircle className="h-6 w-6 text-green-400 animate-pulse" />
+              <span className="text-white font-medium">Processing...</span>
+            </motion.div>
           </div>
         )}
       </div>
 
       {error && (
-        <Alert variant="destructive">
-          <AlertCircle className="h-4 w-4" />
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.2 }}
+        >
+          <Alert className="bg-red-500/10 border-red-500/30 backdrop-blur-sm">
+            <AlertCircle className="h-4 w-4 text-red-400" />
+            <AlertDescription className="text-red-300">{error}</AlertDescription>
+          </Alert>
+        </motion.div>
       )}
 
       <div className="flex gap-2">
-        <Button onClick={stopScanning} variant="outline" className="flex-1">
+        <Button 
+          onClick={stopScanning} 
+          variant="outline" 
+          className="flex-1 border-gray-700 text-gray-300 hover:bg-gray-800/50 hover:text-white hover:border-gray-600"
+        >
           Stop Scanner
         </Button>
-        <Button onClick={startScanning} className="flex-1">
+        <Button 
+          onClick={startScanning} 
+          className="flex-1 bg-gradient-to-r from-purple-500 to-purple-600 hover:from-purple-600 hover:to-purple-700 text-white shadow-lg hover:shadow-purple-500/25 transition-all duration-300"
+        >
           Restart
         </Button>
       </div>
 
-      <div className="text-center text-sm text-muted-foreground">
-        <p>Point your camera at a Cursor event QR code</p>
-        <p className="mt-1">The scanner will automatically detect and process valid QR codes</p>
+      <div className="text-center text-sm">
+        <p className="text-gray-400">Point your camera at a Cursor event QR code</p>
+        <p className="mt-1 text-gray-500">The scanner will automatically detect and process valid QR codes</p>
       </div>
-    </div>
+    </motion.div>
   );
 }
