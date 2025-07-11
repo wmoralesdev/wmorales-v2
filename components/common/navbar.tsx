@@ -70,6 +70,7 @@ export function Navbar() {
 
   const navItems = [
     { name: 'Home', href: '/' },
+    { name: 'Blog', href: '/blog' },
     { name: 'Guestbook', href: '/guestbook' },
     { name: 'Cursor', children: [
       { name: 'Surveys', href: '/surveys' },
@@ -135,6 +136,47 @@ export function Navbar() {
                     {/* Active indicator */}
                     <AnimatePresence>
                       {pathname === '/' && (
+                        <motion.div
+                          animate={{ scaleX: 1 }}
+                          className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
+                          exit={{ scaleX: 0 }}
+                          initial={{ scaleX: 0 }}
+                          transition={{
+                            duration: 0.3,
+                            ease: [0.25, 0.46, 0.45, 0.94],
+                          }}
+                        />
+                      )}
+                    </AnimatePresence>
+                  </Button>
+                </NavigationMenuLink>
+              </MotionMenuItem>
+
+              <MotionMenuItem
+                animate="visible"
+                initial="hidden"
+                key="blog"
+                variants={menuItemVariants}
+              >
+                <NavigationMenuLink
+                  className="relative"
+                  href="/blog"
+                  key="blog"
+                >
+                  <Button
+                    className={cn(
+                      'relative cursor-pointer font-medium text-sm transition-colors',
+                      pathname === '/blog' || pathname.startsWith('/blog/') ? 'text-purple-400' : 'hover:text-purple-400'
+                    )}
+                    variant="ghost"
+                  >
+                    <motion.span transition={{ duration: 0.2 }} whileHover={{ y: -2 }}>
+                      Blog
+                    </motion.span>
+
+                    {/* Active indicator */}
+                    <AnimatePresence>
+                      {(pathname === '/blog' || pathname.startsWith('/blog/')) && (
                         <motion.div
                           animate={{ scaleX: 1 }}
                           className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
