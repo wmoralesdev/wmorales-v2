@@ -5,8 +5,8 @@ import type { GuestbookEntry, GuestbookTicket } from '@prisma/client';
 import { generateObject } from 'ai';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
-import { createClient } from '@/lib/supabase/server';
 import { broadcastGuestbookUpdate } from '@/lib/supabase/realtime-server';
+import { createClient } from '@/lib/supabase/server';
 
 // Color palette schema for AI generation
 const colorPaletteSchema = z.object({

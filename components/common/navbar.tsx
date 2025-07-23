@@ -1,21 +1,26 @@
 'use client';
 
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
-import { Menu, User } from 'lucide-react';
+import { Menu } from 'lucide-react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-
 import { SignInButton } from '@/components/auth/sign-in-button';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { cn } from '@/lib/utils';
-import Image from 'next/image';
-import { NavigationMenu, NavigationMenuContent, NavigationMenuItem, NavigationMenuLink, NavigationMenuList, NavigationMenuTrigger } from '../ui/navigation-menu';
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuLink,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from '../ui/navigation-menu';
 import { Clock } from './clock';
-import { DropdownMenu, DropdownMenuTrigger } from '../ui/dropdown-menu';
 
-const MotionMenuItem = motion(NavigationMenuItem);
+const MotionMenuItem = motion.create(NavigationMenuItem);
 
 // Animation variants
 const navVariants: Variants = {
@@ -72,11 +77,14 @@ export function Navbar() {
     { name: 'Home', href: '/' },
     { name: 'Blog', href: '/blog' },
     { name: 'Guestbook', href: '/guestbook' },
-    { name: 'Cursor', children: [
-      { name: 'Surveys', href: '/surveys' },
-      { name: 'Polls', href: '/polls' },
-      { name: 'Cursor', href: '/cursor' },
-    ] },
+    {
+      name: 'Cursor',
+      children: [
+        { name: 'Surveys', href: '/surveys' },
+        { name: 'Polls', href: '/polls' },
+        { name: 'Cursor', href: '/cursor' },
+      ],
+    },
   ];
 
   return (
@@ -90,11 +98,11 @@ export function Navbar() {
       variants={navVariants}
     >
       {/* Logo */}
-      <Link className="group flex cursor-pointer items-center gap-2" href="/">
+      <Link className="group flex cursor-pointer items-center gap-2 select-none" href="/">
         <div>
           <Image
             alt="Walter Morales"
-            className="h-6 w-6 transform-gpu transition-transform duration-200 ease-in-out group-hover:rotate-180"
+            className="transform-gpu transition-transform duration-200 ease-in-out group-hover:rotate-180"
             height={24}
             priority
             quality={100}
@@ -106,22 +114,11 @@ export function Navbar() {
       </Link>
       <div className="mx-auto px-4 lg:container sm:px-6 lg:px-20">
         <div className="flex h-16 items-center justify-between lg:w-full">
-
-
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden items-center space-x-8 md:flex">
             <NavigationMenuList>
-              <MotionMenuItem
-                animate="visible"
-                initial="hidden"
-                key="home"
-                variants={menuItemVariants}
-              >
-                <NavigationMenuLink
-                  className="relative"
-                  href="/"
-                  key="home"
-                >
+              <MotionMenuItem animate="visible" initial="hidden" key="home" variants={menuItemVariants}>
+                <NavigationMenuLink className="relative" href="/" key="home">
                   <Button
                     className={cn(
                       'relative cursor-pointer font-medium text-sm transition-colors',
@@ -152,21 +149,14 @@ export function Navbar() {
                 </NavigationMenuLink>
               </MotionMenuItem>
 
-              <MotionMenuItem
-                animate="visible"
-                initial="hidden"
-                key="blog"
-                variants={menuItemVariants}
-              >
-                <NavigationMenuLink
-                  className="relative"
-                  href="/blog"
-                  key="blog"
-                >
+              <MotionMenuItem animate="visible" initial="hidden" key="blog" variants={menuItemVariants}>
+                <NavigationMenuLink className="relative" href="/blog" key="blog">
                   <Button
                     className={cn(
                       'relative cursor-pointer font-medium text-sm transition-colors',
-                      pathname === '/blog' || pathname.startsWith('/blog/') ? 'text-purple-400' : 'hover:text-purple-400'
+                      pathname === '/blog' || pathname.startsWith('/blog/')
+                        ? 'text-purple-400'
+                        : 'hover:text-purple-400'
                     )}
                     variant="ghost"
                   >
@@ -193,17 +183,8 @@ export function Navbar() {
                 </NavigationMenuLink>
               </MotionMenuItem>
 
-              <MotionMenuItem
-                animate="visible"
-                initial="hidden"
-                key="guestbook"
-                variants={menuItemVariants}
-              >
-                <NavigationMenuLink
-                  className="relative"
-                  href="/guestbook"
-                  key="guestbook"
-                >
+              <MotionMenuItem animate="visible" initial="hidden" key="guestbook" variants={menuItemVariants}>
+                <NavigationMenuLink className="relative" href="/guestbook" key="guestbook">
                   <Button
                     className={cn(
                       'relative cursor-pointer font-medium text-sm transition-colors',
@@ -234,15 +215,8 @@ export function Navbar() {
                 </NavigationMenuLink>
               </MotionMenuItem>
 
-              <MotionMenuItem
-                animate="visible"
-                initial="hidden"
-                key="cursor"
-                variants={menuItemVariants}
-              >
-                <NavigationMenuTrigger
-                  className="relative"
-                >
+              <MotionMenuItem animate="visible" initial="hidden" key="cursor" variants={menuItemVariants}>
+                <NavigationMenuTrigger className="relative">
                   <span
                     className={cn(
                       'relative cursor-pointer font-medium text-sm transition-colors',
@@ -273,15 +247,10 @@ export function Navbar() {
                 <NavigationMenuContent>
                   <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
                     <li className="row-span-3">
-                      <NavigationMenuLink
-                        asChild
-                        href="/cursor"
-                      >
+                      <NavigationMenuLink asChild href="/cursor">
                         {/** biome-ignore lint/a11y/useValidAnchor: controlled by the NavigationMenuLink */}
                         <a className="flex h-full w-full justify-end from-muted/50 to-muted">
-                          <div className="mt-4 mb-2 font-medium text-lg">
-                            Ambassador
-                          </div>
+                          <div className="mt-4 mb-2 font-medium text-lg">Ambassador</div>
                           <p className="mb-4 text-muted-foreground text-sm leading-tight">
                             Answer questions to help us improve Cursor's community.
                           </p>
@@ -289,39 +258,24 @@ export function Navbar() {
                       </NavigationMenuLink>
                     </li>
                     <li>
-                      <NavigationMenuLink
-                        className="flex h-full w-full from-muted/50 to-muted"
-                        href="/surveys"
-                      >
-                        <div>
-                          Surveys
-                        </div>
+                      <NavigationMenuLink className="flex h-full w-full from-muted/50 to-muted" href="/surveys">
+                        <div>Surveys</div>
                         <p className="text-muted-foreground text-sm leading-tight">
                           Answer questions to help us improve Cursor's community.
                         </p>
                       </NavigationMenuLink>
                     </li>
                     <li>
-                      <NavigationMenuLink
-                        className="flex h-full w-full from-muted/50 to-muted"
-                        href="/polls"
-                      >
-                        <div>
-                          Polls
-                        </div>
+                      <NavigationMenuLink className="flex h-full w-full from-muted/50 to-muted" href="/polls">
+                        <div>Polls</div>
                         <p className="text-muted-foreground text-sm leading-tight">
                           Vote in real-time polls. See what others think.
                         </p>
                       </NavigationMenuLink>
                     </li>
                     <li>
-                      <NavigationMenuLink
-                        className="flex h-full w-full from-muted/50 to-muted"
-                        href="/events"
-                      >
-                        <div>
-                          Events
-                        </div>
+                      <NavigationMenuLink className="flex h-full w-full from-muted/50 to-muted" href="/events">
+                        <div>Events</div>
                         <p className="text-muted-foreground text-sm leading-tight">
                           See what&apos;s coming up. Join the fun and upload your pictures at the events.
                         </p>
@@ -390,7 +344,7 @@ export function Navbar() {
       {/* Sign In Button */}
       <motion.div
         animate="visible"
-        className="inline-flex items-center gap-4"
+        className="inline-flex min-w-fit items-center gap-4"
         custom={navItems.length + 1}
         initial="hidden"
         variants={menuItemVariants}

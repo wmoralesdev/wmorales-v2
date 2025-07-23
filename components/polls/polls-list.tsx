@@ -107,16 +107,16 @@ export function PollsList({ polls }: PollsListProps) {
 
         return (
           <motion.div key={poll.id} variants={cardVariants} whileHover="hover">
-            <Card className='h-full cursor-pointer border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all hover:border-purple-500/50'>
+            <Card className="h-full cursor-pointer border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all hover:border-purple-500/50">
               <CardHeader>
                 <div className="flex items-start justify-between">
-                  <div className='flex-1 space-y-1'>
+                  <div className="flex-1 space-y-1">
                     <CardTitle className="line-clamp-1 text-white">{poll.title}</CardTitle>
                     <CardDescription className="line-clamp-2 text-gray-400">
                       {poll.description || 'Help us decide our next feature by voting on your favorite option!'}
                     </CardDescription>
                   </div>
-                  <div className='ml-4 flex flex-col items-end gap-2'>
+                  <div className="ml-4 flex flex-col items-end gap-2">
                     <Badge
                       className={
                         poll.isActive
@@ -128,7 +128,7 @@ export function PollsList({ polls }: PollsListProps) {
                       {poll.isActive ? 'Active' : 'Closed'}
                     </Badge>
                     {currentActiveUsers > 0 && poll.isActive && (
-                      <Badge className='gap-1 border-green-500/30 bg-green-500/10 text-green-400' variant="outline">
+                      <Badge className="gap-1 border-green-500/30 bg-green-500/10 text-green-400" variant="outline">
                         <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
                         {currentActiveUsers} live
                       </Badge>
@@ -150,11 +150,11 @@ export function PollsList({ polls }: PollsListProps) {
 
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <code className='flex-1 rounded bg-gray-800/50 px-2 py-1 font-mono text-gray-300 text-xs backdrop-blur'>
+                    <code className="flex-1 rounded bg-gray-800/50 px-2 py-1 font-mono text-gray-300 text-xs backdrop-blur">
                       {poll.code}
                     </code>
                     <Button
-                      className='h-8 w-8 p-0 text-gray-400 hover:bg-purple-500/20 hover:text-purple-400'
+                      className="h-8 w-8 p-0 text-gray-400 hover:bg-purple-500/20 hover:text-purple-400"
                       onClick={() => copyToClipboard(poll.code)}
                       variant="ghost"
                     >
@@ -169,7 +169,7 @@ export function PollsList({ polls }: PollsListProps) {
                   <div className="flex gap-2">
                     <Button
                       asChild
-                      className='h-9 flex-1 bg-gradient-to-r from-purple-500 to-purple-600 text-white transition-all duration-300 hover:from-purple-600 hover:to-purple-700'
+                      className="h-9 flex-1 bg-gradient-to-r from-purple-500 to-purple-600 text-white transition-all duration-300 hover:from-purple-600 hover:to-purple-700"
                     >
                       <Link href={`/polls/${poll.code}`}>
                         View Poll

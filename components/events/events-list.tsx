@@ -76,13 +76,14 @@ export function EventsList() {
     return (
       <div className="space-y-4">
         {Array.from({ length: 3 }).map((_, i) => (
-          <Card className='border-gray-800 bg-gray-900/60 backdrop-blur-xl' key={i}>
+          // biome-ignore lint/suspicious/noArrayIndexKey: use as skeleton, irrelevant
+          <Card className="border-gray-800 bg-gray-900/60 backdrop-blur-xl" key={i}>
             <CardHeader>
               <Skeleton className="h-6 w-48 bg-gray-800" />
               <Skeleton className="h-4 w-32 bg-gray-800" />
             </CardHeader>
             <CardContent>
-              <Skeleton className='mb-2 h-4 w-full bg-gray-800' />
+              <Skeleton className="mb-2 h-4 w-full bg-gray-800" />
               <Skeleton className="h-4 w-3/4 bg-gray-800" />
             </CardContent>
           </Card>
@@ -93,7 +94,7 @@ export function EventsList() {
 
   if (error) {
     return (
-      <Card className='border-gray-800 bg-gray-900/60 backdrop-blur-xl'>
+      <Card className="border-gray-800 bg-gray-900/60 backdrop-blur-xl">
         <CardContent className="pt-6">
           <div className="text-center">
             <p className="text-gray-400">Failed to load events: {error}</p>
@@ -112,11 +113,11 @@ export function EventsList() {
 
   if (events.length === 0) {
     return (
-      <Card className='border-gray-800 bg-gray-900/60 backdrop-blur-xl'>
+      <Card className="border-gray-800 bg-gray-900/60 backdrop-blur-xl">
         <CardContent className="pt-6">
           <div className="text-center">
-            <Users className='mx-auto mb-4 h-12 w-12 text-purple-400 opacity-50' />
-            <p className='font-medium text-lg text-white'>No Active Events</p>
+            <Users className="mx-auto mb-4 h-12 w-12 text-purple-400 opacity-50" />
+            <p className="font-medium text-lg text-white">No Active Events</p>
             <p className="mt-2 text-gray-400">Check back later for upcoming Cursor events!</p>
           </div>
         </CardContent>
@@ -129,27 +130,27 @@ export function EventsList() {
       {events.map((event) => (
         <motion.div key={event.id} variants={itemVariants}>
           <Card
-            className='group cursor-pointer border-gray-800 bg-gray-900/60 backdrop-blur-xl transition-all duration-300 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10'
+            className="group cursor-pointer border-gray-800 bg-gray-900/60 backdrop-blur-xl transition-all duration-300 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10"
             onClick={() => handleEventClick(event.id)}
           >
             <CardHeader>
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <CardTitle className='text-lg text-white transition-colors group-hover:text-purple-300'>
+                  <CardTitle className="text-lg text-white transition-colors group-hover:text-purple-300">
                     {event.title}
                   </CardTitle>
                   <CardDescription className="mt-1 text-gray-400">
                     {event.description || 'Share your photos from this event'}
                   </CardDescription>
                 </div>
-                <Badge className='ml-2 border-purple-500/30 bg-purple-500/10 text-purple-300' variant="outline">
+                <Badge className="ml-2 border-purple-500/30 bg-purple-500/10 text-purple-300" variant="outline">
                   {event._count.images} photos
                 </Badge>
               </div>
             </CardHeader>
             <CardContent>
               <div className="flex items-center justify-between">
-                <div className='flex items-center gap-4 text-gray-500 text-sm'>
+                <div className="flex items-center gap-4 text-gray-500 text-sm">
                   <div className="flex items-center gap-1">
                     <Calendar className="h-4 w-4 text-purple-400" />
                     <span>{formatDistanceToNow(new Date(event.createdAt), { addSuffix: true })}</span>
@@ -166,7 +167,7 @@ export function EventsList() {
                   )}
                 </div>
                 <Button
-                  className='flex items-center gap-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg shadow-purple-500/25 transition-all hover:from-purple-600 hover:to-purple-700 group-hover:shadow-purple-500/40'
+                  className="flex items-center gap-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg shadow-purple-500/25 transition-all hover:from-purple-600 hover:to-purple-700 group-hover:shadow-purple-500/40"
                   onClick={(e) => {
                     e.stopPropagation();
                     handleEventClick(event.id);
@@ -174,7 +175,7 @@ export function EventsList() {
                   size="sm"
                 >
                   View Gallery
-                  <ArrowRight className='h-4 w-4 transition-transform group-hover:translate-x-1' />
+                  <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
                 </Button>
               </div>
             </CardContent>

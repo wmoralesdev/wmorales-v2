@@ -117,13 +117,24 @@ export function CursorPageContent() {
   ];
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative overflow-hidden px-4 pt-24 pb-16 sm:px-6 lg:px-8">
         {/* Background gradient effect */}
+        <div className="absolute inset-0 opacity-5">
+          <div
+            className="h-full w-full"
+            style={{
+              backgroundImage:
+                'linear-gradient(#8b5cf6 1px, transparent 1px), linear-gradient(90deg, #8b5cf6 1px, transparent 1px)',
+              backgroundSize: '50px 50px',
+            }}
+          />
+        </div>
+
+        {/* Gradient Overlay */}
         <div className="absolute inset-0">
-          <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 via-black to-black" />
-          <div className='-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-96 w-96 rounded-full bg-purple-600/10 blur-3xl' />
+          <div className="h-full w-full bg-gradient-to-br from-purple-500/10 via-transparent to-pink-500/10" />
         </div>
 
         <motion.div
@@ -136,18 +147,18 @@ export function CursorPageContent() {
           <motion.div variants={itemVariants}>
             <motion.div
               animate="animate"
-              className='mb-8 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/20 px-4 py-2 backdrop-blur-xl'
+              className="mb-8 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/20 px-4 py-2 backdrop-blur-xl"
               variants={floatVariants}
             >
-              <div className='h-2 w-2 animate-pulse rounded-full bg-gradient-to-r from-purple-400 to-pink-400' />
-              <span className='font-medium text-purple-300 text-xs lg:text-sm'>
+              <div className="h-2 w-2 animate-pulse rounded-full bg-gradient-to-r from-purple-400 to-pink-400" />
+              <span className="font-medium text-purple-300 text-xs lg:text-sm">
                 First Cursor Ambassador from El Salvador 🇸🇻
               </span>
             </motion.div>
           </motion.div>
 
           <motion.h1
-            className='mb-6 bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text font-bold text-4xl text-transparent sm:text-5xl lg:text-6xl'
+            className="mb-6 bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text font-bold text-4xl text-transparent sm:text-5xl lg:text-6xl"
             variants={itemVariants}
           >
             Cursor Ambassador
@@ -161,14 +172,14 @@ export function CursorPageContent() {
           {/* CTA Buttons with proper styling */}
           <motion.div className="flex flex-wrap items-center justify-center gap-4" variants={itemVariants}>
             <Link href="https://linkedin.com/in/wmoralesdev" target="_blank">
-              <Button className='group rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25'>
+              <Button className="group rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25">
                 <Linkedin className="mr-2 h-4 w-4" />
                 Connect on LinkedIn
               </Button>
             </Link>
             <Link href="https://github.com/wmoralesdev" target="_blank">
               <Button
-                className='group rounded-full border-purple-500/50 bg-transparent px-8 py-6 text-purple-300 backdrop-blur-xl transition-all duration-300 hover:bg-purple-500/20'
+                className="group rounded-full border-purple-500/50 bg-transparent px-8 py-6 text-purple-300 backdrop-blur-xl transition-all duration-300 hover:bg-purple-500/20"
                 variant="outline"
               >
                 <Github className="mr-2 h-4 w-4" />
@@ -189,11 +200,11 @@ export function CursorPageContent() {
           whileInView="visible"
         >
           <motion.div
-            className='relative overflow-hidden rounded-2xl border border-purple-500/30 bg-gray-900/80 p-8 backdrop-blur-xl'
+            className="relative overflow-hidden rounded-2xl border border-purple-500/30 bg-gray-900/80 p-8 backdrop-blur-xl"
             variants={cardVariants}
             whileHover="hover"
           >
-            <div className='-translate-y-32 absolute top-0 right-0 h-64 w-64 translate-x-32 rounded-full bg-purple-600/20 blur-3xl' />
+            <div className="-translate-y-32 absolute top-0 right-0 h-64 w-64 translate-x-32 rounded-full bg-purple-600/20 blur-3xl" />
 
             <div className="relative z-10">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-purple-500/20 px-3 py-1">
@@ -225,7 +236,7 @@ export function CursorPageContent() {
             whileInView="visible"
           >
             <motion.h2
-              className='mb-4 bg-gradient-to-r from-white to-purple-400 bg-clip-text font-bold text-3xl text-transparent'
+              className="mb-4 bg-gradient-to-r from-white to-purple-400 bg-clip-text font-bold text-3xl text-transparent"
               variants={itemVariants}
             >
               Core Expertise
@@ -246,7 +257,7 @@ export function CursorPageContent() {
               const Icon = area.icon;
               return (
                 <motion.div
-                  className='group relative cursor-pointer overflow-hidden rounded-xl border border-gray-800 bg-gray-900/80 p-6 backdrop-blur-xl transition-all hover:border-purple-500/50'
+                  className="group relative cursor-pointer overflow-hidden rounded-xl border border-gray-800 bg-gray-900/80 p-6 backdrop-blur-xl transition-all hover:border-purple-500/50"
                   key={area.title}
                   variants={cardVariants}
                   whileHover="hover"
@@ -282,7 +293,7 @@ export function CursorPageContent() {
           <div className="grid gap-8 lg:grid-cols-2">
             {/* Community Building */}
             <motion.div
-              className='rounded-xl border border-gray-800 bg-gray-900/80 p-8 backdrop-blur-xl transition-all hover:border-purple-500/50'
+              className="rounded-xl border border-gray-800 bg-gray-900/80 p-8 backdrop-blur-xl transition-all hover:border-purple-500/50"
               variants={cardVariants}
               whileHover="hover"
             >
@@ -310,7 +321,7 @@ export function CursorPageContent() {
 
             {/* Future Vision */}
             <motion.div
-              className='rounded-xl border border-gray-800 bg-gray-900/80 p-8 backdrop-blur-xl transition-all hover:border-purple-500/50'
+              className="rounded-xl border border-gray-800 bg-gray-900/80 p-8 backdrop-blur-xl transition-all hover:border-purple-500/50"
               variants={cardVariants}
               whileHover="hover"
             >
@@ -350,7 +361,7 @@ export function CursorPageContent() {
             whileInView="visible"
           >
             <motion.h2
-              className='mb-4 bg-gradient-to-r from-white to-purple-400 bg-clip-text font-bold text-3xl text-transparent'
+              className="mb-4 bg-gradient-to-r from-white to-purple-400 bg-clip-text font-bold text-3xl text-transparent"
               variants={itemVariants}
             >
               How I Can Help Your Team
@@ -371,7 +382,7 @@ export function CursorPageContent() {
               const Icon = offering.icon;
               return (
                 <motion.div
-                  className='group relative cursor-pointer overflow-hidden rounded-xl border border-gray-800 bg-black/80 p-6 backdrop-blur-xl transition-all hover:border-purple-500/50'
+                  className="group relative cursor-pointer overflow-hidden rounded-xl border border-gray-800 bg-black/80 p-6 backdrop-blur-xl transition-all hover:border-purple-500/50"
                   key={offering.title}
                   variants={cardVariants}
                   whileHover="hover"
@@ -412,7 +423,7 @@ export function CursorPageContent() {
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link href="https://calendly.com/wmoralesdev" target="_blank">
                 <Button
-                  className='group rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25'
+                  className="group rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25"
                   size="lg"
                 >
                   <Calendar className="mr-2 h-5 w-5" />
@@ -421,7 +432,7 @@ export function CursorPageContent() {
               </Link>
               <Link href="mailto:hello@wmorales.dev">
                 <Button
-                  className='rounded-full border-purple-500/50 bg-transparent px-8 py-6 text-purple-300 backdrop-blur-xl transition-all duration-300 hover:bg-purple-500/20'
+                  className="rounded-full border-purple-500/50 bg-transparent px-8 py-6 text-purple-300 backdrop-blur-xl transition-all duration-300 hover:bg-purple-500/20"
                   size="lg"
                   variant="outline"
                 >
@@ -444,7 +455,7 @@ export function CursorPageContent() {
           whileInView="visible"
         >
           <motion.div
-            className='rounded-xl border border-purple-500/30 bg-gradient-to-br from-purple-900/20 to-gray-900/50 p-8 backdrop-blur-xl'
+            className="rounded-xl border border-purple-500/30 bg-gradient-to-br from-purple-900/20 to-gray-900/50 p-8 backdrop-blur-xl"
             variants={cardVariants}
             whileHover={{ scale: 1.02 }}
           >

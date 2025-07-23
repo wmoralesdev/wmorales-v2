@@ -145,10 +145,7 @@ export function GuestbookContent() {
                     className="min-h-32 resize-none border-gray-700 bg-gray-800/50 placeholder:text-gray-500"
                     onChange={(e) => setCustomMessage(e.target.value)}
                     onKeyDown={(e) => {
-                      if (
-                        e.key === 'Enter' &&
-                        (e.ctrlKey || e.metaKey)
-                      ) {
+                      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
                         e.preventDefault();
                         handleGenerateColors();
                       }

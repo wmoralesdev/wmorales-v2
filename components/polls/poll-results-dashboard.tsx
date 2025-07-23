@@ -6,7 +6,6 @@ import { Activity, BarChart3, PieChart, RefreshCw, Users } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePollResultsSWR } from '@/hooks/use-poll-results-swr';
 import { type PollPresence, type PollRealtimeEvent, subscribeToPollUpdates } from '@/lib/supabase/realtime';
@@ -101,9 +100,9 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
       {/* Header Stats */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <motion.div animate={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 20 }} transition={{ duration: 0.5 }}>
-          <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl'>
+          <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className='font-medium text-gray-300 text-sm'>Total Participants</CardTitle>
+              <CardTitle className="font-medium text-gray-300 text-sm">Total Participants</CardTitle>
               <Users className="h-4 w-4 text-purple-400" />
             </CardHeader>
             <CardContent>
@@ -118,9 +117,9 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5, delay: 0.1 }}
         >
-          <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl'>
+          <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className='font-medium text-gray-300 text-sm'>Active Now</CardTitle>
+              <CardTitle className="font-medium text-gray-300 text-sm">Active Now</CardTitle>
               <Activity className="h-4 w-4 text-green-400" />
             </CardHeader>
             <CardContent>
@@ -138,9 +137,9 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl'>
+          <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className='font-medium text-gray-300 text-sm'>Questions</CardTitle>
+              <CardTitle className="font-medium text-gray-300 text-sm">Questions</CardTitle>
               <BarChart3 className="h-4 w-4 text-purple-400" />
             </CardHeader>
             <CardContent>
@@ -157,7 +156,7 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
         initial={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.5, delay: 0.3 }}
       >
-        <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl'>
+        <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
@@ -189,12 +188,14 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
               </TabsList>
 
               <TabsContent className="mt-6 space-y-6" value="overview">
+                {/** biome-ignore lint/suspicious/noExplicitAny: form is built by engine, we can't type it */}
                 {results?.questions.map((question: any, index: number) => (
                   <div className="space-y-4" key={question.questionId}>
                     <h3 className="font-semibold text-lg text-white">
                       {index + 1}. {question.question}
                     </h3>
                     <div className="space-y-3">
+                      {/** biome-ignore lint/suspicious/noExplicitAny: form is built by engine, we can't type it */}
                       {question.options.map((option: any) => (
                         <motion.div
                           animate={{ opacity: 1, x: 0 }}
@@ -229,8 +230,9 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
               </TabsContent>
 
               <TabsContent className="mt-6 space-y-6" value="details">
+                {/** biome-ignore lint/suspicious/noExplicitAny: form is built by engine, we can't type it */}
                 {results?.questions.map((question: any, index: number) => (
-                  <Card className='border-gray-700 bg-gray-800/50 backdrop-blur' key={question.questionId}>
+                  <Card className="border-gray-700 bg-gray-800/50 backdrop-blur" key={question.questionId}>
                     <CardHeader>
                       <CardTitle className="text-base text-white">
                         Question {index + 1}: {question.question}
@@ -242,7 +244,9 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
                     <CardContent>
                       <div className="space-y-2">
                         {question.options
+                          // biome-ignore lint/suspicious/noExplicitAny: form is built by engine, we can't type it
                           .sort((a: any, b: any) => b.voteCount - a.voteCount)
+                          // biome-ignore lint/suspicious/noExplicitAny: form is built by engine, we can't type it
                           .map((option: any, optionIndex: number) => (
                             <div
                               className={cn(
@@ -296,7 +300,7 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5, delay: 0.4 }}
         >
-          <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl'>
+          <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-white">
                 <Activity className="h-5 w-5 text-green-400" />

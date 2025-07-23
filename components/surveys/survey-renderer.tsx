@@ -174,14 +174,14 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   };
 
   return (
-    <div className='app-container mx-auto max-w-4xl'>
+    <div className="app-container mx-auto max-w-4xl">
       <motion.div
         animate={{ opacity: 1, y: 0 }}
         className="mb-8 text-center"
         initial={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.5 }}
       >
-        <h1 className='mb-2 bg-gradient-to-r from-white to-purple-400 bg-clip-text font-bold text-3xl text-transparent'>
+        <h1 className="mb-2 bg-gradient-to-r from-white to-purple-400 bg-clip-text font-bold text-3xl text-transparent">
           {survey.title}
         </h1>
         <p className="text-gray-400">{survey.description}</p>
@@ -201,7 +201,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
             transition={{ duration: 0.3 }}
           />
         </div>
-        <p className='mt-2 text-center text-gray-500 text-sm'>
+        <p className="mt-2 text-center text-gray-500 text-sm">
           Section {currentSectionIndex + 1} of {totalSections}
         </p>
       </motion.div>
@@ -216,14 +216,14 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
           transition={{ duration: 0.3 }}
         >
           {/* Section Header Card */}
-          <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl'>
-            <CardHeader className='py-4 text-center'>
-              <CardTitle className='flex items-center justify-center gap-2 text-white'>
+          <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
+            <CardHeader className="text-center">
+              <CardTitle className="flex items-center justify-center gap-2 text-2xl text-white">
                 <Info className="h-5 w-5 text-purple-400" />
                 {currentSection.title}
               </CardTitle>
               {currentSection.description && (
-                <CardDescription className='mt-2 text-gray-400'>{currentSection.description}</CardDescription>
+                <CardDescription className="mt-2 text-gray-400 text-lg">{currentSection.description}</CardDescription>
               )}
             </CardHeader>
           </Card>
@@ -238,8 +238,8 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
                   key={question.id}
                   transition={{ delay: 0.1 * (index + 1) }}
                 >
-                  <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all duration-300 hover:border-purple-500/30'>
-                    <CardContent className="pt-4 pb-6">
+                  <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all duration-300 hover:border-purple-500/30">
+                    <CardContent>
                       <QuestionRenderer form={form} question={question as unknown as Question} />
                     </CardContent>
                   </Card>
@@ -247,8 +247,8 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
               ))}
 
               {/* Navigation Buttons */}
-              <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl'>
-                <CardContent className="pt-4 pb-4">
+              <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
+                <CardContent className="">
                   <div className="flex justify-between">
                     <Button
                       className="border-gray-700 bg-gray-800/50 text-gray-300 hover:bg-gray-800 hover:text-white disabled:opacity-50"
@@ -262,7 +262,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
                     </Button>
 
                     <Button
-                      className='bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25'
+                      className="bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25"
                       disabled={isSubmitting}
                       type="submit"
                     >

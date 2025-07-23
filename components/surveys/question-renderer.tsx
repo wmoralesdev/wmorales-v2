@@ -4,7 +4,6 @@ import type { UseFormReturn } from 'react-hook-form';
 import { Checkbox } from '@/components/ui/checkbox';
 import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
@@ -17,7 +16,12 @@ type QuestionRendererProps = {
   form: UseFormReturn<any>;
 };
 
+const FormLabelWrapper = ({ children }: { children: React.ReactNode }) => (
+  <FormLabel className="mb-2 text-gray-300">{children}</FormLabel>
+);
+
 export function QuestionRenderer({ question, form }: QuestionRendererProps) {
+  
   const renderField = () => {
     switch (question.type) {
       case 'text':
@@ -27,10 +31,10 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
             name={question.id}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-gray-300">
+                <FormLabelWrapper>
                   {question.question}
                   {question.required && <span className="ml-1 text-purple-400">*</span>}
-                </FormLabel>
+                </FormLabelWrapper>
                 <FormControl>
                   <Input
                     placeholder={question.placeholder}
@@ -52,10 +56,10 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
             name={question.id}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-gray-300">
+                <FormLabelWrapper>
                   {question.question}
                   {question.required && <span className="ml-1 text-purple-400">*</span>}
-                </FormLabel>
+                </FormLabelWrapper>
                 <FormControl>
                   <Textarea
                     className="min-h-[100px] border-gray-700 bg-gray-800/50 text-white placeholder:text-gray-500 focus:border-purple-500/50"
@@ -77,10 +81,10 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
             name={question.id}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-gray-300">
+                <FormLabelWrapper>
                   {question.question}
                   {question.required && <span className="ml-1 text-purple-400">*</span>}
-                </FormLabel>
+                </FormLabelWrapper>
                 <FormControl>
                   <RadioGroup
                     className="grid grid-cols-2 gap-3"
@@ -90,14 +94,9 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
                     {question.options?.map((option) => (
                       <FormItem className="flex items-center space-x-2 space-y-0" key={option.value}>
                         <FormControl>
-                          <RadioGroupItem
-                            className="border-gray-600 text-purple-500"
-                            value={option.value}
-                          />
+                          <RadioGroupItem className="border-gray-600 text-purple-500" value={option.value} />
                         </FormControl>
-                        <FormLabel className="cursor-pointer font-normal text-gray-300">
-                          {option.label}
-                        </FormLabel>
+                        <FormLabel className="cursor-pointer font-normal text-gray-300">{option.label}</FormLabel>
                       </FormItem>
                     ))}
                   </RadioGroup>
@@ -115,10 +114,10 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
             name={question.id}
             render={() => (
               <FormItem>
-                <FormLabel className="text-gray-300">
+                <FormLabelWrapper>
                   {question.question}
                   {question.required && <span className="ml-1 text-purple-400">*</span>}
-                </FormLabel>
+                </FormLabelWrapper>
                 <div className="grid grid-cols-2 gap-3">
                   {question.options?.map((option) => (
                     <FormField
@@ -142,9 +141,7 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
                                 }}
                               />
                             </FormControl>
-                            <FormLabel className="cursor-pointer font-normal text-gray-300">
-                              {option.label}
-                            </FormLabel>
+                            <FormLabel className="cursor-pointer font-normal text-gray-300">{option.label}</FormLabel>
                           </FormItem>
                         );
                       }}
@@ -164,13 +161,13 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
             name={question.id}
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-gray-300">
+                <FormLabelWrapper>
                   {question.question}
                   {question.required && <span className="ml-1 text-purple-400">*</span>}
-                </FormLabel>
+                </FormLabelWrapper>
                 <Select defaultValue={field.value} onValueChange={field.onChange}>
                   <FormControl>
-                    <SelectTrigger className="border-gray-700 bg-gray-800/50 text-white focus:border-purple-500/50">
+                    <SelectTrigger className="w-full border-gray-700 bg-gray-800/50 text-white focus:border-purple-500/50">
                       <SelectValue
                         className="placeholder:text-gray-500"
                         placeholder={question.placeholder || 'Select an option'}

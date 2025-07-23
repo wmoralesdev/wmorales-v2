@@ -15,7 +15,7 @@ export default function GuestbookPage() {
       />
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 pb-16 pt-16">
+      <div className="container mx-auto px-4 pt-16 pb-16">
         <GuestbookContent />
       </div>
     </div>

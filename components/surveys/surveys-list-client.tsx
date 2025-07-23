@@ -36,10 +36,11 @@ const cardVariants: Variants = {
   },
 };
 
-interface SurveysListClientProps {
+type SurveysListClientProps = {
+  // biome-ignore lint/suspicious/noExplicitAny: form is built by engine, we can't type it
   surveys: any[];
   error?: string | null;
-}
+};
 
 export function SurveysListClient({ surveys, error }: SurveysListClientProps) {
   if (error || !surveys) {
@@ -50,7 +51,7 @@ export function SurveysListClient({ surveys, error }: SurveysListClientProps) {
         initial={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.5 }}
       >
-        <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl'>
+        <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
           <CardContent className="py-8">
             <p className="text-gray-400">Failed to load surveys. Please try again later.</p>
           </CardContent>
@@ -67,7 +68,7 @@ export function SurveysListClient({ surveys, error }: SurveysListClientProps) {
         initial={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.5 }}
       >
-        <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl'>
+        <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
           <CardContent className="py-8">
             <p className="text-gray-400">No active surveys at the moment.</p>
           </CardContent>
@@ -86,7 +87,7 @@ export function SurveysListClient({ surveys, error }: SurveysListClientProps) {
       {/** biome-ignore lint/suspicious/noExplicitAny: form data is dynamic */}
       {surveys.map((survey: any) => (
         <motion.div key={survey.id} variants={cardVariants} whileHover="hover">
-          <Card className='h-full border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10'>
+          <Card className="h-full border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10">
             <CardHeader>
               <CardTitle className="text-white">{survey.title}</CardTitle>
               <CardDescription className="text-gray-400">{survey.description}</CardDescription>
@@ -99,12 +100,12 @@ export function SurveysListClient({ surveys, error }: SurveysListClientProps) {
                   />
                   Status: {survey.status}
                 </span>
-                <span>{new Date(survey.created_at).toLocaleDateString()}</span>
+                <span>{new Date(survey.createdAt).toLocaleDateString()}</span>
               </div>
               <div className="flex gap-2">
                 <Button
                   asChild
-                  className='flex-1 bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25'
+                  className="flex-1 bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25"
                 >
                   <Link href={`/surveys/${survey.id}/fill`}>
                     Take Survey

@@ -1,4 +1,4 @@
-import { ArrowRight, BarChart3 } from 'lucide-react';
+import { BarChart3 } from 'lucide-react';
 import { getActiveSurveys } from '@/app/actions/survey.actions';
 import { InnerHero } from '@/components/common/inner-hero';
 import { SurveysListClient } from '@/components/surveys/surveys-list-client';

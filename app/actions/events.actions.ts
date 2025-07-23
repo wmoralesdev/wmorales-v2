@@ -1,10 +1,9 @@
 'use server';
 
-import type { Event, EventImage } from '@prisma/client';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
-import { createClient } from '@/lib/supabase/server';
 import { broadcastEventUpdate } from '@/lib/supabase/realtime-server';
+import { createClient } from '@/lib/supabase/server';
 
 // Validation schemas
 const createEventSchema = z.object({
@@ -150,7 +149,7 @@ export async function uploadEventImage(data: z.infer<typeof uploadImageSchema>) 
     image: {
       id: image.id,
       imageUrl: image.imageUrl,
-      caption: image.caption,
+      caption: image.caption || undefined,
       createdAt: image.createdAt.toISOString(),
     },
     timestamp: new Date().toISOString(),
@@ -205,13 +204,7 @@ export async function deleteEventImage(imageId: string) {
   }
 
   // Delete from Supabase storage
-  const { error: storageError } = await supabase.storage
-    .from('event-images')
-    .remove([image.imageUrl]);
-
-  if (storageError) {
-    console.error('Error deleting from storage:', storageError);
-  }
+  await supabase.storage.from('event-images').remove([image.imageUrl]);
 
   // Delete from database
   await prisma.eventImage.delete({
@@ -222,7 +215,7 @@ export async function deleteEventImage(imageId: string) {
   await broadcastEventUpdate({
     type: 'image_deleted',
     eventId: image.eventId,
-    imageId: imageId,
+    imageId,
     timestamp: new Date().toISOString(),
   });
 
@@ -234,10 +227,7 @@ export async function getActiveEvents() {
   const events = await prisma.event.findMany({
     where: {
       isActive: true,
-      OR: [
-        { endsAt: null },
-        { endsAt: { gt: new Date() } },
-      ],
+      OR: [{ endsAt: null }, { endsAt: { gt: new Date() } }],
     },
     orderBy: { createdAt: 'desc' },
     include: {
@@ -266,15 +256,13 @@ export async function generateUploadURL(eventId: string, fileName: string) {
     where: { id: eventId },
   });
 
-  if (!event || !event.isActive) {
+  if (!event?.isActive) {
     throw new Error('Event not found or not active');
   }
 
   const filePath = `${eventId}/${user.id}/${Date.now()}-${fileName}`;
 
-  const { data, error } = await supabase.storage
-    .from('event-images')
-    .createSignedUploadUrl(filePath);
+  const { data, error } = await supabase.storage.from('event-images').createSignedUploadUrl(filePath);
 
   if (error) {
     throw new Error('Failed to generate upload URL');

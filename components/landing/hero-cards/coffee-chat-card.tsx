@@ -3,14 +3,14 @@ import { Coffee } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BaseCard, type BaseCardProps } from './base-card';
 
-interface CoffeeChatCardProps extends Omit<BaseCardProps, 'children' | 'id'> {
+type CoffeeChatCardProps = Omit<BaseCardProps, 'children' | 'id'> & {
   onChatClick?: () => void;
-}
+};
 
 export function CoffeeChatCard({ onChatClick, ...props }: CoffeeChatCardProps) {
   return (
     <BaseCard
-      className='border-purple-700/50 bg-gradient-to-r from-purple-900/30 to-purple-800/30 p-4 backdrop-blur-xl'
+      className="border-purple-700/50 bg-gradient-to-r from-purple-900/30 to-purple-800/30 p-4 backdrop-blur-xl"
       id="coffee-chat"
       {...props}
     >
@@ -27,12 +27,12 @@ export function CoffeeChatCard({ onChatClick, ...props }: CoffeeChatCardProps) {
             <Coffee className="h-6 w-6 text-purple-400" />
           </motion.div>
           <div>
-            <h3 className='font-semibold text-sm text-white'>Let's grab a coffee!</h3>
-            <p className='text-gray-400 text-xs'>Best ideas start with a conversation</p>
+            <h3 className="font-semibold text-sm text-white">Let's grab a coffee!</h3>
+            <p className="text-gray-400 text-xs">Best ideas start with a conversation</p>
           </div>
         </div>
         <Button
-          className='border-purple-500/50 text-purple-300 text-xs hover:bg-purple-500/20'
+          className="border-purple-500/50 text-purple-300 text-xs hover:bg-purple-500/20"
           onClick={onChatClick}
           size="sm"
           variant="outline"

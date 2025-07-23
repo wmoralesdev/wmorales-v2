@@ -69,7 +69,7 @@ const iconVariants: Variants = {
 };
 
 // Icon mapping for companies
-const companyIcons: Record<string, any> = {
+const companyIcons: Record<string, React.ElementType> = {
   Southworks: Cloud,
   Freelance: Rocket,
   Ravn: Server,
@@ -155,15 +155,15 @@ export function ExperienceSection() {
           viewport={{ once: true, amount: 0.3 }}
           whileInView="visible"
         >
-          <motion.div className='mb-4 inline-flex items-center gap-2' variants={itemVariants}>
+          <motion.div className="mb-4 inline-flex items-center gap-2" variants={itemVariants}>
             <Sparkles className="h-5 w-5 text-purple-400" />
-            <span className='font-medium text-purple-400 text-sm'>Professional Journey</span>
+            <span className="font-medium text-purple-400 text-sm">Professional Journey</span>
           </motion.div>
 
-          <motion.h2 className='mb-4 font-bold text-3xl text-white sm:text-4xl lg:text-5xl' variants={itemVariants}>
+          <motion.h2 className="mb-4 font-bold text-3xl text-white sm:text-4xl lg:text-5xl" variants={itemVariants}>
             Work Experience
           </motion.h2>
-          <motion.p className='mx-auto max-w-2xl text-base text-gray-400 sm:text-lg' variants={itemVariants}>
+          <motion.p className="mx-auto max-w-2xl text-base text-gray-400 sm:text-lg" variants={itemVariants}>
             Building impactful solutions across diverse industries and technologies
           </motion.p>
         </motion.div>
@@ -177,7 +177,7 @@ export function ExperienceSection() {
         >
           {/* Central timeline line - gradient */}
           <motion.div
-            className='lg:-translate-x-px absolute top-0 bottom-0 left-8 w-px lg:left-1/2'
+            className="lg:-translate-x-px absolute top-0 bottom-0 left-8 w-px lg:left-1/2"
             initial={{ scaleY: 0, originY: 0 }}
             transition={{ duration: 1.5, ease: 'easeOut' }}
             viewport={{ once: true }}
@@ -198,7 +198,7 @@ export function ExperienceSection() {
                   variants={experienceVariants}
                 >
                   {/* Timeline dot with icon */}
-                  <motion.div className='lg:-translate-x-1/2 absolute left-8 lg:left-1/2' variants={iconVariants}>
+                  <motion.div className="lg:-translate-x-1/2 absolute left-8 lg:left-1/2" variants={iconVariants}>
                     <div
                       className={`relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br ${exp.color} p-0.5`}
                     >
@@ -208,14 +208,14 @@ export function ExperienceSection() {
                       {exp.current && (
                         <motion.div
                           animate={{ scale: [1, 1.2, 1] }}
-                          className='-right-1 -top-1 absolute h-4 w-4 rounded-full bg-green-500'
+                          className="-right-1 -top-1 absolute h-4 w-4 rounded-full bg-green-500"
                           transition={{
                             duration: 2,
                             repeat: Number.POSITIVE_INFINITY,
                             ease: 'easeInOut',
                           }}
                         >
-                          <div className='h-full w-full animate-ping rounded-full bg-green-500' />
+                          <div className="h-full w-full animate-ping rounded-full bg-green-500" />
                         </motion.div>
                       )}
                     </div>
@@ -223,12 +223,13 @@ export function ExperienceSection() {
 
                   {/* Content */}
                   <motion.div
-                    className={`ml-28 lg:ml-0 ${isEven ? 'lg:mr-[calc(50%+4rem)]' : 'lg:ml-[calc(50%+4rem)]'
-                      } group cursor-pointer`}
+                    className={`ml-28 lg:ml-0 ${
+                      isEven ? 'lg:mr-[calc(50%+4rem)]' : 'lg:ml-[calc(50%+4rem)]'
+                    } group cursor-pointer`}
                     transition={{ duration: 0.2 }}
                     whileHover={{ scale: 1.02 }}
                   >
-                    <div className='relative rounded-2xl border border-gray-800 bg-gray-900/40 p-6 backdrop-blur-xl transition-all duration-300 hover:border-purple-800/50 hover:bg-gray-900/60'>
+                    <div className="relative rounded-2xl border border-gray-800 bg-gray-900/40 p-6 backdrop-blur-xl transition-all duration-300 hover:border-purple-800/50 hover:bg-gray-900/60">
                       {/* Gradient accent */}
                       <div
                         className={`absolute top-0 ${isEven ? 'left-0' : 'right-0'} h-full w-1 rounded-full bg-gradient-to-b ${exp.color} opacity-50 transition-opacity group-hover:opacity-100`}
@@ -236,21 +237,21 @@ export function ExperienceSection() {
 
                       {/* Header */}
                       <div className="mb-4">
-                        <div className='mb-2 flex items-start justify-between gap-4'>
+                        <div className="mb-2 flex items-start justify-between gap-4">
                           <div>
-                            <h3 className='font-semibold text-lg text-white transition-colors group-hover:text-purple-300'>
+                            <h3 className="font-semibold text-lg text-white transition-colors group-hover:text-purple-300">
                               {exp.company}
                             </h3>
-                            <p className='mt-1 text-gray-400 text-sm'>{exp.role}</p>
+                            <p className="mt-1 text-gray-400 text-sm">{exp.role}</p>
                           </div>
-                          <div className='flex items-center gap-2 text-gray-500 text-xs'>
+                          <div className="flex items-center gap-2 text-gray-500 text-xs">
                             <Calendar className="h-3 w-3" />
                             <span className="whitespace-nowrap">{exp.period}</span>
                           </div>
                         </div>
 
                         {exp.current && (
-                          <Badge className='border-green-500/30 bg-green-500/20 text-green-400 text-xs'>
+                          <Badge className="border-green-500/30 bg-green-500/20 text-green-400 text-xs">
                             Current Position
                           </Badge>
                         )}
@@ -260,7 +261,7 @@ export function ExperienceSection() {
                       <ul className="space-y-2">
                         {exp.achievements.map((achievement, achievementIndex) => (
                           <motion.li
-                            className='flex items-start gap-2 text-gray-400 text-sm'
+                            className="flex items-start gap-2 text-gray-400 text-sm"
                             initial={{ opacity: 0, x: isEven ? -10 : 10 }}
                             key={achievement}
                             transition={{
@@ -273,7 +274,7 @@ export function ExperienceSection() {
                             <span
                               className={`inline-block h-1 w-1 rounded-full bg-gradient-to-r ${exp.color} mt-1.5 flex-shrink-0`}
                             />
-                            <span className='transition-colors group-hover:text-gray-300'>{achievement}</span>
+                            <span className="transition-colors group-hover:text-gray-300">{achievement}</span>
                           </motion.li>
                         ))}
                       </ul>

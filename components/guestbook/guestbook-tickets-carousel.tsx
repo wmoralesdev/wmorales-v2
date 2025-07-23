@@ -15,10 +15,10 @@ import {
 import { useGuestbookRealtime } from '@/hooks/use-guestbook-realtime';
 import type { TicketData } from '@/lib/types/guestbook.types';
 
-interface GuestbookTicketsCarouselProps {
+type GuestbookTicketsCarouselProps = {
   initialTickets?: TicketData[];
   maxTickets?: number;
-}
+};
 
 export function GuestbookTicketsCarousel({ initialTickets = [], maxTickets = 25 }: GuestbookTicketsCarouselProps) {
   const { tickets, activeViewers } = useGuestbookRealtime(initialTickets, maxTickets);

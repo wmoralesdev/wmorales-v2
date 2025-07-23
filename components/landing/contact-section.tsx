@@ -4,6 +4,7 @@ import { motion, type Variants } from 'framer-motion';
 import { Coffee, Github, Instagram, Linkedin, Mail } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { EMAIL } from '@/lib/consts';
 
 // Animation variants
 const containerVariants: Variants = {
@@ -122,7 +123,7 @@ export function ContactSection() {
   ];
 
   const handleEmailClick = () => {
-    window.location.href = 'mailto:walterrafael26@gmail.com';
+    window.location.href = `mailto:${EMAIL}`;
   };
 
   return (
@@ -181,7 +182,7 @@ export function ContactSection() {
                           whileHover={{ x: 2 }}
                         >
                           <Mail className="h-4 w-4" />
-                          walterrafael26@gmail.com
+                          {EMAIL}
                         </motion.div>
                       </Button>
                     </motion.div>

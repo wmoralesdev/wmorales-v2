@@ -1,13 +1,18 @@
 'use client';
 
 import { LogIn } from 'lucide-react';
-import { usePathname, useRouter } from 'next/navigation';
+import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 import { Button } from '@/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { createClient } from '@/lib/supabase/client';
 import { useAuth } from './auth-provider';
 import { UserNav } from './user-nav';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { createClient } from '@/lib/supabase/client';
-import Image from 'next/image';
 
 type SignInButtonProps = {
   variant?: 'default' | 'outline' | 'ghost';
@@ -60,11 +65,11 @@ export function SignInButton({ variant = 'outline', size = 'default' }: SignInBu
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={handleSignInWithGoogle}>
-          <Image src="/google.svg" alt="Google" width={16} height={16} />
+          <Image alt="Google" height={16} src="/google.svg" width={16} />
           Google
         </DropdownMenuItem>
         <DropdownMenuItem onClick={handleSignInWithGitHub}>
-          <Image src="/github.svg" alt="GitHub" width={16} height={16} />
+          <Image alt="GitHub" height={16} src="/github.svg" width={16} />
           GitHub
         </DropdownMenuItem>
       </DropdownMenuContent>

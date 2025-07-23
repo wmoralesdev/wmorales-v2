@@ -1,7 +1,5 @@
 import 'server-only';
-import type { PollRealtimeEvent } from './realtime';
-import type { GuestbookRealtimeEvent } from './realtime';
-import type { EventRealtimeEvent } from './realtime';
+import type { EventRealtimeEvent, GuestbookRealtimeEvent, PollRealtimeEvent } from './realtime';
 import { createClient } from './server';
 
 // Server-side broadcast function for poll updates

@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { Camera, Image as ImageIcon, Sparkles, Upload, X } from 'lucide-react';
+import Image from 'next/image';
 import { useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { generateUploadURL } from '@/app/actions/events.actions';
@@ -28,7 +29,9 @@ export function ImageUpload({ onUpload, uploading, maxImages }: ImageUploadProps
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
-    if (!file) return;
+    if (!file) {
+      return;
+    }
 
     // Validate file type
     if (!file.type.startsWith('image/')) {
@@ -53,13 +56,15 @@ export function ImageUpload({ onUpload, uploading, maxImages }: ImageUploadProps
   };
 
   const handleUpload = async () => {
-    if (!selectedFile) return;
+    if (!selectedFile) {
+      return;
+    }
 
     try {
       setUploadingFile(true);
 
       // Get upload URL from server
-      const { uploadUrl, filePath } = await generateUploadURL('temp', selectedFile.name);
+      const { filePath } = await generateUploadURL('temp', selectedFile.name);
 
       // Upload to Supabase storage
       const supabase = createClient();
@@ -108,20 +113,20 @@ export function ImageUpload({ onUpload, uploading, maxImages }: ImageUploadProps
 
   return (
     <div className="space-y-4">
-      <div className='grid grid-cols-1 gap-4 md:grid-cols-2'>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
         {/* File Selection */}
-        <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all duration-300 hover:border-purple-500/30'>
+        <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all duration-300 hover:border-purple-500/30">
           <CardContent className="pt-6">
             <div className="space-y-4">
               <div>
-                <Label className='flex items-center gap-2 font-medium text-sm text-white' htmlFor="image-upload">
+                <Label className="flex items-center gap-2 font-medium text-sm text-white" htmlFor="image-upload">
                   Select Image
                   <Sparkles className="h-3 w-3 text-purple-400" />
                 </Label>
                 <div className="mt-2">
                   <Input
                     accept="image/*"
-                    className='cursor-pointer border-gray-700 bg-gray-800/50 text-gray-300 transition-all duration-300 file:border-0 file:bg-purple-500/20 file:text-purple-300 hover:border-purple-500/50 hover:bg-gray-800 file:hover:bg-purple-500/30 focus:border-purple-500 focus:ring-purple-500/20'
+                    className="cursor-pointer border-gray-700 bg-gray-800/50 text-gray-300 transition-all duration-300 file:border-0 file:bg-purple-500/20 file:text-purple-300 hover:border-purple-500/50 hover:bg-gray-800 file:hover:bg-purple-500/30 focus:border-purple-500 focus:ring-purple-500/20"
                     disabled={isUploading}
                     id="image-upload"
                     onChange={handleFileSelect}
@@ -129,7 +134,7 @@ export function ImageUpload({ onUpload, uploading, maxImages }: ImageUploadProps
                     type="file"
                   />
                 </div>
-                <p className='mt-1 text-gray-500 text-xs'>
+                <p className="mt-1 text-gray-500 text-xs">
                   Max file size: 10MB. Supported formats: JPG, PNG, GIF, WebP
                 </p>
               </div>
@@ -143,16 +148,16 @@ export function ImageUpload({ onUpload, uploading, maxImages }: ImageUploadProps
                     initial={{ opacity: 0, scale: 0.95 }}
                     transition={{ duration: 0.2 }}
                   >
-                    <Label className='font-medium text-sm text-white'>Preview</Label>
-                    <div className='group relative'>
-                      <img
+                    <Label className="font-medium text-sm text-white">Preview</Label>
+                    <div className="group relative">
+                      <Image
                         alt="Preview"
-                        className='h-48 w-full rounded-xl border border-gray-800 object-cover transition-all duration-300 group-hover:border-purple-500/30'
+                        className="h-48 w-full rounded-xl border border-gray-800 object-cover transition-all duration-300 group-hover:border-purple-500/30"
                         src={preview}
                       />
-                      <div className='absolute inset-0 rounded-xl bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100' />
+                      <div className="absolute inset-0 rounded-xl bg-gradient-to-t from-black/60 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                       <Button
-                        className='absolute top-2 right-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100'
+                        className="absolute top-2 right-2 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
                         disabled={isUploading}
                         onClick={handleRemoveFile}
                         size="sm"
@@ -169,15 +174,15 @@ export function ImageUpload({ onUpload, uploading, maxImages }: ImageUploadProps
         </Card>
 
         {/* Caption and Upload */}
-        <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all duration-300 hover:border-purple-500/30'>
+        <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all duration-300 hover:border-purple-500/30">
           <CardContent className="pt-6">
             <div className="space-y-4">
               <div>
-                <Label className='font-medium text-sm text-white' htmlFor="caption">
+                <Label className="font-medium text-sm text-white" htmlFor="caption">
                   Caption (Optional)
                 </Label>
                 <Textarea
-                  className='mt-2 border-gray-700 bg-gray-800/50 text-white transition-all duration-300 placeholder:text-gray-500 hover:border-purple-500/50 focus:border-purple-500 focus:ring-purple-500/20'
+                  className="mt-2 border-gray-700 bg-gray-800/50 text-white transition-all duration-300 placeholder:text-gray-500 hover:border-purple-500/50 focus:border-purple-500 focus:ring-purple-500/20"
                   disabled={isUploading}
                   id="caption"
                   onChange={(e) => setCaption(e.target.value)}
@@ -189,25 +194,25 @@ export function ImageUpload({ onUpload, uploading, maxImages }: ImageUploadProps
 
               <div className="space-y-2">
                 <Button
-                  className='w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25 disabled:cursor-not-allowed disabled:opacity-50'
+                  className="w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25 disabled:cursor-not-allowed disabled:opacity-50"
                   disabled={!selectedFile || isUploading}
                   onClick={handleUpload}
                   size="lg"
                 >
                   {isUploading ? (
                     <>
-                      <Upload className='mr-2 h-4 w-4 animate-spin' />
+                      <Upload className="mr-2 h-4 w-4 animate-spin" />
                       Uploading...
                     </>
                   ) : (
                     <>
-                      <Camera className='mr-2 h-4 w-4' />
+                      <Camera className="mr-2 h-4 w-4" />
                       Upload Photo
                     </>
                   )}
                 </Button>
 
-                <p className='text-center text-gray-500 text-xs'>
+                <p className="text-center text-gray-500 text-xs">
                   {maxImages > 0 ? (
                     <span className="text-purple-400">{maxImages} photos</span>
                   ) : (
@@ -223,7 +228,7 @@ export function ImageUpload({ onUpload, uploading, maxImages }: ImageUploadProps
 
       {maxImages <= 0 && (
         <motion.div animate={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 10 }} transition={{ duration: 0.3 }}>
-          <Alert className='border-yellow-500/30 bg-yellow-500/10 backdrop-blur-sm'>
+          <Alert className="border-yellow-500/30 bg-yellow-500/10 backdrop-blur-sm">
             <ImageIcon className="h-4 w-4 text-yellow-400" />
             <AlertDescription className="text-yellow-300">
               You have reached the maximum number of photos for this event.

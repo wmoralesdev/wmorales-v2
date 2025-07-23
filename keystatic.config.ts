@@ -1,9 +1,15 @@
-import { config, fields, collection } from '@keystatic/core';
+import { collection, config, fields } from '@keystatic/core';
+
+const environment = process.env.NODE_ENV || 'development';
+
+const localStorage = { kind: 'local' } as const;
+const githubStorage = {
+  kind: 'github',
+  repo: 'wmoralesdev/wdev-blog',
+} as const;
 
 export default config({
-  storage: {
-    kind: 'local', // Use 'local' for development, will change to 'github' for production
-  },
+  storage: environment === 'development' ? localStorage : githubStorage,
   collections: {
     posts: collection({
       label: 'Blog Posts',
@@ -41,6 +47,7 @@ export default config({
             { label: 'Career', value: 'career' },
             { label: 'Tutorial', value: 'tutorial' },
             { label: 'Cursor', value: 'cursor' },
+            { label: 'Markdoc', value: 'markdoc' },
           ],
         }),
         coverImage: fields.image({

@@ -1,0 +1,207 @@
+---
+title: markdoc-features
+description: Discover the powerful Markdoc features that make content creation more engaging with interactive components, better code blocks, and rich media support.
+publishedAt: 2025-01-15
+featured: true
+tags:
+  - web-dev
+  - markdoc
+  - tutorial
+coverImage: /wm.png
+---
+
+# Markdoc Features: A Comprehensive Guide
+
+Welcome to the showcase of our Markdoc implementation! This post demonstrates all the powerful features now available for creating rich, interactive content.
+
+## What's New?
+
+Our Markdoc setup includes:
+
+- **Interactive components** with better UX
+- **Code blocks** with copy functionality
+- **Rich callouts** with multiple types
+- **Video embeds** and media support
+- **Table of contents** generation
+- **Improved typography** with anchor links
+
+{% callout type="tip" title="Pro Tip" %}
+All these features are built on top of Markdoc's safe content model, ensuring security while providing rich functionality.
+{% /callout %}
+
+## Interactive Code Blocks
+
+Here's how our code blocks work with copy functionality:
+
+```typescript
+// Example: Next.js API Route
+import { NextRequest, NextResponse } from 'next/server';
+import { prisma } from '@/lib/prisma';
+
+export async function GET(request: NextRequest) {
+  const { searchParams } = new URL(request.url);
+  const userId = searchParams.get('userId');
+  
+  if (!userId) {
+    return NextResponse.json(
+      { error: 'User ID is required' },
+      { status: 400 }
+    );
+  }
+  
+  try {
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      include: { posts: true }
+    });
+    
+    return NextResponse.json(user);
+  } catch (error) {
+    console.error('Database error:', error);
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
+  }
+}
+```
+
+{% callout type="info" title="Code Features" %}
+- **Copy button** appears on hover
+- **Syntax highlighting** with Shiki
+- **Line numbers** support (optional)
+- **Filename display** in header
+- **Multiple language support**
+{% /callout %}
+
+## Rich Callouts
+
+Our callouts support multiple types with beautiful styling:
+
+{% callout type="warning" title="Important Warning" %}
+Always validate user input before processing it in your applications. Never trust data from external sources without proper validation.
+{% /callout %}
+
+{% callout type="error" title="Error Handling" %}
+When an error occurs, make sure to provide meaningful error messages to users while logging detailed information for debugging.
+{% /callout %}
+
+{% callout type="success" title="Success Stories" %}
+Many developers have successfully migrated to this setup, reporting improved content creation workflows and better user engagement.
+{% /callout %}
+
+## Interactive Cards
+
+Cards can now have titles, descriptions, and different variants:
+
+{% card title="Feature Card" description="This is a feature card showcasing capabilities" variant="feature" %}
+This card demonstrates the card component with:
+- Custom title and description
+- Different visual variants
+- Rich content support
+- Responsive design
+{% /card %}
+
+{% card title="Warning Card" variant="warning" %}
+This warning card helps highlight important information that users should pay attention to.
+{% /card %}
+
+## Video Support
+
+Embed videos directly in your content with poster images:
+
+{% video src="/blog/videos/demo.mp4" title="Demo Video" poster="/blog/images/video-poster.jpg" %}
+
+## Links
+
+Links now show external icons automatically and have better hover effects:
+
+- [Internal link to blog](/blog)
+- [External link to Next.js](https://nextjs.org)
+- [GitHub Repository](https://github.com/vercel/next.js)
+
+{% callout type="tip" %}
+External links automatically open in new tabs and include proper security attributes.
+{% /callout %}
+
+## Improved Typography
+
+All headings now support anchor links - hover over any heading to see the link icon:
+
+### Features Overview
+
+#### Core Components
+
+- Interactive code blocks with copy functionality
+- Rich callouts with multiple types
+- Cards with variants
+- Video embeds with poster support
+
+#### Better Developer Experience
+
+- Type-safe component definitions
+- Comprehensive error handling
+- Flexible attribute system
+- Extensible architecture
+
+## Images with Captions
+
+Images can now include captions and better optimization:
+
+![Sample image with caption](/blog/images/sample-cover.svg "Image component with caption")
+
+{% callout type="info" title="Image Features" %}
+- **Automatic optimization** with Next.js Image
+- **Caption support** for better accessibility
+- **Priority loading** for above-the-fold images
+- **Responsive design** out of the box
+{% /callout %}
+
+## Separators
+
+Use separators to break up content sections:
+
+{% separator spacing="large" %}
+
+## Code Blocks with Filenames
+
+Here's a code block with a filename header:
+
+```json
+{
+  "name": "blog-app",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@markdoc/markdoc": "^0.5.2",
+    "next": "^15.0.0",
+    "react": "^18.0.0"
+  }
+}
+```
+
+## Migration Benefits
+
+{% card title="Why This Approach Works" variant="success" %}
+- **GitHub Integration**: Content managed through Keystatic
+- **Security**: Markdoc's safe content model
+- **Performance**: Optimized rendering and caching
+- **Developer Experience**: Type-safe components
+- **Flexibility**: Extensible architecture
+{% /card %}
+
+## What's Next?
+
+This setup provides a solid foundation for content creation while maintaining the security and performance benefits of Markdoc. The combination of Keystatic for content management and powerful Markdoc components creates a robust, developer-friendly blogging platform.
+
+{% callout type="tip" title="Getting Started" %}
+Check out the source code to see how these components are implemented, and start using them in your own content today!
+{% /callout %}
+
+{% separator %}
+
+Ready to start creating rich content with these features? The possibilities are endless!

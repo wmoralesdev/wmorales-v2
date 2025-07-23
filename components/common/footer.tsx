@@ -1,5 +1,6 @@
 'use client';
 
+import { EMAIL, TITLE } from '@/lib/consts';
 import { motion, type Variants } from 'framer-motion';
 import { Github, Linkedin, Mail, MapPin, Send, Sparkles, Twitter } from 'lucide-react';
 import Link from 'next/link';
@@ -32,15 +33,14 @@ const socialLinks = [
   { icon: Github, href: 'https://github.com/wmoralesdev', label: 'GitHub' },
   { icon: Linkedin, href: 'https://linkedin.com/in/wmoralesdev', label: 'LinkedIn' },
   { icon: Twitter, href: 'https://twitter.com/wmoralesdev', label: 'Twitter' },
-  { icon: Mail, href: 'mailto:hello@wmorales.dev', label: 'Email' },
+  { icon: Mail, href: `mailto:${EMAIL}`, label: 'Email' },
 ];
 
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Experience', href: '/#experience' },
-  { name: 'Projects', href: '/#projects' },
   { name: 'Guestbook', href: '/guestbook' },
-  { name: 'Polls', href: '/polls' },
+  { name: 'Surveys', href: '/surveys' },
 ];
 
 export function Footer() {
@@ -49,7 +49,7 @@ export function Footer() {
   return (
     <footer className="relative overflow-hidden bg-black">
       {/* Top gradient accent */}
-      <div className='absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent' />
+      <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
 
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-b from-black via-gray-900/20 to-black" />
@@ -66,8 +66,8 @@ export function Footer() {
             {/* Brand & Status */}
             <motion.div className="lg:col-span-2" variants={itemVariants}>
               <div className="mb-6">
-                <h3 className='mb-2 font-bold text-2xl text-white'>Walter Morales</h3>
-                <p className="text-gray-400">Full Stack Developer & Cursor Ambassador</p>
+                <h3 className="mb-2 font-bold text-2xl text-white">Walter Morales</h3>
+                <p className="text-gray-400">{TITLE} & Cursor Ambassador</p>
               </div>
 
               {/* Availability status */}
@@ -76,7 +76,7 @@ export function Footer() {
                   <div className="h-3 w-3 rounded-full bg-green-500" />
                   <div className="absolute inset-0 h-3 w-3 animate-ping rounded-full bg-green-500" />
                 </div>
-                <span className='text-gray-300 text-sm'>Available for opportunities</span>
+                <span className="text-gray-300 text-sm">Available for opportunities</span>
               </div>
 
               {/* Location */}
@@ -88,11 +88,11 @@ export function Footer() {
 
             {/* Quick Links */}
             <motion.div variants={itemVariants}>
-              <h4 className='mb-4 font-semibold text-purple-400 text-sm'>Quick Links</h4>
+              <h4 className="mb-4 font-semibold text-purple-400 text-sm">Quick Links</h4>
               <ul className="space-y-2">
                 {navigation.map((link) => (
                   <li key={link.name}>
-                    <Link className='text-gray-400 text-sm transition-colors hover:text-purple-400' href={link.href}>
+                    <Link className="text-gray-400 text-sm transition-colors hover:text-purple-400" href={link.href}>
                       {link.name}
                     </Link>
                   </li>
@@ -102,7 +102,7 @@ export function Footer() {
 
             {/* Connect */}
             <motion.div variants={itemVariants}>
-              <h4 className='mb-4 font-semibold text-purple-400 text-sm'>Let's Connect</h4>
+              <h4 className="mb-4 font-semibold text-purple-400 text-sm">Let's Connect</h4>
 
               {/* Social links */}
               <div className="mb-6 flex gap-3">
@@ -128,9 +128,9 @@ export function Footer() {
               </div>
 
               {/* CTA */}
-              <Link href="mailto:hello@wmorales.dev">
+              <Link href={`mailto:${EMAIL}`}>
                 <motion.button
-                  className='group flex items-center gap-2 rounded-lg border border-purple-700/50 bg-purple-900/20 px-4 py-2 font-medium text-purple-400 text-sm backdrop-blur-sm transition-all hover:bg-purple-800/30 hover:text-purple-300'
+                  className="group flex items-center gap-2 rounded-lg border border-purple-700/50 bg-purple-900/20 px-4 py-2 font-medium text-purple-400 text-sm backdrop-blur-sm transition-all hover:bg-purple-800/30 hover:text-purple-300"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
@@ -142,9 +142,9 @@ export function Footer() {
           </div>
 
           {/* Bottom section */}
-          <motion.div className='mt-12 border-gray-800/50 border-t pt-8' variants={itemVariants}>
+          <motion.div className="mt-12 border-gray-800/50 border-t pt-8" variants={itemVariants}>
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
-              <div className='flex items-center gap-2 text-gray-500 text-sm'>
+              <div className="flex items-center gap-2 text-gray-500 text-sm">
                 <Sparkles className="h-4 w-4 text-purple-500/50" />
                 <p>
                   © {currentYear} Walter Morales. Crafted with{' '}
@@ -162,7 +162,7 @@ export function Footer() {
                 </p>
               </div>
 
-              <div className='flex items-center gap-2 text-gray-500 text-sm'>
+              <div className="flex items-center gap-2 text-gray-500 text-sm">
                 <div className="flex items-center gap-2">
                   <div className="h-2 w-2 rounded-full bg-gradient-to-r from-green-400 to-emerald-400" />
                   <span>Next.js</span>

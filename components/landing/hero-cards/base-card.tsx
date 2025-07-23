@@ -5,7 +5,7 @@ import { type ReactNode, useEffect, useRef, useState } from 'react';
 import { Card } from '@/components/ui/card';
 import { cn } from '@/lib/utils';
 
-export interface BaseCardProps {
+export type BaseCardProps = {
   id: string;
   children: ReactNode;
   className?: string;
@@ -19,7 +19,7 @@ export interface BaseCardProps {
   // biome-ignore lint/suspicious/noExplicitAny: from framer-motion
   transition?: any;
   animateFloat?: boolean;
-}
+};
 
 export const cardVariants: Variants = {
   hidden: { opacity: 0, scale: 0.8, y: 20 },

@@ -1,5 +1,5 @@
-import readingTime from 'reading-time';
 import GithubSlugger from 'github-slugger';
+import readingTime from 'reading-time';
 
 export function calculateReadingTime(content: string) {
   return readingTime(content);
@@ -9,16 +9,17 @@ export function extractHeadings(content: string) {
   const slugger = new GithubSlugger();
   const headingRegex = /^(#{1,6})\s+(.+)$/gm;
   const headings: Array<{ id: string; text: string; level: number }> = [];
-  
-  let match;
-  while ((match = headingRegex.exec(content)) !== null) {
+
+  let match: RegExpExecArray | null = headingRegex.exec(content);
+  while (match !== null) {
     const level = match[1].length;
     const text = match[2];
     const id = slugger.slug(text);
-    
+    match = headingRegex.exec(content);
+
     headings.push({ id, text, level });
   }
-  
+
   return headings;
 }
 
@@ -40,12 +41,14 @@ export function generateExcerpt(content: string, maxLength = 160) {
     .replace(/!\[([^\]]*)\]\([^)]+\)/g, '') // Remove images
     .replace(/\n+/g, ' ') // Replace newlines with spaces
     .trim();
-  
-  if (plainText.length <= maxLength) return plainText;
-  
+
+  if (plainText.length <= maxLength) {
+    return plainText;
+  }
+
   // Cut at last complete word
   const trimmed = plainText.substring(0, maxLength);
   const lastSpace = trimmed.lastIndexOf(' ');
-  
-  return trimmed.substring(0, lastSpace) + '...';
+
+  return `${trimmed.substring(0, lastSpace)}...`;
 }

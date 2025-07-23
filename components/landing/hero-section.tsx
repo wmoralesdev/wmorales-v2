@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, type Variants } from 'framer-motion';
-import { ChevronDown, Sparkle } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import {
   CoffeeChatCard,
   CurrentlyLearningCard,
@@ -13,6 +13,7 @@ import {
   TerminalCard,
 } from '@/components/landing/hero-cards';
 import { Button } from '@/components/ui/button';
+import { EMAIL } from '@/lib/consts';
 
 // Animation variants
 const containerVariants: Variants = {
@@ -46,7 +47,7 @@ export function HeroSection() {
   return (
     <section className="relative min-h-screen overflow-hidden px-4 pt-24 pb-16 sm:px-6 lg:px-8">
       <div className="relative z-10 mx-auto max-w-7xl">
-        <div className='grid min-h-[calc(100vh-8rem)] grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16'>
+        <div className="grid min-h-[calc(100vh-8rem)] grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left side - Text content */}
           <motion.div
             animate="visible"
@@ -55,15 +56,15 @@ export function HeroSection() {
             variants={containerVariants}
           >
             <motion.div className="space-y-6" variants={itemVariants}>
-              <div className='flex items-center justify-center gap-2 lg:justify-start'>
+              <div className="flex items-center justify-center gap-2 lg:justify-start">
                 <div className="relative">
                   <div className="h-3 w-3 rounded-full bg-green-500" />
                   <div className="absolute inset-0 h-3 w-3 animate-ping rounded-full bg-green-500" />
                 </div>
-                <span className='font-medium text-green-400 text-sm'>Available for new projects</span>
+                <span className="font-medium text-green-400 text-sm">Available for new projects</span>
               </div>
 
-              <h1 className='font-bold text-4xl tracking-tight sm:text-5xl lg:text-6xl'>
+              <h1 className="font-bold text-4xl tracking-tight sm:text-5xl lg:text-6xl">
                 <span className="text-gray-400">👋 I'm Walter, and I</span>
                 <br />
                 <span className="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
@@ -72,7 +73,7 @@ export function HeroSection() {
               </h1>
 
               <div className="space-y-4">
-                <h2 className='font-semibold text-2xl sm:text-3xl lg:text-4xl'>
+                <h2 className="font-semibold text-2xl sm:text-3xl lg:text-4xl">
                   <span className="text-white">Development with</span>{' '}
                   <span className="bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
                     passion
@@ -84,17 +85,17 @@ export function HeroSection() {
                 </h2>
               </div>
 
-              <div className='flex items-center justify-center gap-4 text-gray-400 lg:justify-start'>
+              <div className="flex items-center justify-center gap-4 text-gray-400 lg:justify-start">
                 <span className="text-2xl">/</span>
-                <a className='transition-colors hover:text-purple-400' href="mailto:walterrafael26@gmail.com">
-                  walterrafael26@gmail.com
+                <a className="transition-colors hover:text-purple-400" href={`mailto:${EMAIL}`}>
+                  {EMAIL}
                 </a>
               </div>
             </motion.div>
 
             <motion.div className="flex justify-center lg:justify-start" variants={itemVariants}>
               <Button
-                className='rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25'
+                className="rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25"
                 onClick={scrollToContact}
                 size="lg"
               >
@@ -106,7 +107,7 @@ export function HeroSection() {
           {/* Right side - Visual cards */}
           <motion.div
             animate="visible"
-            className='relative grid grid-cols-1 gap-4 sm:grid-cols-2 lg:h-[700px]'
+            className="relative grid grid-cols-1 gap-4 sm:grid-cols-2 lg:h-[700px]"
             initial="hidden"
             variants={containerVariants}
           >
@@ -134,7 +135,7 @@ export function HeroSection() {
             </div>
 
             {/* Mobile/Tablet Layout - Grid */}
-            <div className='contents lg:hidden'>
+            <div className="contents lg:hidden">
               <GlobalReachCard transition={{ delay: 0 }} />
               <CursorAmbassadorCard transition={{ delay: 0.1 }} />
               <CurrentlyLearningCard transition={{ delay: 0.2 }} />
@@ -153,12 +154,12 @@ export function HeroSection() {
         {/* Experience Badge - Mobile only now */}
         <motion.div
           animate="visible"
-          className='mt-8 flex justify-center lg:hidden'
+          className="mt-8 flex justify-center lg:hidden"
           initial="hidden"
           variants={itemVariants}
         >
-          <div className='rounded-full border border-purple-500/30 bg-gradient-to-r from-purple-500/20 to-purple-600/20 px-6 py-3 text-center backdrop-blur-xl'>
-            <span className='font-medium text-base text-purple-300'>5+ Years Experience</span>
+          <div className="rounded-full border border-purple-500/30 bg-gradient-to-r from-purple-500/20 to-purple-600/20 px-6 py-3 text-center backdrop-blur-xl">
+            <span className="font-medium text-base text-purple-300">5+ Years Experience</span>
           </div>
         </motion.div>
       </div>
@@ -166,7 +167,7 @@ export function HeroSection() {
       {/* Scroll indicator */}
       <motion.div
         animate={{ opacity: 1, y: 0 }}
-        className='-translate-x-1/2 absolute bottom-8 left-1/2 transform'
+        className="-translate-x-1/2 absolute bottom-8 left-1/2 transform"
         initial={{ opacity: 0, y: 20 }}
         transition={{ delay: 1.5, duration: 0.6 }}
       >

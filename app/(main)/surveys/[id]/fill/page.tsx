@@ -24,7 +24,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const survey = result.data as SurveyWithSections;
   const title = survey.title;
-  const description = survey.description || `Community survey: ${survey.title}. Share your thoughts and help shape the LATAM developer community.`;
+  const description =
+    survey.description ||
+    `Community survey: ${survey.title}. Share your thoughts and help shape the LATAM developer community.`;
 
   return createMetadata({
     title: `${title} - Survey`,
@@ -56,7 +58,7 @@ export default async function SurveyFillPage({ params }: PageProps) {
   const survey = result.data as SurveyWithSections;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+    <div className="min-h-screen">
       <SurveyRenderer survey={survey} />
     </div>
   );

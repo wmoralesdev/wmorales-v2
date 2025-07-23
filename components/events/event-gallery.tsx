@@ -1,29 +1,19 @@
 'use client';
 
 import { formatDistanceToNow } from 'date-fns';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Camera, Eye, Grid3x3, Image, LayoutGrid, Trash2, Upload, Users } from 'lucide-react';
+import { AnimatePresence, motion, type Variants } from 'framer-motion';
+import { Camera, Eye, Grid3x3, Image as ImageIcon, LayoutGrid, Trash2, Upload, Users } from 'lucide-react';
+import Image from 'next/image';
 import { useCallback, useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { deleteEventImage, getUserEventImages, uploadEventImage } from '@/app/actions/events.actions';
 import { ImageGrid } from '@/components/events/image-grid';
 import { ImageUpload } from '@/components/events/image-upload';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Skeleton } from '@/components/ui/skeleton';
-import { Textarea } from '@/components/ui/textarea';
 import { subscribeToEventUpdates } from '@/lib/supabase/realtime';
 
 type EventImage = {
@@ -48,7 +38,7 @@ type EventGalleryProps = {
   event: Event;
 };
 
-const statsVariants = {
+const statsVariants: Variants = {
   hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1,
@@ -68,7 +58,6 @@ export function EventGallery({ event }: EventGalleryProps) {
   const [uploading, setUploading] = useState(false);
   const [activeViewers, setActiveViewers] = useState(0);
   const [selectedImage, setSelectedImage] = useState<EventImage | null>(null);
-  const [showUploadDialog, setShowUploadDialog] = useState(false);
   const [galleryLayout, setGalleryLayout] = useState<'grid' | 'masonry'>('masonry');
 
   // Load user's images
@@ -76,9 +65,13 @@ export function EventGallery({ event }: EventGalleryProps) {
     const loadUserImages = async () => {
       try {
         const userEventImages = await getUserEventImages(event.id);
-        setUserImages(userEventImages);
-      } catch (error) {
-        console.error('Failed to load user images:', error);
+        setUserImages(
+          userEventImages.map((image) => ({
+            ...image,
+            caption: image.caption || undefined,
+            createdAt: new Date(image.createdAt),
+          }))
+        );
       } finally {
         setLoading(false);
       }
@@ -125,7 +118,6 @@ export function EventGallery({ event }: EventGalleryProps) {
           caption,
         });
 
-        setShowUploadDialog(false);
         toast.success('Photo uploaded successfully!');
       } catch (error) {
         const message = error instanceof Error ? error.message : 'Failed to upload photo';
@@ -154,17 +146,17 @@ export function EventGallery({ event }: EventGalleryProps) {
   return (
     <div className="space-y-6">
       {/* Event Stats */}
-      <div className='grid grid-cols-1 gap-4 md:grid-cols-3'>
+      <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
         <motion.div animate="visible" custom={0} initial="hidden" variants={statsVariants}>
-          <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all hover:border-purple-500/50'>
+          <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all hover:border-purple-500/50">
             <CardContent className="pt-6">
               <div className="flex items-center gap-3">
-                <div className='rounded-xl bg-purple-500/20 p-3'>
-                  <Image className="h-5 w-5 text-purple-400" />
+                <div className="rounded-xl bg-purple-500/20 p-3">
+                  <ImageIcon className="h-5 w-5 text-purple-400" />
                 </div>
                 <div>
-                  <p className='font-bold text-2xl text-white'>{images.length}</p>
-                  <p className='text-gray-400 text-sm'>Total Photos</p>
+                  <p className="font-bold text-2xl text-white">{images.length}</p>
+                  <p className="text-gray-400 text-sm">Total Photos</p>
                 </div>
               </div>
             </CardContent>
@@ -172,15 +164,15 @@ export function EventGallery({ event }: EventGalleryProps) {
         </motion.div>
 
         <motion.div animate="visible" custom={1} initial="hidden" variants={statsVariants}>
-          <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all hover:border-purple-500/50'>
+          <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all hover:border-purple-500/50">
             <CardContent className="pt-6">
               <div className="flex items-center gap-3">
-                <div className='rounded-xl bg-green-500/20 p-3'>
+                <div className="rounded-xl bg-green-500/20 p-3">
                   <Users className="h-5 w-5 text-green-400" />
                 </div>
                 <div>
-                  <p className='font-bold text-2xl text-white'>{activeViewers}</p>
-                  <p className='text-gray-400 text-sm'>Active Viewers</p>
+                  <p className="font-bold text-2xl text-white">{activeViewers}</p>
+                  <p className="text-gray-400 text-sm">Active Viewers</p>
                 </div>
               </div>
             </CardContent>
@@ -188,17 +180,17 @@ export function EventGallery({ event }: EventGalleryProps) {
         </motion.div>
 
         <motion.div animate="visible" custom={2} initial="hidden" variants={statsVariants}>
-          <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all hover:border-purple-500/50'>
+          <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all hover:border-purple-500/50">
             <CardContent className="pt-6">
               <div className="flex items-center gap-3">
-                <div className='rounded-xl bg-purple-500/20 p-3'>
+                <div className="rounded-xl bg-purple-500/20 p-3">
                   <Camera className="h-5 w-5 text-purple-400" />
                 </div>
                 <div>
-                  <p className='font-bold text-2xl text-white'>
+                  <p className="font-bold text-2xl text-white">
                     {userImageCount}/{event.maxImages}
                   </p>
-                  <p className='text-gray-400 text-sm'>Your Photos</p>
+                  <p className="text-gray-400 text-sm">Your Photos</p>
                 </div>
               </div>
             </CardContent>
@@ -208,7 +200,7 @@ export function EventGallery({ event }: EventGalleryProps) {
 
       {/* Upload Section */}
       {!isEventEnded && (
-        <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl'>
+        <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
               <Upload className="h-5 w-5 text-purple-400" />
@@ -229,19 +221,19 @@ export function EventGallery({ event }: EventGalleryProps) {
 
                 {userImageCount > 0 && (
                   <div className="mt-6">
-                    <h3 className='mb-3 font-semibold text-lg text-white'>Your Photos</h3>
-                    <div className='grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6'>
+                    <h3 className="mb-3 font-semibold text-lg text-white">Your Photos</h3>
+                    <div className="grid grid-cols-2 gap-2 md:grid-cols-4 lg:grid-cols-6">
                       {userImages.map((image) => (
-                        <div className='group relative' key={image.id}>
+                        <div className="group relative" key={image.id}>
                           <div className="aspect-square overflow-hidden rounded-lg bg-gray-800">
-                            <img
+                            <Image
                               alt={image.caption || 'Event photo'}
-                              className='h-full w-full object-cover transition-transform duration-200 group-hover:scale-110'
+                              className="h-full w-full object-cover transition-transform duration-200 group-hover:scale-110"
                               src={image.imageUrl}
                             />
                           </div>
                           <Button
-                            className='absolute top-2 right-2 opacity-0 shadow-lg transition-opacity group-hover:opacity-100'
+                            className="absolute top-2 right-2 opacity-0 shadow-lg transition-opacity group-hover:opacity-100"
                             onClick={() => handleImageDelete(image.id)}
                             size="sm"
                             variant="destructive"
@@ -255,7 +247,7 @@ export function EventGallery({ event }: EventGalleryProps) {
                 )}
               </div>
             ) : (
-              <Alert className='border-purple-500/30 bg-purple-500/10'>
+              <Alert className="border-purple-500/30 bg-purple-500/10">
                 <AlertDescription className="text-purple-300">
                   You have reached the maximum number of photos ({event.maxImages}) for this event.
                 </AlertDescription>
@@ -266,7 +258,7 @@ export function EventGallery({ event }: EventGalleryProps) {
       )}
 
       {/* Gallery */}
-      <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl'>
+      <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
         <CardHeader>
           <div className="flex items-center justify-between">
             <div>
@@ -310,13 +302,14 @@ export function EventGallery({ event }: EventGalleryProps) {
         </CardHeader>
         <CardContent>
           {loading ? (
-            <div className='grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6'>
+            <div className="grid grid-cols-2 gap-4 md:grid-cols-4 lg:grid-cols-6">
               {Array.from({ length: 6 }).map((_, i) => (
+                // biome-ignore lint/suspicious/noArrayIndexKey: use as skeleton, irrelevant
                 <Skeleton className="h-32 w-full bg-gray-800" key={i} />
               ))}
             </div>
           ) : (
-            <ImageGrid images={images} layout={galleryLayout} onImageClick={setSelectedImage} />
+            <ImageGrid images={images} onImageClick={setSelectedImage} />
           )}
         </CardContent>
       </Card>
@@ -325,7 +318,7 @@ export function EventGallery({ event }: EventGalleryProps) {
       <AnimatePresence>
         {selectedImage && (
           <Dialog onOpenChange={() => setSelectedImage(null)} open={!!selectedImage}>
-            <DialogContent className='max-w-4xl border-gray-800 bg-gray-900/95 backdrop-blur-xl'>
+            <DialogContent className="max-w-4xl border-gray-800 bg-gray-900/95 backdrop-blur-xl">
               <DialogHeader>
                 <DialogTitle className="text-white">Photo Preview</DialogTitle>
                 <DialogDescription className="text-gray-400">
@@ -341,13 +334,13 @@ export function EventGallery({ event }: EventGalleryProps) {
                   transition={{ duration: 0.2 }}
                 >
                   <div className="relative overflow-hidden rounded-lg bg-gray-800">
-                    <img
+                    <Image
                       alt={selectedImage.caption || 'Event photo'}
-                      className='max-h-[70vh] w-full object-contain'
+                      className="max-h-[70vh] w-full object-contain"
                       src={selectedImage.imageUrl}
                     />
                   </div>
-                  <div className='flex items-center justify-between text-gray-400 text-sm'>
+                  <div className="flex items-center justify-between text-gray-400 text-sm">
                     <span>Uploaded {formatDistanceToNow(new Date(selectedImage.createdAt), { addSuffix: true })}</span>
                     {userImages.some((img) => img.id === selectedImage.id) && (
                       <Button
@@ -358,7 +351,7 @@ export function EventGallery({ event }: EventGalleryProps) {
                         size="sm"
                         variant="destructive"
                       >
-                        <Trash2 className='mr-2 h-4 w-4' />
+                        <Trash2 className="mr-2 h-4 w-4" />
                         Delete
                       </Button>
                     )}

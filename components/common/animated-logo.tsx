@@ -1,4 +1,4 @@
-import { motion, type Variants } from "framer-motion";
+import { motion, type Variants } from 'framer-motion';
 
 type AnimatedLogoProps = React.ComponentProps<typeof motion.svg> & {
   strokeWidth?: number;
@@ -6,7 +6,12 @@ type AnimatedLogoProps = React.ComponentProps<typeof motion.svg> & {
   bottomColor?: string;
 };
 
-export function AnimatedLogo({ strokeWidth = 250, topColor = 'white', bottomColor = '#7C3AED', ...props }: AnimatedLogoProps) {
+export function AnimatedLogo({
+  strokeWidth = 250,
+  topColor = 'white',
+  bottomColor = '#7C3AED',
+  ...props
+}: AnimatedLogoProps) {
   const svgVariants: Variants = {
     hidden: { opacity: 0 },
     visible: {
@@ -27,7 +32,7 @@ export function AnimatedLogo({ strokeWidth = 250, topColor = 'white', bottomColo
       opacity: 1,
       transition: {
         duration: 2,
-        ease: "easeInOut",
+        ease: 'easeInOut',
       },
     },
   };
@@ -53,12 +58,7 @@ export function AnimatedLogo({ strokeWidth = 250, topColor = 'white', bottomColo
         strokeWidth={strokeWidth}
         variants={pathVariants}
       />
-      <motion.path
-        d="M125 905.064V125H905.064"
-        stroke={topColor}
-        strokeWidth={strokeWidth}
-        variants={pathVariants}
-      />
+      <motion.path d="M125 905.064V125H905.064" stroke={topColor} strokeWidth={strokeWidth} variants={pathVariants} />
       {/* Bottom */}
       <motion.path
         d="M2279.2 937H1592.72V1592.84H937V2280.32"
@@ -74,4 +74,4 @@ export function AnimatedLogo({ strokeWidth = 250, topColor = 'white', bottomColo
       />
     </motion.svg>
   );
-};
+}

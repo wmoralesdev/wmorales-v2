@@ -5,9 +5,12 @@ const getTime = (): string => {
   const now = new Date();
   let hours = now.getHours();
   const minutes = now.getMinutes();
+  const seconds = now.getSeconds();
   const ampm = hours >= 12 ? 'PM' : 'AM';
   hours = hours % 12 || 12;
-  return `${hours}:${minutes.toString().padStart(2, '0')} ${ampm}`;
+  return `${hours.toString().padStart(2, '0')}:${minutes
+    .toString()
+    .padStart(2, '0')}:${seconds.toString().padStart(2, '0')} ${ampm}`;
 };
 
 type ClockProps = {
@@ -22,5 +25,5 @@ export function Clock({ className }: ClockProps) {
     return () => clearInterval(interval);
   }, []);
 
-  return <div className={cn('font-mono text-sm', className)}>{time}</div>;
+  return <div className={cn('font-mono text-sm', className)} suppressHydrationWarning>{time}</div>;
 }

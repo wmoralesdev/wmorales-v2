@@ -66,7 +66,7 @@ export default async function PollPage({ params }: Props) {
   const { data: userVotes } = await getUserVotes(poll.id);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+    <div className="min-h-screen">
       <PollVoting
         initialResults={results || undefined}
         initialUserVotes={userVotes || undefined}

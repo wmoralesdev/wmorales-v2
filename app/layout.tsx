@@ -1,11 +1,11 @@
 import './globals.css';
 
+import { JetBrains_Mono, Poppins, Space_Grotesk } from 'next/font/google';
 import { Toaster } from 'sonner';
 import { AuthProvider } from '@/components/auth/auth-provider';
+import { AnimatedMesh } from '@/components/common/animated-mesh';
 import { baseMetadata } from '@/lib/metadata';
 import { cn } from '@/lib/utils';
-import { Space_Grotesk, Poppins, Geist_Mono } from 'next/font/google';
-import { AnimatedMesh } from '@/components/common/animated-mesh';
 
 const space_grotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -19,7 +19,7 @@ const poppins = Poppins({
   variable: '--text-family',
 });
 
-const gesit_mono = Geist_Mono({
+const jetbrains_mono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400'],
   variable: '--mono-family',
@@ -38,7 +38,7 @@ export default function RootLayout({
         className={cn(
           space_grotesk.variable,
           poppins.variable,
-          gesit_mono.variable,
+          jetbrains_mono.variable,
           'min-h-screen text-foreground antialiased'
         )}
       >

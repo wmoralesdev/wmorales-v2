@@ -1,17 +1,17 @@
-export interface BlogPost {
+export type BlogPost = {
   slug: string;
   entry: {
     title: string;
     description: string;
-    publishedAt: string | null;
+    publishedAt: string;
     featured: boolean;
-    tags: readonly string[];
+    tags: string[];
     coverImage: string;
-    content: () => Promise<any>;
+    content: () => Promise<unknown>;
   };
-}
+};
 
-export interface CommentWithReplies {
+export type CommentWithReplies = {
   id: string;
   slug: string;
   userId: string;
@@ -26,9 +26,9 @@ export interface CommentWithReplies {
   score: number;
   userVote: number | null;
   replies: CommentWithReplies[];
-}
+};
 
-export interface NotificationType {
+export type NotificationType = {
   id: string;
   userId: string;
   type: string;
@@ -38,8 +38,8 @@ export interface NotificationType {
   entityId: string;
   triggerUserId: string | null;
   triggerCommentId: string | null;
-  metadata: any;
+  metadata: Record<string, unknown>;
   isRead: boolean;
   readAt: Date | null;
   createdAt: Date;
-}
+};

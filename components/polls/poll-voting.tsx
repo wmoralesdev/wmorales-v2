@@ -431,7 +431,7 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
 
       {/* Validation Errors */}
       {state.validationErrors.length > 0 && (
-        <Alert className='border-red-500/30 bg-red-500/10 text-red-400'>
+        <Alert className="border-red-500/30 bg-red-500/10 text-red-400">
           <AlertCircle className="h-4 w-4" />
           <AlertDescription>
             <ul className="list-inside list-disc space-y-1">
@@ -488,7 +488,7 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
 
                         return (
                           <div className="relative" key={option.id}>
-                            <div className='flex items-center space-x-2 rounded-lg border border-transparent p-3 transition-colors hover:border-purple-500/30 hover:bg-purple-500/10'>
+                            <div className="flex items-center space-x-2 rounded-lg border border-transparent p-3 transition-colors hover:border-purple-500/30 hover:bg-purple-500/10">
                               <RadioGroupItem className="text-purple-400" id={option.id} value={option.id} />
                               <Label
                                 className="flex flex-1 cursor-pointer items-center gap-2 text-gray-300"
@@ -499,7 +499,7 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
                                 {isSelected && <Check className="ml-auto h-4 w-4 text-purple-400" />}
                               </Label>
                               {canShowResults && (
-                                <span className='font-medium text-gray-400 text-sm'>
+                                <span className="font-medium text-gray-400 text-sm">
                                   {percentage}% ({voteCount})
                                 </span>
                               )}
@@ -531,23 +531,26 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
 
                         return (
                           <div className="relative" key={option.id}>
-                            <div className="flex items-center space-x-2 rounded-lg p-3 transition-colors hover:bg-purple-500/10 border border-transparent hover:border-purple-500/30">
+                            <div className="flex items-center space-x-2 rounded-lg border border-transparent p-3 transition-colors hover:border-purple-500/30 hover:bg-purple-500/10">
                               <Checkbox
                                 checked={isChecked}
+                                className="text-purple-400 data-[state=checked]:border-purple-500 data-[state=checked]:bg-purple-500"
                                 disabled={isAnswered}
                                 id={option.id}
                                 onCheckedChange={(checked) =>
                                   handleOptionChange(question.id, option.id, checked as boolean)
                                 }
-                                className="text-purple-400 data-[state=checked]:bg-purple-500 data-[state=checked]:border-purple-500"
                               />
-                              <Label className="flex flex-1 cursor-pointer items-center gap-2 text-gray-300" htmlFor={option.id}>
+                              <Label
+                                className="flex flex-1 cursor-pointer items-center gap-2 text-gray-300"
+                                htmlFor={option.id}
+                              >
                                 {option.emoji && <span className="text-xl">{option.emoji}</span>}
                                 <span>{option.label}</span>
                                 {isSelected && <Check className="ml-auto h-4 w-4 text-purple-400" />}
                               </Label>
                               {canShowResults && (
-                                <span className="font-medium text-sm text-gray-400">
+                                <span className="font-medium text-gray-400 text-sm">
                                   {percentage}% ({voteCount})
                                 </span>
                               )}
@@ -556,7 +559,10 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
                               <div className="-z-10 absolute bottom-0 left-0 h-full overflow-hidden rounded-lg">
                                 <motion.div
                                   animate={{ width: `${percentage}%` }}
-                                  className={cn('h-full', option.color || 'bg-gradient-to-r from-purple-500/20 to-purple-600/20')}
+                                  className={cn(
+                                    'h-full',
+                                    option.color || 'bg-gradient-to-r from-purple-500/20 to-purple-600/20'
+                                  )}
                                   initial={{ width: 0 }}
                                   transition={{ duration: 0.5, ease: 'easeOut' }}
                                 />
@@ -581,10 +587,10 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
           initial={{ opacity: 0, y: 20 }}
           transition={{ duration: 0.5, delay: 0.2 }}
         >
-          <Card className='border-gray-800 bg-gray-900/80 backdrop-blur-xl'>
+          <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
             <CardContent className="pt-6">
               <Button
-                className='w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25'
+                className="w-full bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25"
                 disabled={state.voting}
                 onClick={handleSubmitAll}
                 size="lg"
