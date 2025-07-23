@@ -1,48 +1,106 @@
-# Development Plan
+---
+description: 
+globs: 
+alwaysApply: true
+---
+# Architecture & Guidelines
 
-## Requirements
+## Strict Requirements
 
-- Use Next.js and shadcn/ui for all UI components.
-- Implement all content from content.md.
-- Ensure responsive and accessible design.
-- Optimize for performance and SEO.
-- Structure the site with separate pages for landing and guestbook.
+- **Framework:** Must use Next.js 15 or newer. Code or patterns from older Next.js versions (e.g., pages directory, legacy data fetching) are not allowed.
+- **Authentication:** Use Supabase for authentication. Only Google and Github providers are permitted.
+- **Language:** All code must be written in TypeScript. No JavaScript files allowed.
+- **Styling:** Use Tailwind CSS for all styling. No CSS modules, SCSS, or inline styles.
+- **UI Components:** Use shadcn/ui for all UI primitives and components. Custom components must follow shadcn/ui conventions.
+- **Dark Mode:** The site must support dark mode using Tailwind's dark variant and shadcn/ui theming, no light mode should be generated.
 
-## Sitemap
+## Project Structure
 
-- / : Landing page (Hero, Skills, Experience, Contact, Footer)
-- /guestbook : Guestbook page (Title, Sign in card if not authenticated, Messages)
-- /cursor : Cursor page with NextConf style badges
+Consider the following from the root directory:
+- Use the `/app` directory for all routes and layouts (Next.js 13+ app router).
+- Place shared components in `/components`.
+- Place hooks in `/hooks`.
+- Place utility functions in `/lib`.
+- Use `/public` for static assets.
 
-## Tasks
+## Authentication (Supabase)
 
-1. Setup
-   - [ ] Ensure shadcn/ui and Tailwind CSS are installed and configured.
-   - [ ] Review and update global styles and theme tokens.
-2. Layout
-   - [ ] Implement RootLayout with header, main, and footer.
-   - [ ] Add responsive navigation using shadcn/ui components.
-3. Landing Page (/)
-   - [ ] Build hero section with title, subtitle, mission, and CTA.
-   - [ ] Add about/skills section with bio, stack, years, countries, fun fact.
-   - [ ] List work experience with roles, dates, and achievements.
-   - [ ] Add contact section with email/socials and collaboration CTA.
-   - [ ] Implement footer.
-4. Guestbook Page (/guestbook)
-   - [ ] Create guestbook page route.
-   - [ ] Add title.
-   - [ ] Show sign in card if user is not authenticated.
-   - [ ] Add a ticket landyard to the page with the authenticated user information.
-   - [ ] Add a prompt for users to write a message to an AI assistant to customize the color palette of ticket.
-5. Cursor Page (/cursor)
-   - [ ] Create cursor page route.
-   - [ ] Add title.
-   - [ ] Add cursor badges.
-   - [ ] Add cursor projects.
-   - [ ] Add cursor achievements.
-   - [ ] Add cursor testimonials.
-5. QA & Polish
-   - [ ] Test responsiveness and accessibility.
-   - [ ] Fix typos and ensure content accuracy.
-   - [ ] Optimize images and assets.
-   - [ ] Final review and deploy.
+- Configure Supabase client securely using environment variables.
+- Only Google and Github OAuth providers are allowed.
+- Protect routes/pages that require authentication using Supabase session checks.
+- Do not expose Supabase service keys on the client.
+
+## TypeScript
+
+- All files must use `.ts` or `.tsx` extensions.
+- Enable `strict` mode in `tsconfig.json`.
+- Use explicit types for all function parameters and return values.
+- Avoid use of `any`. Use `unknown` and type guards if necessary.
+- Prefer type aliases and interfaces for data structures.
+
+## Tailwind CSS
+
+- Use utility classes for all styling.
+- Do not use custom CSS except for global resets or variables in `globals.css`.
+- Use Tailwind's `dark:` variant for dark mode support.
+- Extend the theme in `tailwind.config.js` for custom colors, fonts, or spacing.
+- Use semantic class names for custom utilities.
+
+## shadcn/ui
+
+- Use shadcn/ui components for all UI primitives (Button, Card, Dialog, etc.).
+- Customize shadcn/ui components via props and Tailwind classes, not by editing library code.
+- Follow shadcn/ui accessibility and keyboard navigation best practices.
+- Use shadcn/ui theming for consistent light/dark mode.
+
+## Next.js 15+
+
+- Use the `/app` directory and server components by default.
+- Use `use client` only when strictly necessary (e.g., for hooks that require client-side state).
+  - Neve use `use client` at `page.tsx` level, move the client logic to its own component file.
+- Use `fetch`, `cache`, and `revalidate` for data fetching as per Next.js 15 standards.
+- Use `metadata` export for SEO and social sharing.
+- Use `next/font` for font loading.
+- Do not use deprecated APIs (e.g., `getServerSideProps`, `getStaticProps`).
+
+## Dark Mode
+
+- Implement dark mode as default, do not use directly `dark:` directive. There is no other theme or mode, just the dark one.
+
+## General Best Practices
+
+- Keep components small and focused (single responsibility principle).
+- Use functional components and hooks.
+- Avoid prop drilling; use context or state management if needed.
+- Write clear, concise, and self-documenting code.
+- Use descriptive names for files, variables, and functions.
+- Document complex logic with comments and JSDoc where appropriate.
+- Ensure accessibility (a11y) for all interactive elements.
+- Write unit and integration tests for critical logic and components.
+
+## Code Conventions
+
+- Use 2 spaces for indentation.
+- Use single quotes for strings, except in JSX where double quotes are preferred.
+- Use trailing commas in multiline objects and arrays.
+- Prefer arrow functions for component definitions.
+- Group imports: external libraries, then internal modules, then styles.
+- Sort imports alphabetically within groups.
+- Use ES modules (`import`/`export`).
+- No console logs in production code.
+
+## Linting & Formatting
+
+- Use ESLint with Next.js, TypeScript, and Tailwind plugins.
+- Use Prettier for code formatting.
+- Fix all lint and type errors before merging code.
+
+## Commit & PR Guidelines
+
+- Use conventional commits (e.g., `feat(auth): add Google login with Supabase`).
+- Write clear, descriptive PR titles and descriptions.
+- Reference related issues or tasks in PRs.
+
+---
+
+Adhering to these guidelines is mandatory. Any deviation must be justified and approved in code review.

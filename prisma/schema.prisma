@@ -18,6 +18,7 @@ model Survey {
   id          String   @id @default(uuid())
   title       String
   description String?
+  language    String   @default("en") // 🆕 Language-specific surveys
   status      String   @default("active")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
@@ -25,6 +26,7 @@ model Survey {
   sections  SurveySection[]
   responses SurveyResponse[]
 
+  @@index([language])
   @@map("surveys")
 }
 
@@ -35,11 +37,13 @@ model SurveySection {
   path         String?
   title        String
   description  String?
+  language     String  @default("en") // 🆕 Language-specific sections
   createdAt    DateTime @default(now())
 
   survey    Survey           @relation(fields: [surveyId], references: [id], onDelete: Cascade)
   questions SurveyQuestion[]
 
+  @@index([language])
   @@map("survey_sections")
 }
 
@@ -51,12 +55,14 @@ model SurveyQuestion {
   type          String
   required      Boolean @default(false)
   placeholder   String?
+  language      String  @default("en") // 🆕 Language-specific questions
   createdAt     DateTime @default(now())
 
   section SurveySection             @relation(fields: [sectionId], references: [id], onDelete: Cascade)
   options SurveyQuestionOption[]
   answers SurveyAnswer[]
 
+  @@index([language])
   @@map("survey_questions")
 }
 
@@ -67,11 +73,13 @@ model SurveyQuestionOption {
   label       String
   value       String
   path        String?
+  language    String  @default("en") // 🆕 Language-specific options
   createdAt   DateTime @default(now())
 
   question       SurveyQuestion        @relation(fields: [questionId], references: [id], onDelete: Cascade)
   answerOptions  SurveyAnswerOption[]
 
+  @@index([language])
   @@map("survey_question_options")
 }
 
@@ -121,6 +129,7 @@ model Poll {
   id              String    @id @default(uuid())
   title           String
   description     String?
+  language        String    @default("en") // 🆕 Language-specific polls
   code            String    @unique @default(cuid()) // Short code for sharing
   isActive        Boolean   @default(true) @map("is_active")
   allowMultiple   Boolean   @default(false) @map("allow_multiple") // Allow multiple votes per session
@@ -134,6 +143,7 @@ model Poll {
   sessions  PollSession[]
 
   @@index([code])
+  @@index([language])
   @@map("polls")
 }
 
@@ -144,12 +154,14 @@ model PollQuestion {
   question      String
   type          String  @default("single") // single, multiple
   maxSelections Int?    @map("max_selections") // For multiple choice
+  language      String  @default("en") // 🆕 Language-specific questions
   createdAt     DateTime @default(now())
 
   poll    Poll         @relation(fields: [pollId], references: [id], onDelete: Cascade)
   options PollOption[]
   votes   PollVote[]
 
+  @@index([language])
   @@map("poll_questions")
 }
 
@@ -161,11 +173,13 @@ model PollOption {
   value       String
   color       String?  // For visual representation
   emoji       String?  // Optional emoji for the option
+  language    String   @default("en") // 🆕 Language-specific options
   createdAt   DateTime @default(now())
 
   question PollQuestion @relation(fields: [questionId], references: [id], onDelete: Cascade)
   votes    PollVote[]
 
+  @@index([language])
   @@map("poll_options")
 }
 
@@ -242,22 +256,39 @@ model GuestbookTicket {
   @@map("guestbook_tickets")
 }
 
-// Events Models
+// Events Models - Shared interaction with localized content
 model Event {
-  id          String   @id @default(uuid())
-  title       String
-  description String?
-  qrCode      String   @unique @default(cuid()) // Short QR code for scanning
-  isActive    Boolean  @default(true) @map("is_active")
-  maxImages   Int      @default(15) @map("max_images") // Maximum images per user
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  endsAt      DateTime? @map("ends_at")
+  id        String   @id @default(uuid())
+  slug      String   @unique // 🆕 SEO-friendly URL slug (shared across languages)
+  qrCode    String   @unique @default(cuid()) // Short QR code for scanning
+  isActive  Boolean  @default(true) @map("is_active")
+  maxImages Int      @default(15) @map("max_images") // Maximum images per user
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  endsAt    DateTime? @map("ends_at")
 
-  images EventImage[]
+  content EventContent[] // 🆕 Localized content
+  images  EventImage[]   // Shared photos
 
+  @@index([slug])
   @@index([qrCode])
   @@map("events")
+}
+
+// 🆕 Localized event content
+model EventContent {
+  id          String @id @default(uuid())
+  eventId     String @map("event_id")
+  language    String // "en" | "es"
+  title       String
+  description String?
+
+  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, language]) // One content per language per event
+  @@index([eventId])
+  @@index([language])
+  @@map("event_content")
 }
 
 model EventImage {

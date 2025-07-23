@@ -1,7 +1,21 @@
 import { createServerClient } from '@supabase/ssr';
+import createMiddleware from 'next-intl/middleware';
 import { type NextRequest, NextResponse } from 'next/server';
+import { routing } from './i18n/routing';
+
+// Create the internationalization middleware
+const intlMiddleware = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
+  // Handle internationalization first
+  const intlResponse = intlMiddleware(request);
+  
+  // If intl middleware returns a redirect, return it immediately
+  if (intlResponse.status === 307 || intlResponse.status === 302) {
+    return intlResponse;
+  }
+
+  // Continue with Supabase authentication
   let supabaseResponse = NextResponse.next({
     request,
   });
@@ -48,11 +62,12 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
+     * - api (API routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
-     * Feel free to modify this pattern to include more paths.
+     * - public folder files
      */
-    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!api|_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };

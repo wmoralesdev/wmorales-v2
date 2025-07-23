@@ -1,0 +1,77 @@
+{
+  "navigation": {
+    "home": "Inicio",
+    "blog": "Blog",
+    "cursor": "Cursor",
+    "events": "Eventos",
+    "guestbook": "Libro de Visitas",
+    "polls": "Encuestas",
+    "surveys": "Formularios"
+  },
+  "homepage": {
+    "hero": {
+      "title": "Ingeniero de Software Sr & Embajador de Cursor",
+      "subtitle": "Construyendo el futuro con desarrollo potenciado por IA en América Latina"
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Desarrollo de software, IA, Cursor, LATAM y las tecnologías que están moldeando nuestro futuro.",
+    "searchPlaceholder": "Buscar publicaciones...",
+    "noResults": "No se encontraron publicaciones",
+    "readingTime": "min de lectura",
+    "backToBlog": "Volver al Blog"
+  },
+  "cursor": {
+    "title": "Embajador de Cursor",
+    "subtitle": "Pionero en desarrollo potenciado por IA en Centroamérica, construyendo comunidades y ayudando a equipos a acelerar con Cursor",
+    "pioneer": "Primer Embajador de Cursor de El Salvador 🇸🇻"
+  },
+  "events": {
+    "title": "Eventos",
+    "description": "Escanea códigos QR para acceder a galerías de eventos y compartir tus fotos",
+    "scanQR": "Escanear Código QR",
+    "activeEvents": "Eventos Activos",
+    "qrScanner": "Escáner de Código QR",
+    "scanDescription": "Apunta tu cámara a un código QR de evento de Cursor para acceder a la galería de fotos",
+    "photoGallery": "Galería de Fotos",
+    "photosCount": "{count, plural, =0 {Sin fotos} =1 {1 foto} other {# fotos}}",
+    "uploadPhoto": "Subir Foto",
+    "viewGallery": "Ver Galería"
+  },
+  "guestbook": {
+    "title": "Libro de Visitas Digital",
+    "description": "Crea tu boleto único estilo conferencia con colores generados por IA basados en tu estado de ánimo",
+    "createTicket": "Generar Mi Boleto",
+    "yourTicket": "Tu boleto único",
+    "mood": "Estado de ánimo"
+  },
+  "polls": {
+    "title": "Encuestas en Vivo",
+    "description": "Vota con otros asistentes y ve los resultados en tiempo real",
+    "noPolls": "No hay encuestas creadas aún.",
+    "vote": "Votar",
+    "results": "Resultados"
+  },
+  "surveys": {
+    "title": "Formularios Activos",
+    "description": "Participa en nuestros formularios para ayudar a dar forma al futuro de nuestra comunidad",
+    "noSurveys": "No hay formularios activos disponibles.",
+    "participate": "Participar",
+    "complete": "Completar Formulario"
+  },
+  "common": {
+    "loading": "Cargando...",
+    "error": "Ocurrió un error",
+    "tryAgain": "Intentar de nuevo",
+    "cancel": "Cancelar",
+    "confirm": "Confirmar",
+    "save": "Guardar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "close": "Cerrar",
+    "next": "Siguiente",
+    "previous": "Anterior",
+    "submit": "Enviar"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "navigation": {
+    "home": "Home",
+    "blog": "Blog",
+    "cursor": "Cursor",
+    "events": "Events",
+    "guestbook": "Guestbook",
+    "polls": "Polls",
+    "surveys": "Surveys"
+  },
+  "homepage": {
+    "hero": {
+      "title": "Sr Software Engineer & Cursor Ambassador",
+      "subtitle": "Building the future with AI-powered development in Latin America"
+    }
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Software development, AI, Cursor, LATAM and the technologies shaping our future.",
+    "searchPlaceholder": "Search posts...",
+    "noResults": "No posts found",
+    "readingTime": "min read",
+    "backToBlog": "Back to Blog"
+  },
+  "cursor": {
+    "title": "Cursor Ambassador",
+    "subtitle": "Pioneering AI-powered development in Central America, building communities, and helping teams accelerate with Cursor",
+    "pioneer": "First Cursor Ambassador from El Salvador 🇸🇻"
+  },
+  "events": {
+    "title": "Events",
+    "description": "Scan QR codes to access event galleries and share your photos",
+    "scanQR": "Scan QR Code",
+    "activeEvents": "Active Events",
+    "qrScanner": "QR Code Scanner",
+    "scanDescription": "Point your camera at a Cursor event QR code to access the photo gallery",
+    "photoGallery": "Photo Gallery",
+    "photosCount": "{count, plural, =0 {No photos} =1 {1 photo} other {# photos}}",
+    "uploadPhoto": "Upload Photo",
+    "viewGallery": "View Gallery"
+  },
+  "guestbook": {
+    "title": "Digital Guestbook",
+    "description": "Create your unique conference-style ticket with AI-generated colors based on your mood",
+    "createTicket": "Generate My Ticket",
+    "yourTicket": "Your unique ticket",
+    "mood": "Mood"
+  },
+  "polls": {
+    "title": "Live Polls",
+    "description": "Vote with fellow attendees and see the results in real-time",
+    "noPolls": "No polls created yet.",
+    "vote": "Vote",
+    "results": "Results"
+  },
+  "surveys": {
+    "title": "Active Surveys",
+    "description": "Participate in our surveys to help shape the future of our community",
+    "noSurveys": "No active surveys available.",
+    "participate": "Participate",
+    "complete": "Complete Survey"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "tryAgain": "Try again",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit"
+  }
+}
