@@ -151,6 +151,12 @@ export const pageMetadata = {
       'Join live polls and vote with fellow developers in real-time. Interactive polling for tech events, workshops, and community decisions.',
     keywords: ['Live Polls', 'Real-time Voting', 'Tech Events', 'Developer Community', 'Interactive Polls'],
   },
+  showcase: {
+    title: 'Project Showcase',
+    description:
+      'Explore my portfolio of software projects, from web applications to open-source contributions. Discover the technologies, challenges, and solutions behind each project.',
+    keywords: ['Portfolio', 'Projects', 'Software Development', 'Web Applications', 'Open Source', 'Case Studies', 'Technical Solutions'],
+  },
 };
 
 // Structured data generators

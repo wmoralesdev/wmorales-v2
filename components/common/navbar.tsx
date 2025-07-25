@@ -31,7 +31,7 @@ function LocaleToggle() {
 
   const toggleLocale = () => {
     const newLocale = locale === 'en' ? 'es' : 'en';
-    router.replace(pathname, { locale: newLocale });
+    router.replace(pathname as any, { locale: newLocale });
   };
 
   return (
@@ -101,6 +101,7 @@ export function Navbar() {
     { name: 'Home', href: routing.pathnames['/'] },
     { name: 'Blog', href: routing.pathnames['/blog'] },
     { name: 'Guestbook', href: routing.pathnames['/guestbook'] },
+    { name: 'Showcase', href: routing.pathnames['/showcase'] },
     {
       name: 'Cursor',
       children: [
