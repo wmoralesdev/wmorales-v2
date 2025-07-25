@@ -21,7 +21,8 @@ export const routing = defineRouting({
     '/polls/[code]': '/polls/[code]',
     '/surveys': '/surveys',
     '/surveys/[id]/fill': '/surveys/[id]/fill',
-    '/keystatic': '/keystatic'
+    '/keystatic': '/keystatic',
+    '/showcase': '/showcase'
   }
 });
 
