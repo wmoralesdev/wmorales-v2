@@ -1,9 +1,12 @@
 import { Terminal } from 'lucide-react';
 import { BaseCard, type BaseCardProps } from './base-card';
+import { useTranslations } from 'next-intl';
 
 type TerminalCardProps = Omit<BaseCardProps, 'children' | 'id'>;
 
 export function TerminalCard(props: TerminalCardProps) {
+  const t = useTranslations('homepage.cards');
+
   return (
     <BaseCard className="border-gray-800 bg-black/90 p-3 font-mono backdrop-blur-xl lg:p-4" id="terminal" {...props}>
       <div className="mb-2 flex items-center gap-2 lg:mb-3">
@@ -15,8 +18,8 @@ export function TerminalCard(props: TerminalCardProps) {
         <Terminal className="h-3 w-3 text-gray-500" />
       </div>
       <div className="space-y-1 text-[10px] lg:text-xs">
-        <div className="text-green-400">$ git commit -m "feat: ship amazing products"</div>
-        <div className="text-gray-400">[main 7a3b9c1] feat: ship amazing products</div>
+        <div className="text-green-400">$ git commit -m "{t('commitMessage')}"</div>
+        <div className="text-gray-400">[main 7a3b9c1] {t('commitMessage')}</div>
         <div className="text-gray-400">∞ files changed, ∞ value created</div>
       </div>
     </BaseCard>

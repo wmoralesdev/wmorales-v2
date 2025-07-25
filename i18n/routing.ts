@@ -10,54 +10,18 @@ export const routing = defineRouting({
   // Optionally customize the pathnames for each locale
   pathnames: {
     '/': '/',
-    '/blog': {
-      en: '/blog',
-      es: '/blog'
-    },
-    '/blog/[slug]': {
-      en: '/blog/[slug]',
-      es: '/blog/[slug]'
-    },
-    '/cursor': {
-      en: '/cursor',
-      es: '/cursor'
-    },
-    '/events': {
-      en: '/events',
-      es: '/eventos'
-    },
-    '/events/[slug]': {
-      en: '/events/[slug]',
-      es: '/eventos/[slug]'
-    },
-    '/guestbook': {
-      en: '/guestbook',
-      es: '/libro-visitas'
-    },
-    '/guestbook/[id]': {
-      en: '/guestbook/[id]',
-      es: '/libro-visitas/[id]'
-    },
-    '/polls': {
-      en: '/polls',
-      es: '/encuestas'
-    },
-    '/polls/[code]': {
-      en: '/polls/[code]',
-      es: '/encuestas/[code]'
-    },
-    '/surveys': {
-      en: '/surveys',
-      es: '/formularios'
-    },
-    '/surveys/[id]/fill': {
-      en: '/surveys/[id]/fill',
-      es: '/formularios/[id]/completar'
-    },
-    '/keystatic': {
-      en: '/keystatic',
-      es: '/keystatic'
-    }
+    '/blog': '/blog',
+    '/blog/[slug]': '/blog/[slug]',
+    '/cursor': '/cursor',
+    '/events': '/events',
+    '/events/[slug]': '/events/[slug]',
+    '/guestbook': '/guestbook',
+    '/guestbook/[id]': '/guestbook/[id]',
+    '/polls': '/polls',
+    '/polls/[code]': '/polls/[code]',
+    '/surveys': '/surveys',
+    '/surveys/[id]/fill': '/surveys/[id]/fill',
+    '/keystatic': '/keystatic'
   }
 });
 

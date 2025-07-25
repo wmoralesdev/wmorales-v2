@@ -1,16 +1,35 @@
-import { Sparkles } from 'lucide-react';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
-import { getTicketById } from '@/app/actions/guestbook.actions';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
+import { Sparkles } from 'lucide-react';
+import { getAllTickets, getTicketById } from '@/app/actions/guestbook.actions';
+import { routing } from '@/i18n/routing';
 import { UserTicket } from '@/components/guestbook/user-ticket';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { createMetadata, siteConfig } from '@/lib/metadata';
 
 type Props = {
-  params: Promise<{ id: string }>;
+  params: Promise<{ locale: string; id: string }>;
 };
+
+export async function generateStaticParams() {
+  try {
+    const tickets = await getAllTickets();
+    
+    // Generate params for all locales and all tickets
+    return routing.locales.flatMap((locale) =>
+      tickets.map((ticket) => ({
+        locale,
+        id: ticket.id,
+      }))
+    );
+  } catch (error) {
+    // Error generating static params for guestbook tickets
+    return [];
+  }
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { id } = await params;
@@ -57,7 +76,14 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function TicketPage({ params }: Props) {
-  const { id } = await params;
+  const { locale, id } = await params;
+  
+  // Enable static rendering
+  setRequestLocale(locale);
+
+  // Get translations
+  const t = await getTranslations('guestbook');
+  
   const ticket = await getTicketById(id);
 
   if (!ticket) {
@@ -70,8 +96,8 @@ export default async function TicketPage({ params }: Props) {
         <div className="space-y-8">
           {/* Header */}
           <div className="text-center">
-            <h1 className="mb-4 font-bold text-4xl">Digital Guestbook</h1>
-            <p className="mx-auto max-w-2xl text-lg text-muted-foreground">{ticket.userName}'s unique ticket</p>
+            <h1 className="mb-4 font-bold text-4xl">{t('title')}</h1>
+            <p className="mx-auto max-w-2xl text-lg text-muted-foreground">{t('userTicket', { userName: ticket.userName })}</p>
           </div>
 
           {/* Ticket Display */}
@@ -99,7 +125,7 @@ export default async function TicketPage({ params }: Props) {
             <Card className="mx-auto max-w-md animate-delay-200 animate-fade-in-up">
               <CardContent className="py-6">
                 <p className="text-center text-muted-foreground">
-                  Mood: <span className="font-medium text-foreground">"{ticket.entry.mood}"</span>
+                  {t('mood')}: <span className="font-medium text-foreground">"{ticket.entry.mood}"</span>
                 </p>
               </CardContent>
             </Card>
@@ -109,14 +135,14 @@ export default async function TicketPage({ params }: Props) {
           <div className="animate-delay-400 animate-fade-in-up text-center">
             <Card className="mx-auto max-w-md">
               <CardContent className="py-8">
-                <h2 className="mb-4 font-semibold text-xl">Create Your Own Ticket</h2>
+                <h2 className="mb-4 font-semibold text-xl">{t('createTicket')}</h2>
                 <p className="mb-6 text-muted-foreground">
-                  Join the guestbook and get your own unique AI-generated ticket!
+                  {t('joinDescription')}
                 </p>
-                <Link href="/guestbook">
+                <Link href={`/${locale}/guestbook`}>
                   <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
                     <Sparkles className="mr-2 h-4 w-4" />
-                    Generate My Ticket
+                    {t('generateTicket')}
                   </Button>
                 </Link>
               </CardContent>

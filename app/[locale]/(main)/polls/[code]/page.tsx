@@ -1,14 +1,33 @@
 import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
-import { getPollByCode, getPollResults, getUserVotes } from '@/app/actions/poll.actions';
+import { setRequestLocale } from 'next-intl/server';
+import { routing } from '@/i18n/routing';
+import { getAllPolls, getPollByCode, getPollResults, getUserVotes } from '@/app/actions/poll.actions';
 import { PollVoting } from '@/components/polls/poll-voting';
 import { createMetadata, siteConfig } from '@/lib/metadata';
 import { createClient } from '@/lib/supabase/server';
 import type { PollWithQuestions } from '@/lib/types/poll.types';
 
 type Props = {
-  params: Promise<{ code: string }>;
+  params: Promise<{ locale: string; code: string }>;
 };
+
+export async function generateStaticParams() {
+  try {
+    const polls = await getAllPolls();
+    
+    // Generate params for all locales and all active polls
+    return routing.locales.flatMap((locale) =>
+      polls.map((poll) => ({
+        locale,
+        code: poll.code,
+      }))
+    );
+  } catch (error) {
+    // Error generating static params for polls
+    return [];
+  }
+}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { code } = await params;
@@ -44,7 +63,10 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function PollPage({ params }: Props) {
-  const { code } = await params;
+  const { locale, code } = await params;
+  
+  // Enable static rendering
+  setRequestLocale(locale);
 
   const supabase = await createClient();
   const {
@@ -52,7 +74,7 @@ export default async function PollPage({ params }: Props) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect(`/login?returnTo=/polls/${code}`);
+    redirect(`/login?returnTo=/${locale}/polls/${code}`);
   }
 
   const { data: poll, error } = await getPollByCode(code);

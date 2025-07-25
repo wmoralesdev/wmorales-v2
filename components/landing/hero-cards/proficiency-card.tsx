@@ -1,23 +1,31 @@
 import { motion } from 'framer-motion';
 import { Zap } from 'lucide-react';
 import { BaseCard, type BaseCardProps } from './base-card';
+import { useTranslations } from 'next-intl';
 
 type ProficiencyCardProps = Omit<BaseCardProps, 'children' | 'id'>;
 
 const proficiencyData = [
   { name: '.NET', level: 90 },
   { name: 'React/Next.js', level: 85 },
+  { name: 'NestJS/Express', level: 95 },
+  { name: 'TypeScript', level: 90 },
+  { name: 'Python', level: 70 },
   { name: 'Cloud (AWS/Azure)', level: 80 },
   { name: 'Databases', level: 85 },
+  { name: 'AI', level: 80 },
+  { name: 'LLMs', level: 75 },
 ];
 
 export function ProficiencyCard(props: ProficiencyCardProps) {
+  const t = useTranslations('homepage.cards');
+
   return (
     <BaseCard className="border-gray-800 bg-gray-900/80 p-4 backdrop-blur-xl lg:p-6" id="proficiency" {...props}>
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <Zap className="h-5 w-5 text-purple-400 lg:h-6 lg:w-6" />
-          <span className="font-medium text-white text-xs lg:text-sm">Proficiency</span>
+          <span className="font-medium text-white text-xs lg:text-sm">{t('proficiency')}</span>
         </div>
         <div className="space-y-2 lg:space-y-3">
           {proficiencyData.map((skill, index) => (

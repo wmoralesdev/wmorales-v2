@@ -2,12 +2,15 @@ import { motion } from 'framer-motion';
 import { Coffee } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { BaseCard, type BaseCardProps } from './base-card';
+import { useTranslations } from 'next-intl';
 
 type CoffeeChatCardProps = Omit<BaseCardProps, 'children' | 'id'> & {
   onChatClick?: () => void;
 };
 
 export function CoffeeChatCard({ onChatClick, ...props }: CoffeeChatCardProps) {
+  const t = useTranslations('homepage.cards');
+
   return (
     <BaseCard
       className="border-purple-700/50 bg-gradient-to-r from-purple-900/30 to-purple-800/30 p-4 backdrop-blur-xl"
@@ -27,8 +30,8 @@ export function CoffeeChatCard({ onChatClick, ...props }: CoffeeChatCardProps) {
             <Coffee className="h-6 w-6 text-purple-400" />
           </motion.div>
           <div>
-            <h3 className="font-semibold text-sm text-white">Let's grab a coffee!</h3>
-            <p className="text-gray-400 text-xs">Best ideas start with a conversation</p>
+            <h3 className="font-semibold text-sm text-white">{t('coffeeChat')}</h3>
+            <p className="text-gray-400 text-xs">{t('bestIdeasStartWithAConversation')}</p>
           </div>
         </div>
         <Button
@@ -37,7 +40,7 @@ export function CoffeeChatCard({ onChatClick, ...props }: CoffeeChatCardProps) {
           size="sm"
           variant="outline"
         >
-          Chat
+          {t('chat')}
         </Button>
       </div>
     </BaseCard>

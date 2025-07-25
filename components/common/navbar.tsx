@@ -1,14 +1,15 @@
 'use client';
 
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
-import { Menu } from 'lucide-react';
+import { Globe, Menu } from 'lucide-react';
 import Image from 'next/image';
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
 import { SignInButton } from '@/components/auth/sign-in-button';
 import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import { Link, usePathname, useRouter } from '@/i18n/navigation';
+import { routing } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 import {
   NavigationMenu,
@@ -21,6 +22,27 @@ import {
 import { Clock } from './clock';
 
 const MotionMenuItem = motion.create(NavigationMenuItem);
+
+// Locale Toggle Component
+function LocaleToggle() {
+  const locale = useLocale();
+  const router = useRouter();
+  const pathname = usePathname();
+
+  const toggleLocale = () => {
+    const newLocale = locale === 'en' ? 'es' : 'en';
+    router.replace(pathname, { locale: newLocale });
+  };
+
+  return (
+    <motion.div transition={{ duration: 0.2 }} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+      <Button className='flex items-center gap-2 font-medium text-sm' onClick={toggleLocale} size="sm" variant="ghost">
+        <Globe className="h-4 w-4" />
+        <span className="hidden sm:inline">{locale.toUpperCase()}</span>
+      </Button>
+    </motion.div>
+  );
+}
 
 // Animation variants
 const navVariants: Variants = {
@@ -73,10 +95,12 @@ export function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, _setScrolled] = useState(false);
 
+  const t = useTranslations('navigation');
+
   const navItems = [
-    { name: 'Home', href: '/' },
-    { name: 'Blog', href: '/blog' },
-    { name: 'Guestbook', href: '/guestbook' },
+    { name: 'Home', href: routing.pathnames['/'] },
+    { name: 'Blog', href: routing.pathnames['/blog'] },
+    { name: 'Guestbook', href: routing.pathnames['/guestbook'] },
     {
       name: 'Cursor',
       children: [
@@ -98,7 +122,7 @@ export function Navbar() {
       variants={navVariants}
     >
       {/* Logo */}
-      <Link className="group flex cursor-pointer items-center gap-2 select-none" href="/">
+      <Link className="group flex cursor-pointer select-none items-center gap-2 outline-none" href="/">
         <div>
           <Image
             alt="Walter Morales"
@@ -127,7 +151,7 @@ export function Navbar() {
                     variant="ghost"
                   >
                     <motion.span transition={{ duration: 0.2 }} whileHover={{ y: -2 }}>
-                      Home
+                      {t('home')}
                     </motion.span>
 
                     {/* Active indicator */}
@@ -150,7 +174,7 @@ export function Navbar() {
               </MotionMenuItem>
 
               <MotionMenuItem animate="visible" initial="hidden" key="blog" variants={menuItemVariants}>
-                <NavigationMenuLink className="relative" href="/blog" key="blog">
+                <NavigationMenuLink className="relative" href={routing.pathnames['/blog']} key="blog">
                   <Button
                     className={cn(
                       'relative cursor-pointer font-medium text-sm transition-colors',
@@ -161,7 +185,7 @@ export function Navbar() {
                     variant="ghost"
                   >
                     <motion.span transition={{ duration: 0.2 }} whileHover={{ y: -2 }}>
-                      Blog
+                      {t('blog')}
                     </motion.span>
 
                     {/* Active indicator */}
@@ -193,7 +217,7 @@ export function Navbar() {
                     variant="ghost"
                   >
                     <motion.span transition={{ duration: 0.2 }} whileHover={{ y: -2 }}>
-                      Guestbook
+                      {t('guestbook')}
                     </motion.span>
 
                     {/* Active indicator */}
@@ -247,38 +271,40 @@ export function Navbar() {
                 <NavigationMenuContent>
                   <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
                     <li className="row-span-3">
-                      <NavigationMenuLink asChild href="/cursor">
-                        {/** biome-ignore lint/a11y/useValidAnchor: controlled by the NavigationMenuLink */}
-                        <a className="flex h-full w-full justify-end from-muted/50 to-muted">
-                          <div className="mt-4 mb-2 font-medium text-lg">Ambassador</div>
+                      <NavigationMenuLink asChild>
+                        <Link
+                          className="flex h-full w-full flex-col justify-start from-muted/50 to-muted p-6"
+                          href="/cursor"
+                        >
+                          <div className="mt-4 mb-2 font-medium text-lg">{t('ambassador')}</div>
                           <p className="mb-4 text-muted-foreground text-sm leading-tight">
-                            Answer questions to help us improve Cursor's community.
+                            {t('descriptions.ambassador')}
                           </p>
-                        </a>
+                        </Link>
                       </NavigationMenuLink>
                     </li>
                     <li>
-                      <NavigationMenuLink className="flex h-full w-full from-muted/50 to-muted" href="/surveys">
-                        <div>Surveys</div>
-                        <p className="text-muted-foreground text-sm leading-tight">
-                          Answer questions to help us improve Cursor's community.
-                        </p>
+                      <NavigationMenuLink asChild>
+                        <Link className="flex h-full w-full flex-col from-muted/50 to-muted p-3" href="/surveys">
+                          <div className="mb-2 font-medium">{t('surveys')}</div>
+                          <p className="text-muted-foreground text-sm leading-tight">{t('descriptions.surveys')}</p>
+                        </Link>
                       </NavigationMenuLink>
                     </li>
                     <li>
-                      <NavigationMenuLink className="flex h-full w-full from-muted/50 to-muted" href="/polls">
-                        <div>Polls</div>
-                        <p className="text-muted-foreground text-sm leading-tight">
-                          Vote in real-time polls. See what others think.
-                        </p>
+                      <NavigationMenuLink asChild>
+                        <Link className="flex h-full w-full flex-col from-muted/50 to-muted p-3" href="/polls">
+                          <div className="mb-2 font-medium">{t('polls')}</div>
+                          <p className="text-muted-foreground text-sm leading-tight">{t('descriptions.polls')}</p>
+                        </Link>
                       </NavigationMenuLink>
                     </li>
                     <li>
-                      <NavigationMenuLink className="flex h-full w-full from-muted/50 to-muted" href="/events">
-                        <div>Events</div>
-                        <p className="text-muted-foreground text-sm leading-tight">
-                          See what&apos;s coming up. Join the fun and upload your pictures at the events.
-                        </p>
+                      <NavigationMenuLink asChild>
+                        <Link className="flex h-full w-full flex-col from-muted/50 to-muted p-3" href="/events">
+                          <div className="mb-2 font-medium">{t('events')}</div>
+                          <p className="text-muted-foreground text-sm leading-tight">{t('descriptions.events')}</p>
+                        </Link>
                       </NavigationMenuLink>
                     </li>
                   </ul>
@@ -289,9 +315,10 @@ export function Navbar() {
 
           {/* Mobile Navigation */}
           <div className="flex items-center gap-2 md:hidden">
+            <LocaleToggle />
             <SignInButton size="sm" variant="ghost" />
             <Sheet onOpenChange={setIsOpen} open={isOpen}>
-              <SheetTitle className="sr-only">Menu</SheetTitle>
+              <SheetTitle className="sr-only">{t('menu')}</SheetTitle>
               <SheetTrigger asChild>
                 <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
                   <Button size="sm" variant="ghost">
@@ -350,6 +377,7 @@ export function Navbar() {
         variants={menuItemVariants}
       >
         <Clock className="hidden font-medium text-muted-foreground text-sm md:block" />
+        <LocaleToggle />
         <SignInButton variant="ghost" />
       </motion.div>
     </motion.nav>

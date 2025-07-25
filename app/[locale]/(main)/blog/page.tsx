@@ -1,15 +1,10 @@
 import { Book } from 'lucide-react';
-import type { Metadata } from 'next';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getBlogStats, searchBlogPosts } from '@/app/actions/blog.actions';
 import { Searchbar } from '@/components/blog/searchbar';
 import { InnerHero } from '@/components/common/inner-hero';
 import { PostCard } from '@/components/markdown/post-card';
 import type { BlogPost } from '@/lib/types/blog.types';
-
-export const metadata: Metadata = {
-  title: 'Blog | Walter Morales',
-  description: 'Thoughts on web development, AI, and technology.',
-};
 
 type SearchParams = {
   q?: string;
@@ -19,6 +14,7 @@ type SearchParams = {
 };
 
 type PageProps = {
+  params: Promise<{ locale: string }>;
   searchParams: Promise<SearchParams>;
 };
 
@@ -37,9 +33,16 @@ function parseSearchParams(params: SearchParams) {
 }
 
 
-export default async function BlogPage({ searchParams }: PageProps) {
-  const params = await searchParams;
-  const { query, tags, sortBy, featuredOnly } = parseSearchParams(params);
+export default async function BlogPage({ params, searchParams }: PageProps) {
+  const { locale } = await params;
+  const searchParamsData = await searchParams;
+  const { query, tags, sortBy, featuredOnly } = parseSearchParams(searchParamsData);
+
+  // Enable static rendering
+  setRequestLocale(locale);
+
+  // Get translations
+  const t = await getTranslations('blog');
 
   // Use server actions for better SSR performance
   const searchResults = await searchBlogPosts({
@@ -61,9 +64,9 @@ export default async function BlogPage({ searchParams }: PageProps) {
   return (
     <div className="min-h-screen">
       <InnerHero
-        description="Software development, AI, Cursor, LATAM  and the technologies shaping our future."
+        description={t('description')}
         icon={Book}
-        title="Blog"
+        title={t('title')}
       />
 
       <div className="container mx-auto px-4 py-8 pt-16">
@@ -91,7 +94,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
               totalCount={totalCount}
             />
           ) : (
-            <EmptyState featuredOnly={featuredOnly} query={query} tags={tags} totalPosts={totalCount} />
+            <EmptyState featuredOnly={featuredOnly} query={query} tags={tags} totalPosts={totalCount} t={t} />
           )}
         </section>
       </div>
@@ -104,18 +107,20 @@ function EmptyState({
   tags,
   featuredOnly,
   totalPosts,
+  t,
 }: {
   query: string;
   tags: string[];
   featuredOnly: boolean;
   totalPosts: number;
+  t: any;
 }) {
   const hasFilters = query || tags.length > 0 || featuredOnly;
 
   return (
     <div className="py-12 text-center">
       <div className="mx-auto max-w-md rounded-lg border border-gray-800 bg-gray-900/60 p-8 backdrop-blur-xl">
-        <h3 className="mb-2 font-semibold text-white text-xl">No posts found</h3>
+        <h3 className="mb-2 font-semibold text-white text-xl">{t('noResults')}</h3>
         <p className="mb-4 text-gray-400">
           {hasFilters ? 'Try adjusting your search or filters' : 'No posts have been published yet'}
         </p>

@@ -1,6 +1,7 @@
 'use client';
 
 import { LogOut } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { toast } from 'sonner';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -16,6 +17,7 @@ import { useAuth } from './auth-provider';
 
 export function UserNav() {
   const { user, signOut } = useAuth();
+  const t = useTranslations('auth');
 
   if (!user) {
     return null;
@@ -24,9 +26,9 @@ export function UserNav() {
   const handleSignOut = async () => {
     try {
       await signOut();
-      toast.success('Signed out successfully');
+      toast.success(t('signedOutSuccess'));
     } catch (_error) {
-      toast.error('Failed to sign out');
+      toast.error(t('signOutError'));
     }
   };
 
@@ -38,7 +40,7 @@ export function UserNav() {
       .toUpperCase();
   };
 
-  const displayName = user.user_metadata?.full_name || user.email || 'User';
+  const displayName = user.user_metadata?.full_name || user.email || t('user');
   const initials = getInitials(displayName);
 
   return (
@@ -61,7 +63,7 @@ export function UserNav() {
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Sign out</span>
+          <span>{t('signOut')}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

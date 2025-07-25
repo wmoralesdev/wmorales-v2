@@ -1,26 +1,32 @@
 import { Camera, QrCode, Sparkles, Users } from 'lucide-react';
-import type { Metadata } from 'next';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Suspense } from 'react';
 import { EventsList } from '@/components/events/events-list';
 import { EventsScanner } from '@/components/events/events-scanner';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
-export const metadata: Metadata = {
-  title: 'Events - QR Code Scanner',
-  description: 'Scan QR codes to access Cursor event galleries and upload your photos',
+type Props = {
+  params: Promise<{ locale: string }>;
 };
 
-export default function EventsPage() {
+export default async function EventsPage({ params }: Props) {
+  const { locale } = await params;
+  
+  // Enable static rendering
+  setRequestLocale(locale);
+
+  // Get translations
+  const t = await getTranslations('events');
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
       <div className="container mx-auto px-4 pt-24 pb-16">
         <div className="mb-8">
           <h1 className="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text font-bold text-4xl text-transparent tracking-tight sm:text-5xl">
-            Events
+            {t('title')}
           </h1>
           <p className="mt-2 text-gray-400 text-sm sm:text-base">
-            Scan QR codes to access event galleries and share your photos
+            {t('description')}
           </p>
         </div>
 
@@ -31,14 +37,14 @@ export default function EventsPage() {
               value="scanner"
             >
               <QrCode className="h-4 w-4" />
-              Scan QR Code
+              {t('scanQR')}
             </TabsTrigger>
             <TabsTrigger
               className="flex items-center gap-2 data-[state=active]:bg-purple-500/20 data-[state=active]:text-purple-400"
               value="events"
             >
               <Users className="h-4 w-4" />
-              Active Events
+              {t('activeEvents')}
             </TabsTrigger>
           </TabsList>
 
@@ -47,10 +53,10 @@ export default function EventsPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
                   <Camera className="h-5 w-5 text-purple-400" />
-                  QR Code Scanner
+                  {t('qrScanner')}
                 </CardTitle>
                 <CardDescription className="text-gray-400">
-                  Point your camera at a Cursor event QR code to access the photo gallery
+                  {t('scanDescription')}
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -59,7 +65,7 @@ export default function EventsPage() {
                     <div className="flex h-64 items-center justify-center">
                       <div className="flex items-center gap-2 text-gray-400">
                         <Sparkles className="h-5 w-5 animate-pulse text-purple-400" />
-                        Loading scanner...
+                        {t('loading', { ns: 'common' }) || 'Loading scanner...'}
                       </div>
                     </div>
                   }
@@ -75,7 +81,7 @@ export default function EventsPage() {
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-white">
                   <Users className="h-5 w-5 text-purple-400" />
-                  Active Events
+                  {t('activeEvents')}
                 </CardTitle>
                 <CardDescription className="text-gray-400">Browse and join active Cursor events</CardDescription>
               </CardHeader>

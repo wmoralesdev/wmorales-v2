@@ -25,6 +25,21 @@ async function getSessionId() {
   return sessionId;
 }
 
+// Get all polls for static generation
+export async function getAllPolls() {
+  try {
+    const polls = await prisma.poll.findMany({
+      where: { isActive: true },
+      select: { code: true },
+      orderBy: { createdAt: 'desc' },
+    });
+    return polls;
+  } catch (error) {
+    console.error('Error fetching all polls:', error);
+    return [];
+  }
+}
+
 // Helper to get hashed IP
 async function getHashedIp() {
   const headersList = await headers();

@@ -3,6 +3,7 @@
 import { motion, type Variants } from 'framer-motion';
 import { Building2, Calendar, Cloud, Code2, Rocket, Server, Sparkles, Users } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { useLocale, useTranslations } from 'next-intl';
 
 // Animation variants following our style guide
 const containerVariants: Variants = {
@@ -80,66 +81,78 @@ const companyIcons: Record<string, React.ElementType> = {
 };
 
 export function ExperienceSection() {
+  const t = useTranslations('homepage.experience');
+  const locale = useLocale();
+
   const experiences = [
     {
       company: 'Southworks',
-      role: 'Sr Software Engineer',
-      period: 'Apr 2023 – Now',
-      achievements: ['Developed cloud-based solutions using .NET & NodeJS + ReactJS', 'Mentored junior engineers'],
+      role: t('companies.Southworks.role'),
+      period: locale === 'es' ? 'Abr 2023 – Actualidad' : 'Apr 2023 – Now',
+      achievements: [
+        t('companies.Southworks.achievements.0'),
+        t('companies.Southworks.achievements.1'),
+      ],
       current: true,
       color: 'from-purple-600 to-pink-600',
     },
     {
       company: 'Freelance',
-      role: 'Product Engineer',
-      period: 'Apr 2023 – Jan 2024',
+      role: t('companies.Freelance.role'),
+      period: locale === 'es' ? 'Abr 2023 – Ene 2024' : 'Apr 2023 – Jan 2024',
       achievements: [
-        'Architected and led development of a government web service application',
-        'Delivered project on time and within budget',
+        t('companies.Freelance.achievements.0'),
+        t('companies.Freelance.achievements.1'),
       ],
       color: 'from-blue-600 to-purple-600',
     },
     {
       company: 'Ravn',
-      role: 'Sr Software Engineer',
-      period: 'Jan 2023 – Mar 2023',
-      achievements: ['API migration to .NET environment', 'Provided technical consultancy'],
+      role: t('companies.Ravn.role'),
+      period: locale === 'es' ? 'Ene 2023 – Mar 2023' : 'Jan 2023 – Mar 2023',
+      achievements: [
+        t('companies.Ravn.achievements.0'),
+        t('companies.Ravn.achievements.1'),
+      ],
       color: 'from-indigo-600 to-blue-600',
     },
     {
       company: 'Resultier',
-      role: '.NET Developer',
-      period: 'Apr 2022 – Dec 2022',
+      role: t('companies.Resultier.role'),
+      period: locale === 'es' ? 'Abr 2022 – Dic 2022' : 'Apr 2022 – Dec 2022',
       achievements: [
-        'Built medical software for patient vital sign analysis',
-        'Collaborated with cross-functional teams',
+        t('companies.Resultier.achievements.0'),
+        t('companies.Resultier.achievements.1'),
       ],
       color: 'from-green-600 to-teal-600',
     },
     {
       company: 'InnRoad',
-      role: 'Software Engineer',
-      period: 'Apr 2021 – Apr 2022',
+      role: t('companies.InnRoad.role'),
+      period: locale === 'es' ? 'Abr 2021 – Abr 2022' : 'Apr 2021 – Apr 2022',
       achievements: [
-        'Developed microservices for Airbnb and Hotel Booking integrations',
-        'Enhanced system reliability and uptime',
+        t('companies.InnRoad.achievements.0'),
+        t('companies.InnRoad.achievements.1'),
       ],
       color: 'from-orange-600 to-red-600',
     },
     {
       company: 'Elaniin',
-      role: 'JavaScript Fullstack Developer',
-      period: 'Nov 2020 – Jan 2022',
-      achievements: ['Developed enterprise software in JavaScript and .NET', 'Led migration to cloud infrastructure'],
+      role: t('companies.Elaniin.role'),
+      period: locale === 'es' ? 'Nov 2020 – Ene 2022' : 'Nov 2020 – Jan 2022',
+      achievements: [
+        t('companies.Elaniin.achievements.0'),
+        t('companies.Elaniin.achievements.1'),
+      ],
       color: 'from-yellow-600 to-orange-600',
     },
     {
       company: 'VincuHub',
-      role: 'Fullstack Developer',
-      period: 'Jan 2020 – Nov 2020',
+      role: t('companies.VincuHub.role'),
+      period: locale === 'es' ? 'Ene 2020 – Nov 2020' : 'Jan 2020 – Nov 2020',
       achievements: [
-        'Created and managed .NET applications and ReactJS websites',
-        'Improved deployment pipeline, reducing release time by 30%',
+        t('companies.VincuHub.achievements.0'),
+        t('companies.VincuHub.achievements.1'),
       ],
       color: 'from-pink-600 to-purple-600',
     },
@@ -157,14 +170,14 @@ export function ExperienceSection() {
         >
           <motion.div className="mb-4 inline-flex items-center gap-2" variants={itemVariants}>
             <Sparkles className="h-5 w-5 text-purple-400" />
-            <span className="font-medium text-purple-400 text-sm">Professional Journey</span>
+            <span className="font-medium text-purple-400 text-sm">{t('sectionLabel')}</span>
           </motion.div>
 
           <motion.h2 className="mb-4 font-bold text-3xl text-white sm:text-4xl lg:text-5xl" variants={itemVariants}>
-            Work Experience
+            {t('sectionTitle')}
           </motion.h2>
           <motion.p className="mx-auto max-w-2xl text-base text-gray-400 sm:text-lg" variants={itemVariants}>
-            Building impactful solutions across diverse industries and technologies
+            {t('sectionDescription')}
           </motion.p>
         </motion.div>
 

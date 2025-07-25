@@ -1,8 +1,14 @@
 import { BaseCard, type BaseCardProps } from './base-card';
+import { useTranslations } from 'next-intl';
 
 type ExperienceCardProps = Omit<BaseCardProps, 'children' | 'id' | 'animateFloat'>;
 
+const START_YEAR = 2020;
+
 export function ExperienceCard(props: ExperienceCardProps) {
+  const t = useTranslations('homepage.cards');
+  const years = Math.abs(new Date().getFullYear() - START_YEAR);
+
   return (
     <BaseCard
       animateFloat={true}
@@ -10,7 +16,7 @@ export function ExperienceCard(props: ExperienceCardProps) {
       id="experience"
       {...props}
     >
-      <span className="font-medium text-base text-purple-300 lg:text-lg">5+ Years Experience</span>
+      <span className="font-medium text-base text-purple-300 lg:text-lg">{years}+ {t('experience')}</span>
     </BaseCard>
   );
 }

@@ -3,6 +3,7 @@
 import { LogIn } from 'lucide-react';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -22,6 +23,7 @@ type SignInButtonProps = {
 export function SignInButton({ variant = 'outline', size = 'default' }: SignInButtonProps) {
   const { user, loading } = useAuth();
   const pathname = usePathname();
+  const t = useTranslations('auth');
 
   const supabase = createClient();
 
@@ -46,7 +48,7 @@ export function SignInButton({ variant = 'outline', size = 'default' }: SignInBu
   if (loading) {
     return (
       <Button disabled size={size} variant={variant}>
-        Loading...
+        {t('loading')}
       </Button>
     );
   }
@@ -60,17 +62,17 @@ export function SignInButton({ variant = 'outline', size = 'default' }: SignInBu
       <DropdownMenuTrigger asChild>
         <Button variant="ghost">
           <LogIn className="h-4 w-4" />
-          Sign In
+          {t('signIn')}
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
         <DropdownMenuItem onClick={handleSignInWithGoogle}>
           <Image alt="Google" height={16} src="/google.svg" width={16} />
-          Google
+          {t('google')}
         </DropdownMenuItem>
         <DropdownMenuItem onClick={handleSignInWithGitHub}>
           <Image alt="GitHub" height={16} src="/github.svg" width={16} />
-          GitHub
+          {t('github')}
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

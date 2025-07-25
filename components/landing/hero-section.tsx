@@ -14,6 +14,7 @@ import {
 } from '@/components/landing/hero-cards';
 import { Button } from '@/components/ui/button';
 import { EMAIL } from '@/lib/consts';
+import { useTranslations } from 'next-intl';
 
 // Animation variants
 const containerVariants: Variants = {
@@ -39,7 +40,13 @@ const itemVariants: Variants = {
   },
 };
 
+const START_YEAR = 2020;
+
 export function HeroSection() {
+  const t = useTranslations('homepage.hero');
+  const tCards = useTranslations('homepage.cards');
+  const years = Math.abs(new Date().getFullYear() - START_YEAR);
+
   const scrollToContact = () => {
     document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
   };
@@ -61,27 +68,27 @@ export function HeroSection() {
                   <div className="h-3 w-3 rounded-full bg-green-500" />
                   <div className="absolute inset-0 h-3 w-3 animate-ping rounded-full bg-green-500" />
                 </div>
-                <span className="font-medium text-green-400 text-sm">Available for new projects</span>
+                <span className="font-medium text-green-400 text-sm">{t('availableForNewProjects')}</span>
               </div>
 
               <h1 className="font-bold text-4xl tracking-tight sm:text-5xl lg:text-6xl">
-                <span className="text-gray-400">👋 I'm Walter, and I</span>
+                <span className="text-gray-400">👋 {t('title')}</span>
                 <br />
                 <span className="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
-                  innovate
+                  {t('innovate')}
                 </span>
               </h1>
 
               <div className="space-y-4">
                 <h2 className="font-semibold text-2xl sm:text-3xl lg:text-4xl">
-                  <span className="text-white">Development with</span>{' '}
+                  <span className="text-white">{t('developmentWith')}</span>{' '}
                   <span className="bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
-                    passion
+                    {t('passion')}
                   </span>
                   <br />
-                  <span className="text-white">to create impactful</span>
+                  <span className="text-white">{t('toCreateImpactful')}</span>
                   <br />
-                  <span className="text-gray-300">products.</span>
+                  <span className="text-gray-300">{t('products')}.</span>
                 </h2>
               </div>
 
@@ -99,7 +106,7 @@ export function HeroSection() {
                 onClick={scrollToContact}
                 size="lg"
               >
-                Let's work together
+                {t('letsWorkTogether')}
               </Button>
             </motion.div>
           </motion.div>
@@ -123,10 +130,10 @@ export function HeroSection() {
 
               <TerminalCard containerClassName="absolute bottom-24 right-0 w-72" transition={{ delay: 0.4 }} />
 
-              <ProficiencyCard containerClassName="absolute top-44 right-8 w-60" transition={{ delay: 0.5 }} />
+              {/* <ProficiencyCard containerClassName="absolute top-44 right-8 w-60" transition={{ delay: 0.5 }} /> */}
 
               <CoffeeChatCard
-                containerClassName="absolute bottom-0 left-1/2 -translate-x-1/2 w-64"
+                containerClassName="absolute bottom-0 left-1/2 -translate-x-1/2 w-72"
                 onChatClick={scrollToContact}
                 transition={{ delay: 0.6 }}
               />
@@ -159,7 +166,7 @@ export function HeroSection() {
           variants={itemVariants}
         >
           <div className="rounded-full border border-purple-500/30 bg-gradient-to-r from-purple-500/20 to-purple-600/20 px-6 py-3 text-center backdrop-blur-xl">
-            <span className="font-medium text-base text-purple-300">5+ Years Experience</span>
+            <span className="font-medium text-base text-purple-300">{years}+ {tCards('experience')}</span>
           </div>
         </motion.div>
       </div>

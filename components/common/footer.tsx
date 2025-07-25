@@ -4,6 +4,7 @@ import { EMAIL, TITLE } from '@/lib/consts';
 import { motion, type Variants } from 'framer-motion';
 import { Github, Linkedin, Mail, MapPin, Send, Sparkles, Twitter } from 'lucide-react';
 import Link from 'next/link';
+import { useTranslations } from 'next-intl';
 
 // Animation variants
 const containerVariants: Variants = {
@@ -36,15 +37,18 @@ const socialLinks = [
   { icon: Mail, href: `mailto:${EMAIL}`, label: 'Email' },
 ];
 
-const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'Experience', href: '/#experience' },
-  { name: 'Guestbook', href: '/guestbook' },
-  { name: 'Surveys', href: '/surveys' },
-];
+// Navigation will be translated dynamically
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
+  const t = useTranslations('footer');
+  
+  const navigation = [
+    { name: t('home'), href: '/' },
+    { name: t('experience'), href: '/#experience' },
+    { name: t('guestbook'), href: '/guestbook' },
+    { name: t('surveys'), href: '/surveys' },
+  ];
 
   return (
     <footer className="relative overflow-hidden bg-black">
@@ -76,19 +80,19 @@ export function Footer() {
                   <div className="h-3 w-3 rounded-full bg-green-500" />
                   <div className="absolute inset-0 h-3 w-3 animate-ping rounded-full bg-green-500" />
                 </div>
-                <span className="text-gray-300 text-sm">Available for opportunities</span>
+                <span className="text-gray-300 text-sm">{t('availableForOpportunities')}</span>
               </div>
 
               {/* Location */}
               <div className="flex items-center gap-2 text-gray-400">
                 <MapPin className="h-4 w-4" />
-                <span className="text-sm">El Salvador 🇸🇻 • Working globally</span>
+                <span className="text-sm">{t('location')}</span>
               </div>
             </motion.div>
 
             {/* Quick Links */}
             <motion.div variants={itemVariants}>
-              <h4 className="mb-4 font-semibold text-purple-400 text-sm">Quick Links</h4>
+              <h4 className="mb-4 font-semibold text-purple-400 text-sm">{t('quickLinks')}</h4>
               <ul className="space-y-2">
                 {navigation.map((link) => (
                   <li key={link.name}>
@@ -102,7 +106,7 @@ export function Footer() {
 
             {/* Connect */}
             <motion.div variants={itemVariants}>
-              <h4 className="mb-4 font-semibold text-purple-400 text-sm">Let's Connect</h4>
+              <h4 className="mb-4 font-semibold text-purple-400 text-sm">{t('letsConnect')}</h4>
 
               {/* Social links */}
               <div className="mb-6 flex gap-3">
@@ -135,7 +139,7 @@ export function Footer() {
                   whileTap={{ scale: 0.98 }}
                 >
                   <Send className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                  Get in touch
+                  {t('getInTouch')}
                 </motion.button>
               </Link>
             </motion.div>
@@ -147,7 +151,7 @@ export function Footer() {
               <div className="flex items-center gap-2 text-gray-500 text-sm">
                 <Sparkles className="h-4 w-4 text-purple-500/50" />
                 <p>
-                  © {currentYear} Walter Morales. Crafted with{' '}
+                  {t('copyright', { year: currentYear })}{' '}
                   <motion.span
                     animate={{ rotate: [0, 10, -10, 0] }}
                     className="inline-block text-purple-400"

@@ -4,14 +4,108 @@
     "blog": "Blog",
     "cursor": "Cursor",
     "events": "Eventos",
-    "guestbook": "Libro de Visitas",
+    "guestbook": "Libro de visitas",
     "polls": "Encuestas",
-    "surveys": "Formularios"
+    "surveys": "Formularios",
+    "ambassador": "Embajador",
+    "menu": "Menú",
+    "descriptions": {
+      "ambassador": "Descubre mi trayectoria, servicios y experiencia como desarrollador de software y embajador de Cursor.",
+      "surveys": "Responde preguntas para ayudarnos a mejorar la comunidad de Cursor.",
+      "polls": "Vota en encuestas en tiempo real. Ve qué piensan otros.",
+      "events": "Conoce qué se viene. Únete a la diversión y sube tus fotos en los eventos."
+    }
   },
   "homepage": {
     "hero": {
-      "title": "Ingeniero de Software Sr & Embajador de Cursor",
-      "subtitle": "Construyendo el futuro con desarrollo potenciado por IA en América Latina"
+      "availableForNewProjects": "Disponible para nuevos proyectos",
+      "title": "Soy Walter, y",
+      "innovate": "te ayudaré",
+      "developmentWith": "a innovar",
+      "passion": "proyectos",
+      "toCreateImpactful": "impactantes",
+      "products": "con excelencia",
+      "letsWorkTogether": "Trabajemos juntos"
+    },
+    "cards": {
+      "globalReach": "Países",
+      "clientsFromAroundTheWorld": "Clientes de todo el mundo",
+      "active": "Activo",
+      "cursorAmbassador": "Embajador de Cursor",
+      "empoweringDevelopersWithAI": "Empoderando a los desarrolladores con IA",
+      "currentlyLearning": "Actualmente aprendiendo",
+      "alwaysExploringNewTechnologies": "Siempre explorando nuevas tecnologías",
+      "techStack": "Stack Tecnológico",
+      "terminal": "Terminal",
+      "proficiency": "Proficiencia",
+      "coffeeChat": "Café conmigo",
+      "bestIdeasStartWithAConversation": "Las mejores ideas comienzan con una conversación",
+      "experience": "Años de experiencia",
+      "commitMessage": "feat: creando productos increíbles",
+      "chat": "Chatea"
+    },
+    "experience": {
+      "sectionLabel": "Trayectoria profesional",
+      "sectionTitle": "Experiencia laboral",
+      "sectionDescription": "Construyendo soluciones impactantes en diversas industrias y tecnologías",
+      "companies": {
+        "Southworks": {
+          "role": "Sr Software Engineer",
+          "period": "Abr 2023 – Actualidad",
+          "achievements": [
+            "Desarrollé soluciones en la nube usando .NET y NodeJS + ReactJS",
+            "Mentoré a ingenieros junior"
+          ]
+        },
+        "Freelance": {
+          "role": "Product Engineer",
+          "period": "Abr 2023 – Ene 2024",
+          "achievements": [
+            "Arquitecté y lideré el desarrollo de una aplicación web gubernamental",
+            "Entregué el proyecto a tiempo y dentro del presupuesto"
+          ]
+        },
+        "Ravn": {
+          "role": "Sr Software Engineer",
+          "period": "Ene 2023 – Mar 2023",
+          "achievements": [
+            "Migración de API a entorno .NET",
+            "Brindé consultoría técnica"
+          ]
+        },
+        "Resultier": {
+          "role": "Desarrollador .NET",
+          "period": "Abr 2022 – Dic 2022",
+          "achievements": [
+            "Construí software médico para análisis de signos vitales",
+            "Colaboré con equipos multifuncionales"
+          ]
+        },
+        "InnRoad": {
+          "role": "Software Engineer",
+          "period": "Abr 2021 – Abr 2022",
+          "achievements": [
+            "Desarrollé microservicios para integraciones de Airbnb y reservas hoteleras",
+            "Mejoré la confiabilidad y disponibilidad del sistema"
+          ]
+        },
+        "Elaniin": {
+          "role": "Desarrollador Fullstack JavaScript",
+          "period": "Nov 2020 – Ene 2022",
+          "achievements": [
+            "Desarrollé software empresarial en JavaScript y .NET",
+            "Lideré la migración a infraestructura en la nube"
+          ]
+        },
+        "VincuHub": {
+          "role": "Desarrollador Fullstack",
+          "period": "Ene 2020 – Nov 2020",
+          "achievements": [
+            "Creé y gestioné aplicaciones .NET y sitios web en ReactJS",
+            "Mejoré el pipeline de despliegue, reduciendo el tiempo de lanzamiento en un 30%"
+          ]
+        }
+      }
     }
   },
   "blog": {
@@ -42,9 +136,31 @@
   "guestbook": {
     "title": "Libro de Visitas Digital",
     "description": "Crea tu boleto único estilo conferencia con colores generados por IA basados en tu estado de ánimo",
-    "createTicket": "Generar Mi Boleto",
+    "createTicket": "Crea Tu Propio Boleto",
+    "generateTicket": "Generar Mi Boleto",
     "yourTicket": "Tu boleto único",
-    "mood": "Estado de ánimo"
+    "userTicket": "El boleto único de {userName}",
+    "mood": "Estado de ánimo",
+    "joinDescription": "¡Únete al libro de visitas y obtén tu propio boleto único generado por IA!",
+    "signInTitle": "Inicia sesión para continuar",
+    "signInDescription": "Elige tu método preferido para iniciar sesión y crear tu boleto personalizado",
+    "continueWith": "Continuar con {provider}",
+    "termsText": "Al iniciar sesión, aceptas crear un boleto personalizado y opcionalmente dejar un mensaje",
+    "updateTicket": "Actualizar tu boleto",
+    "createTicketForm": "Crear tu boleto",
+    "noTicketYet": "Aún No Tienes Boleto",
+    "describeMood": "Crea tu primer boleto describiendo tu estado de ánimo",
+    "changeMood": "Cambia tu estado de ánimo para regenerar colores",
+    "tellMood": "Cuéntanos tu estado de ánimo y obtén una paleta de colores única",
+    "moodPlaceholder": "Describe tu estado de ánimo actual, colores favoritos, o qué te inspira...",
+    "moodExamples": "Ejemplos: \"Me siento como un atardecer sobre el océano\" o \"Enérgico y vibrante como una ciudad de neón\"",
+    "updating": "Actualizando...",
+    "generating": "Generando...",
+    "updateButton": "Actualizar boleto",
+    "generateButton": "Generar boleto",
+    "shareTicket": "Compartir Boleto",
+    "moodRequired": "Por favor describe tu estado de ánimo o estilo primero",
+    "signInError": "Error al iniciar sesión. Por favor intenta de nuevo."
   },
   "polls": {
     "title": "Encuestas en Vivo",
@@ -60,6 +176,28 @@
     "participate": "Participar",
     "complete": "Completar Formulario"
   },
+  "auth": {
+    "signIn": "Iniciar Sesión",
+    "signOut": "Cerrar sesión",
+    "loading": "Cargando...",
+    "user": "Usuario",
+    "google": "Google",
+    "github": "GitHub",
+    "signedOutSuccess": "Sesión cerrada exitosamente",
+    "signOutError": "Error al cerrar sesión"
+  },
+  "footer": {
+    "quickLinks": "Enlaces Rápidos",
+    "letsConnect": "Conectemos",
+    "availableForOpportunities": "Disponible para oportunidades",
+    "location": "El Salvador 🇸🇻 • Trabajando globalmente",
+    "getInTouch": "Ponte en contacto",
+    "copyright": "© {year} Walter Morales. Hecho con ♥",
+    "home": "Inicio",
+    "experience": "Experiencia",
+    "guestbook": "Libro de Visitas",
+    "surveys": "Formularios"
+  },
   "common": {
     "loading": "Cargando...",
     "error": "Ocurrió un error",
@@ -72,6 +210,15 @@
     "close": "Cerrar",
     "next": "Siguiente",
     "previous": "Anterior",
-    "submit": "Enviar"
+    "submit": "Enviar",
+    "back": "Atrás",
+    "view": "Ver",
+    "open": "Abrir",
+    "yes": "Sí",
+    "no": "No",
+    "ok": "OK",
+    "success": "Éxito",
+    "warning": "Advertencia",
+    "info": "Info"
   }
 }

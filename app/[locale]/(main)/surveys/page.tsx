@@ -1,19 +1,31 @@
 import { BarChart3 } from 'lucide-react';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { getActiveSurveys } from '@/app/actions/survey.actions';
 import { InnerHero } from '@/components/common/inner-hero';
 import { SurveysListClient } from '@/components/surveys/surveys-list-client';
 
 export { metadata } from './metadata';
 
-export default async function SurveysPage() {
+type Props = {
+  params: Promise<{ locale: string }>;
+};
+
+export default async function SurveysPage({ params }: Props) {
+  const { locale } = await params;
+  
+  // Enable static rendering
+  setRequestLocale(locale);
+
+  // Get translations
+  const t = await getTranslations('surveys');
   const surveysResult = await getActiveSurveys();
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
       <InnerHero
-        description="Participate in our surveys to help shape the future of our community"
+        description={t('description')}
         icon={BarChart3}
-        title="Active Surveys"
+        title={t('title')}
       />
 
       <div className="container mx-auto px-4 py-8 pt-16">

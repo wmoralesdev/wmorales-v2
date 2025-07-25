@@ -27,13 +27,17 @@ const jetbrains_mono = JetBrains_Mono({
 
 export const metadata = baseMetadata;
 
-export default function RootLayout({
-  children,
-}: Readonly<{
+type Props = {
   children: React.ReactNode;
-}>) {
+  params: Promise<{ locale: string }>;
+};
+
+export default async function RootLayout({ children, params }: Props) {
+  // Extract locale from URL params
+  const { locale } = await params;
+
   return (
-    <html className="dark" lang="en">
+    <html className="dark" lang={locale}>
       <body
         className={cn(
           space_grotesk.variable,

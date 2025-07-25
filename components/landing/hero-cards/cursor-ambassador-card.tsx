@@ -2,10 +2,13 @@ import { motion } from 'framer-motion';
 import { Award } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { BaseCard, type BaseCardProps } from './base-card';
+import { useTranslations } from 'next-intl';
 
 type CursorAmbassadorCardProps = Omit<BaseCardProps, 'children' | 'id'>;
 
 export function CursorAmbassadorCard(props: CursorAmbassadorCardProps) {
+  const t = useTranslations('homepage.cards');
+
   return (
     <BaseCard
       className="border-purple-800/50 bg-gradient-to-br from-purple-900/40 to-gray-900/40 p-4 backdrop-blur-xl lg:p-6"
@@ -26,11 +29,11 @@ export function CursorAmbassadorCard(props: CursorAmbassadorCardProps) {
               }}
             />
           </div>
-          <Badge className="border-green-500/30 bg-green-500/20 text-green-400 text-xs">Active</Badge>
+          <Badge className="border-green-500/30 bg-green-500/20 text-green-400 text-xs">{t('active')}</Badge>
         </div>
         <div>
-          <h3 className="font-semibold text-sm text-white lg:text-base">Cursor Ambassador</h3>
-          <p className="mt-1 text-gray-400 text-xs lg:text-sm">Empowering developers with AI</p>
+          <h3 className="font-semibold text-sm text-white lg:text-base">{t('cursorAmbassador')}</h3>
+          <p className="mt-1 text-gray-400 text-xs lg:text-sm">{t('empoweringDevelopersWithAI')}</p>
         </div>
       </div>
     </BaseCard>

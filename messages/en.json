@@ -6,21 +6,107 @@
     "events": "Events",
     "guestbook": "Guestbook",
     "polls": "Polls",
-    "surveys": "Surveys"
+    "surveys": "Surveys",
+    "ambassador": "Ambassador",
+    "menu": "Menu",
+    "descriptions": {
+      "ambassador": "Discover my background, services, and experience as a software developer and Cursor ambassador.",
+      "surveys": "Answer questions to help us improve Cursor's community.",
+      "polls": "Vote in real-time polls. See what others think.",
+      "events": "See what's coming up. Join the fun and upload your pictures at the events."
+    }
   },
   "homepage": {
     "hero": {
-      "title": "Sr Software Engineer & Cursor Ambassador",
-      "subtitle": "Building the future with AI-powered development in Latin America"
+      "availableForNewProjects": "Available for new projects",
+      "title": "I'm Walter, and I",
+      "innovate": "innovate",
+      "developmentWith": "Development with",
+      "passion": "passion",
+      "toCreateImpactful": "to create impactful",
+      "products": "products",
+      "letsWorkTogether": "Let's work together"
+    },
+    "cards": {
+      "globalReach": "Countries",
+      "clientsFromAroundTheWorld": "Clients from around the world",
+      "active": "Active",
+      "cursorAmbassador": "Cursor Ambassador",
+      "empoweringDevelopersWithAI": "Empowering developers with AI",
+      "currentlyLearning": "Currently Learning",
+      "alwaysExploringNewTechnologies": "Always exploring new technologies",
+      "techStack": "Tech Stack",
+      "terminal": "Terminal",
+      "proficiency": "Proficiency",
+      "coffeeChat": "Coffee Chat",
+      "bestIdeasStartWithAConversation": "Best ideas start with a conversation",
+      "experience": "Years of experience",
+      "commitMessage": "feat: ship amazing products",
+      "chat": "Chat"
+    },
+    "experience": {
+      "sectionLabel": "Professional Journey",
+      "sectionTitle": "Work Experience",
+      "sectionDescription": "Building impactful solutions across diverse industries and technologies",
+      "companies": {
+        "Southworks": {
+          "role": "Sr Software Engineer",
+          "period": "Apr 2023 – Now",
+          "achievements": [
+            "Developed cloud-based solutions using .NET & NodeJS + ReactJS",
+            "Mentored junior engineers"
+          ]
+        },
+        "Freelance": {
+          "role": "Product Engineer",
+          "period": "Apr 2023 – Jan 2024",
+          "achievements": [
+            "Architected and led development of a government web service application",
+            "Delivered project on time and within budget"
+          ]
+        },
+        "Ravn": {
+          "role": "Sr Software Engineer",
+          "period": "Jan 2023 – Mar 2023",
+          "achievements": [
+            "API migration to .NET environment",
+            "Provided technical consultancy"
+          ]
+        },
+        "Resultier": {
+          "role": ".NET Developer",
+          "period": "Apr 2022 – Dec 2022",
+          "achievements": [
+            "Built medical software for patient vital sign analysis",
+            "Collaborated with cross-functional teams"
+          ]
+        },
+        "InnRoad": {
+          "role": "Software Engineer",
+          "period": "Apr 2021 – Apr 2022",
+          "achievements": [
+            "Developed microservices for Airbnb and Hotel Booking integrations",
+            "Enhanced system reliability and uptime"
+          ]
+        },
+        "Elaniin": {
+          "role": "JavaScript Fullstack Developer",
+          "period": "Nov 2020 – Jan 2022",
+          "achievements": [
+            "Developed enterprise software in JavaScript and .NET",
+            "Led migration to cloud infrastructure"
+          ]
+        },
+        "VincuHub": {
+          "role": "Fullstack Developer",
+          "period": "Jan 2020 – Nov 2020",
+          "achievements": [
+            "Created and managed .NET applications and ReactJS websites",
+            "Improved deployment pipeline, reducing release time by 30%"
+          ]
+        }
+      }
     }
-  },
-  "blog": {
-    "title": "Blog",
-    "description": "Software development, AI, Cursor, LATAM and the technologies shaping our future.",
-    "searchPlaceholder": "Search posts...",
-    "noResults": "No posts found",
-    "readingTime": "min read",
-    "backToBlog": "Back to Blog"
   },
   "cursor": {
     "title": "Cursor Ambassador",
@@ -42,9 +128,31 @@
   "guestbook": {
     "title": "Digital Guestbook",
     "description": "Create your unique conference-style ticket with AI-generated colors based on your mood",
-    "createTicket": "Generate My Ticket",
+    "createTicket": "Create Your Own Ticket",
+    "generateTicket": "Generate My Ticket",
     "yourTicket": "Your unique ticket",
-    "mood": "Mood"
+    "userTicket": "{userName}'s unique ticket",
+    "mood": "Mood",
+    "joinDescription": "Join the guestbook and get your own unique AI-generated ticket!",
+    "signInTitle": "Sign in to continue",
+    "signInDescription": "Choose your preferred method to sign in and create your personalized ticket",
+    "continueWith": "Continue with {provider}",
+    "termsText": "By signing in, you agree to create a personalized ticket and optionally leave a message",
+    "updateTicket": "Update your ticket",
+    "createTicketForm": "Create your ticket",
+    "noTicketYet": "No Ticket Yet",
+    "describeMood": "Create your first ticket by describing your mood",
+    "changeMood": "Change your mood to regenerate colors",
+    "tellMood": "Tell us your mood and get a unique color palette",
+    "moodPlaceholder": "Describe your current mood, favorite colors, or what inspires you...",
+    "moodExamples": "Examples: \"Feeling like a sunset over the ocean\" or \"Energetic and vibrant like a neon city\"",
+    "updating": "Updating...",
+    "generating": "Generating...",
+    "updateButton": "Update ticket",
+    "generateButton": "Generate ticket",
+    "shareTicket": "Share Ticket",
+    "moodRequired": "Please describe your mood or style first",
+    "signInError": "Failed to sign in. Please try again."
   },
   "polls": {
     "title": "Live Polls",
@@ -60,6 +168,55 @@
     "participate": "Participate",
     "complete": "Complete Survey"
   },
+  "auth": {
+    "signIn": "Sign In",
+    "signOut": "Sign out",
+    "loading": "Loading...",
+    "user": "User",
+    "google": "Google",
+    "github": "GitHub",
+    "signedOutSuccess": "Signed out successfully",
+    "signOutError": "Failed to sign out"
+  },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "letsConnect": "Let's Connect",
+    "availableForOpportunities": "Available for opportunities",
+    "location": "El Salvador 🇸🇻 • Working globally",
+    "getInTouch": "Get in touch",
+    "copyright": "© {year} Walter Morales. Crafted with ♥",
+    "home": "Home",
+    "experience": "Experience",
+    "guestbook": "Guestbook",
+    "surveys": "Surveys"
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Software development, AI, Cursor, LATAM and the technologies shaping our future.",
+    "searchPlaceholder": "Search posts by title, description, or content...",
+    "noResults": "No posts found",
+    "readingTime": "min read",
+    "backToBlog": "Back to Blog",
+    "filters": "Filters",
+    "clearAll": "Clear All",
+    "sortBy": {
+      "latest": "Latest First",
+      "oldest": "Oldest First",
+      "titleAZ": "Title A-Z",
+      "titleZA": "Title Z-A",
+      "featured": "Featured First"
+    },
+    "filterByTags": "Filter by Tags",
+    "featuredOnly": "Featured Posts Only",
+    "showingResults": "Showing {filteredCount} of {totalPosts} posts",
+    "totalPosts": "{totalPosts} posts",
+    "activeFilters": "Active filters:",
+    "searchIn": {
+      "title": "Title",
+      "description": "Description",
+      "featured": "Featured"
+    }
+  },
   "common": {
     "loading": "Loading...",
     "error": "An error occurred",
@@ -72,6 +229,15 @@
     "close": "Close",
     "next": "Next",
     "previous": "Previous",
-    "submit": "Submit"
+    "submit": "Submit",
+    "back": "Back",
+    "view": "View",
+    "open": "Open",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info"
   }
 }
