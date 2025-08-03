@@ -2,7 +2,12 @@ import type { Metadata } from 'next';
 import { notFound, redirect } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
-import { getAllPolls, getPollByCode, getPollResults, getUserVotes } from '@/app/actions/poll.actions';
+import {
+  getAllPolls,
+  getPollByCode,
+  getPollResults,
+  getUserVotes,
+} from '@/app/actions/poll.actions';
 import { PollVoting } from '@/components/polls/poll-voting';
 import { createMetadata, siteConfig } from '@/lib/metadata';
 import { createClient } from '@/lib/supabase/server';
@@ -15,7 +20,7 @@ type Props = {
 export async function generateStaticParams() {
   try {
     const polls = await getAllPolls();
-    
+
     // Generate params for all locales and all active polls
     return routing.locales.flatMap((locale) =>
       polls.map((poll) => ({
@@ -41,7 +46,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   }
 
   const title = poll.title;
-  const description = poll.description || `Live voting poll: ${poll.title}. Join and vote in real-time!`;
+  const description =
+    poll.description ||
+    `Live voting poll: ${poll.title}. Join and vote in real-time!`;
 
   return createMetadata({
     title,
@@ -64,18 +71,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function PollPage({ params }: Props) {
   const { locale, code } = await params;
-  
+
   // Enable static rendering
   setRequestLocale(locale);
-
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  if (!user) {
-    redirect(`/login?returnTo=/${locale}/polls/${code}`);
-  }
 
   const { data: poll, error } = await getPollByCode(code);
 
@@ -83,9 +81,14 @@ export default async function PollPage({ params }: Props) {
     notFound();
   }
 
-  const { data: results } = await getPollResults(poll.id);
+  // Fetch poll results and user votes in parallel (Next.js 15 advantage)
+  const [resultsResponse, userVotesResponse] = await Promise.all([
+    getPollResults(poll.id),
+    getUserVotes(poll.id),
+  ]);
 
-  const { data: userVotes } = await getUserVotes(poll.id);
+  const results = resultsResponse.data;
+  const userVotes = userVotesResponse.data;
 
   return (
     <div className="min-h-screen">

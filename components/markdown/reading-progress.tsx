@@ -8,7 +8,8 @@ export function ReadingProgress() {
   useEffect(() => {
     const updateProgress = () => {
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = (scrollTop / docHeight) * 100;
       setProgress(scrollPercent);
     };

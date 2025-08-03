@@ -5,6 +5,7 @@ This guide explains the centralized SEO and metadata system implemented in this 
 ## Overview
 
 The application uses a hierarchical metadata system where:
+
 - Common metadata is defined at the app level (`app/layout.tsx`)
 - Page-specific metadata extends the base configuration
 - Dynamic pages generate metadata based on content
@@ -14,6 +15,7 @@ The application uses a hierarchical metadata system where:
 ### 1. Centralized Configuration (`/lib/metadata.ts`)
 
 The main configuration file contains:
+
 - **Site Configuration**: Basic site information (name, URL, author details)
 - **Base Metadata**: Default metadata applied to all pages
 - **Page Templates**: Pre-configured metadata for specific pages
@@ -23,6 +25,7 @@ The main configuration file contains:
 ### 2. Page Metadata Files
 
 Each major route has its own `metadata.ts` file:
+
 - `/app/(main)/metadata.ts` - Home page
 - `/app/(main)/cursor/metadata.ts` - Cursor Ambassador page
 - `/app/(main)/guestbook/metadata.ts` - Guestbook page
@@ -67,6 +70,7 @@ export { metadata } from './metadata';
 ### Updating Site-wide Metadata
 
 Edit `/lib/metadata.ts` to update:
+
 - Site configuration
 - Default keywords
 - Author information
@@ -79,7 +83,7 @@ For pages with dynamic content:
 ```typescript
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const data = await fetchData(params.id);
-  
+
   return createMetadata({
     title: data.title,
     description: data.description,
@@ -91,21 +95,25 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 ## SEO Features
 
 ### 1. Open Graph Tags
+
 - Optimized for social media sharing
 - Custom images per page
 - Proper fallbacks
 
 ### 2. Twitter Cards
+
 - Summary large image cards
 - Author attribution
 - Custom images
 
 ### 3. Structured Data
+
 - Person schema for author
 - Website schema
 - Breadcrumb support
 
 ### 4. Technical SEO
+
 - Canonical URLs
 - Robots meta tags
 - Sitemap generation
@@ -131,11 +139,13 @@ To verify your SEO implementation:
 ## Environment Variables
 
 Ensure these are set:
+
 - `NEXT_PUBLIC_APP_URL`: Your production URL (e.g., https://waltermorales.dev)
 
 ## Future Improvements
 
 Consider adding:
+
 - JSON-LD for article pages
 - RSS feed generation
 - More specific OG images per page

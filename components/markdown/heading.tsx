@@ -14,7 +14,10 @@ export function Heading({ children, id, level }: HeadingProps) {
     <Component className="group relative scroll-mt-20" id={id}>
       {children}
       {id && (
-        <Link className='-left-6 absolute top-0 opacity-0 transition-opacity group-hover:opacity-100' href={`#${id}`}>
+        <Link
+          className="-left-6 absolute top-0 opacity-0 transition-opacity group-hover:opacity-100"
+          href={`#${id}`}
+        >
           <span className="text-gray-400 hover:text-white">#</span>
         </Link>
       )}
@@ -23,7 +26,13 @@ export function Heading({ children, id, level }: HeadingProps) {
 }
 
 // Individual heading components for easier use
-export function H1({ children, id }: { children: React.ReactNode; id?: string }) {
+export function H1({
+  children,
+  id,
+}: {
+  children: React.ReactNode;
+  id?: string;
+}) {
   return (
     <Heading id={id} level={1}>
       {children}
@@ -31,7 +40,13 @@ export function H1({ children, id }: { children: React.ReactNode; id?: string })
   );
 }
 
-export function H2({ children, id }: { children: React.ReactNode; id?: string }) {
+export function H2({
+  children,
+  id,
+}: {
+  children: React.ReactNode;
+  id?: string;
+}) {
   return (
     <Heading id={id} level={2}>
       {children}
@@ -39,7 +54,13 @@ export function H2({ children, id }: { children: React.ReactNode; id?: string })
   );
 }
 
-export function H3({ children, id }: { children: React.ReactNode; id?: string }) {
+export function H3({
+  children,
+  id,
+}: {
+  children: React.ReactNode;
+  id?: string;
+}) {
   return (
     <Heading id={id} level={3}>
       {children}
@@ -47,7 +68,13 @@ export function H3({ children, id }: { children: React.ReactNode; id?: string })
   );
 }
 
-export function H4({ children, id }: { children: React.ReactNode; id?: string }) {
+export function H4({
+  children,
+  id,
+}: {
+  children: React.ReactNode;
+  id?: string;
+}) {
   return (
     <Heading id={id} level={4}>
       {children}
@@ -55,7 +82,13 @@ export function H4({ children, id }: { children: React.ReactNode; id?: string })
   );
 }
 
-export function H5({ children, id }: { children: React.ReactNode; id?: string }) {
+export function H5({
+  children,
+  id,
+}: {
+  children: React.ReactNode;
+  id?: string;
+}) {
   return (
     <Heading id={id} level={5}>
       {children}
@@ -63,7 +96,13 @@ export function H5({ children, id }: { children: React.ReactNode; id?: string })
   );
 }
 
-export function H6({ children, id }: { children: React.ReactNode; id?: string }) {
+export function H6({
+  children,
+  id,
+}: {
+  children: React.ReactNode;
+  id?: string;
+}) {
   return (
     <Heading id={id} level={6}>
       {children}

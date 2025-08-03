@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
@@ -8,12 +9,26 @@ import { PollResultsDashboard } from '@/components/polls/poll-results-dashboard'
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { type PollPresence, type PollRealtimeEvent, subscribeToPollUpdates } from '@/lib/supabase/realtime';
-import type { PollQuestion, PollResults, PollWithQuestions } from '@/lib/types/poll.types';
+import {
+  type PollPresence,
+  type PollRealtimeEvent,
+  subscribeToPollUpdates,
+} from '@/lib/supabase/realtime';
+import type {
+  PollQuestion,
+  PollResults,
+  PollWithQuestions,
+} from '@/lib/types/poll.types';
 import { cn } from '@/lib/utils';
 
 type PollVotingProps = {
@@ -38,7 +53,10 @@ type PollVotingState = {
 // Action types
 type PollVotingAction =
   | { type: 'SET_SELECTED_OPTIONS'; payload: Record<string, string | string[]> }
-  | { type: 'UPDATE_SELECTED_OPTION'; payload: { questionId: string; value: string | string[] } }
+  | {
+      type: 'UPDATE_SELECTED_OPTION';
+      payload: { questionId: string; value: string | string[] };
+    }
   | { type: 'SET_USER_VOTES'; payload: Record<string, string[]> }
   | { type: 'SET_RESULTS'; payload: PollResults }
   | { type: 'SET_VOTING'; payload: boolean }
@@ -50,7 +68,10 @@ type PollVotingAction =
   | { type: 'CLEAR_VALIDATION_ERROR'; payload: number };
 
 // Reducer function
-function pollVotingReducer(state: PollVotingState, action: PollVotingAction): PollVotingState {
+function pollVotingReducer(
+  state: PollVotingState,
+  action: PollVotingAction
+): PollVotingState {
   switch (action.type) {
     case 'SET_SELECTED_OPTIONS':
       return { ...state, selectedOptions: action.payload };
@@ -81,14 +102,20 @@ function pollVotingReducer(state: PollVotingState, action: PollVotingAction): Po
     case 'CLEAR_VALIDATION_ERROR':
       return {
         ...state,
-        validationErrors: state.validationErrors.filter((err) => !err.includes(`Question ${action.payload + 1}`)),
+        validationErrors: state.validationErrors.filter(
+          (err) => !err.includes(`Question ${action.payload + 1}`)
+        ),
       };
     default:
       return state;
   }
 }
 
-export function PollVoting({ poll, initialResults, initialUserVotes = {} }: PollVotingProps) {
+export function PollVoting({
+  poll,
+  initialResults,
+  initialUserVotes = {},
+}: PollVotingProps) {
   const [state, dispatch] = useReducer(pollVotingReducer, {
     selectedOptions: {},
     userVotes: initialUserVotes,
@@ -101,7 +128,9 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
     validationErrors: [],
   });
 
-  const allQuestionsAnswered = poll.questions.every((q) => state.userVotes[q.id]?.length > 0);
+  const allQuestionsAnswered = poll.questions.every(
+    (q) => state.userVotes[q.id]?.length > 0
+  );
 
   useEffect(() => {
     const initial: Record<string, string | string[]> = {};
@@ -223,7 +252,6 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
   );
 
   const createVotePromises = useCallback(() => {
-    // biome-ignore lint/suspicious/noExplicitAny: form data is dynamic
     const votePromises: Promise<any>[] = [];
 
     for (const question of poll.questions) {
@@ -239,7 +267,12 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
     }
 
     return votePromises;
-  }, [poll.questions, shouldProcessQuestion, state.selectedOptions, submitVoteForQuestion]);
+  }, [
+    poll.questions,
+    shouldProcessQuestion,
+    state.selectedOptions,
+    submitVoteForQuestion,
+  ]);
 
   const processUnansweredQuestions = useCallback(async () => {
     const newVotes = { ...state.userVotes };
@@ -278,13 +311,20 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
         dispatch({ type: 'SET_RESULTS', payload: data });
       }
 
-      setTimeout(() => dispatch({ type: 'SET_SHOW_DASHBOARD', payload: true }), 500);
+      setTimeout(
+        () => dispatch({ type: 'SET_SHOW_DASHBOARD', payload: true }),
+        500
+      );
     } finally {
       dispatch({ type: 'SET_VOTING', payload: false });
     }
   }, [validateAnswers, processUnansweredQuestions, poll.id]);
 
-  const handleOptionChange = (questionId: string, value: string, checked?: boolean) => {
+  const handleOptionChange = (
+    questionId: string,
+    value: string,
+    checked?: boolean
+  ) => {
     const question = poll.questions.find((q) => q.id === questionId);
     if (!question) {
       return;
@@ -297,7 +337,9 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
       });
     } else {
       const current = (state.selectedOptions[questionId] as string[]) || [];
-      const newValue = checked ? [...current, value] : current.filter((v) => v !== value);
+      const newValue = checked
+        ? [...current, value]
+        : current.filter((v) => v !== value);
       dispatch({
         type: 'UPDATE_SELECTED_OPTION',
         payload: { questionId, value: newValue },
@@ -317,7 +359,9 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
     if (!state.results) {
       return 0;
     }
-    const question = state.results.questions.find((q) => q.questionId === questionId);
+    const question = state.results.questions.find(
+      (q) => q.questionId === questionId
+    );
     const option = question?.options.find((o) => o.optionId === optionId);
     return option?.percentage || 0;
   };
@@ -326,19 +370,26 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
     if (!state.results) {
       return 0;
     }
-    const question = state.results.questions.find((q) => q.questionId === questionId);
+    const question = state.results.questions.find(
+      (q) => q.questionId === questionId
+    );
     const option = question?.options.find((o) => o.optionId === optionId);
     return option?.voteCount || 0;
   };
 
-  const canShowResults = state.showResults && (poll.showResults || hasVoted(poll.questions[0]?.id));
+  const canShowResults =
+    state.showResults && (poll.showResults || hasVoted(poll.questions[0]?.id));
 
   // Show dashboard if all questions are answered
   if (state.showDashboard && state.results) {
     return (
       <div className="app-container">
         {/* Success Message */}
-        <motion.div animate={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 20 }} transition={{ duration: 0.5 }}>
+        <motion.div
+          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5 }}
+        >
           <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-green-400">
@@ -372,18 +423,25 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
   return (
     <div className="app-container">
       {/* Poll Header */}
-      <motion.div animate={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 20 }} transition={{ duration: 0.5 }}>
+      <motion.div
+        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.5 }}
+      >
         <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
           <CardHeader>
             <CardTitle className="text-2xl text-white">{poll.title}</CardTitle>
             {poll.description && (
-              <CardDescription className="text-base text-gray-400">{poll.description}</CardDescription>
+              <CardDescription className="text-base text-gray-400">
+                {poll.description}
+              </CardDescription>
             )}
             {canShowResults && state.totalVoters > 0 && (
               <div className="mt-2 flex items-center gap-2 text-gray-500 text-sm">
                 <Users className="h-4 w-4" />
                 <span>
-                  {state.totalVoters} {state.totalVoters === 1 ? 'voter' : 'voters'}
+                  {state.totalVoters}{' '}
+                  {state.totalVoters === 1 ? 'voter' : 'voters'}
                 </span>
               </div>
             )}
@@ -402,12 +460,15 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
             <CardContent className="py-4">
               <div className="flex items-center justify-between">
                 <span className="text-gray-400 text-sm">
-                  Progress: {answeredQuestions} / {poll.questions.length} questions answered
+                  Progress: {answeredQuestions} / {poll.questions.length}{' '}
+                  questions answered
                 </span>
                 {allQuestionsAnswered && (
                   <Button
                     className="border-purple-500/30 bg-purple-500/20 text-purple-300 hover:bg-purple-500/30"
-                    onClick={() => dispatch({ type: 'SET_SHOW_DASHBOARD', payload: true })}
+                    onClick={() =>
+                      dispatch({ type: 'SET_SHOW_DASHBOARD', payload: true })
+                    }
                     size="sm"
                     variant="outline"
                   >
@@ -418,7 +479,9 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
               </div>
               <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-800/50">
                 <motion.div
-                  animate={{ width: `${(answeredQuestions / poll.questions.length) * 100}%` }}
+                  animate={{
+                    width: `${(answeredQuestions / poll.questions.length) * 100}%`,
+                  }}
                   className="h-full bg-gradient-to-r from-purple-500 to-purple-600"
                   initial={{ width: 0 }}
                   transition={{ duration: 0.3 }}
@@ -455,14 +518,22 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
               key={question.id}
               transition={{ delay: index * 0.1 }}
             >
-              <Card className={cn('border-gray-800 bg-gray-900/80 backdrop-blur-xl', isAnswered && 'opacity-75')}>
+              <Card
+                className={cn(
+                  'border-gray-800 bg-gray-900/80 backdrop-blur-xl',
+                  isAnswered && 'opacity-75'
+                )}
+              >
                 <CardHeader>
                   <div className="flex items-start justify-between">
                     <CardTitle className="text-lg text-white">
                       {index + 1}. {question.question}
                     </CardTitle>
                     {isAnswered && (
-                      <Badge className="gap-1 border-green-500/30 bg-green-500/20 text-green-400" variant="secondary">
+                      <Badge
+                        className="gap-1 border-green-500/30 bg-green-500/20 text-green-400"
+                        variant="secondary"
+                      >
                         <Check className="h-3 w-3" />
                         Answered
                       </Badge>
@@ -478,25 +549,45 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
                   {question.type === 'single' ? (
                     <RadioGroup
                       disabled={isAnswered}
-                      onValueChange={(value) => handleOptionChange(question.id, value)}
+                      onValueChange={(value) =>
+                        handleOptionChange(question.id, value)
+                      }
                       value={state.selectedOptions[question.id] as string}
                     >
                       {(question.options || []).map((option) => {
-                        const percentage = getOptionPercentage(question.id, option.id);
-                        const voteCount = getOptionVoteCount(question.id, option.id);
-                        const isSelected = state.userVotes[question.id]?.includes(option.id);
+                        const percentage = getOptionPercentage(
+                          question.id,
+                          option.id
+                        );
+                        const voteCount = getOptionVoteCount(
+                          question.id,
+                          option.id
+                        );
+                        const isSelected = state.userVotes[
+                          question.id
+                        ]?.includes(option.id);
 
                         return (
                           <div className="relative" key={option.id}>
                             <div className="flex items-center space-x-2 rounded-lg border border-transparent p-3 transition-colors hover:border-purple-500/30 hover:bg-purple-500/10">
-                              <RadioGroupItem className="text-purple-400" id={option.id} value={option.id} />
+                              <RadioGroupItem
+                                className="text-purple-400"
+                                id={option.id}
+                                value={option.id}
+                              />
                               <Label
                                 className="flex flex-1 cursor-pointer items-center gap-2 text-gray-300"
                                 htmlFor={option.id}
                               >
-                                {option.emoji && <span className="text-xl">{option.emoji}</span>}
+                                {option.emoji && (
+                                  <span className="text-xl">
+                                    {option.emoji}
+                                  </span>
+                                )}
                                 <span>{option.label}</span>
-                                {isSelected && <Check className="ml-auto h-4 w-4 text-purple-400" />}
+                                {isSelected && (
+                                  <Check className="ml-auto h-4 w-4 text-purple-400" />
+                                )}
                               </Label>
                               {canShowResults && (
                                 <span className="font-medium text-gray-400 text-sm">
@@ -510,10 +601,14 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
                                   animate={{ width: `${percentage}%` }}
                                   className={cn(
                                     'h-full',
-                                    option.color || 'bg-gradient-to-r from-purple-500/20 to-purple-600/20'
+                                    option.color ||
+                                      'bg-gradient-to-r from-purple-500/20 to-purple-600/20'
                                   )}
                                   initial={{ width: 0 }}
-                                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                                  transition={{
+                                    duration: 0.5,
+                                    ease: 'easeOut',
+                                  }}
                                 />
                               </div>
                             )}
@@ -524,10 +619,20 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
                   ) : (
                     <div className="space-y-2">
                       {(question.options || []).map((option) => {
-                        const percentage = getOptionPercentage(question.id, option.id);
-                        const voteCount = getOptionVoteCount(question.id, option.id);
-                        const isSelected = state.userVotes[question.id]?.includes(option.id);
-                        const isChecked = ((state.selectedOptions[question.id] as string[]) || []).includes(option.id);
+                        const percentage = getOptionPercentage(
+                          question.id,
+                          option.id
+                        );
+                        const voteCount = getOptionVoteCount(
+                          question.id,
+                          option.id
+                        );
+                        const isSelected = state.userVotes[
+                          question.id
+                        ]?.includes(option.id);
+                        const isChecked = (
+                          (state.selectedOptions[question.id] as string[]) || []
+                        ).includes(option.id);
 
                         return (
                           <div className="relative" key={option.id}>
@@ -538,16 +643,26 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
                                 disabled={isAnswered}
                                 id={option.id}
                                 onCheckedChange={(checked) =>
-                                  handleOptionChange(question.id, option.id, checked as boolean)
+                                  handleOptionChange(
+                                    question.id,
+                                    option.id,
+                                    checked as boolean
+                                  )
                                 }
                               />
                               <Label
                                 className="flex flex-1 cursor-pointer items-center gap-2 text-gray-300"
                                 htmlFor={option.id}
                               >
-                                {option.emoji && <span className="text-xl">{option.emoji}</span>}
+                                {option.emoji && (
+                                  <span className="text-xl">
+                                    {option.emoji}
+                                  </span>
+                                )}
                                 <span>{option.label}</span>
-                                {isSelected && <Check className="ml-auto h-4 w-4 text-purple-400" />}
+                                {isSelected && (
+                                  <Check className="ml-auto h-4 w-4 text-purple-400" />
+                                )}
                               </Label>
                               {canShowResults && (
                                 <span className="font-medium text-gray-400 text-sm">
@@ -561,10 +676,14 @@ export function PollVoting({ poll, initialResults, initialUserVotes = {} }: Poll
                                   animate={{ width: `${percentage}%` }}
                                   className={cn(
                                     'h-full',
-                                    option.color || 'bg-gradient-to-r from-purple-500/20 to-purple-600/20'
+                                    option.color ||
+                                      'bg-gradient-to-r from-purple-500/20 to-purple-600/20'
                                   )}
                                   initial={{ width: 0 }}
-                                  transition={{ duration: 0.5, ease: 'easeOut' }}
+                                  transition={{
+                                    duration: 0.5,
+                                    ease: 'easeOut',
+                                  }}
                                 />
                               </div>
                             )}

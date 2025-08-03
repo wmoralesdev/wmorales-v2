@@ -85,12 +85,12 @@ const cardHoverVariants = {
   rest: {
     scale: 1,
     y: 0,
-    boxShadow: "0 2px 8px rgba(0, 0, 0, 0.1)",
+    boxShadow: '0 2px 8px rgba(0, 0, 0, 0.1)',
   },
   hover: {
     scale: 1.02,
     y: -5,
-    boxShadow: "0 20px 40px rgba(168, 85, 247, 0.15)",
+    boxShadow: '0 20px 40px rgba(168, 85, 247, 0.15)',
     transition: {
       duration: 0.3,
       ease: [0.25, 0.46, 0.45, 0.94],
@@ -125,7 +125,7 @@ const badgeVariants = {
     rotate: 2,
     transition: {
       duration: 0.2,
-      type: "spring" as const,
+      type: 'spring' as const,
       stiffness: 300,
     },
   },
@@ -148,7 +148,7 @@ const particleVariants = {
     transition: {
       duration: 6,
       repeat: Infinity,
-      ease: "easeInOut",
+      ease: 'easeInOut',
     },
   },
 };
@@ -164,7 +164,7 @@ const orbVariants = {
     transition: {
       duration: 8,
       repeat: Infinity,
-      ease: "easeInOut",
+      ease: 'easeInOut',
     },
   },
 };

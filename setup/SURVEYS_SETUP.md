@@ -3,6 +3,7 @@
 ## Overview
 
 This guide will help you set up the refactored surveys feature that uses:
+
 - **Types** instead of interfaces
 - **Prisma** for database management
 - **Server Actions** for data operations
@@ -51,6 +52,7 @@ npx prisma db seed
 ```
 
 This will create a "Contact Information Survey" with the following questions:
+
 - Full name (required text)
 - Email address (required text)
 - Phone number (optional text)
@@ -62,6 +64,7 @@ This will create a "Contact Information Survey" with the following questions:
 ### 5. Test the Survey
 
 After seeding, you'll see URLs in the console output:
+
 - Survey list: http://localhost:3000/surveys
 - Fill survey: http://localhost:3000/surveys/[survey-id]/fill
 - View results: http://localhost:3000/surveys/[survey-id]
@@ -69,7 +72,9 @@ After seeding, you'll see URLs in the console output:
 ## Key Changes from Previous Version
 
 ### 1. Types Instead of Interfaces
+
 All interfaces have been replaced with types:
+
 ```typescript
 // Old
 interface Survey { ... }
@@ -79,7 +84,9 @@ type Survey = { ... }
 ```
 
 ### 2. Server Actions
+
 Instead of direct Supabase calls, we now use server actions:
+
 ```typescript
 // Old
 const supabase = createClient();
@@ -90,11 +97,13 @@ const { data } = await getActiveSurveys();
 ```
 
 ### 3. Prisma Schema
+
 Database schema is now managed through Prisma (`prisma/schema.prisma`) instead of raw SQL migrations.
 
 ## Architecture
 
 ### File Structure
+
 ```
 /app
   /actions
@@ -134,12 +143,15 @@ Database schema is now managed through Prisma (`prisma/schema.prisma`) instead o
 ## Troubleshooting
 
 ### Prisma Client Generation Error
+
 If you see "Module '@prisma/client' has no exported member", run:
+
 ```bash
 pnpm prisma:generate
 ```
 
 ### Database Connection Issues
+
 1. Verify your DATABASE_URL is correct
 2. Check if your database is accessible
 3. Ensure SSL is configured if required:
@@ -148,7 +160,9 @@ pnpm prisma:generate
    ```
 
 ### Type Errors
+
 The survey renderer expects specific type shapes. If you encounter type errors:
+
 1. Check that your data matches the types in `lib/types/survey.types.ts`
 2. Ensure all nullable fields are properly handled
 3. Use type assertions when needed: `as SurveyWithSections`

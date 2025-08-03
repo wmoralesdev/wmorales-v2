@@ -11,7 +11,7 @@ type Props = {
 
 export default async function GuestbookPage({ params }: Props) {
   const { locale } = await params;
-  
+
   // Enable static rendering
   setRequestLocale(locale);
 
@@ -27,7 +27,7 @@ export default async function GuestbookPage({ params }: Props) {
       />
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 pt-16 pb-16">
+      <div className="container mx-auto px-4 py-16">
         <GuestbookContent />
       </div>
     </div>

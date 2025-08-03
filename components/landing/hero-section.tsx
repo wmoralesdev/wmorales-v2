@@ -68,7 +68,9 @@ export function HeroSection() {
                   <div className="h-3 w-3 rounded-full bg-green-500" />
                   <div className="absolute inset-0 h-3 w-3 animate-ping rounded-full bg-green-500" />
                 </div>
-                <span className="font-medium text-green-400 text-sm">{t('availableForNewProjects')}</span>
+                <span className="font-medium text-green-400 text-sm">
+                  {t('availableForNewProjects')}
+                </span>
               </div>
 
               <h1 className="font-bold text-4xl tracking-tight sm:text-5xl lg:text-6xl">
@@ -94,13 +96,19 @@ export function HeroSection() {
 
               <div className="flex items-center justify-center gap-4 text-gray-400 lg:justify-start">
                 <span className="text-2xl">/</span>
-                <a className="transition-colors hover:text-purple-400" href={`mailto:${EMAIL}`}>
+                <a
+                  className="transition-colors hover:text-purple-400"
+                  href={`mailto:${EMAIL}`}
+                >
                   {EMAIL}
                 </a>
               </div>
             </motion.div>
 
-            <motion.div className="flex justify-center lg:justify-start" variants={itemVariants}>
+            <motion.div
+              className="flex justify-center lg:justify-start"
+              variants={itemVariants}
+            >
               <Button
                 className="rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25"
                 onClick={scrollToContact}
@@ -120,15 +128,30 @@ export function HeroSection() {
           >
             {/* Desktop Layout - Absolute Positioning */}
             <div className="hidden lg:block">
-              <GlobalReachCard containerClassName="absolute top-0 left-0 w-48" transition={{ delay: 0 }} />
+              <GlobalReachCard
+                containerClassName="absolute top-0 left-0 w-48"
+                transition={{ delay: 0 }}
+              />
 
-              <CursorAmbassadorCard containerClassName="absolute top-0 right-0 w-56" transition={{ delay: 0.1 }} />
+              <CursorAmbassadorCard
+                containerClassName="absolute top-0 right-0 w-56"
+                transition={{ delay: 0.1 }}
+              />
 
-              <CurrentlyLearningCard containerClassName="absolute top-36 left-12 w-52" transition={{ delay: 0.2 }} />
+              <CurrentlyLearningCard
+                containerClassName="absolute top-36 left-12 w-52"
+                transition={{ delay: 0.2 }}
+              />
 
-              <TechStackCard containerClassName="absolute bottom-24 left-0 w-64" transition={{ delay: 0.3 }} />
+              <TechStackCard
+                containerClassName="absolute bottom-24 left-0 w-64"
+                transition={{ delay: 0.3 }}
+              />
 
-              <TerminalCard containerClassName="absolute bottom-24 right-0 w-72" transition={{ delay: 0.4 }} />
+              <TerminalCard
+                containerClassName="absolute bottom-24 right-0 w-72"
+                transition={{ delay: 0.4 }}
+              />
 
               {/* <ProficiencyCard containerClassName="absolute top-44 right-8 w-60" transition={{ delay: 0.5 }} /> */}
 
@@ -138,7 +161,10 @@ export function HeroSection() {
                 transition={{ delay: 0.6 }}
               />
 
-              <ExperienceCard containerClassName="absolute top-72 left-1/3 w-48" transition={{ delay: 0.7 }} />
+              <ExperienceCard
+                containerClassName="absolute top-72 left-1/3 w-48"
+                transition={{ delay: 0.7 }}
+              />
             </div>
 
             {/* Mobile/Tablet Layout - Grid */}
@@ -147,8 +173,14 @@ export function HeroSection() {
               <CursorAmbassadorCard transition={{ delay: 0.1 }} />
               <CurrentlyLearningCard transition={{ delay: 0.2 }} />
               <TechStackCard transition={{ delay: 0.3 }} />
-              <TerminalCard containerClassName="sm:col-span-2" transition={{ delay: 0.4 }} />
-              <ProficiencyCard containerClassName="sm:col-span-2" transition={{ delay: 0.5 }} />
+              <TerminalCard
+                containerClassName="sm:col-span-2"
+                transition={{ delay: 0.4 }}
+              />
+              <ProficiencyCard
+                containerClassName="sm:col-span-2"
+                transition={{ delay: 0.5 }}
+              />
               <CoffeeChatCard
                 containerClassName="sm:col-span-2"
                 onChatClick={scrollToContact}
@@ -166,7 +198,9 @@ export function HeroSection() {
           variants={itemVariants}
         >
           <div className="rounded-full border border-purple-500/30 bg-gradient-to-r from-purple-500/20 to-purple-600/20 px-6 py-3 text-center backdrop-blur-xl">
-            <span className="font-medium text-base text-purple-300">{years}+ {tCards('experience')}</span>
+            <span className="font-medium text-base text-purple-300">
+              {years}+ {tCards('experience')}
+            </span>
           </div>
         </motion.div>
       </div>

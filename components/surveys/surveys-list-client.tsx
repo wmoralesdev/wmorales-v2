@@ -1,10 +1,17 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { motion, type Variants } from 'framer-motion';
 import { ArrowRight, BarChart3 } from 'lucide-react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 // Animation variants
 const containerVariants: Variants = {
@@ -37,7 +44,6 @@ const cardVariants: Variants = {
 };
 
 type SurveysListClientProps = {
-  // biome-ignore lint/suspicious/noExplicitAny: form is built by engine, we can't type it
   surveys: any[];
   error?: string | null;
 };
@@ -53,7 +59,9 @@ export function SurveysListClient({ surveys, error }: SurveysListClientProps) {
       >
         <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
           <CardContent className="py-8">
-            <p className="text-gray-400">Failed to load surveys. Please try again later.</p>
+            <p className="text-gray-400">
+              Failed to load surveys. Please try again later.
+            </p>
           </CardContent>
         </Card>
       </motion.div>
@@ -84,13 +92,14 @@ export function SurveysListClient({ surveys, error }: SurveysListClientProps) {
       initial="hidden"
       variants={containerVariants}
     >
-      {/** biome-ignore lint/suspicious/noExplicitAny: form data is dynamic */}
       {surveys.map((survey: any) => (
         <motion.div key={survey.id} variants={cardVariants} whileHover="hover">
           <Card className="h-full border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10">
             <CardHeader>
               <CardTitle className="text-white">{survey.title}</CardTitle>
-              <CardDescription className="text-gray-400">{survey.description}</CardDescription>
+              <CardDescription className="text-gray-400">
+                {survey.description}
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="flex items-center justify-between text-gray-500 text-sm">

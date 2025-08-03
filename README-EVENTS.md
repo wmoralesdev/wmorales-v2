@@ -7,6 +7,7 @@ I've successfully implemented a comprehensive events system that allows users to
 ## ✨ Key Features Implemented
 
 ### 🎯 Core Functionality
+
 - **QR Code Scanning**: Users can scan QR codes to access event galleries
 - **Real-time Gallery**: Live updates when users upload photos using Supabase channels
 - **Image Upload**: Upload up to 15 photos per event with captions
@@ -15,6 +16,7 @@ I've successfully implemented a comprehensive events system that allows users to
 - **Event Management**: Create and manage events with expiration dates
 
 ### 📱 User Experience
+
 - **Mobile-First Design**: Optimized for mobile QR code scanning
 - **Real-time Updates**: See new photos as they're uploaded
 - **Image Preview**: Click images to view full-size with captions
@@ -24,6 +26,7 @@ I've successfully implemented a comprehensive events system that allows users to
 ## 🏗️ Architecture
 
 ### Database Schema
+
 ```prisma
 model Event {
   id          String   @id @default(uuid())
@@ -52,6 +55,7 @@ model EventImage {
 ```
 
 ### File Structure
+
 ```
 app/
 ├── (main)/events/
@@ -78,11 +82,13 @@ prisma/
 ## 🚀 Getting Started
 
 ### 1. Install Dependencies
+
 ```bash
 pnpm add @yudiel/react-qr-scanner html5-qrcode qrcode
 ```
 
 ### 2. Database Setup
+
 ```bash
 # Generate Prisma client
 pnpm prisma:generate
@@ -95,9 +101,11 @@ pnpm prisma:seed:events
 ```
 
 ### 3. Supabase Storage Setup
+
 Create a storage bucket named `event-images` with appropriate policies for authenticated uploads and public reads.
 
 ### 4. Environment Variables
+
 ```env
 DATABASE_URL=your_database_url
 DIRECT_URL=your_direct_database_url
@@ -108,18 +116,21 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ## 🎨 UI Components
 
 ### EventsScanner
+
 - QR code scanner using HTML5 QR code library
 - Camera permission handling
 - Error handling and validation
 - Mobile-optimized interface
 
 ### EventsList
+
 - Displays active events with statistics
 - Shows event details and photo counts
 - Navigation to event galleries
 - Loading states and error handling
 
 ### EventGallery
+
 - Real-time photo gallery with live updates
 - Image upload functionality
 - User photo management
@@ -127,6 +138,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 - Image preview dialog
 
 ### ImageUpload
+
 - File selection with preview
 - Caption support
 - Upload progress indicators
@@ -134,6 +146,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 - Supabase storage integration
 
 ### ImageGrid
+
 - Responsive grid layout
 - Hover effects and interactions
 - Caption display
@@ -142,11 +155,13 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ## 🔄 Real-time Features
 
 ### Supabase Channels
+
 - `event:{eventId}`: Real-time updates for specific events
 - Events: `image_uploaded`, `image_deleted`
 - Presence tracking for active viewers
 
 ### Live Updates
+
 - New photos appear instantly for all viewers
 - Photo deletions are broadcast in real-time
 - Active viewer count updates
@@ -155,16 +170,19 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ## 🔒 Security Features
 
 ### Authentication
+
 - All uploads require user authentication
 - Users can only delete their own images
 - Event access controlled through QR codes
 
 ### File Validation
+
 - File type validation (images only)
 - File size limits (10MB max)
 - Secure upload URLs with expiration
 
 ### Rate Limiting
+
 - Maximum images per user per event
 - Upload frequency limits
 - Event expiration dates
@@ -172,18 +190,21 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ## 📊 Performance Optimizations
 
 ### Image Handling
+
 - Automatic image compression
 - Responsive image sizes
 - Lazy loading for gallery images
 - Efficient thumbnail generation
 
 ### Real-time Efficiency
+
 - Efficient Supabase channel usage
 - Minimal data transfer
 - Connection pooling
 - Graceful error handling
 
 ### Database Optimization
+
 - Indexed queries for fast lookups
 - Efficient pagination
 - Optimized joins
@@ -192,12 +213,15 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ## 🧪 Testing & Development
 
 ### Sample Events
+
 The system includes sample events for testing:
+
 - "Cursor Meetup 2024" (QR: cursor2024)
 - "Developer Workshop" (QR: workshop2024)
 - "Tech Conference" (QR: techconf2024)
 
 ### Development Commands
+
 ```bash
 # Start development server
 pnpm dev
@@ -215,12 +239,14 @@ pnpm prisma:seed:events
 ## 📱 Mobile Experience
 
 ### QR Code Scanning
+
 - Optimized for mobile cameras
 - Automatic focus and exposure
 - Error correction for poor lighting
 - Fallback options for manual entry
 
 ### Touch Interactions
+
 - Touch-optimized upload interface
 - Swipe gestures for gallery navigation
 - Responsive design for all screen sizes
@@ -229,24 +255,28 @@ pnpm prisma:seed:events
 ## 🔧 Technical Implementation
 
 ### Next.js 15 Features
+
 - App router with server components
 - Server actions for data mutations
 - Metadata generation for SEO
 - Suspense boundaries for loading states
 
 ### TypeScript Integration
+
 - Full type safety throughout
 - Proper error handling
 - IntelliSense support
 - Compile-time error checking
 
 ### Tailwind CSS
+
 - Responsive design system
 - Dark mode support
 - Custom animations
 - Consistent spacing and typography
 
 ### shadcn/ui Components
+
 - Consistent UI patterns
 - Accessible components
 - Customizable themes
@@ -255,6 +285,7 @@ pnpm prisma:seed:events
 ## 🚀 Deployment Ready
 
 ### Production Considerations
+
 - Environment variable configuration
 - Database migration strategy
 - Supabase storage setup
@@ -262,6 +293,7 @@ pnpm prisma:seed:events
 - Monitoring and analytics
 
 ### Scalability
+
 - Horizontal scaling support
 - Database connection pooling
 - Image optimization pipeline
@@ -271,12 +303,14 @@ pnpm prisma:seed:events
 ## 📚 Documentation
 
 ### Complete Documentation
+
 - [Events System Documentation](docs/events-system.md)
 - [Research Summary](docs/research-summary.md)
 - [API Reference](docs/api-reference.md)
 - [Troubleshooting Guide](docs/troubleshooting.md)
 
 ### Key Resources
+
 - Supabase documentation for storage and real-time
 - Next.js 15 app router documentation
 - Prisma database management
@@ -285,6 +319,7 @@ pnpm prisma:seed:events
 ## 🎯 Future Enhancements
 
 ### Planned Features
+
 - Admin dashboard for event management
 - Advanced analytics and insights
 - Social features (likes, comments)
@@ -292,6 +327,7 @@ pnpm prisma:seed:events
 - Advanced QR code customization
 
 ### Technical Improvements
+
 - AI-powered image processing
 - Advanced caching strategies
 - Push notifications
@@ -301,12 +337,14 @@ pnpm prisma:seed:events
 ## 🏆 Success Metrics
 
 ### User Engagement
+
 - QR code scan success rate
 - Photo upload completion rate
 - Gallery view time
 - User retention metrics
 
 ### Technical Performance
+
 - Image upload speed
 - Real-time update latency
 - Mobile performance scores

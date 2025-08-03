@@ -25,5 +25,12 @@ export function Clock({ className }: ClockProps) {
     return () => clearInterval(interval);
   }, []);
 
-  return <div className={cn('font-mono text-sm', className)} suppressHydrationWarning>{time}</div>;
+  return (
+    <div
+      className={cn('font-mono text-sm', className)}
+      suppressHydrationWarning
+    >
+      {time}
+    </div>
+  );
 }

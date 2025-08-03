@@ -11,7 +11,10 @@ export function useGuestbookTickets() {
   useEffect(() => {
     async function loadTickets() {
       try {
-        const [userTicketData, allTicketsData] = await Promise.all([getUserTicket(), getAllTickets()]);
+        const [userTicketData, allTicketsData] = await Promise.all([
+          getUserTicket(),
+          getAllTickets(),
+        ]);
 
         if (userTicketData) {
           setUserTicket(userTicketData as unknown as TicketData);
@@ -27,5 +30,11 @@ export function useGuestbookTickets() {
     loadTickets();
   }, []);
 
-  return { userTicket, setUserTicket, allTickets, setAllTickets, isLoadingTickets };
+  return {
+    userTicket,
+    setUserTicket,
+    allTickets,
+    setAllTickets,
+    isLoadingTickets,
+  };
 }

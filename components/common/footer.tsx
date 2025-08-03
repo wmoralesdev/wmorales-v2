@@ -1,8 +1,16 @@
 'use client';
 
-import { EMAIL, TITLE } from '@/lib/consts';
+import { EMAIL } from '@/lib/consts';
 import { motion, type Variants } from 'framer-motion';
-import { Github, Linkedin, Mail, MapPin, Send, Sparkles, Twitter } from 'lucide-react';
+import {
+  Github,
+  Linkedin,
+  Mail,
+  MapPin,
+  Send,
+  Sparkles,
+  Twitter,
+} from 'lucide-react';
 import Link from 'next/link';
 import { useTranslations } from 'next-intl';
 
@@ -32,17 +40,19 @@ const itemVariants: Variants = {
 
 const socialLinks = [
   { icon: Github, href: 'https://github.com/wmoralesdev', label: 'GitHub' },
-  { icon: Linkedin, href: 'https://linkedin.com/in/wmoralesdev', label: 'LinkedIn' },
+  {
+    icon: Linkedin,
+    href: 'https://linkedin.com/in/wmoralesdev',
+    label: 'LinkedIn',
+  },
   { icon: Twitter, href: 'https://twitter.com/wmoralesdev', label: 'Twitter' },
   { icon: Mail, href: `mailto:${EMAIL}`, label: 'Email' },
 ];
 
-// Navigation will be translated dynamically
-
 export function Footer() {
   const currentYear = new Date().getFullYear();
   const t = useTranslations('footer');
-  
+
   const navigation = [
     { name: t('home'), href: '/' },
     { name: t('experience'), href: '/#experience' },
@@ -51,7 +61,7 @@ export function Footer() {
   ];
 
   return (
-    <footer className="relative overflow-hidden bg-black">
+    <footer className="relative overflow-hidden bg-black z-50">
       {/* Top gradient accent */}
       <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
 
@@ -70,8 +80,12 @@ export function Footer() {
             {/* Brand & Status */}
             <motion.div className="lg:col-span-2" variants={itemVariants}>
               <div className="mb-6">
-                <h3 className="mb-2 font-bold text-2xl text-white">Walter Morales</h3>
-                <p className="text-gray-400">{TITLE} & Cursor Ambassador</p>
+                <h3 className="mb-2 font-bold text-2xl text-white">
+                  Walter Morales
+                </h3>
+                <p className="text-gray-400">
+                  {t('title')} & {t('cursorAmbassador')}
+                </p>
               </div>
 
               {/* Availability status */}
@@ -80,7 +94,9 @@ export function Footer() {
                   <div className="h-3 w-3 rounded-full bg-green-500" />
                   <div className="absolute inset-0 h-3 w-3 animate-ping rounded-full bg-green-500" />
                 </div>
-                <span className="text-gray-300 text-sm">{t('availableForOpportunities')}</span>
+                <span className="text-gray-300 text-sm">
+                  {t('availableForOpportunities')}
+                </span>
               </div>
 
               {/* Location */}
@@ -92,11 +108,16 @@ export function Footer() {
 
             {/* Quick Links */}
             <motion.div variants={itemVariants}>
-              <h4 className="mb-4 font-semibold text-purple-400 text-sm">{t('quickLinks')}</h4>
+              <h4 className="mb-4 font-semibold text-purple-400 text-sm">
+                {t('quickLinks')}
+              </h4>
               <ul className="space-y-2">
                 {navigation.map((link) => (
                   <li key={link.name}>
-                    <Link className="text-gray-400 text-sm transition-colors hover:text-purple-400" href={link.href}>
+                    <Link
+                      className="text-gray-400 text-sm transition-colors hover:text-purple-400"
+                      href={link.href}
+                    >
                       {link.name}
                     </Link>
                   </li>
@@ -106,7 +127,9 @@ export function Footer() {
 
             {/* Connect */}
             <motion.div variants={itemVariants}>
-              <h4 className="mb-4 font-semibold text-purple-400 text-sm">{t('letsConnect')}</h4>
+              <h4 className="mb-4 font-semibold text-purple-400 text-sm">
+                {t('letsConnect')}
+              </h4>
 
               {/* Social links */}
               <div className="mb-6 flex gap-3">
@@ -146,7 +169,10 @@ export function Footer() {
           </div>
 
           {/* Bottom section */}
-          <motion.div className="mt-12 border-gray-800/50 border-t pt-8" variants={itemVariants}>
+          <motion.div
+            className="mt-12 border-gray-800/50 border-t pt-8"
+            variants={itemVariants}
+          >
             <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
               <div className="flex items-center gap-2 text-gray-500 text-sm">
                 <Sparkles className="h-4 w-4 text-purple-500/50" />

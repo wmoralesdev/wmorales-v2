@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import Markdoc, { nodes as baseNodes } from '@markdoc/markdoc';
 
 // Define custom tags for enhanced components
@@ -203,15 +204,15 @@ const config = {
   },
 };
 
-
-
 export function parseMarkdoc(content: string) {
   const ast = Markdoc.parse(content);
   const errors = Markdoc.validate(ast, config);
 
   if (errors.length) {
     console.error('Markdoc validation errors:', errors);
-    throw new Error(`Invalid content: ${errors.map((e) => e.message).join(', ')}`);
+    throw new Error(
+      `Invalid content: ${errors.map((e) => e.error?.message).join(', ')}`
+    );
   }
 
   const renderable = Markdoc.transform(ast, config);
@@ -219,7 +220,9 @@ export function parseMarkdoc(content: string) {
 }
 
 // Utility function to extract headings from content for table of contents
-export function extractHeadings(content: string): Array<{ id: string; title: string; level: number }> {
+export function extractHeadings(
+  content: string
+): Array<{ id: string; title: string; level: number }> {
   const ast = Markdoc.parse(content);
   const headings: Array<{ id: string; title: string; level: number }> = [];
 
@@ -227,7 +230,9 @@ export function extractHeadings(content: string): Array<{ id: string; title: str
     if (node.type === 'heading' && node.attributes?.id) {
       headings.push({
         id: node.attributes.id,
-        title: node.children?.map((child: any) => child.content || '').join('') || '',
+        title:
+          node.children?.map((child: any) => child.content || '').join('') ||
+          '',
         level: node.attributes.level,
       });
     }
@@ -242,7 +247,11 @@ export function extractHeadings(content: string): Array<{ id: string; title: str
 }
 
 // Utility function to get reading time
-export function getReadingTime(content: string): { text: string; minutes: number; words: number } {
+export function getReadingTime(content: string): {
+  text: string;
+  minutes: number;
+  words: number;
+} {
   const plainText = content
     .replace(/[#*`_~[\]()]/g, '')
     .replace(/\s+/g, ' ')

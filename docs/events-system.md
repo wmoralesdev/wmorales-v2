@@ -7,6 +7,7 @@ The Events System is a comprehensive solution for managing Cursor events with QR
 ## Features
 
 ### 🎯 Core Features
+
 - **QR Code Scanning**: Scan QR codes to access event galleries
 - **Real-time Gallery**: Live updates when users upload photos
 - **Image Upload**: Upload up to 15 photos per event with captions
@@ -15,6 +16,7 @@ The Events System is a comprehensive solution for managing Cursor events with QR
 - **Event Management**: Create and manage events with expiration dates
 
 ### 📱 User Experience
+
 - **Mobile-First Design**: Optimized for mobile QR code scanning
 - **Real-time Updates**: See new photos as they're uploaded
 - **Image Preview**: Click images to view full-size with captions
@@ -22,6 +24,7 @@ The Events System is a comprehensive solution for managing Cursor events with QR
 - **Error Handling**: Clear error messages and validation
 
 ### 🔧 Technical Features
+
 - **Next.js 15**: Latest app router with server components
 - **TypeScript**: Full type safety throughout the application
 - **Tailwind CSS**: Modern, responsive design system
@@ -32,6 +35,7 @@ The Events System is a comprehensive solution for managing Cursor events with QR
 ## Database Schema
 
 ### Event Model
+
 ```prisma
 model Event {
   id          String   @id @default(uuid())
@@ -49,6 +53,7 @@ model Event {
 ```
 
 ### EventImage Model
+
 ```prisma
 model EventImage {
   id        String   @id @default(uuid())
@@ -65,6 +70,7 @@ model EventImage {
 ## Setup Instructions
 
 ### 1. Database Migration
+
 ```bash
 # Generate and apply migrations
 pnpm prisma:migrate
@@ -74,6 +80,7 @@ pnpm prisma:seed:events
 ```
 
 ### 2. Supabase Storage Setup
+
 Create a storage bucket named `event-images` in your Supabase project with the following policies:
 
 ```sql
@@ -88,14 +95,16 @@ FOR SELECT USING (bucket_id = 'event-images');
 -- Allow users to delete their own images
 CREATE POLICY "Allow user deletes" ON storage.objects
 FOR DELETE USING (
-  auth.role() = 'authenticated' 
+  auth.role() = 'authenticated'
   AND bucket_id = 'event-images'
   AND auth.uid()::text = (storage.foldername(name))[2]
 );
 ```
 
 ### 3. Environment Variables
+
 Ensure these environment variables are set:
+
 ```env
 DATABASE_URL=your_database_url
 DIRECT_URL=your_direct_database_url
@@ -106,12 +115,15 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ## Usage
 
 ### Creating Events
+
 Events can be created through the admin interface or directly in the database. Each event gets a unique QR code that users can scan.
 
 ### QR Code Generation
+
 QR codes should contain the event's `qrCode` field value. Users scan these codes to access the event gallery.
 
 ### Image Upload Process
+
 1. User scans QR code or navigates to event
 2. Selects image file (max 10MB)
 3. Optionally adds caption
@@ -120,6 +132,7 @@ QR codes should contain the event's `qrCode` field value. Users scan these codes
 6. Real-time update is broadcast to all viewers
 
 ### Real-time Features
+
 - **Live Updates**: New photos appear instantly for all viewers
 - **Active Viewers**: Shows how many people are currently viewing the gallery
 - **Presence Tracking**: Tracks who is currently viewing the event
@@ -127,6 +140,7 @@ QR codes should contain the event's `qrCode` field value. Users scan these codes
 ## API Endpoints
 
 ### Server Actions
+
 - `createEvent(data)`: Create a new event
 - `getEventByQRCode(qrCode)`: Get event by QR code
 - `getEventById(id)`: Get event by ID
@@ -137,39 +151,48 @@ QR codes should contain the event's `qrCode` field value. Users scan these codes
 - `generateUploadURL(eventId, fileName)`: Generate upload URL
 
 ### Real-time Channels
+
 - `event:{eventId}`: Real-time updates for specific events
 - Events: `image_uploaded`, `image_deleted`
 
 ## Components
 
 ### EventsScanner
+
 QR code scanner component using HTML5 QR code library.
 
 ### EventsList
+
 Displays active events with statistics and navigation.
 
 ### EventGallery
+
 Main gallery component with upload functionality and real-time updates.
 
 ### ImageUpload
+
 Handles file selection, preview, and upload to Supabase storage.
 
 ### ImageGrid
+
 Responsive grid layout for displaying event photos.
 
 ## Security Features
 
 ### Authentication
+
 - All uploads require user authentication
 - Users can only delete their own images
 - Event access is controlled through QR codes
 
 ### File Validation
+
 - File type validation (images only)
 - File size limits (10MB max)
 - Secure upload URLs with expiration
 
 ### Rate Limiting
+
 - Maximum images per user per event
 - Upload frequency limits
 - Event expiration dates
@@ -177,16 +200,19 @@ Responsive grid layout for displaying event photos.
 ## Performance Optimizations
 
 ### Image Optimization
+
 - Automatic image compression
 - Responsive image sizes
 - Lazy loading for gallery images
 
 ### Real-time Efficiency
+
 - Efficient Supabase channel usage
 - Minimal data transfer
 - Connection pooling
 
 ### Database Optimization
+
 - Indexed queries for fast lookups
 - Efficient pagination
 - Optimized joins
@@ -212,7 +238,9 @@ Responsive grid layout for displaying event photos.
    - Ensure proper channel subscription
 
 ### Debug Mode
+
 Enable debug logging by setting:
+
 ```env
 NEXT_PUBLIC_DEBUG=true
 ```
@@ -220,6 +248,7 @@ NEXT_PUBLIC_DEBUG=true
 ## Future Enhancements
 
 ### Planned Features
+
 - **Admin Dashboard**: Manage events and users
 - **Analytics**: Track event engagement
 - **Social Features**: Like and comment on photos
@@ -227,6 +256,7 @@ NEXT_PUBLIC_DEBUG=true
 - **Advanced QR**: Custom QR code designs
 
 ### Technical Improvements
+
 - **Image Processing**: Automatic cropping and filters
 - **CDN Integration**: Faster image delivery
 - **Offline Support**: Cache for offline viewing
@@ -245,6 +275,7 @@ When contributing to the events system:
 ## Support
 
 For issues or questions:
+
 1. Check the troubleshooting section
 2. Review Supabase documentation
 3. Check the GitHub issues

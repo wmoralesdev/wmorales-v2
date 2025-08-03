@@ -29,11 +29,17 @@ export function CursorAmbassadorCard(props: CursorAmbassadorCardProps) {
               }}
             />
           </div>
-          <Badge className="border-green-500/30 bg-green-500/20 text-green-400 text-xs">{t('active')}</Badge>
+          <Badge className="border-green-500/30 bg-green-500/20 text-green-400 text-xs">
+            {t('active')}
+          </Badge>
         </div>
         <div>
-          <h3 className="font-semibold text-sm text-white lg:text-base">{t('cursorAmbassador')}</h3>
-          <p className="mt-1 text-gray-400 text-xs lg:text-sm">{t('empoweringDevelopersWithAI')}</p>
+          <h3 className="font-semibold text-sm text-white lg:text-base">
+            {t('cursorAmbassador')}
+          </h3>
+          <p className="mt-1 text-gray-400 text-xs lg:text-sm">
+            {t('empoweringDevelopersWithAI')}
+          </p>
         </div>
       </div>
     </BaseCard>

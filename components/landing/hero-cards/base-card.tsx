@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { motion, type Variants } from 'framer-motion';
@@ -14,9 +15,7 @@ export type BaseCardProps = {
   isDraggable?: boolean;
   variants?: Variants;
   whileHover?: string;
-  // biome-ignore lint/suspicious/noExplicitAny: from framer-motion
   animate?: any;
-  // biome-ignore lint/suspicious/noExplicitAny: from framer-motion
   transition?: any;
   animateFloat?: boolean;
 };
@@ -115,7 +114,6 @@ export function BaseCard({
     localStorage.setItem(STORAGE_KEY, JSON.stringify(positions));
   };
 
-  // biome-ignore lint/suspicious/noExplicitAny: from framer-motion
   const handleDragEnd = (_: any, info: any) => {
     const newPosition = {
       x: position.x + info.offset.x,
@@ -133,7 +131,9 @@ export function BaseCard({
     bottom: 300,
   };
 
-  const combinedAnimate = animateFloat ? { ...animate, ...floatVariants.animate } : animate;
+  const combinedAnimate = animateFloat
+    ? { ...animate, ...floatVariants.animate }
+    : animate;
 
   return (
     <motion.div

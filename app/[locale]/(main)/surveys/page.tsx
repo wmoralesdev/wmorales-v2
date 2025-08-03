@@ -6,13 +6,16 @@ import { SurveysListClient } from '@/components/surveys/surveys-list-client';
 
 export { metadata } from './metadata';
 
+// Force dynamic rendering to avoid database calls during build
+export const dynamic = 'force-dynamic';
+
 type Props = {
   params: Promise<{ locale: string }>;
 };
 
 export default async function SurveysPage({ params }: Props) {
   const { locale } = await params;
-  
+
   // Enable static rendering
   setRequestLocale(locale);
 
@@ -29,7 +32,10 @@ export default async function SurveysPage({ params }: Props) {
       />
 
       <div className="container mx-auto px-4 py-8 pt-16">
-        <SurveysListClient error={surveysResult.error} surveys={surveysResult.data || []} />
+        <SurveysListClient
+          error={surveysResult.error}
+          surveys={surveysResult.data || []}
+        />
       </div>
     </div>
   );

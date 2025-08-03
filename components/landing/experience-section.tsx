@@ -1,7 +1,16 @@
 'use client';
 
 import { motion, type Variants } from 'framer-motion';
-import { Building2, Calendar, Cloud, Code2, Rocket, Server, Sparkles, Users } from 'lucide-react';
+import {
+  Building2,
+  Calendar,
+  Cloud,
+  Code2,
+  Rocket,
+  Server,
+  Sparkles,
+  Users,
+} from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import { useLocale, useTranslations } from 'next-intl';
 
@@ -168,15 +177,26 @@ export function ExperienceSection() {
           viewport={{ once: true, amount: 0.3 }}
           whileInView="visible"
         >
-          <motion.div className="mb-4 inline-flex items-center gap-2" variants={itemVariants}>
+          <motion.div
+            className="mb-4 inline-flex items-center gap-2"
+            variants={itemVariants}
+          >
             <Sparkles className="h-5 w-5 text-purple-400" />
-            <span className="font-medium text-purple-400 text-sm">{t('sectionLabel')}</span>
+            <span className="font-medium text-purple-400 text-sm">
+              {t('sectionLabel')}
+            </span>
           </motion.div>
 
-          <motion.h2 className="mb-4 font-bold text-3xl text-white sm:text-4xl lg:text-5xl" variants={itemVariants}>
+          <motion.h2
+            className="mb-4 font-bold text-3xl text-white sm:text-4xl lg:text-5xl"
+            variants={itemVariants}
+          >
             {t('sectionTitle')}
           </motion.h2>
-          <motion.p className="mx-auto max-w-2xl text-base text-gray-400 sm:text-lg" variants={itemVariants}>
+          <motion.p
+            className="mx-auto max-w-2xl text-base text-gray-400 sm:text-lg"
+            variants={itemVariants}
+          >
             {t('sectionDescription')}
           </motion.p>
         </motion.div>
@@ -211,7 +231,10 @@ export function ExperienceSection() {
                   variants={experienceVariants}
                 >
                   {/* Timeline dot with icon */}
-                  <motion.div className="lg:-translate-x-1/2 absolute left-8 lg:left-1/2" variants={iconVariants}>
+                  <motion.div
+                    className="lg:-translate-x-1/2 absolute left-8 lg:left-1/2"
+                    variants={iconVariants}
+                  >
                     <div
                       className={`relative flex h-16 w-16 items-center justify-center rounded-full bg-gradient-to-br ${exp.color} p-0.5`}
                     >
@@ -237,7 +260,9 @@ export function ExperienceSection() {
                   {/* Content */}
                   <motion.div
                     className={`ml-28 lg:ml-0 ${
-                      isEven ? 'lg:mr-[calc(50%+4rem)]' : 'lg:ml-[calc(50%+4rem)]'
+                      isEven
+                        ? 'lg:mr-[calc(50%+4rem)]'
+                        : 'lg:ml-[calc(50%+4rem)]'
                     } group cursor-pointer`}
                     transition={{ duration: 0.2 }}
                     whileHover={{ scale: 1.02 }}
@@ -255,11 +280,15 @@ export function ExperienceSection() {
                             <h3 className="font-semibold text-lg text-white transition-colors group-hover:text-purple-300">
                               {exp.company}
                             </h3>
-                            <p className="mt-1 text-gray-400 text-sm">{exp.role}</p>
+                            <p className="mt-1 text-gray-400 text-sm">
+                              {exp.role}
+                            </p>
                           </div>
                           <div className="flex items-center gap-2 text-gray-500 text-xs">
                             <Calendar className="h-3 w-3" />
-                            <span className="whitespace-nowrap">{exp.period}</span>
+                            <span className="whitespace-nowrap">
+                              {exp.period}
+                            </span>
                           </div>
                         </div>
 
@@ -272,24 +301,28 @@ export function ExperienceSection() {
 
                       {/* Achievements */}
                       <ul className="space-y-2">
-                        {exp.achievements.map((achievement, achievementIndex) => (
-                          <motion.li
-                            className="flex items-start gap-2 text-gray-400 text-sm"
-                            initial={{ opacity: 0, x: isEven ? -10 : 10 }}
-                            key={achievement}
-                            transition={{
-                              delay: achievementIndex * 0.1,
-                              duration: 0.3,
-                            }}
-                            viewport={{ once: true }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                          >
-                            <span
-                              className={`inline-block h-1 w-1 rounded-full bg-gradient-to-r ${exp.color} mt-1.5 flex-shrink-0`}
-                            />
-                            <span className="transition-colors group-hover:text-gray-300">{achievement}</span>
-                          </motion.li>
-                        ))}
+                        {exp.achievements.map(
+                          (achievement, achievementIndex) => (
+                            <motion.li
+                              className="flex items-start gap-2 text-gray-400 text-sm"
+                              initial={{ opacity: 0, x: isEven ? -10 : 10 }}
+                              key={achievement}
+                              transition={{
+                                delay: achievementIndex * 0.1,
+                                duration: 0.3,
+                              }}
+                              viewport={{ once: true }}
+                              whileInView={{ opacity: 1, x: 0 }}
+                            >
+                              <span
+                                className={`inline-block h-1 w-1 rounded-full bg-gradient-to-r ${exp.color} mt-1.5 flex-shrink-0`}
+                              />
+                              <span className="transition-colors group-hover:text-gray-300">
+                                {achievement}
+                              </span>
+                            </motion.li>
+                          )
+                        )}
                       </ul>
                     </div>
                   </motion.div>

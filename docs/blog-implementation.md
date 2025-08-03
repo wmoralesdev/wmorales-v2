@@ -7,16 +7,19 @@ Successfully implemented a blog feature for the portfolio site using Keystatic C
 ## Completed Features
 
 ### 1. Core Setup ✅
+
 - **Dependencies Installed**: `@keystatic/core`, `@keystatic/next`, `@markdoc/markdoc`, `reading-time`, `github-slugger`, `prismjs`
 - **Database Schema**: Added models for BlogView, BlogComment, BlogCommentVote, and Notification
 - **Keystatic Configuration**: Set up with local storage for development
 
 ### 2. Blog Infrastructure ✅
+
 - **Keystatic Admin Routes**: Created at `/keystatic` for content management
 - **API Routes**: Set up Keystatic API handlers
 - **Directory Structure**: Created all necessary directories for blog components, content, and images
 
 ### 3. Components Created ✅
+
 - **Markdoc Components**: Custom components for Callout, CodeBlock, Image, Link, and Card
 - **Blog Post Card**: Responsive card component for displaying posts
 - **Reading Progress**: Progress indicator for blog posts
@@ -24,11 +27,13 @@ Successfully implemented a blog feature for the portfolio site using Keystatic C
 - **Syntax Highlighting**: Integrated Prism.js for code blocks
 
 ### 4. Blog Pages ✅
+
 - **Blog Homepage** (`/blog`): Displays featured and recent posts
 - **Individual Post Page** (`/blog/[slug]`): Full post with Markdoc rendering
 - **Sample Post**: Created "Introducing Blog" post as a demo
 
 ### 5. Features Implemented ✅
+
 - **View Tracking**: Server action for tracking anonymous and authenticated views
 - **SEO Optimization**: Dynamic metadata for each post
 - **Responsive Design**: Mobile-friendly layouts
@@ -38,25 +43,30 @@ Successfully implemented a blog feature for the portfolio site using Keystatic C
 ## Pending Features
 
 ### 1. Database Migration ⏳
+
 - Need to run `prisma migrate dev` with proper environment variables
 - This will create the tables for view tracking, comments, and notifications
 
 ### 2. Comment System 🔄
+
 - Comment components are defined but not integrated
 - Need to create comment UI components
 - Implement real-time updates via Supabase
 
 ### 3. Notification System 🔄
+
 - Server actions are ready but UI components need to be created
 - Notification bell component for navbar
 - Real-time notification updates
 
 ### 4. Additional Pages 📄
+
 - Archive page (`/blog/archive`)
 - Tag filtering pages (`/blog/tags/[tag]`)
 - RSS feed implementation
 
 ### 5. GitHub Integration 🔗
+
 - Switch from local storage to GitHub storage
 - Create GitHub App for Keystatic
 - Configure environment variables
@@ -64,6 +74,7 @@ Successfully implemented a blog feature for the portfolio site using Keystatic C
 ## Next Steps
 
 1. **Environment Setup**:
+
    ```bash
    # Add to .env.local
    DATABASE_URL="your-database-url"
@@ -74,6 +85,7 @@ Successfully implemented a blog feature for the portfolio site using Keystatic C
    ```
 
 2. **Run Migration**:
+
    ```bash
    pnpm prisma migrate dev --name add_blog_models
    ```
@@ -95,11 +107,13 @@ Successfully implemented a blog feature for the portfolio site using Keystatic C
 ## Usage
 
 ### Content Management
+
 - Access Keystatic admin at `/keystatic`
 - Create, edit, and publish posts through the UI
 - Posts are stored in `/content/posts/` as `.mdoc` files
 
 ### Development
+
 ```bash
 pnpm dev              # Start development server
 pnpm build            # Build for production

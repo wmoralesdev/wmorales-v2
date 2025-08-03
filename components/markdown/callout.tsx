@@ -46,7 +46,9 @@ export function Callout({ type = 'info', title, children }: CalloutProps) {
     <Alert className={cn('my-6', config.className)}>
       <Icon className={cn('h-4 w-4', config.iconClassName)} />
       {title && <AlertTitle>{title}</AlertTitle>}
-      <AlertDescription className="mt-2 text-gray-300">{children}</AlertDescription>
+      <AlertDescription className="mt-2 text-gray-300">
+        {children}
+      </AlertDescription>
     </Alert>
   );
 }

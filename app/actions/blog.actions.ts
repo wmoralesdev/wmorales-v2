@@ -4,6 +4,110 @@ import type { JsonValue } from '@prisma/client/runtime/library';
 import { cookies } from 'next/headers';
 import { prisma } from '@/lib/prisma';
 import { createClient } from '@/lib/supabase/server';
+import { BlogPost } from '@/lib/types/blog.types';
+
+// Notification helpers
+async function createNotification(data: {
+  userId: string;
+  type: string;
+  title: string;
+  message: string;
+  entityType: string;
+  entityId: string;
+  triggerUserId?: string;
+  triggerCommentId?: string;
+  metadata?: JsonValue;
+}) {
+  const notification = await prisma.notification.create({
+    data: {
+      ...data,
+      metadata: data.metadata || undefined,
+    },
+  });
+
+  // Broadcast to user via Supabase
+  const supabase = await createClient();
+  const channel = supabase.channel(`user:${data.userId}`);
+  await channel.send({
+    type: 'broadcast',
+    event: 'new_notification',
+    payload: { notification },
+  });
+
+  return notification;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function applySorting(posts: any[], sortBy: string) {
+  const sortedPosts = [...posts];
+
+  switch (sortBy) {
+    case 'date-asc': {
+      return sortedPosts.sort(
+        (a, b) =>
+          new Date(a.entry.publishedAt).getTime() -
+          new Date(b.entry.publishedAt).getTime()
+      );
+    }
+    case 'title-asc': {
+      return sortedPosts.sort((a, b) =>
+        a.entry.title.localeCompare(b.entry.title)
+      );
+    }
+    case 'title-desc': {
+      return sortedPosts.sort((a, b) =>
+        b.entry.title.localeCompare(a.entry.title)
+      );
+    }
+    case 'featured-first': {
+      return sortedPosts.sort((a, b) => {
+        if (a.entry.featured && !b.entry.featured) {
+          return -1;
+        }
+        if (!a.entry.featured && b.entry.featured) {
+          return 1;
+        }
+        return (
+          new Date(b.entry.publishedAt).getTime() -
+          new Date(a.entry.publishedAt).getTime()
+        );
+      });
+    }
+    case 'date-desc':
+    default: {
+      return sortedPosts.sort(
+        (a, b) =>
+          new Date(b.entry.publishedAt).getTime() -
+          new Date(a.entry.publishedAt).getTime()
+      );
+    }
+  }
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function calculateTagCounts(posts: any[]) {
+  const tagCounts: Record<string, number> = {};
+
+  for (const post of posts) {
+    for (const tag of post.entry.tags) {
+      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
+    }
+  }
+
+  const AVAILABLE_TAGS = [
+    { label: 'AI/ML', value: 'ai-ml' },
+    { label: 'Web Development', value: 'web-dev' },
+    { label: 'DevOps', value: 'devops' },
+    { label: 'Career', value: 'career' },
+    { label: 'Tutorial', value: 'tutorial' },
+    { label: 'Cursor', value: 'cursor' },
+  ];
+
+  return AVAILABLE_TAGS.map((tag) => ({
+    ...tag,
+    count: tagCounts[tag.value] || 0,
+  }));
+}
 
 // Session management
 export async function initializeBlogSession() {
@@ -117,8 +221,14 @@ export async function getComments(slug: string) {
     userVote: number | null;
     userName: string;
   } => {
-    const score = comment.votes.reduce((sum: number, vote: CommentVote) => sum + vote.vote, 0);
-    const userVote = user ? (comment.votes.find((v: CommentVote) => v.userId === user.id)?.vote ?? null) : null;
+    const score = comment.votes.reduce(
+      (sum: number, vote: CommentVote) => sum + vote.vote,
+      0
+    );
+    const userVote = user
+      ? (comment.votes.find((v: CommentVote) => v.userId === user.id)?.vote ??
+        null)
+      : null;
 
     return {
       ...comment,
@@ -132,7 +242,12 @@ export async function getComments(slug: string) {
   return comments.map(processComment);
 }
 
-export async function submitComment(slug: string, content: string, parentId: string | null, depth: number) {
+export async function submitComment(
+  slug: string,
+  content: string,
+  parentId: string | null,
+  depth: number
+) {
   const supabase = await createClient();
   const {
     data: { user },
@@ -267,37 +382,6 @@ export async function deleteComment(commentId: string) {
   });
 }
 
-// Notification helpers
-async function createNotification(data: {
-  userId: string;
-  type: string;
-  title: string;
-  message: string;
-  entityType: string;
-  entityId: string;
-  triggerUserId?: string;
-  triggerCommentId?: string;
-  metadata?: JsonValue;
-}) {
-  const notification = await prisma.notification.create({
-    data: {
-      ...data,
-      metadata: data.metadata || undefined,
-    },
-  });
-
-  // Broadcast to user via Supabase
-  const supabase = await createClient();
-  const channel = supabase.channel(`user:${data.userId}`);
-  await channel.send({
-    type: 'broadcast',
-    event: 'new_notification',
-    payload: { notification },
-  });
-
-  return notification;
-}
-
 // Search and filtering functionality
 export type BlogSearchParams = {
   query?: string;
@@ -307,13 +391,15 @@ export type BlogSearchParams = {
 };
 
 export type BlogSearchResult = {
-  posts: any[];
+  posts: BlogPost[];
   totalCount: number;
   filteredCount: number;
   availableTags: Array<{ value: string; label: string; count: number }>;
 };
 
-export async function searchBlogPosts(params: BlogSearchParams): Promise<BlogSearchResult> {
+export async function searchBlogPosts(
+  params: BlogSearchParams
+): Promise<BlogSearchResult> {
   const { createReader } = await import('@keystatic/core/reader');
   const keystaticConfig = await import('@/keystatic.config');
 
@@ -345,13 +431,19 @@ export async function searchBlogPosts(params: BlogSearchParams): Promise<BlogSea
   if (params.query) {
     const query = params.query.toLowerCase();
     filteredPosts = filteredPosts.filter(
-      (post) => post.entry.title.toLowerCase().includes(query) || post.entry.description.toLowerCase().includes(query)
+      (post) =>
+        post.entry.title.toLowerCase().includes(query) ||
+        post.entry.description.toLowerCase().includes(query)
     );
   }
 
   // Tag filtering
   if (params.tags && params.tags.length > 0) {
-    filteredPosts = filteredPosts.filter((post) => params.tags?.some((tag) => post.entry.tags.includes(tag)));
+    filteredPosts = filteredPosts.filter((post) =>
+      params.tags?.some((tag) =>
+        post.entry.tags.includes(tag as (typeof post.entry.tags)[number])
+      )
+    );
   }
 
   // Featured filtering
@@ -415,7 +507,10 @@ export async function getSearchSuggestions(query: string, limit = 5) {
   // Then search in descriptions
   for (const post of publishedPosts) {
     const description = post.entry.description.toLowerCase();
-    if (description.includes(searchQuery) && !suggestions.some((s) => s.slug === post.slug)) {
+    if (
+      description.includes(searchQuery) &&
+      !suggestions.some((s) => s.slug === post.slug)
+    ) {
       suggestions.push({
         type: 'description',
         text: post.entry.description,
@@ -427,66 +522,6 @@ export async function getSearchSuggestions(query: string, limit = 5) {
 
   return suggestions.slice(0, limit);
 }
-
-function applySorting(posts: any[], sortBy: string) {
-  const sortedPosts = [...posts];
-
-  switch (sortBy) {
-    case 'date-asc': {
-      return sortedPosts.sort(
-        (a, b) => new Date(a.entry.publishedAt).getTime() - new Date(b.entry.publishedAt).getTime()
-      );
-    }
-    case 'title-asc': {
-      return sortedPosts.sort((a, b) => a.entry.title.localeCompare(b.entry.title));
-    }
-    case 'title-desc': {
-      return sortedPosts.sort((a, b) => b.entry.title.localeCompare(a.entry.title));
-    }
-    case 'featured-first': {
-      return sortedPosts.sort((a, b) => {
-        if (a.entry.featured && !b.entry.featured) {
-          return -1;
-        }
-        if (!a.entry.featured && b.entry.featured) {
-          return 1;
-        }
-        return new Date(b.entry.publishedAt).getTime() - new Date(a.entry.publishedAt).getTime();
-      });
-    }
-    case 'date-desc':
-    default: {
-      return sortedPosts.sort(
-        (a, b) => new Date(b.entry.publishedAt).getTime() - new Date(a.entry.publishedAt).getTime()
-      );
-    }
-  }
-}
-
-function calculateTagCounts(posts: any[]) {
-  const tagCounts: Record<string, number> = {};
-
-  for (const post of posts) {
-    for (const tag of post.entry.tags) {
-      tagCounts[tag] = (tagCounts[tag] || 0) + 1;
-    }
-  }
-
-  const AVAILABLE_TAGS = [
-    { label: 'AI/ML', value: 'ai-ml' },
-    { label: 'Web Development', value: 'web-dev' },
-    { label: 'DevOps', value: 'devops' },
-    { label: 'Career', value: 'career' },
-    { label: 'Tutorial', value: 'tutorial' },
-    { label: 'Cursor', value: 'cursor' },
-  ];
-
-  return AVAILABLE_TAGS.map((tag) => ({
-    ...tag,
-    count: tagCounts[tag.value] || 0,
-  }));
-}
-
 export async function getBlogStats() {
   const { createReader } = await import('@keystatic/core/reader');
   const keystaticConfig = await import('@/keystatic.config');
@@ -510,7 +545,11 @@ export async function getBlogStats() {
     featuredPosts: featuredPosts.length,
     availableTags: tagCounts,
     recentPosts: publishedPosts
-      .sort((a, b) => new Date(b.entry.publishedAt!).getTime() - new Date(a.entry.publishedAt!).getTime())
+      .sort(
+        (a, b) =>
+          new Date(b.entry.publishedAt!).getTime() -
+          new Date(a.entry.publishedAt!).getTime()
+      )
       .slice(0, 6),
   };
 }

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 'use client';
 
 import * as SliderPrimitive from '@radix-ui/react-slider';
@@ -43,7 +44,9 @@ function Slider({
         data-slot="slider-track"
       >
         <SliderPrimitive.Range
-          className={cn('absolute bg-primary data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full')}
+          className={cn(
+            'absolute bg-primary data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full'
+          )}
           data-slot="slider-range"
         />
       </SliderPrimitive.Track>

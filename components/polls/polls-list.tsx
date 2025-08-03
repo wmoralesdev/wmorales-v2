@@ -6,7 +6,13 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { subscribeToPollsList } from '@/lib/supabase/realtime';
 
 type Poll = {
@@ -73,7 +79,9 @@ export function PollsList({ polls }: PollsListProps) {
 
   const copyToClipboard = async (code: string) => {
     try {
-      await navigator.clipboard.writeText(`${window.location.origin}/polls/${code}`);
+      await navigator.clipboard.writeText(
+        `${window.location.origin}/polls/${code}`
+      );
       setCopiedCode(code);
       setTimeout(() => setCopiedCode(null), 2000);
     } catch (_err) {
@@ -111,9 +119,12 @@ export function PollsList({ polls }: PollsListProps) {
               <CardHeader>
                 <div className="flex items-start justify-between">
                   <div className="flex-1 space-y-1">
-                    <CardTitle className="line-clamp-1 text-white">{poll.title}</CardTitle>
+                    <CardTitle className="line-clamp-1 text-white">
+                      {poll.title}
+                    </CardTitle>
                     <CardDescription className="line-clamp-2 text-gray-400">
-                      {poll.description || 'Help us decide our next feature by voting on your favorite option!'}
+                      {poll.description ||
+                        'Help us decide our next feature by voting on your favorite option!'}
                     </CardDescription>
                   </div>
                   <div className="ml-4 flex flex-col items-end gap-2">
@@ -128,7 +139,10 @@ export function PollsList({ polls }: PollsListProps) {
                       {poll.isActive ? 'Active' : 'Closed'}
                     </Badge>
                     {currentActiveUsers > 0 && poll.isActive && (
-                      <Badge className="gap-1 border-green-500/30 bg-green-500/10 text-green-400" variant="outline">
+                      <Badge
+                        className="gap-1 border-green-500/30 bg-green-500/10 text-green-400"
+                        variant="outline"
+                      >
                         <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
                         {currentActiveUsers} live
                       </Badge>
@@ -179,7 +193,9 @@ export function PollsList({ polls }: PollsListProps) {
                   </div>
                 </div>
 
-                <div className="text-gray-500 text-xs">Created {new Date(poll.createdAt).toLocaleDateString()}</div>
+                <div className="text-gray-500 text-xs">
+                  Created {new Date(poll.createdAt).toLocaleDateString()}
+                </div>
               </CardContent>
             </Card>
           </motion.div>

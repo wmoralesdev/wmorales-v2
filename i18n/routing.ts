@@ -22,8 +22,8 @@ export const routing = defineRouting({
     '/surveys': '/surveys',
     '/surveys/[id]/fill': '/surveys/[id]/fill',
     '/keystatic': '/keystatic',
-    '/showcase': '/showcase'
-  }
+    '/showcase': '/showcase',
+  },
 });
 
 export type Pathnames = keyof typeof routing.pathnames;

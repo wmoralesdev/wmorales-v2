@@ -10,8 +10,12 @@ import { createClient } from '@/lib/supabase/server';
 
 // Color palette schema for AI generation
 const colorPaletteSchema = z.object({
-  primaryColor: z.string().describe('Hex color for gradient start, should match the mood'),
-  secondaryColor: z.string().describe('Hex color for gradient end, should complement primary'),
+  primaryColor: z
+    .string()
+    .describe('Hex color for gradient start, should match the mood'),
+  secondaryColor: z
+    .string()
+    .describe('Hex color for gradient end, should complement primary'),
   accentColor: z.string().describe('Hex accent color for highlights'),
   backgroundColor: z.string().describe('Hex background color for the card'),
 });
@@ -27,7 +31,10 @@ async function generateTicketNumber(): Promise<string> {
 
   let nextNumber = 1;
   if (lastTicket) {
-    const lastNumber = Number.parseInt(lastTicket.ticketNumber.split('-')[1], 10);
+    const lastNumber = Number.parseInt(
+      lastTicket.ticketNumber.split('-')[1],
+      10
+    );
     nextNumber = lastNumber + 1;
   }
 
@@ -35,7 +42,9 @@ async function generateTicketNumber(): Promise<string> {
 }
 
 // Generate color palette using AI
-export async function generateColorPalette(mood: string): Promise<ColorPalette> {
+export async function generateColorPalette(
+  mood: string
+): Promise<ColorPalette> {
   try {
     const { object } = await generateObject({
       model: openai('o4-mini'),
@@ -83,7 +92,11 @@ export async function createGuestbookEntry(mood: string, message?: string) {
 
   // Get user metadata
   const userMetadata = user.user_metadata || {};
-  const userName = userMetadata.full_name || userMetadata.name || user.email?.split('@')[0] || 'Anonymous';
+  const userName =
+    userMetadata.full_name ||
+    userMetadata.name ||
+    user.email?.split('@')[0] ||
+    'Anonymous';
   const userAvatar = userMetadata.avatar_url || userMetadata.picture || null;
   const userProvider = user.app_metadata?.provider || 'email';
 

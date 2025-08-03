@@ -17,7 +17,7 @@ type Props = {
 export async function generateStaticParams() {
   try {
     const tickets = await getAllTickets();
-    
+
     // Generate params for all locales and all tickets
     return routing.locales.flatMap((locale) =>
       tickets.map((ticket) => ({
@@ -77,13 +77,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function TicketPage({ params }: Props) {
   const { locale, id } = await params;
-  
+
   // Enable static rendering
   setRequestLocale(locale);
 
   // Get translations
   const t = await getTranslations('guestbook');
-  
+
   const ticket = await getTicketById(id);
 
   if (!ticket) {
@@ -97,7 +97,9 @@ export default async function TicketPage({ params }: Props) {
           {/* Header */}
           <div className="text-center">
             <h1 className="mb-4 font-bold text-4xl">{t('title')}</h1>
-            <p className="mx-auto max-w-2xl text-lg text-muted-foreground">{t('userTicket', { userName: ticket.userName })}</p>
+            <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
+              {t('userTicket', { userName: ticket.userName })}
+            </p>
           </div>
 
           {/* Ticket Display */}
@@ -125,7 +127,10 @@ export default async function TicketPage({ params }: Props) {
             <Card className="mx-auto max-w-md animate-delay-200 animate-fade-in-up">
               <CardContent className="py-6">
                 <p className="text-center text-muted-foreground">
-                  {t('mood')}: <span className="font-medium text-foreground">"{ticket.entry.mood}"</span>
+                  {t('mood')}:{' '}
+                  <span className="font-medium text-foreground">
+                    &quot;{ticket.entry.mood}&quot;
+                  </span>
                 </p>
               </CardContent>
             </Card>
@@ -135,7 +140,9 @@ export default async function TicketPage({ params }: Props) {
           <div className="animate-delay-400 animate-fade-in-up text-center">
             <Card className="mx-auto max-w-md">
               <CardContent className="py-8">
-                <h2 className="mb-4 font-semibold text-xl">{t('createTicket')}</h2>
+                <h2 className="mb-4 font-semibold text-xl">
+                  {t('createTicket')}
+                </h2>
                 <p className="mb-6 text-muted-foreground">
                   {t('joinDescription')}
                 </p>

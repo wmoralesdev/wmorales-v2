@@ -137,25 +137,50 @@ export const pageMetadata = {
     title: 'Digital Guestbook',
     description:
       'Sign my digital guestbook and create your unique conference-style ticket with AI-generated colors based on your mood. Join the community of developers and tech enthusiasts.',
-    keywords: ['Digital Guestbook', 'AI Tickets', 'Developer Community', 'Interactive Experience'],
+    keywords: [
+      'Digital Guestbook',
+      'AI Tickets',
+      'Developer Community',
+      'Interactive Experience',
+    ],
   },
   surveys: {
     title: 'Community Surveys',
     description:
       'Participate in surveys to help shape the future of the LATAM Cursor community. Your voice matters in building a stronger developer ecosystem in Latin America.',
-    keywords: ['Community Surveys', 'LATAM Tech', 'Developer Feedback', 'Cursor Community', 'Tech Polls'],
+    keywords: [
+      'Community Surveys',
+      'LATAM Tech',
+      'Developer Feedback',
+      'Cursor Community',
+      'Tech Polls',
+    ],
   },
   polls: {
     title: 'Live Polls',
     description:
       'Join live polls and vote with fellow developers in real-time. Interactive polling for tech events, workshops, and community decisions.',
-    keywords: ['Live Polls', 'Real-time Voting', 'Tech Events', 'Developer Community', 'Interactive Polls'],
+    keywords: [
+      'Live Polls',
+      'Real-time Voting',
+      'Tech Events',
+      'Developer Community',
+      'Interactive Polls',
+    ],
   },
   showcase: {
     title: 'Project Showcase',
     description:
       'Explore my portfolio of software projects, from web applications to open-source contributions. Discover the technologies, challenges, and solutions behind each project.',
-    keywords: ['Portfolio', 'Projects', 'Software Development', 'Web Applications', 'Open Source', 'Case Studies', 'Technical Solutions'],
+    keywords: [
+      'Portfolio',
+      'Projects',
+      'Software Development',
+      'Web Applications',
+      'Open Source',
+      'Case Studies',
+      'Technical Solutions',
+    ],
   },
 };
 
@@ -167,7 +192,11 @@ export function generatePersonStructuredData() {
     name: siteConfig.author.name,
     url: siteConfig.url,
     email: siteConfig.author.email,
-    sameAs: [siteConfig.author.linkedin, siteConfig.author.github, siteConfig.author.instagram],
+    sameAs: [
+      siteConfig.author.linkedin,
+      siteConfig.author.github,
+      siteConfig.author.instagram,
+    ],
     jobTitle: 'Senior Software Engineer',
     worksFor: {
       '@type': 'Organization',
@@ -199,7 +228,9 @@ export function generateWebSiteStructuredData() {
   };
 }
 
-export function generateBreadcrumbStructuredData(items: { name: string; url: string }[]) {
+export function generateBreadcrumbStructuredData(
+  items: { name: string; url: string }[]
+) {
   return {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',

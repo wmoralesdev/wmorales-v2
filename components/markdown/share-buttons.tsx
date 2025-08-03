@@ -44,21 +44,41 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
       <span className="text-gray-400 text-sm">Share this post:</span>
       <div className="flex gap-2">
         <Button asChild size="sm" variant="outline">
-          <Link aria-label="Share on Twitter" href={shareLinks.twitter} rel="noopener noreferrer" target="_blank">
+          <Link
+            aria-label="Share on Twitter"
+            href={shareLinks.twitter}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             <Twitter className="h-4 w-4" />
           </Link>
         </Button>
         <Button asChild size="sm" variant="outline">
-          <Link aria-label="Share on Facebook" href={shareLinks.facebook} rel="noopener noreferrer" target="_blank">
+          <Link
+            aria-label="Share on Facebook"
+            href={shareLinks.facebook}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             <Facebook className="h-4 w-4" />
           </Link>
         </Button>
         <Button asChild size="sm" variant="outline">
-          <Link aria-label="Share on LinkedIn" href={shareLinks.linkedin} rel="noopener noreferrer" target="_blank">
+          <Link
+            aria-label="Share on LinkedIn"
+            href={shareLinks.linkedin}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
             <Linkedin className="h-4 w-4" />
           </Link>
         </Button>
-        <Button aria-label="Copy link" onClick={copyToClipboard} size="sm" variant="outline">
+        <Button
+          aria-label="Copy link"
+          onClick={copyToClipboard}
+          size="sm"
+          variant="outline"
+        >
           <Link2 className="h-4 w-4" />
         </Button>
       </div>

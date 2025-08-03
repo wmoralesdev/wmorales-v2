@@ -21,11 +21,17 @@ export function ProficiencyCard(props: ProficiencyCardProps) {
   const t = useTranslations('homepage.cards');
 
   return (
-    <BaseCard className="border-gray-800 bg-gray-900/80 p-4 backdrop-blur-xl lg:p-6" id="proficiency" {...props}>
+    <BaseCard
+      className="border-gray-800 bg-gray-900/80 p-4 backdrop-blur-xl lg:p-6"
+      id="proficiency"
+      {...props}
+    >
       <div className="space-y-3">
         <div className="flex items-center gap-2">
           <Zap className="h-5 w-5 text-purple-400 lg:h-6 lg:w-6" />
-          <span className="font-medium text-white text-xs lg:text-sm">{t('proficiency')}</span>
+          <span className="font-medium text-white text-xs lg:text-sm">
+            {t('proficiency')}
+          </span>
         </div>
         <div className="space-y-2 lg:space-y-3">
           {proficiencyData.map((skill, index) => (

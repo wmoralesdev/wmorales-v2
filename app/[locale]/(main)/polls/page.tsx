@@ -30,13 +30,13 @@ async function getPolls() {
 
 export default async function PollsPage({ params }: Props) {
   const { locale } = await params;
-  
+
   // Enable static rendering
   setRequestLocale(locale);
 
   // Get translations
   const t = await getTranslations('polls');
-  
+
   const polls = await getPolls();
 
   return (
@@ -51,9 +51,7 @@ export default async function PollsPage({ params }: Props) {
         {polls.length === 0 ? (
           <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
             <CardContent className="py-8">
-              <p className="text-center text-gray-400">
-                {t('noPolls')}
-              </p>
+              <p className="text-center text-gray-400">{t('noPolls')}</p>
             </CardContent>
           </Card>
         ) : (

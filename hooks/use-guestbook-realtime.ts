@@ -4,7 +4,10 @@ import type { GuestbookRealtimeEvent } from '@/lib/supabase/realtime';
 import { subscribeToGuestbookUpdates } from '@/lib/supabase/realtime';
 import type { TicketData } from '@/lib/types/guestbook.types';
 
-export function useGuestbookRealtime(initialTickets: TicketData[] = [], maxTickets = 25) {
+export function useGuestbookRealtime(
+  initialTickets: TicketData[] = [],
+  maxTickets = 25
+) {
   const [tickets, setTickets] = useState<TicketData[]>(initialTickets);
   const [activeViewers, setActiveViewers] = useState(0);
   const [channel, setChannel] = useState<RealtimeChannel | null>(null);
@@ -23,7 +26,9 @@ export function useGuestbookRealtime(initialTickets: TicketData[] = [], maxTicke
 
           case 'ticket_updated': {
             // Update existing ticket
-            return prevTickets.map((ticket) => (ticket.id === ticketData.id ? ticketData : ticket));
+            return prevTickets.map((ticket) =>
+              ticket.id === ticketData.id ? ticketData : ticket
+            );
           }
 
           case 'ticket_deleted': {
@@ -45,7 +50,10 @@ export function useGuestbookRealtime(initialTickets: TicketData[] = [], maxTicke
 
   useEffect(() => {
     // Subscribe to realtime updates
-    const newChannel = subscribeToGuestbookUpdates(handleTicketUpdate, handlePresenceUpdate);
+    const newChannel = subscribeToGuestbookUpdates(
+      handleTicketUpdate,
+      handlePresenceUpdate
+    );
 
     setChannel(newChannel);
 

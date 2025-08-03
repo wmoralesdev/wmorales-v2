@@ -10,7 +10,7 @@ export async function middleware(request: NextRequest) {
   // Step 1: Handle internationalization first
   // Process the request through the i18n middleware to handle locale routing
   const intlResponse = intlMiddleware(request);
-  
+
   // Step 2: Check if internationalization middleware requires a redirect
   // If intl middleware returns a redirect (307 or 302), return it immediately
   // This ensures proper locale handling before any authentication logic
@@ -65,7 +65,7 @@ export async function middleware(request: NextRequest) {
   // Step 7: Refresh user session
   // Retrieve current user to refresh the session and update cookies
   const {
-    // biome-ignore lint/correctness/noUnusedVariables: needed to refresh session
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     data: { user },
   } = await supabase.auth.getUser();
 

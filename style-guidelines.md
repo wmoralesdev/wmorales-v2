@@ -19,21 +19,13 @@ This document outlines the design system and style guidelines used throughout th
 
 ```css
 /* Background Colors */
---bg-primary: black
---bg-secondary: gray-900
---bg-tertiary: gray-800
-
-/* Text Colors */
---text-primary: white
---text-secondary: gray-300
---text-muted: gray-400, gray-500
-
-/* Accent Colors */
---accent-primary: purple-400, purple-500, purple-600
---accent-secondary: purple-200, purple-300
---accent-success: green-400, green-500
---accent-warning: yellow-400, yellow-500
---accent-danger: red-500
+--bg-primary:
+  black --bg-secondary: gray-900 --bg-tertiary: gray-800 /* Text Colors */
+    --text-primary: white --text-secondary: gray-300 --text-muted: gray-400,
+  gray-500 /* Accent Colors */ --accent-primary: purple-400, purple-500,
+  purple-600 --accent-secondary: purple-200,
+  purple-300 --accent-success: green-400,
+  green-500 --accent-warning: yellow-400, yellow-500 --accent-danger: red-500;
 ```
 
 ### Gradient Definitions
@@ -116,20 +108,20 @@ This document outlines the design system and style guidelines used throughout th
 ```tsx
 /* Base Card Styles */
 className =
-  "backdrop-blur-xl border transition-colors cursor-pointer hover:border-purple-800/50";
+  'backdrop-blur-xl border transition-colors cursor-pointer hover:border-purple-800/50';
 
 /* Card Variants */
 // Default
-("bg-gray-900/80 border-gray-800");
+('bg-gray-900/80 border-gray-800');
 
 // Accent
-("bg-gradient-to-br from-purple-900/40 to-gray-900/40 border-purple-800/50");
+('bg-gradient-to-br from-purple-900/40 to-gray-900/40 border-purple-800/50');
 
 // Dark
-("bg-black/80 border-gray-800"); // or bg-black/90
+('bg-black/80 border-gray-800'); // or bg-black/90
 
 // Special
-("bg-gradient-to-r from-purple-900/30 to-purple-800/30 border-purple-700/50");
+('bg-gradient-to-r from-purple-900/30 to-purple-800/30 border-purple-700/50');
 ```
 
 ### Badges
@@ -182,14 +174,14 @@ const cardVariants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: "easeOut",
+      ease: 'easeOut',
     },
   },
   hover: {
     scale: 1.05,
     transition: {
       duration: 0.2,
-      ease: "easeOut",
+      ease: 'easeOut',
     },
   },
 };
@@ -201,7 +193,7 @@ const floatVariants = {
     transition: {
       duration: 6,
       repeat: Number.POSITIVE_INFINITY,
-      ease: "easeInOut",
+      ease: 'easeInOut',
     },
   },
 };
@@ -228,7 +220,7 @@ const floatVariants = {
 ### Tailwind Classes
 
 ```tsx
-className = "backdrop-blur-xl bg-gray-900/80 border-gray-800";
+className = 'backdrop-blur-xl bg-gray-900/80 border-gray-800';
 ```
 
 ## Interactive Elements
@@ -259,14 +251,14 @@ className = "backdrop-blur-xl bg-gray-900/80 border-gray-800";
 
 ```tsx
 // Size progression
-className = "text-xs lg:text-sm";
-className = "p-4 lg:p-6";
-className = "h-6 lg:h-8 w-6 lg:w-8";
+className = 'text-xs lg:text-sm';
+className = 'p-4 lg:p-6';
+className = 'h-6 lg:h-8 w-6 lg:w-8';
 
 // Layout changes
-className = "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3";
-className = "text-center lg:text-left";
-className = "hidden lg:block";
+className = 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3';
+className = 'text-center lg:text-left';
+className = 'hidden lg:block';
 ```
 
 ### Desktop Features
@@ -281,7 +273,7 @@ className = "hidden lg:block";
 ### Creating a New Card Component
 
 ```tsx
-import { BaseCard } from "@/components/landing/hero-cards";
+import { BaseCard } from '@/components/landing/hero-cards';
 
 export function NewCard(props) {
   return (

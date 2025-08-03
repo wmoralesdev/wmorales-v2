@@ -1,4 +1,5 @@
 import { Github, LogIn, Mail } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -7,6 +8,8 @@ type SignInCardProps = {
 };
 
 export function SignInCard({ onSignIn }: SignInCardProps) {
+  const t = useTranslations('guestbook');
+
   return (
     <Card className="mx-auto max-w-md">
       <CardHeader className="text-center">
@@ -15,10 +18,8 @@ export function SignInCard({ onSignIn }: SignInCardProps) {
             <LogIn className="h-8 w-8 text-purple-400" />
           </div>
         </div>
-        <CardTitle className="text-2xl">Sign in to continue</CardTitle>
-        <p className="text-muted-foreground">
-          Choose your preferred method to sign in and create your personalized ticket
-        </p>
+        <CardTitle className="text-2xl">{t('signInTitle')}</CardTitle>
+        <p className="text-muted-foreground">{t('signInDescription')}</p>
       </CardHeader>
       <CardContent className="space-y-4">
         <Button
@@ -27,7 +28,7 @@ export function SignInCard({ onSignIn }: SignInCardProps) {
           variant="outline"
         >
           <Github className="mr-3 h-5 w-5" />
-          Continue with GitHub
+          {t('continueWith', { provider: 'GitHub' })}
         </Button>
 
         <Button
@@ -36,13 +37,11 @@ export function SignInCard({ onSignIn }: SignInCardProps) {
           variant="outline"
         >
           <Mail className="mr-3 h-5 w-5" />
-          Continue with Google
+          {t('continueWith', { provider: 'Google' })}
         </Button>
 
         <div className="pt-4 text-center">
-          <p className="text-muted-foreground text-xs">
-            By signing in, you agree to create a personalized ticket and optionally leave a message
-          </p>
+          <p className="text-muted-foreground text-xs">{t('termsText')}</p>
         </div>
       </CardContent>
     </Card>

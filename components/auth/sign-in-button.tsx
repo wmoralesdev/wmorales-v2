@@ -20,7 +20,10 @@ type SignInButtonProps = {
   size?: 'default' | 'sm' | 'lg';
 };
 
-export function SignInButton({ variant = 'outline', size = 'default' }: SignInButtonProps) {
+export function SignInButton({
+  variant = 'outline',
+  size = 'default',
+}: SignInButtonProps) {
   const { user, loading } = useAuth();
   const pathname = usePathname();
   const t = useTranslations('auth');

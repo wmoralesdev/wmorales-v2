@@ -14,6 +14,38 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model Profile {
+  id              String   @id // Must match Supabase auth.users.id
+  email           String   @unique
+  name            String?
+  avatar          String?
+  username        String?  @unique
+  provider        String?  // 'google' or 'github'
+  locale          String   @default("en")
+  bio             String?  @db.Text
+  company         String?
+  location        String?
+  website         String?
+  githubUsername  String?
+  twitterUsername String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  // Relations
+  images           EventImage[]
+  pollSessions     PollSession[]
+  guestbookEntries GuestbookEntry[]
+  blogViews        BlogView[]
+  blogComments     BlogComment[]
+  blogCommentVotes BlogCommentVote[]
+  notifications    Notification[]
+
+  @@index([email])
+  @@index([username])
+  @@index([provider])
+  @@map("profiles")
+}
+
 model Survey {
   id          String   @id @default(uuid())
   title       String
@@ -86,7 +118,7 @@ model SurveyQuestionOption {
 model SurveyResponse {
   id          String    @id @default(uuid())
   surveyId    String    @map("survey_id")
-  userId      String?   @map("user_id")
+  profileId   String?   @map("profile_id")
   sessionId   String?   @map("session_id")
   startedAt   DateTime  @default(now()) @map("started_at")
   completedAt DateTime? @map("completed_at")
@@ -172,7 +204,6 @@ model PollOption {
   label       String
   value       String
   color       String?  // For visual representation
-  emoji       String?  // Optional emoji for the option
   language    String   @default("en") // 🆕 Language-specific options
   createdAt   DateTime @default(now())
 
@@ -204,31 +235,34 @@ model PollSession {
   id         String   @id @default(uuid())
   pollId     String   @map("poll_id")
   sessionId  String   @map("session_id") // Browser session ID
-  userId     String?  @map("user_id") // Optional if user is logged in
+  profileId  String?  @map("profile_id") // Optional if user is logged in
   userAgent  String?  @map("user_agent")
   ipHash     String?  @map("ip_hash") // Hashed IP for fraud prevention
   createdAt  DateTime @default(now())
 
-  poll  Poll       @relation(fields: [pollId], references: [id], onDelete: Cascade)
-  votes PollVote[]
+  poll    Poll     @relation(fields: [pollId], references: [id], onDelete: Cascade)
+  profile Profile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  votes   PollVote[]
 
   @@unique([pollId, sessionId])
   @@index([pollId])
+  @@index([profileId])
   @@map("poll_sessions")
 }
 
 // Guestbook Models
 model GuestbookEntry {
   id        String   @id @default(uuid())
-  userId    String   @map("user_id")
+  profileId String   @map("profile_id")
   message   String?  @db.Text
   mood      String?  @db.Text // The mood/style description used for AI generation
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  ticket GuestbookTicket?
+  profile Profile          @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  ticket  GuestbookTicket?
 
-  @@index([userId])
+  @@index([profileId])
   @@index([createdAt])
   @@map("guestbook_entries")
 }
@@ -237,7 +271,7 @@ model GuestbookTicket {
   id              String   @id @default(uuid())
   ticketNumber    String   @unique @map("ticket_number") // Format: C-000000
   entryId         String   @unique @map("entry_id")
-  userId          String   @map("user_id")
+  profileId       String   @map("profile_id")
   userName        String   @map("user_name")
   userEmail       String   @map("user_email")
   userAvatar      String?  @map("user_avatar")
@@ -251,7 +285,7 @@ model GuestbookTicket {
   entry GuestbookEntry @relation(fields: [entryId], references: [id], onDelete: Cascade)
 
   @@index([ticketNumber])
-  @@index([userId])
+  @@index([profileId])
   @@index([createdAt])
   @@map("guestbook_tickets")
 }
@@ -266,13 +300,20 @@ model Event {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   endsAt    DateTime? @map("ends_at")
+  status    EventStatus @default(LIVE) // Track if event is live or ended
 
   content EventContent[] // 🆕 Localized content
   images  EventImage[]   // Shared photos
 
   @@index([slug])
   @@index([qrCode])
+  @@index([status])
   @@map("events")
+}
+
+enum EventStatus {
+  LIVE
+  ENDED
 }
 
 // 🆕 Localized event content
@@ -294,15 +335,16 @@ model EventContent {
 model EventImage {
   id        String   @id @default(uuid())
   eventId   String   @map("event_id")
-  userId    String   @map("user_id")
+  profileId String   @map("profile_id")
   imageUrl  String   @map("image_url")
   caption   String?
   createdAt DateTime @default(now())
 
-  event Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  event   Event   @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   @@index([eventId])
-  @@index([userId])
+  @@index([profileId])
   @@index([createdAt])
   @@map("event_images")
 }
@@ -311,20 +353,22 @@ model EventImage {
 model BlogView {
   id        String   @id @default(uuid())
   slug      String
-  userId    String?  @map("user_id")    // Null for anonymous
+  profileId String?  @map("profile_id") // Null for anonymous
   sessionId String   @map("session_id") // Track unique views
   createdAt DateTime @default(now())
 
+  profile Profile? @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
   @@unique([slug, sessionId]) // One view per session per post
   @@index([slug])
-  @@index([userId])
+  @@index([profileId])
   @@map("blog_views")
 }
 
 model BlogComment {
   id        String    @id @default(uuid())
   slug      String
-  userId    String    @map("user_id")
+  profileId String    @map("profile_id")
   content   String    @db.Text
   parentId  String?   @map("parent_id")
   depth     Int       @default(0) // 0 for root, 1 for reply, 2 for reply to reply
@@ -333,12 +377,13 @@ model BlogComment {
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
 
-  parent  BlogComment?  @relation("CommentReplies", fields: [parentId], references: [id])
-  replies BlogComment[] @relation("CommentReplies")
+  profile Profile              @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  parent  BlogComment?         @relation("CommentReplies", fields: [parentId], references: [id])
+  replies BlogComment[]        @relation("CommentReplies")
   votes   BlogCommentVote[]
 
   @@index([slug])
-  @@index([userId])
+  @@index([profileId])
   @@index([parentId])
   @@index([createdAt])
   @@map("blog_comments")
@@ -347,34 +392,37 @@ model BlogComment {
 model BlogCommentVote {
   id        String   @id @default(uuid())
   commentId String   @map("comment_id")
-  userId    String   @map("user_id")
+  profileId String   @map("profile_id")
   vote      Int      // 1 for upvote, -1 for downvote
   createdAt DateTime @default(now())
 
   comment BlogComment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  profile Profile     @relation(fields: [profileId], references: [id], onDelete: Cascade)
 
-  @@unique([commentId, userId]) // One vote per user per comment
+  @@unique([commentId, profileId]) // One vote per user per comment
   @@index([commentId])
-  @@index([userId])
+  @@index([profileId])
   @@map("blog_comment_votes")
 }
 
 model Notification {
   id               String    @id @default(uuid())
-  userId           String    @map("user_id")
+  profileId        String    @map("profile_id")
   type             String    // comment_reply, comment_vote, etc.
   title            String
   message          String
   entityType       String    @map("entity_type") // blog_comment, etc.
   entityId         String    @map("entity_id")
-  triggerUserId    String?   @map("trigger_user_id") // User who triggered the notification
+  triggerProfileId String?   @map("trigger_profile_id") // Profile who triggered the notification
   triggerCommentId String?   @map("trigger_comment_id") // For comment-related notifications
   metadata         Json?     // Additional data
   isRead           Boolean   @default(false) @map("is_read")
   readAt           DateTime? @map("read_at")
   createdAt        DateTime  @default(now())
 
-  @@index([userId])
+  profile Profile @relation(fields: [profileId], references: [id], onDelete: Cascade)
+
+  @@index([profileId])
   @@index([isRead])
   @@index([createdAt])
   @@map("notifications")

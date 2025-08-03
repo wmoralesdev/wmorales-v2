@@ -1,9 +1,11 @@
 # Guestbook page
 
 # General
+
 This site is a guestbook for the users to sign in and generate a unique ticket with AI. The tickes created are stored in the database and can be viewed any of the visitors. Users can chat with the AI to generate the ticket color palette depending on the message they send, focusing on the user's mood, style, or anything that inspires them.
 
 Examples:
+
 - "I'm feeling happy and creative" -> generates a ticket with a happy and creative color palette.
 - "I'm feeling sad and nostalgic" -> generates a ticket with a sad and nostalgic color palette.
 - "I'm feeling excited and adventurous" -> generates a ticket with an excited and adventurous color palette.
@@ -13,6 +15,7 @@ Examples:
 - "I'm feeling nostalgic and reflective" -> generates a ticket with a nostalgic and reflective color palette.
 
 ## Tasks
+
 - [ ] Add a check for the auth status of the user from supabase.
 - [ ] Implement Vercel AI SDK for the AI generation.
   - [ ] Consider which is the best model to use for this task (cheapest and most accurate).

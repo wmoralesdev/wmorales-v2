@@ -102,64 +102,64 @@ model BlogView {
 
 ```typescript
 // keystatic.config.ts
-import { config, fields, collection } from "@keystatic/core";
+import { config, fields, collection } from '@keystatic/core';
 
 export default config({
   storage: {
-    kind: "github",
-    repo: "wmoralesdev/wmorales-v2", // Your GitHub repo
-    branchPrefix: "blog/", // Creates PRs with blog/ prefix
+    kind: 'github',
+    repo: 'wmoralesdev/wmorales-v2', // Your GitHub repo
+    branchPrefix: 'blog/', // Creates PRs with blog/ prefix
   },
   collections: {
     posts: collection({
-      label: "Blog Posts",
-      slugField: "title",
-      path: "content/posts/*",
-      format: { contentField: "content" },
-      entryLayout: "content",
+      label: 'Blog Posts',
+      slugField: 'title',
+      path: 'content/posts/*',
+      format: { contentField: 'content' },
+      entryLayout: 'content',
       schema: {
         title: fields.slug({
-          name: { label: "Title" },
+          name: { label: 'Title' },
           slug: {
-            label: "URL Slug",
-            description: "The URL path for this post",
+            label: 'URL Slug',
+            description: 'The URL path for this post',
           },
         }),
         description: fields.text({
-          label: "Description",
+          label: 'Description',
           multiline: true,
           validation: { length: { min: 50, max: 160 } },
         }),
         publishedAt: fields.date({
-          label: "Published Date",
-          defaultValue: { kind: "today" },
+          label: 'Published Date',
+          defaultValue: { kind: 'today' },
         }),
         featured: fields.checkbox({
-          label: "Featured Post",
+          label: 'Featured Post',
           defaultValue: false,
         }),
         tags: fields.multiselect({
-          label: "Tags",
+          label: 'Tags',
           options: [
-            { label: "AI/ML", value: "ai-ml" },
-            { label: "Web Development", value: "web-dev" },
-            { label: "DevOps", value: "devops" },
-            { label: "Career", value: "career" },
-            { label: "Tutorial", value: "tutorial" },
-            { label: "Cursor", value: "cursor" },
+            { label: 'AI/ML', value: 'ai-ml' },
+            { label: 'Web Development', value: 'web-dev' },
+            { label: 'DevOps', value: 'devops' },
+            { label: 'Career', value: 'career' },
+            { label: 'Tutorial', value: 'tutorial' },
+            { label: 'Cursor', value: 'cursor' },
           ],
         }),
         coverImage: fields.image({
-          label: "Cover Image",
-          directory: "public/blog/images",
+          label: 'Cover Image',
+          directory: 'public/blog/images',
           validation: { isRequired: true },
         }),
         content: fields.markdoc({
-          label: "Content",
+          label: 'Content',
           options: {
             image: {
-              directory: "public/blog/images",
-              publicPath: "/blog/images/",
+              directory: 'public/blog/images',
+              publicPath: '/blog/images/',
             },
           },
         }),
@@ -394,11 +394,11 @@ export default async function BlogPost({
 
 ```typescript
 // app/actions/blog.actions.ts
-"use server";
+'use server';
 
-import { cookies } from "next/headers";
-import { createClient } from "@/lib/supabase/server";
-import { prisma } from "@/lib/prisma";
+import { cookies } from 'next/headers';
+import { createClient } from '@/lib/supabase/server';
+import { prisma } from '@/lib/prisma';
 
 export async function trackView(slug: string) {
   const supabase = await createClient();
@@ -408,14 +408,14 @@ export async function trackView(slug: string) {
 
   // Get or create session ID
   const cookieStore = await cookies();
-  let sessionId = cookieStore.get("blog-session")?.value;
+  let sessionId = cookieStore.get('blog-session')?.value;
 
   if (!sessionId) {
     sessionId = crypto.randomUUID();
-    cookieStore.set("blog-session", sessionId, {
+    cookieStore.set('blog-session', sessionId, {
       httpOnly: true,
       secure: true,
-      sameSite: "lax",
+      sameSite: 'lax',
       maxAge: 60 * 60 * 24 * 365, // 1 year
     });
   }
@@ -431,7 +431,7 @@ export async function trackView(slug: string) {
     });
   } catch (error) {
     // Ignore duplicate view errors
-    console.log("View already tracked for this session");
+    console.log('View already tracked for this session');
   }
 }
 
@@ -738,7 +738,7 @@ export async function getComments(slug: string) {
         },
       },
     },
-    orderBy: { createdAt: "desc" },
+    orderBy: { createdAt: 'desc' },
   });
 
   // Calculate scores and user votes
@@ -755,7 +755,7 @@ export async function getComments(slug: string) {
       ...comment,
       score,
       userVote,
-      userName: "Anonymous", // Fetch from user table in real implementation
+      userName: 'Anonymous', // Fetch from user table in real implementation
       replies: comment.replies?.map(processComment) || [],
     };
   };
@@ -774,8 +774,8 @@ export async function submitComment(
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) throw new Error("Unauthorized");
-  if (depth > 2) throw new Error("Maximum nesting depth exceeded");
+  if (!user) throw new Error('Unauthorized');
+  if (depth > 2) throw new Error('Maximum nesting depth exceeded');
 
   const comment = await prisma.blogComment.create({
     data: {
@@ -796,10 +796,10 @@ export async function submitComment(
     if (parentComment && parentComment.userId !== user.id) {
       await createNotification({
         userId: parentComment.userId,
-        type: "comment_reply",
-        title: "New reply to your comment",
+        type: 'comment_reply',
+        title: 'New reply to your comment',
         message: `Someone replied to your comment on "${slug}"`,
-        entityType: "blog_comment",
+        entityType: 'blog_comment',
         entityId: comment.id,
         triggerUserId: user.id,
         triggerCommentId: comment.id,
@@ -811,8 +811,8 @@ export async function submitComment(
   // Broadcast via Supabase realtime
   const channel = supabase.channel(`blog:${slug}`);
   await channel.send({
-    type: "broadcast",
-    event: "new_comment",
+    type: 'broadcast',
+    event: 'new_comment',
     payload: { comment },
   });
 
@@ -825,7 +825,7 @@ export async function voteComment(commentId: string, vote: -1 | 0 | 1) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) throw new Error("Unauthorized");
+  if (!user) throw new Error('Unauthorized');
 
   if (vote === 0) {
     // Remove vote
@@ -861,10 +861,10 @@ export async function voteComment(commentId: string, vote: -1 | 0 | 1) {
       if (comment && comment.userId !== user.id) {
         await createNotification({
           userId: comment.userId,
-          type: "comment_vote",
-          title: "Your comment was upvoted",
-          message: "Someone upvoted your comment",
-          entityType: "blog_comment",
+          type: 'comment_vote',
+          title: 'Your comment was upvoted',
+          message: 'Someone upvoted your comment',
+          entityType: 'blog_comment',
           entityId: commentId,
           triggerUserId: user.id,
           metadata: { vote },
@@ -880,7 +880,7 @@ export async function deleteComment(commentId: string) {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) throw new Error("Unauthorized");
+  if (!user) throw new Error('Unauthorized');
 
   // Soft delete - preserve for thread continuity
   await prisma.blogComment.update({
@@ -890,7 +890,7 @@ export async function deleteComment(commentId: string) {
     },
     data: {
       deletedAt: new Date(),
-      content: "[deleted]",
+      content: '[deleted]',
     },
   });
 }

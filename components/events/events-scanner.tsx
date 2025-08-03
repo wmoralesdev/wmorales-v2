@@ -2,16 +2,30 @@
 
 import { motion } from 'framer-motion';
 import { Html5QrcodeScanner } from 'html5-qrcode';
-import { AlertCircle, Camera, CameraOff, CheckCircle, Sparkles } from 'lucide-react';
+import {
+  AlertCircle,
+  Camera,
+  CameraOff,
+  CheckCircle,
+  Sparkles,
+} from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { toast } from 'sonner';
 import { getEventByQRCode } from '@/app/actions/events.actions';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 
 export function EventsScanner() {
+  const t = useTranslations('events');
   const [isScanning, setIsScanning] = useState(false);
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -32,7 +46,7 @@ export function EventsScanner() {
       try {
         // Validate QR code format (should be a short code)
         if (!decodedText || decodedText.length < 3) {
-          throw new Error('Invalid QR code format');
+          throw new Error(t('invalidQRCode'));
         }
 
         // Get event details
@@ -41,16 +55,17 @@ export function EventsScanner() {
         // Navigate to event gallery
         router.push(`/events/${event.id}`);
 
-        toast.success(`Welcome to ${event.title}!`);
+        toast.success(t('welcomeToEvent', { title: event.content[0].title }));
       } catch (err) {
-        const message = err instanceof Error ? err.message : 'Failed to process QR code';
+        const message =
+          err instanceof Error ? err.message : t('qrProcessError');
         setError(message);
         toast.error(message);
       } finally {
         setIsProcessing(false);
       }
     },
-    [isProcessing, router]
+    [isProcessing, router, t]
   );
 
   const startScanning = useCallback(async () => {
@@ -83,9 +98,9 @@ export function EventsScanner() {
       }
     } catch {
       setHasPermission(false);
-      setError('Camera permission denied. Please allow camera access to scan QR codes.');
+      setError(t('cameraPermissionDenied'));
     }
-  }, [handleScan]);
+  }, [handleScan, t]);
 
   const stopScanning = useCallback(() => {
     if (scannerRef.current) {
@@ -105,20 +120,27 @@ export function EventsScanner() {
 
   if (hasPermission === false) {
     return (
-      <motion.div animate={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 20 }} transition={{ duration: 0.5 }}>
+      <motion.div
+        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.5 }}
+      >
         <Card className="overflow-hidden border-gray-800 bg-gray-900/80 backdrop-blur-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
               <CameraOff className="h-5 w-5 text-red-400" />
               Camera Access Required
             </CardTitle>
-            <CardDescription className="text-gray-400">Camera permission is required to scan QR codes</CardDescription>
+            <CardDescription className="text-gray-400">
+              Camera permission is required to scan QR codes
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <Alert className="border-red-500/30 bg-red-500/10">
               <AlertCircle className="h-4 w-4 text-red-400" />
               <AlertDescription className="text-red-300">
-                Please allow camera access in your browser settings and try again.
+                Please allow camera access in your browser settings and try
+                again.
               </AlertDescription>
             </Alert>
             <Button
@@ -136,7 +158,11 @@ export function EventsScanner() {
 
   if (!isScanning) {
     return (
-      <motion.div animate={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 20 }} transition={{ duration: 0.5 }}>
+      <motion.div
+        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.5 }}
+      >
         <Card className="overflow-hidden border-gray-800 bg-gray-900/80 backdrop-blur-xl">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-white">
@@ -155,7 +181,7 @@ export function EventsScanner() {
               size="lg"
             >
               <Camera className="mr-2 h-4 w-4" />
-              Start Scanner
+              {t('startScanner')}
             </Button>
           </CardContent>
         </Card>
@@ -186,7 +212,7 @@ export function EventsScanner() {
               transition={{ duration: 0.3 }}
             >
               <CheckCircle className="h-6 w-6 animate-pulse text-green-400" />
-              <span className="font-medium text-white">Processing...</span>
+              <span className="font-medium text-white">{t('processing')}</span>
             </motion.div>
           </div>
         )}
@@ -200,7 +226,9 @@ export function EventsScanner() {
         >
           <Alert className="border-red-500/30 bg-red-500/10 backdrop-blur-sm">
             <AlertCircle className="h-4 w-4 text-red-400" />
-            <AlertDescription className="text-red-300">{error}</AlertDescription>
+            <AlertDescription className="text-red-300">
+              {error}
+            </AlertDescription>
           </Alert>
         </motion.div>
       )}
@@ -211,19 +239,19 @@ export function EventsScanner() {
           onClick={stopScanning}
           variant="outline"
         >
-          Stop Scanner
+          {t('stopScanner')}
         </Button>
         <Button
           className="flex-1 bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25"
           onClick={startScanning}
         >
-          Restart
+          {t('restart')}
         </Button>
       </div>
 
       <div className="text-center text-sm">
-        <p className="text-gray-400">Point your camera at a Cursor event QR code</p>
-        <p className="mt-1 text-gray-500">The scanner will automatically detect and process valid QR codes</p>
+        <p className="text-gray-400">{t('scanDescription')}</p>
+        <p className="mt-1 text-gray-500">{t('automaticDetection')}</p>
       </div>
     </motion.div>
   );

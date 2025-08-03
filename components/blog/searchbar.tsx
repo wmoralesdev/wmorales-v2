@@ -1,7 +1,14 @@
 'use client';
 
 import { AnimatePresence, motion } from 'framer-motion';
-import { FileText, Search, SlidersHorizontal, Star, Tag, X } from 'lucide-react';
+import {
+  FileText,
+  Search,
+  SlidersHorizontal,
+  Star,
+  Tag,
+  X,
+} from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useEffect, useRef, useState, useTransition } from 'react';
 import { getSearchSuggestions } from '@/app/actions/blog.actions';
@@ -9,7 +16,13 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 
@@ -81,11 +94,17 @@ export function Searchbar({
   const debounceRef = useRef<NodeJS.Timeout | null>(null);
 
   // Update URL with search parameters
-  const updateSearch = (params: Record<string, string | string[] | boolean>) => {
+  const updateSearch = (
+    params: Record<string, string | string[] | boolean>
+  ) => {
     const newParams = new URLSearchParams(searchParams);
 
     for (const [key, value] of Object.entries(params)) {
-      if (value === '' || value === false || (Array.isArray(value) && value.length === 0)) {
+      if (
+        value === '' ||
+        value === false ||
+        (Array.isArray(value) && value.length === 0)
+      ) {
         newParams.delete(key);
       } else if (Array.isArray(value)) {
         newParams.delete(key);
@@ -146,7 +165,8 @@ export function Searchbar({
 
   // Handle suggestion selection
   const handleSuggestionClick = (suggestion: SearchSuggestion) => {
-    const searchValue = suggestion.type === 'title' ? suggestion.title : suggestion.text;
+    const searchValue =
+      suggestion.type === 'title' ? suggestion.title : suggestion.text;
     setSearchQuery(searchValue);
     setShowSuggestions(false);
     updateSearch({
@@ -166,7 +186,9 @@ export function Searchbar({
     switch (e.key) {
       case 'ArrowDown':
         e.preventDefault();
-        setHighlightedIndex((prev) => (prev < suggestions.length - 1 ? prev + 1 : prev));
+        setHighlightedIndex((prev) =>
+          prev < suggestions.length - 1 ? prev + 1 : prev
+        );
         break;
       case 'ArrowUp':
         e.preventDefault();
@@ -263,16 +285,20 @@ export function Searchbar({
     };
   }, []);
 
-  const hasActiveFilters = searchQuery || selectedTags.length > 0 || selectedSort !== 'date-desc' || featuredOnly;
+  const hasActiveFilters =
+    searchQuery ||
+    selectedTags.length > 0 ||
+    selectedSort !== 'date-desc' ||
+    featuredOnly;
 
   return (
-    <div className='mx-auto mb-8 w-full max-w-6xl'>
+    <div className="mx-auto mb-8 w-full max-w-6xl">
       {/* Main Search Bar */}
       <div className="relative mb-4">
         <div className="relative">
-          <Search className='-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-gray-400' />
+          <Search className="-translate-y-1/2 absolute top-1/2 left-3 h-4 w-4 transform text-gray-400" />
           <Input
-            className='h-12 border-gray-800 bg-gray-900/80 pr-12 pl-10 text-white backdrop-blur-xl placeholder:text-gray-400 focus:border-purple-500/50 focus:ring-purple-500/20'
+            className="h-12 border-gray-800 bg-gray-900/80 pr-12 pl-10 text-white backdrop-blur-xl placeholder:text-gray-400 focus:border-purple-500/50 focus:ring-purple-500/20"
             onChange={(e) => handleSearchChange(e.target.value)}
             onFocus={() => {
               if (suggestions.length > 0) {
@@ -285,8 +311,8 @@ export function Searchbar({
             value={searchQuery}
           />
           {(isPending || isSuggestionsLoading) && (
-            <div className='-translate-y-1/2 absolute top-1/2 right-3 transform'>
-              <div className='h-4 w-4 animate-spin rounded-full border-2 border-purple-500 border-t-transparent' />
+            <div className="-translate-y-1/2 absolute top-1/2 right-3 transform">
+              <div className="h-4 w-4 animate-spin rounded-full border-2 border-purple-500 border-t-transparent" />
             </div>
           )}
         </div>
@@ -296,7 +322,7 @@ export function Searchbar({
           {showSuggestions && suggestions.length > 0 && (
             <motion.div
               animate={{ opacity: 1, y: 0 }}
-              className='absolute z-50 mt-1 w-full rounded-lg border border-gray-800 bg-gray-900/95 shadow-xl backdrop-blur-xl'
+              className="absolute z-50 mt-1 w-full rounded-lg border border-gray-800 bg-gray-900/95 shadow-xl backdrop-blur-xl"
               exit={{ opacity: 0, y: -10 }}
               initial={{ opacity: 0, y: -10 }}
               ref={suggestionsRef}
@@ -312,21 +338,28 @@ export function Searchbar({
                   onClick={() => handleSuggestionClick(suggestion)}
                   onKeyDown={(e) => {
                     if (e.key === 'Enter' || e.key === ' ') {
-                      handleSuggestionClick(suggestion)
+                      handleSuggestionClick(suggestion);
                     }
                   }}
                   tabIndex={0}
                   type="button"
                 >
                   <div className="flex items-center gap-3">
-                    <FileText className='h-4 w-4 flex-shrink-0 text-purple-400' />
-                    <div className='min-w-0 flex-1'>
-                      <div className='truncate font-medium text-sm text-white'>{suggestion.title}</div>
+                    <FileText className="h-4 w-4 flex-shrink-0 text-purple-400" />
+                    <div className="min-w-0 flex-1">
+                      <div className="truncate font-medium text-sm text-white">
+                        {suggestion.title}
+                      </div>
                       {suggestion.type === 'description' && (
-                        <div className='truncate text-gray-400 text-xs'>{suggestion.text}</div>
+                        <div className="truncate text-gray-400 text-xs">
+                          {suggestion.text}
+                        </div>
                       )}
                     </div>
-                    <Badge className='border-gray-700 text-gray-400 text-xs' variant="outline">
+                    <Badge
+                      className="border-gray-700 text-gray-400 text-xs"
+                      variant="outline"
+                    >
                       {suggestion.type === 'title' ? 'Title' : 'Description'}
                     </Badge>
                   </div>
@@ -338,17 +371,20 @@ export function Searchbar({
       </div>
 
       {/* Filter Controls */}
-      <div className='mb-4 flex flex-wrap items-center gap-3'>
+      <div className="mb-4 flex flex-wrap items-center gap-3">
         <Button
           className="border-gray-700 text-gray-300 hover:bg-gray-800 hover:text-white"
           onClick={() => setShowFilters(!showFilters)}
           size="sm"
           variant="outline"
         >
-          <SlidersHorizontal className='mr-2 h-4 w-4' />
+          <SlidersHorizontal className="mr-2 h-4 w-4" />
           Filters
           {(selectedTags.length > 0 || featuredOnly) && (
-            <Badge className='ml-2 bg-purple-500/20 px-1 py-0 text-purple-400 text-xs' variant="secondary">
+            <Badge
+              className="ml-2 bg-purple-500/20 px-1 py-0 text-purple-400 text-xs"
+              variant="secondary"
+            >
               {selectedTags.length + (featuredOnly ? 1 : 0)}
             </Badge>
           )}
@@ -356,12 +392,16 @@ export function Searchbar({
 
         {/* Sort Dropdown */}
         <Select onValueChange={handleSortChange} value={selectedSort}>
-          <SelectTrigger className='w-[180px] border-gray-800 bg-gray-900/80 text-white backdrop-blur-xl focus:border-purple-500/50'>
+          <SelectTrigger className="w-[180px] border-gray-800 bg-gray-900/80 text-white backdrop-blur-xl focus:border-purple-500/50">
             <SelectValue />
           </SelectTrigger>
-          <SelectContent className='border-gray-800 bg-gray-900'>
+          <SelectContent className="border-gray-800 bg-gray-900">
             {SORT_OPTIONS.map((option) => (
-              <SelectItem className="text-white hover:bg-gray-800" key={option.value} value={option.value}>
+              <SelectItem
+                className="text-white hover:bg-gray-800"
+                key={option.value}
+                value={option.value}
+              >
                 {option.label}
               </SelectItem>
             ))}
@@ -370,18 +410,18 @@ export function Searchbar({
 
         {hasActiveFilters && (
           <Button
-            className='text-gray-400 hover:bg-gray-800 hover:text-white'
+            className="text-gray-400 hover:bg-gray-800 hover:text-white"
             onClick={clearFilters}
             size="sm"
             variant="ghost"
           >
-            <X className='mr-2 h-4 w-4' />
+            <X className="mr-2 h-4 w-4" />
             Clear All
           </Button>
         )}
 
         {/* Results Count */}
-        <div className='ml-auto text-gray-400 text-sm'>
+        <div className="ml-auto text-gray-400 text-sm">
           {filteredCount !== totalPosts ? (
             <>
               Showing {filteredCount} of {totalPosts} posts
@@ -402,26 +442,35 @@ export function Searchbar({
             initial={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.2 }}
           >
-            <div className='space-y-4 rounded-lg border border-gray-800 bg-gray-900/60 p-4 backdrop-blur-xl'>
+            <div className="space-y-4 rounded-lg border border-gray-800 bg-gray-900/60 p-4 backdrop-blur-xl">
               {/* Tags Filter */}
               <div>
-                <div className='mb-3 flex items-center gap-2'>
+                <div className="mb-3 flex items-center gap-2">
                   <Tag className="h-4 w-4 text-purple-400" />
-                  <span className='font-medium text-sm text-white'>Filter by Tags</span>
+                  <span className="font-medium text-sm text-white">
+                    Filter by Tags
+                  </span>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {availableTags.map((tag) => (
                     <Badge
-                      className={`cursor-pointer transition-colors ${selectedTags.includes(tag.value)
+                      className={`cursor-pointer transition-colors ${
+                        selectedTags.includes(tag.value)
                           ? 'border-purple-500/30 bg-purple-500/20 text-purple-400 hover:bg-purple-500/30'
                           : 'border-gray-700 text-gray-400 hover:bg-gray-800 hover:text-white'
-                        }`}
+                      }`}
                       key={tag.value}
                       onClick={() => toggleTag(tag.value)}
-                      variant={selectedTags.includes(tag.value) ? 'default' : 'outline'}
+                      variant={
+                        selectedTags.includes(tag.value) ? 'default' : 'outline'
+                      }
                     >
                       {tag.label}
-                      {tag.count > 0 && <span className="ml-1 text-xs opacity-75">({tag.count})</span>}
+                      {tag.count > 0 && (
+                        <span className="ml-1 text-xs opacity-75">
+                          ({tag.count})
+                        </span>
+                      )}
                     </Badge>
                   ))}
                 </div>
@@ -432,7 +481,9 @@ export function Searchbar({
               {/* Featured Posts Filter */}
               <div className="flex items-center gap-3">
                 <Star className="h-4 w-4 text-purple-400" />
-                <span className='font-medium text-sm text-white'>Featured Posts Only</span>
+                <span className="font-medium text-sm text-white">
+                  Featured Posts Only
+                </span>
                 <Checkbox
                   checked={featuredOnly}
                   className="border-gray-700 text-purple-400 focus:ring-purple-500/20"
@@ -446,22 +497,28 @@ export function Searchbar({
 
       {/* Active Filters Display */}
       {(selectedTags.length > 0 || featuredOnly) && (
-        <div className='mt-4 flex flex-wrap items-center gap-2'>
-          <span className='text-gray-400 text-sm'>Active filters:</span>
+        <div className="mt-4 flex flex-wrap items-center gap-2">
+          <span className="text-gray-400 text-sm">Active filters:</span>
           {selectedTags.map((tag) => {
             const tagData = availableTags.find((t) => t.value === tag);
             const tagLabel = tagData?.label || tag;
             return (
               <Badge
-                className='border-purple-500/30 bg-purple-500/20 text-purple-400 hover:bg-purple-500/30'
+                className="border-purple-500/30 bg-purple-500/20 text-purple-400 hover:bg-purple-500/30"
                 key={tag}
                 variant="secondary"
               >
                 {tagLabel}
                 {tagData?.count && tagData.count > 0 && (
-                  <span className="ml-1 text-xs opacity-75">({tagData.count})</span>
+                  <span className="ml-1 text-xs opacity-75">
+                    ({tagData.count})
+                  </span>
                 )}
-                <button className="ml-1 hover:text-purple-300" onClick={() => toggleTag(tag)} type="button">
+                <button
+                  className="ml-1 hover:text-purple-300"
+                  onClick={() => toggleTag(tag)}
+                  type="button"
+                >
                   <X className="h-3 w-3" />
                 </button>
               </Badge>
@@ -469,12 +526,16 @@ export function Searchbar({
           })}
           {featuredOnly && (
             <Badge
-              className='border-purple-500/30 bg-purple-500/20 text-purple-400 hover:bg-purple-500/30'
+              className="border-purple-500/30 bg-purple-500/20 text-purple-400 hover:bg-purple-500/30"
               variant="secondary"
             >
-              <Star className='mr-1 h-3 w-3' />
+              <Star className="mr-1 h-3 w-3" />
               Featured
-              <button className="ml-1 hover:text-purple-300" onClick={() => handleFeaturedChange(false)} type="button">
+              <button
+                className="ml-1 hover:text-purple-300"
+                onClick={() => handleFeaturedChange(false)}
+                type="button"
+              >
                 <X className="h-3 w-3" />
               </button>
             </Badge>

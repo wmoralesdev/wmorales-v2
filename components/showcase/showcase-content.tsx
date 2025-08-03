@@ -1,10 +1,13 @@
 'use client';
 
 import { useState } from 'react';
-import { Project, ProjectCategory, ProjectFilter, ProjectSort, ProjectStatus, TechCategory } from '@/lib/types/showcase.types';
+import {
+  Project,
+  ProjectFilter,
+  ProjectSort,
+} from '@/lib/types/showcase.types';
 import { ProjectGrid } from './project-grid';
 import { ProjectFilters } from './project-filters';
-import { cn } from '@/lib/utils';
 import { projects as allProjects } from '@/lib/data/projects';
 
 export function ShowcaseContent() {
@@ -26,7 +29,10 @@ export function ShowcaseContent() {
       if (!matchesSearch) return false;
     }
 
-    if (filter.categories?.length && !filter.categories.includes(project.category)) {
+    if (
+      filter.categories?.length &&
+      !filter.categories.includes(project.category)
+    ) {
       return false;
     }
 
@@ -36,7 +42,9 @@ export function ShowcaseContent() {
 
     if (filter.technologies?.length) {
       const projectTechNames = project.technologies.map((t) => t.name);
-      const hasMatchingTech = filter.technologies.some((tech) => projectTechNames.includes(tech));
+      const hasMatchingTech = filter.technologies.some((tech) =>
+        projectTechNames.includes(tech)
+      );
       if (!hasMatchingTech) return false;
     }
 
@@ -54,7 +62,7 @@ export function ShowcaseContent() {
   // Sort projects
   const sortedProjects = [...filteredProjects].sort((a, b) => {
     const direction = sort.direction === 'asc' ? 1 : -1;
-    
+
     switch (sort.field) {
       case 'date':
         return (b.year - a.year) * direction;
@@ -85,7 +93,9 @@ export function ShowcaseContent() {
       {/* Empty State */}
       {sortedProjects.length === 0 && (
         <div className="text-center py-16">
-          <p className="text-muted-foreground">No projects found matching your criteria.</p>
+          <p className="text-muted-foreground">
+            No projects found matching your criteria.
+          </p>
         </div>
       )}
     </div>

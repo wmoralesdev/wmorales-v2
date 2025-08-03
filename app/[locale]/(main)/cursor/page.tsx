@@ -9,7 +9,7 @@ type Props = {
 
 export default async function CursorPage({ params }: Props) {
   const { locale } = await params;
-  
+
   // Enable static rendering
   setRequestLocale(locale);
 

@@ -14,6 +14,7 @@ import {
   Users,
   Zap,
 } from 'lucide-react';
+import { useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -74,22 +75,24 @@ const floatVariants: Variants = {
 };
 
 export function CursorPageContent() {
+  const t = useTranslations('cursor');
+
   const expertiseAreas = [
     {
-      title: 'Tab Completion Mastery',
-      description: "Expert in leveraging Cursor's intelligent tab completion for rapid code generation",
+      title: t('expertise.tabCompletion.title'),
+      description: t('expertise.tabCompletion.description'),
       icon: Zap,
       gradient: 'from-blue-500 to-purple-600',
     },
     {
-      title: 'Inline Edit Workflows',
-      description: 'Advanced techniques for efficient inline editing and code transformation',
+      title: t('expertise.inlineEdit.title'),
+      description: t('expertise.inlineEdit.description'),
       icon: Code2,
       gradient: 'from-purple-500 to-pink-600',
     },
     {
-      title: 'Agentic Prompts',
-      description: 'Crafting powerful prompts that make AI work smarter, not harder',
+      title: t('expertise.agenticPrompts.title'),
+      description: t('expertise.agenticPrompts.description'),
       icon: MessageCircle,
       gradient: 'from-green-500 to-teal-600',
     },
@@ -97,21 +100,33 @@ export function CursorPageContent() {
 
   const offerings = [
     {
-      title: 'Team Training',
-      description: 'Comprehensive Cursor training for development teams',
-      features: ['Hands-on workshops', 'Best practices', 'Custom workflows'],
+      title: t('services.teamTraining.title'),
+      description: t('services.teamTraining.description'),
+      features: [
+        t('services.teamTraining.features.workshops'),
+        t('services.teamTraining.features.bestPractices'),
+        t('services.teamTraining.features.customWorkflows'),
+      ],
       icon: Users,
     },
     {
-      title: 'Consultations',
-      description: 'One-on-one sessions to accelerate your AI-powered development',
-      features: ['Personalized guidance', 'Workflow optimization', 'Advanced techniques'],
+      title: t('services.consultations.title'),
+      description: t('services.consultations.description'),
+      features: [
+        t('services.consultations.features.personalizedGuidance'),
+        t('services.consultations.features.workflowOptimization'),
+        t('services.consultations.features.advancedTechniques'),
+      ],
       icon: Calendar,
     },
     {
-      title: 'Community Access',
-      description: 'Join the growing LATAM Cursor community',
-      features: ['WhatsApp group', 'Resource sharing', 'Peer support'],
+      title: t('services.communityAccess.title'),
+      description: t('services.communityAccess.description'),
+      features: [
+        t('services.communityAccess.features.whatsappGroup'),
+        t('services.communityAccess.features.resourceSharing'),
+        t('services.communityAccess.features.peerSupport'),
+      ],
       icon: Globe,
     },
   ];
@@ -152,7 +167,7 @@ export function CursorPageContent() {
             >
               <div className="h-2 w-2 animate-pulse rounded-full bg-gradient-to-r from-purple-400 to-pink-400" />
               <span className="font-medium text-purple-300 text-xs lg:text-sm">
-                First Cursor Ambassador from El Salvador 🇸🇻
+                {t('pioneer')}
               </span>
             </motion.div>
           </motion.div>
@@ -161,20 +176,25 @@ export function CursorPageContent() {
             className="mb-6 bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text font-bold text-4xl text-transparent sm:text-5xl lg:text-6xl"
             variants={itemVariants}
           >
-            Cursor Ambassador
+            {t('title')}
           </motion.h1>
 
-          <motion.p className="mx-auto mb-8 max-w-2xl text-gray-400 text-lg sm:text-xl" variants={itemVariants}>
-            Pioneering AI-powered development in Central America, building communities, and helping teams accelerate
-            with Cursor
+          <motion.p
+            className="mx-auto mb-8 max-w-2xl text-gray-400 text-lg sm:text-xl"
+            variants={itemVariants}
+          >
+            {t('subtitle')}
           </motion.p>
 
           {/* CTA Buttons with proper styling */}
-          <motion.div className="flex flex-wrap items-center justify-center gap-4" variants={itemVariants}>
+          <motion.div
+            className="flex flex-wrap items-center justify-center gap-4"
+            variants={itemVariants}
+          >
             <Link href="https://linkedin.com/in/wmoralesdev" target="_blank">
               <Button className="group rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25">
                 <Linkedin className="mr-2 h-4 w-4" />
-                Connect on LinkedIn
+                {t('connectLinkedIn')}
               </Button>
             </Link>
             <Link href="https://github.com/wmoralesdev" target="_blank">
@@ -183,7 +203,7 @@ export function CursorPageContent() {
                 variant="outline"
               >
                 <Github className="mr-2 h-4 w-4" />
-                View Templates
+                {t('viewTemplates')}
               </Button>
             </Link>
           </motion.div>
@@ -209,16 +229,17 @@ export function CursorPageContent() {
             <div className="relative z-10">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-purple-500/20 px-3 py-1">
                 <Target className="h-4 w-4 text-purple-400" />
-                <span className="font-medium text-purple-300 text-xs">Development Philosophy</span>
+                <span className="font-medium text-purple-300 text-xs">
+                  {t('philosophy.label')}
+                </span>
               </div>
 
-              <h2 className="mb-4 font-bold text-2xl text-white">Coexist with AI, Don't Depend on It</h2>
+              <h2 className="mb-4 font-bold text-2xl text-white">
+                {t('philosophy.title')}
+              </h2>
 
               <p className="text-gray-400 leading-relaxed">
-                I believe in empowering developers to work alongside AI, not blindly accept its suggestions. Through
-                strategic use of Cursor's features, we can accelerate development while maintaining code quality and
-                understanding. My approach focuses on teaching developers to leverage AI as a powerful tool while
-                keeping their critical thinking and expertise at the forefront.
+                {t('philosophy.description')}
               </p>
             </div>
           </motion.div>
@@ -239,10 +260,10 @@ export function CursorPageContent() {
               className="mb-4 bg-gradient-to-r from-white to-purple-400 bg-clip-text font-bold text-3xl text-transparent"
               variants={itemVariants}
             >
-              Core Expertise
+              {t('expertiseTitle')}
             </motion.h2>
             <motion.p className="text-gray-400" variants={itemVariants}>
-              Specialized in the most powerful Cursor features for maximum productivity
+              {t('expertiseSubtitle')}
             </motion.p>
           </motion.div>
 
@@ -267,11 +288,15 @@ export function CursorPageContent() {
                   />
 
                   <div className="relative z-10">
-                    <div className={`mb-4 inline-flex rounded-lg bg-gradient-to-br ${area.gradient} p-3`}>
+                    <div
+                      className={`mb-4 inline-flex rounded-lg bg-gradient-to-br ${area.gradient} p-3`}
+                    >
                       <Icon className="h-6 w-6 text-white" />
                     </div>
 
-                    <h3 className="mb-2 font-semibold text-lg text-white">{area.title}</h3>
+                    <h3 className="mb-2 font-semibold text-lg text-white">
+                      {area.title}
+                    </h3>
                     <p className="text-gray-400 text-sm">{area.description}</p>
                   </div>
                 </motion.div>
@@ -298,23 +323,22 @@ export function CursorPageContent() {
               whileHover="hover"
             >
               <Users className="mb-4 h-8 w-8 text-purple-400" />
-              <h3 className="mb-3 font-bold text-white text-xl">Building LATAM's AI Dev Community</h3>
-              <p className="mb-4 text-gray-400">
-                Leading the charge to create a vibrant community of AI-powered developers across Latin America, starting
-                with El Salvador and expanding throughout Central America.
-              </p>
+              <h3 className="mb-3 font-bold text-white text-xl">
+                {t('community.title')}
+              </h3>
+              <p className="mb-4 text-gray-400">{t('community.description')}</p>
               <ul className="space-y-2">
                 <li className="flex items-start gap-2 text-gray-500 text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
-                  <span>In-person events and workshops</span>
+                  <span>{t('community.features.events')}</span>
                 </li>
                 <li className="flex items-start gap-2 text-gray-500 text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
-                  <span>WhatsApp community for real-time support</span>
+                  <span>{t('community.features.whatsapp')}</span>
                 </li>
                 <li className="flex items-start gap-2 text-gray-500 text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
-                  <span>Spanish-language resources and tutorials</span>
+                  <span>{t('community.features.spanish')}</span>
                 </li>
               </ul>
             </motion.div>
@@ -326,23 +350,22 @@ export function CursorPageContent() {
               whileHover="hover"
             >
               <Sparkles className="mb-4 h-8 w-8 text-purple-400" />
-              <h3 className="mb-3 font-bold text-white text-xl">The Future is AI-Powered</h3>
-              <p className="mb-4 text-gray-400">
-                As Cursor continues to evolve with new features and improved developer experience, I'm committed to
-                helping developers stay ahead of the curve.
-              </p>
+              <h3 className="mb-3 font-bold text-white text-xl">
+                {t('future.title')}
+              </h3>
+              <p className="mb-4 text-gray-400">{t('future.description')}</p>
               <ul className="space-y-2">
                 <li className="flex items-start gap-2 text-gray-500 text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
-                  <span>Regular content on emerging Cursor features</span>
+                  <span>{t('future.features.content')}</span>
                 </li>
                 <li className="flex items-start gap-2 text-gray-500 text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
-                  <span>Best practices for AI-assisted development</span>
+                  <span>{t('future.features.bestPractices')}</span>
                 </li>
                 <li className="flex items-start gap-2 text-gray-500 text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
-                  <span>Community-driven learning and growth</span>
+                  <span>{t('future.features.learning')}</span>
                 </li>
               </ul>
             </motion.div>
@@ -364,10 +387,10 @@ export function CursorPageContent() {
               className="mb-4 bg-gradient-to-r from-white to-purple-400 bg-clip-text font-bold text-3xl text-transparent"
               variants={itemVariants}
             >
-              How I Can Help Your Team
+              {t('servicesTitle')}
             </motion.h2>
             <motion.p className="text-gray-400" variants={itemVariants}>
-              Accelerate your development with personalized training and consultation
+              {t('servicesSubtitle')}
             </motion.p>
           </motion.div>
 
@@ -394,12 +417,19 @@ export function CursorPageContent() {
                       <Icon className="h-6 w-6 text-purple-400" />
                     </div>
 
-                    <h3 className="mb-2 font-semibold text-lg text-white">{offering.title}</h3>
-                    <p className="mb-4 text-gray-400 text-sm">{offering.description}</p>
+                    <h3 className="mb-2 font-semibold text-lg text-white">
+                      {offering.title}
+                    </h3>
+                    <p className="mb-4 text-gray-400 text-sm">
+                      {offering.description}
+                    </p>
 
                     <ul className="space-y-2">
                       {offering.features.map((feature) => (
-                        <li className="flex items-center gap-2 text-gray-500 text-xs" key={feature}>
+                        <li
+                          className="flex items-center gap-2 text-gray-500 text-xs"
+                          key={feature}
+                        >
                           <div className="h-1 w-1 rounded-full bg-purple-400" />
                           {feature}
                         </li>
@@ -419,7 +449,7 @@ export function CursorPageContent() {
             viewport={{ once: true }}
             whileInView="visible"
           >
-            <p className="mb-6 text-gray-400">Ready to accelerate your team's development with Cursor?</p>
+            <p className="mb-6 text-gray-400">{t('cta.question')}</p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link href="https://calendly.com/wmoralesdev" target="_blank">
                 <Button
@@ -427,7 +457,7 @@ export function CursorPageContent() {
                   size="lg"
                 >
                   <Calendar className="mr-2 h-5 w-5" />
-                  Schedule a Consultation
+                  {t('cta.schedule')}
                 </Button>
               </Link>
               <Link href="mailto:hello@wmorales.dev">
@@ -437,7 +467,7 @@ export function CursorPageContent() {
                   variant="outline"
                 >
                   <MessageCircle className="mr-2 h-5 w-5" />
-                  Join the Community
+                  {t('cta.joinCommunity')}
                 </Button>
               </Link>
             </div>
@@ -460,13 +490,13 @@ export function CursorPageContent() {
             whileHover={{ scale: 1.02 }}
           >
             <BookOpen className="mx-auto mb-4 h-12 w-12 text-purple-400" />
-            <h3 className="mb-2 font-bold text-white text-xl">Resources Coming Soon</h3>
-            <p className="mb-6 text-gray-400">
-              Blog posts, tutorials, and TikTok content on mastering Cursor and AI-powered development
-            </p>
+            <h3 className="mb-2 font-bold text-white text-xl">
+              {t('resources.title')}
+            </h3>
+            <p className="mb-6 text-gray-400">{t('resources.description')}</p>
             <Badge className="border-purple-500/30 bg-purple-500/20 text-purple-300">
               <Sparkles className="mr-1 h-3 w-3" />
-              Launching in /blog
+              {t('resources.launchingIn')}
             </Badge>
           </motion.div>
         </motion.div>

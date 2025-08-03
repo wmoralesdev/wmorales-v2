@@ -1,7 +1,10 @@
 import { type NextRequest, NextResponse } from 'next/server';
 import { getTicketById } from '@/app/actions/guestbook.actions';
 
-export async function GET(_request: NextRequest, context: { params: Promise<{ id: string }> }) {
+export async function GET(
+  _request: NextRequest,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
     const { id } = await context.params;
 
@@ -26,6 +29,9 @@ export async function GET(_request: NextRequest, context: { params: Promise<{ id
       entry: ticket.entry,
     });
   } catch {
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
+    return NextResponse.json(
+      { error: 'Internal server error' },
+      { status: 500 }
+    );
   }
 }

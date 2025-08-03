@@ -1,5 +1,5 @@
 import { setRequestLocale } from 'next-intl/server';
-import { ExperienceSection } from '@/components/landing/experience-section';
+// import { ExperienceSection } from '@/components/landing/experience-section';
 import { HeroSection } from '@/components/landing/hero-section';
 
 export { metadata } from './metadata';
@@ -10,7 +10,7 @@ type Props = {
 
 export default async function Home({ params }: Props) {
   const { locale } = await params;
-  
+
   // Enable static rendering
   setRequestLocale(locale);
 
@@ -20,9 +20,9 @@ export default async function Home({ params }: Props) {
         <div id="home">
           <HeroSection />
         </div>
-        <div id="experience">
+        {/* <div id="experience">
           <ExperienceSection />
-        </div>
+        </div> */}
       </main>
     </div>
   );

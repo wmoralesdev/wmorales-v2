@@ -58,7 +58,12 @@ export function AnimatedLogo({
         strokeWidth={strokeWidth}
         variants={pathVariants}
       />
-      <motion.path d="M125 905.064V125H905.064" stroke={topColor} strokeWidth={strokeWidth} variants={pathVariants} />
+      <motion.path
+        d="M125 905.064V125H905.064"
+        stroke={topColor}
+        strokeWidth={strokeWidth}
+        variants={pathVariants}
+      />
       {/* Bottom */}
       <motion.path
         d="M2279.2 937H1592.72V1592.84H937V2280.32"

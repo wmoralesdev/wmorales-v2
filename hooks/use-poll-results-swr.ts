@@ -8,17 +8,24 @@ const fetchPollResults = async (pollId: string) => {
   return data;
 };
 
-export function usePollResultsSWR(pollId: string, initialData?: PollResults | null) {
+export function usePollResultsSWR(
+  pollId: string,
+  initialData?: PollResults | null
+) {
   const {
     data = initialData,
     error,
     mutate,
     isLoading,
-  } = useSWR<PollResults | null>(`poll-results-${pollId}`, () => fetchPollResults(pollId), {
-    fallbackData: initialData,
-    refreshInterval: 5000, // Auto-refresh every 5 seconds for real-time updates
-    revalidateOnFocus: false,
-  });
+  } = useSWR<PollResults | null>(
+    `poll-results-${pollId}`,
+    () => fetchPollResults(pollId),
+    {
+      fallbackData: initialData,
+      refreshInterval: 5000, // Auto-refresh every 5 seconds for real-time updates
+      revalidateOnFocus: false,
+    }
+  );
 
   return {
     results: data,

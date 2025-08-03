@@ -1,18 +1,13 @@
 'use client';
 
+import type { EventImage } from '@prisma/client';
 import { motion, type Variants } from 'framer-motion';
 import { Eye, Image as ImageIcon, Sparkles } from 'lucide-react';
 import Image from 'next/image';
 import { useState } from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-
-type EventImage = {
-  id: string;
-  imageUrl: string;
-  caption?: string;
-  createdAt: Date;
-};
+import { useTranslations } from 'next-intl';
 
 type ImageGridProps = {
   images: EventImage[];
@@ -42,6 +37,7 @@ const itemVariants: Variants = {
 };
 
 export function ImageGrid({ images, onImageClick }: ImageGridProps) {
+  const t = useTranslations('events');
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 
   if (images.length === 0) {
@@ -52,13 +48,15 @@ export function ImageGrid({ images, onImageClick }: ImageGridProps) {
         initial={{ opacity: 0, y: 20 }}
         transition={{ duration: 0.5 }}
       >
-        <div className="mx-auto max-w-md rounded-2xl border border-gray-800 bg-gray-900/80 p-12 backdrop-blur-xl">
+        <div className="mx-auto max-w-md rounded-2xl">
           <div className="relative">
             <ImageIcon className="mx-auto mb-6 h-20 w-20 text-gray-600" />
             <Sparkles className="-top-2 -right-2 absolute h-6 w-6 animate-pulse text-purple-400" />
           </div>
-          <h3 className="mb-3 font-semibold text-white text-xl">No Photos Yet</h3>
-          <p className="text-gray-400 text-sm">Be the first to share a photo from this event!</p>
+          <h3 className="mb-3 font-semibold text-white text-xl">
+            {t('noPhotosYet')}
+          </h3>
+          <p className="text-gray-400 text-sm">{t('beTheFirstToShare')}</p>
         </div>
       </motion.div>
     );
@@ -93,20 +91,22 @@ export function ImageGrid({ images, onImageClick }: ImageGridProps) {
           </div>
 
           {/* Overlay */}
-          <div className="absolute inset-0 flex items-end justify-center rounded-xl bg-gradient-to-t from-black/80 via-black/20 to-transparent pb-4 opacity-0 transition-opacity duration-300 group-hover:opacity-100">
+          <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <Button
-              className="border-0 bg-purple-500/90 text-white shadow-lg backdrop-blur-sm hover:bg-purple-600/90"
+              className="border-0 bg-purple-500/90 text-white shadow-lg backdrop-blur-sm hover:bg-purple-600/90 cursor-pointer"
               size="sm"
             >
-              <Eye className="mr-2 h-4 w-4" />
-              View
+              <Eye className="h-4 w-4" />
             </Button>
           </div>
 
           {/* Caption badge */}
           {image.caption && (
             <motion.div
-              animate={{ opacity: hoveredImage === image.id ? 1 : 0, y: hoveredImage === image.id ? 0 : 10 }}
+              animate={{
+                opacity: hoveredImage === image.id ? 1 : 0,
+                y: hoveredImage === image.id ? 0 : 10,
+              }}
               className="absolute right-2 bottom-2 left-2"
               initial={{ opacity: 0, y: 10 }}
               transition={{ duration: 0.2 }}

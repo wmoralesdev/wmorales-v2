@@ -16,7 +16,6 @@ The polls feature has been refactored to include real-time functionality using S
 ### Components
 
 1. **PollVoting** (`components/polls/poll-voting.tsx`)
-
    - Handles the voting interface
    - Tracks user progress through questions
    - Shows results inline if enabled
@@ -25,7 +24,6 @@ The polls feature has been refactored to include real-time functionality using S
    - Transitions to dashboard after completion
 
 2. **PollResultsDashboard** (`components/polls/poll-results-dashboard.tsx`)
-
    - Displays comprehensive results after voting
    - Shows real-time updates as new votes come in
    - Displays active viewer count
@@ -39,7 +37,6 @@ The polls feature has been refactored to include real-time functionality using S
 ### Real-time Features
 
 1. **Websocket Subscriptions**
-
    - Poll updates channel: `poll:{pollCode}`
    - Active users channel: `polls:active`
    - Presence tracking for each poll
@@ -135,13 +132,11 @@ The polls feature has been refactored to include real-time functionality using S
 ## Future Enhancements
 
 1. **Vote Analytics**
-
    - Time-based voting patterns
    - Geographic distribution
    - Device/browser statistics
 
 2. **Advanced Features**
-
    - Private polls with access codes
    - Scheduled polls
    - Export results to CSV/PDF

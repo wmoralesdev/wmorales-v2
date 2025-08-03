@@ -1,11 +1,17 @@
-import { Project, ProjectCategory, ProjectStatus, TechCategory } from '@/lib/types/showcase.types';
+import {
+  Project,
+  ProjectCategory,
+  ProjectStatus,
+  TechCategory,
+} from '@/lib/types/showcase.types';
 
 // This is your projects data. Replace these with your actual projects
 export const projects: Project[] = [
   {
     id: 'example-project-1',
     title: 'Example Project 1',
-    description: 'Brief description of what this project does and its main purpose.',
+    description:
+      'Brief description of what this project does and its main purpose.',
     longDescription: `
       This is a detailed description of the project. You can include:
       - The problem it solves
@@ -62,22 +68,20 @@ export const projects: Project[] = [
 
 // Helper function to get featured projects
 export const getFeaturedProjects = () => {
-  return projects.filter(project => project.featured);
+  return projects.filter((project) => project.featured);
 };
 
 // Helper function to get projects by category
 export const getProjectsByCategory = (category: ProjectCategory) => {
-  return projects.filter(project => project.category === category);
+  return projects.filter((project) => project.category === category);
 };
 
 // Helper function to get projects by status
 export const getProjectsByStatus = (status: ProjectStatus) => {
-  return projects.filter(project => project.status === status);
+  return projects.filter((project) => project.status === status);
 };
 
 // Helper function to get recent projects
 export const getRecentProjects = (limit: number = 3) => {
-  return projects
-    .sort((a, b) => b.year - a.year)
-    .slice(0, limit);
+  return projects.sort((a, b) => b.year - a.year).slice(0, limit);
 };

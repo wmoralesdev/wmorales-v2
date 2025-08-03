@@ -9,7 +9,14 @@ type ImageProps = {
   priority?: boolean;
 };
 
-export function ImageComponent({ src, alt, width = 800, height = 400, caption, priority = false }: ImageProps) {
+export function ImageComponent({
+  src,
+  alt,
+  width = 800,
+  height = 400,
+  caption,
+  priority = false,
+}: ImageProps) {
   return (
     <figure className="my-8">
       <Image
@@ -20,7 +27,11 @@ export function ImageComponent({ src, alt, width = 800, height = 400, caption, p
         src={src}
         width={width}
       />
-      {caption && <figcaption className='mt-2 text-center text-gray-400 text-sm'>{caption}</figcaption>}
+      {caption && (
+        <figcaption className="mt-2 text-center text-gray-400 text-sm">
+          {caption}
+        </figcaption>
+      )}
     </figure>
   );
 }

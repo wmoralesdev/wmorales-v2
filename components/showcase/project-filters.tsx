@@ -4,12 +4,27 @@ import { Search, Filter, SortAsc } from 'lucide-react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
-import { ProjectCategory, ProjectFilter, ProjectSort, ProjectStatus } from '@/lib/types/showcase.types';
+import {
+  ProjectCategory,
+  ProjectFilter,
+  ProjectSort,
+  ProjectStatus,
+} from '@/lib/types/showcase.types';
 
 interface ProjectFiltersProps {
   filter: ProjectFilter;
@@ -47,7 +62,7 @@ export function ProjectFilters({
   totalProjects,
   filteredCount,
 }: ProjectFiltersProps) {
-  const activeFilterCount = 
+  const activeFilterCount =
     (filter.categories?.length || 0) +
     (filter.statuses?.length || 0) +
     (filter.technologies?.length || 0) +
@@ -63,7 +78,10 @@ export function ProjectFilters({
     const updated = categories.includes(category)
       ? categories.filter((c) => c !== category)
       : [...categories, category];
-    onFilterChange({ ...filter, categories: updated.length ? updated : undefined });
+    onFilterChange({
+      ...filter,
+      categories: updated.length ? updated : undefined,
+    });
   };
 
   const handleStatusToggle = (status: ProjectStatus) => {
@@ -71,7 +89,10 @@ export function ProjectFilters({
     const updated = statuses.includes(status)
       ? statuses.filter((s) => s !== status)
       : [...statuses, status];
-    onFilterChange({ ...filter, statuses: updated.length ? updated : undefined });
+    onFilterChange({
+      ...filter,
+      statuses: updated.length ? updated : undefined,
+    });
   };
 
   const handleFeaturedToggle = () => {
@@ -121,8 +142,14 @@ export function ProjectFilters({
                     <div key={value} className="flex items-center space-x-2">
                       <Checkbox
                         id={`category-${value}`}
-                        checked={filter.categories?.includes(value as ProjectCategory) || false}
-                        onCheckedChange={() => handleCategoryToggle(value as ProjectCategory)}
+                        checked={
+                          filter.categories?.includes(
+                            value as ProjectCategory
+                          ) || false
+                        }
+                        onCheckedChange={() =>
+                          handleCategoryToggle(value as ProjectCategory)
+                        }
                       />
                       <Label
                         htmlFor={`category-${value}`}
@@ -144,8 +171,13 @@ export function ProjectFilters({
                     <div key={value} className="flex items-center space-x-2">
                       <Checkbox
                         id={`status-${value}`}
-                        checked={filter.statuses?.includes(value as ProjectStatus) || false}
-                        onCheckedChange={() => handleStatusToggle(value as ProjectStatus)}
+                        checked={
+                          filter.statuses?.includes(value as ProjectStatus) ||
+                          false
+                        }
+                        onCheckedChange={() =>
+                          handleStatusToggle(value as ProjectStatus)
+                        }
                       />
                       <Label
                         htmlFor={`status-${value}`}
@@ -194,7 +226,10 @@ export function ProjectFilters({
         <Select
           value={`${sort.field}-${sort.direction}`}
           onValueChange={(value) => {
-            const [field, direction] = value.split('-') as [ProjectSort['field'], ProjectSort['direction']];
+            const [field, direction] = value.split('-') as [
+              ProjectSort['field'],
+              ProjectSort['direction'],
+            ];
             onSortChange({ field, direction });
           }}
         >

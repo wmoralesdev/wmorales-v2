@@ -1,18 +1,30 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import type { UseFormReturn } from 'react-hook-form';
 import { Checkbox } from '@/components/ui/checkbox';
-import { FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import {
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
 import type { Question } from '@/lib/types/survey.types';
 
 type QuestionRendererProps = {
   question: Question;
-  // biome-ignore lint/suspicious/noExplicitAny: form is built by engine, we can't type it
   form: UseFormReturn<any>;
 };
 
@@ -21,7 +33,6 @@ const FormLabelWrapper = ({ children }: { children: React.ReactNode }) => (
 );
 
 export function QuestionRenderer({ question, form }: QuestionRendererProps) {
-  
   const renderField = () => {
     switch (question.type) {
       case 'text':
@@ -33,7 +44,9 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
               <FormItem>
                 <FormLabelWrapper>
                   {question.question}
-                  {question.required && <span className="ml-1 text-purple-400">*</span>}
+                  {question.required && (
+                    <span className="ml-1 text-purple-400">*</span>
+                  )}
                 </FormLabelWrapper>
                 <FormControl>
                   <Input
@@ -58,7 +71,9 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
               <FormItem>
                 <FormLabelWrapper>
                   {question.question}
-                  {question.required && <span className="ml-1 text-purple-400">*</span>}
+                  {question.required && (
+                    <span className="ml-1 text-purple-400">*</span>
+                  )}
                 </FormLabelWrapper>
                 <FormControl>
                   <Textarea
@@ -83,7 +98,9 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
               <FormItem>
                 <FormLabelWrapper>
                   {question.question}
-                  {question.required && <span className="ml-1 text-purple-400">*</span>}
+                  {question.required && (
+                    <span className="ml-1 text-purple-400">*</span>
+                  )}
                 </FormLabelWrapper>
                 <FormControl>
                   <RadioGroup
@@ -92,11 +109,19 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
                     onValueChange={field.onChange}
                   >
                     {question.options?.map((option) => (
-                      <FormItem className="flex items-center space-x-2 space-y-0" key={option.value}>
+                      <FormItem
+                        className="flex items-center space-x-2 space-y-0"
+                        key={option.value}
+                      >
                         <FormControl>
-                          <RadioGroupItem className="border-gray-600 text-purple-500" value={option.value} />
+                          <RadioGroupItem
+                            className="border-gray-600 text-purple-500"
+                            value={option.value}
+                          />
                         </FormControl>
-                        <FormLabel className="cursor-pointer font-normal text-gray-300">{option.label}</FormLabel>
+                        <FormLabel className="cursor-pointer font-normal text-gray-300">
+                          {option.label}
+                        </FormLabel>
                       </FormItem>
                     ))}
                   </RadioGroup>
@@ -116,7 +141,9 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
               <FormItem>
                 <FormLabelWrapper>
                   {question.question}
-                  {question.required && <span className="ml-1 text-purple-400">*</span>}
+                  {question.required && (
+                    <span className="ml-1 text-purple-400">*</span>
+                  )}
                 </FormLabelWrapper>
                 <div className="grid grid-cols-2 gap-3">
                   {question.options?.map((option) => (
@@ -134,14 +161,23 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
                                 onCheckedChange={(checked) => {
                                   const currentValue = field.value || [];
                                   if (checked) {
-                                    field.onChange([...currentValue, option.value]);
+                                    field.onChange([
+                                      ...currentValue,
+                                      option.value,
+                                    ]);
                                   } else {
-                                    field.onChange(currentValue.filter((v: string) => v !== option.value));
+                                    field.onChange(
+                                      currentValue.filter(
+                                        (v: string) => v !== option.value
+                                      )
+                                    );
                                   }
                                 }}
                               />
                             </FormControl>
-                            <FormLabel className="cursor-pointer font-normal text-gray-300">{option.label}</FormLabel>
+                            <FormLabel className="cursor-pointer font-normal text-gray-300">
+                              {option.label}
+                            </FormLabel>
                           </FormItem>
                         );
                       }}
@@ -163,9 +199,14 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
               <FormItem>
                 <FormLabelWrapper>
                   {question.question}
-                  {question.required && <span className="ml-1 text-purple-400">*</span>}
+                  {question.required && (
+                    <span className="ml-1 text-purple-400">*</span>
+                  )}
                 </FormLabelWrapper>
-                <Select defaultValue={field.value} onValueChange={field.onChange}>
+                <Select
+                  defaultValue={field.value}
+                  onValueChange={field.onChange}
+                >
                   <FormControl>
                     <SelectTrigger className="w-full border-gray-700 bg-gray-800/50 text-white focus:border-purple-500/50">
                       <SelectValue

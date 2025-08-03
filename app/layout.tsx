@@ -7,7 +7,7 @@ import { AnimatedMesh } from '@/components/common/animated-mesh';
 import { baseMetadata } from '@/lib/metadata';
 import { cn } from '@/lib/utils';
 
-const space_grotesk = Space_Grotesk({
+const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
   weight: ['500'],
   variable: '--display-family',
@@ -19,7 +19,7 @@ const poppins = Poppins({
   variable: '--text-family',
 });
 
-const jetbrains_mono = JetBrains_Mono({
+const jetbrainsMono = JetBrains_Mono({
   subsets: ['latin'],
   weight: ['400'],
   variable: '--mono-family',
@@ -40,9 +40,9 @@ export default async function RootLayout({ children, params }: Props) {
     <html className="dark" lang={locale}>
       <body
         className={cn(
-          space_grotesk.variable,
+          spaceGrotesk.variable,
           poppins.variable,
-          jetbrains_mono.variable,
+          jetbrainsMono.variable,
           'min-h-screen text-foreground antialiased'
         )}
       >

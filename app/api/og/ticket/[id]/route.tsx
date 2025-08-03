@@ -4,7 +4,10 @@ export const runtime = 'edge';
 
 const hexColorRegex = /^#[0-9A-F]{6}$/i;
 
-export async function GET(_request: Request, context: { params: Promise<{ id: string }> }) {
+export async function GET(
+  _request: Request,
+  context: { params: Promise<{ id: string }> }
+) {
   try {
     const { id } = await context.params;
 
@@ -24,315 +27,334 @@ export async function GET(_request: Request, context: { params: Promise<{ id: st
     }
 
     // Validate hex colors
-    if (!(hexColorRegex.test(ticket.primaryColor) && hexColorRegex.test(ticket.secondaryColor))) {
+    if (
+      !(
+        hexColorRegex.test(ticket.primaryColor) &&
+        hexColorRegex.test(ticket.secondaryColor)
+      )
+    ) {
       return new Response('Invalid color format', { status: 400 });
     }
 
     // Prepare individual text strings for font loading
     const brandText = 'Walter Morales';
     const subtitleText = 'Digital Guestbook';
-    const userName = ticket.userName.length > 20 ? `${ticket.userName.substring(0, 20)}...` : ticket.userName;
-    const userEmail = ticket.userEmail.length > 30 ? `${ticket.userEmail.substring(0, 30)}...` : ticket.userEmail;
+    const userName =
+      ticket.userName.length > 20
+        ? `${ticket.userName.substring(0, 20)}...`
+        : ticket.userName;
+    const userEmail =
+      ticket.userEmail.length > 30
+        ? `${ticket.userEmail.substring(0, 30)}...`
+        : ticket.userEmail;
     const providerText = ticket.userProvider.toUpperCase();
     const ticketLabelText = 'Ticket Number';
     const ticketNumberText = `#${ticket.ticketNumber}`;
 
     return new ImageResponse(
-      <div
-        style={{
-          display: 'flex',
-          width: '100%',
-          height: '100%',
-          backgroundColor: '#111827',
-          padding: '64px',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        {/* Main Ticket */}
+      (
         <div
           style={{
             display: 'flex',
-            flexDirection: 'column',
-            backgroundColor: ticket.backgroundColor || '#1f1f23',
-            boxShadow: '0 40px 80px rgba(0, 0, 0, 0.6)',
             width: '100%',
-            maxWidth: '896px',
-            height: '384px',
-            borderRadius: '24px',
-            position: 'relative',
-            overflow: 'hidden',
+            height: '100%',
+            backgroundColor: '#111827',
+            padding: '64px',
+            alignItems: 'center',
+            justifyContent: 'center',
           }}
         >
-          {/* Header */}
+          {/* Main Ticket */}
           <div
             style={{
               display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '32px 48px',
+              flexDirection: 'column',
+              backgroundColor: ticket.backgroundColor || '#1f1f23',
+              boxShadow: '0 40px 80px rgba(0, 0, 0, 0.6)',
+              width: '100%',
+              maxWidth: '896px',
+              height: '384px',
+              borderRadius: '24px',
+              position: 'relative',
+              overflow: 'hidden',
             }}
           >
-            {/* Branding */}
-            <div style={{ display: 'flex', alignItems: 'center' }}>
+            {/* Header */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '32px 48px',
+              }}
+            >
+              {/* Branding */}
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '48px',
+                    height: '48px',
+                    borderRadius: '12px',
+                    background: `linear-gradient(135deg, ${ticket.primaryColor}, ${ticket.secondaryColor})`,
+                    fontSize: '24px',
+                    marginRight: '16px',
+                  }}
+                >
+                  ✨
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <div
+                    style={{
+                      display: 'flex',
+                      color: '#e5e7eb',
+                      fontWeight: '800',
+                      fontSize: '18px',
+                      letterSpacing: '0.05em',
+                      textTransform: 'uppercase',
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    }}
+                  >
+                    {brandText}
+                  </div>
+                  <div
+                    style={{
+                      display: 'flex',
+                      color: '#9ca3af',
+                      fontSize: '14px',
+                      fontWeight: '500',
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    }}
+                  >
+                    {subtitleText}
+                  </div>
+                </div>
+              </div>
+
+              {/* Provider Badge */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  padding: '12px 20px',
+                  borderRadius: '9999px',
+                }}
+              >
+                <span style={{ fontSize: '18px', marginRight: '8px' }}>
+                  {ticket.userProvider === 'github' ? '🐙' : '📧'}
+                </span>
+                <span
+                  style={{
+                    color: '#e5e7eb',
+                    fontWeight: '700',
+                    fontSize: '14px',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.05em',
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  }}
+                >
+                  {providerText}
+                </span>
+              </div>
+            </div>
+
+            {/* User Section */}
+            <div
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                padding: '16px 48px',
+                flex: 1,
+              }}
+            >
+              {/* Avatar */}
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  width: '48px',
-                  height: '48px',
-                  borderRadius: '12px',
-                  background: `linear-gradient(135deg, ${ticket.primaryColor}, ${ticket.secondaryColor})`,
-                  fontSize: '24px',
-                  marginRight: '16px',
+                  width: '112px',
+                  height: '112px',
+                  borderRadius: '50%',
+                  background: ticket.userAvatar
+                    ? 'transparent'
+                    : `linear-gradient(135deg, ${ticket.primaryColor}, ${ticket.secondaryColor})`,
+                  boxShadow: `0 0 60px ${ticket.primaryColor}40`,
+                  border: '4px solid rgba(255, 255, 255, 0.1)',
+                  fontSize: '36px',
+                  fontWeight: 'bold',
+                  color: 'white',
+                  marginRight: '32px',
+                  overflow: 'hidden',
+                  position: 'relative',
                 }}
               >
-                ✨
+                {ticket.userAvatar ? (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    alt={userName}
+                    src={ticket.userAvatar}
+                    style={{
+                      width: '100%',
+                      height: '100%',
+                      objectFit: 'cover',
+                      borderRadius: '50%',
+                    }}
+                  />
+                ) : (
+                  ticket.userName
+                    .split(' ')
+                    .map((n: string) => n[0])
+                    .join('')
+                    .toUpperCase()
+                )}
               </div>
+
+              {/* User Info */}
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <div
+                <h1
                   style={{
-                    display: 'flex',
-                    color: '#e5e7eb',
-                    fontWeight: '800',
-                    fontSize: '18px',
-                    letterSpacing: '0.05em',
-                    textTransform: 'uppercase',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    color: 'white',
+                    fontSize: '48px',
+                    fontWeight: '900',
+                    margin: 0,
+                    marginBottom: '8px',
+                    letterSpacing: '-0.02em',
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
                   }}
                 >
-                  {brandText}
-                </div>
+                  {userName}
+                </h1>
+                <p
+                  style={{
+                    color: '#9ca3af',
+                    fontSize: '20px',
+                    fontWeight: '400',
+                    margin: 0,
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  }}
+                >
+                  {userEmail}
+                </p>
+              </div>
+            </div>
+
+            {/* Perforated Line */}
+            <div
+              style={{
+                display: 'flex',
+                height: '2px',
+                borderTop: '2px dashed #3f3f46',
+                margin: '0 48px',
+                position: 'relative',
+              }}
+            >
+              {/* Left hole */}
+              <div
+                style={{
+                  display: 'flex',
+                  position: 'absolute',
+                  left: '-60px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '50%',
+                  backgroundColor: '#111827',
+                }}
+              />
+              {/* Right hole */}
+              <div
+                style={{
+                  display: 'flex',
+                  position: 'absolute',
+                  right: '-60px',
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  width: '24px',
+                  height: '24px',
+                  borderRadius: '50%',
+                  backgroundColor: '#111827',
+                }}
+              />
+            </div>
+
+            {/* Ticket Number Section */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                padding: '32px 48px',
+              }}
+            >
+              <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <div
                   style={{
                     display: 'flex',
                     color: '#9ca3af',
                     fontSize: '14px',
-                    fontWeight: '500',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    fontWeight: '600',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                    marginBottom: '8px',
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
                   }}
                 >
-                  {subtitleText}
+                  {ticketLabelText}
+                </div>
+                <div
+                  style={{
+                    display: 'flex',
+                    fontSize: '36px',
+                    fontWeight: '900',
+                    fontFamily:
+                      'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+                    background: `linear-gradient(to right, ${ticket.primaryColor}, ${ticket.secondaryColor})`,
+                    backgroundClip: 'text',
+                    color: 'transparent',
+                    letterSpacing: '0.05em',
+                  }}
+                >
+                  {ticketNumberText}
                 </div>
               </div>
-            </div>
 
-            {/* Provider Badge */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                backgroundColor: 'rgba(255, 255, 255, 0.1)',
-                padding: '12px 20px',
-                borderRadius: '9999px',
-              }}
-            >
-              <span style={{ fontSize: '18px', marginRight: '8px' }}>
-                {ticket.userProvider === 'github' ? '🐙' : '📧'}
-              </span>
-              <span
-                style={{
-                  color: '#e5e7eb',
-                  fontWeight: '700',
-                  fontSize: '14px',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.05em',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                }}
-              >
-                {providerText}
-              </span>
-            </div>
-          </div>
-
-          {/* User Section */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              padding: '16px 48px',
-              flex: 1,
-            }}
-          >
-            {/* Avatar */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                width: '112px',
-                height: '112px',
-                borderRadius: '50%',
-                background: ticket.userAvatar
-                  ? 'transparent'
-                  : `linear-gradient(135deg, ${ticket.primaryColor}, ${ticket.secondaryColor})`,
-                boxShadow: `0 0 60px ${ticket.primaryColor}40`,
-                border: '4px solid rgba(255, 255, 255, 0.1)',
-                fontSize: '36px',
-                fontWeight: 'bold',
-                color: 'white',
-                marginRight: '32px',
-                overflow: 'hidden',
-                position: 'relative',
-              }}
-            >
-              {ticket.userAvatar ? (
-                // biome-ignore lint/performance/noImgElement: required for vercel og
-                <img
-                  alt={userName}
-                  src={ticket.userAvatar}
-                  style={{
-                    width: '100%',
-                    height: '100%',
-                    objectFit: 'cover',
-                    borderRadius: '50%',
-                  }}
-                />
-              ) : (
-                ticket.userName
-                  .split(' ')
-                  .map((n: string) => n[0])
-                  .join('')
-                  .toUpperCase()
-              )}
-            </div>
-
-            {/* User Info */}
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <h1
-                style={{
-                  color: 'white',
-                  fontSize: '48px',
-                  fontWeight: '900',
-                  margin: 0,
-                  marginBottom: '8px',
-                  letterSpacing: '-0.02em',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                }}
-              >
-                {userName}
-              </h1>
-              <p
-                style={{
-                  color: '#9ca3af',
-                  fontSize: '20px',
-                  fontWeight: '400',
-                  margin: 0,
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                }}
-              >
-                {userEmail}
-              </p>
-            </div>
-          </div>
-
-          {/* Perforated Line */}
-          <div
-            style={{
-              display: 'flex',
-              height: '2px',
-              borderTop: '2px dashed #3f3f46',
-              margin: '0 48px',
-              position: 'relative',
-            }}
-          >
-            {/* Left hole */}
-            <div
-              style={{
-                display: 'flex',
-                position: 'absolute',
-                left: '-60px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                width: '24px',
-                height: '24px',
-                borderRadius: '50%',
-                backgroundColor: '#111827',
-              }}
-            />
-            {/* Right hole */}
-            <div
-              style={{
-                display: 'flex',
-                position: 'absolute',
-                right: '-60px',
-                top: '50%',
-                transform: 'translateY(-50%)',
-                width: '24px',
-                height: '24px',
-                borderRadius: '50%',
-                backgroundColor: '#111827',
-              }}
-            />
-          </div>
-
-          {/* Ticket Number Section */}
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              padding: '32px 48px',
-            }}
-          >
-            <div style={{ display: 'flex', flexDirection: 'column' }}>
-              <div
-                style={{
-                  display: 'flex',
-                  color: '#9ca3af',
-                  fontSize: '14px',
-                  fontWeight: '600',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
-                  marginBottom: '8px',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                }}
-              >
-                {ticketLabelText}
+              {/* Visual Pattern */}
+              <div style={{ display: 'flex' }}>
+                {[...new Array(6)].map((_, i) => {
+                  const opacity = Math.max(10, 100 - i * 15); // Prevent negative values
+                  const opacityHex = Math.floor(opacity * 2.55)
+                    .toString(16)
+                    .padStart(2, '0');
+                  return (
+                    <div
+                      key={`pattern-${i}`}
+                      style={{
+                        display: 'flex',
+                        width: '4px',
+                        height: `${40 - i * 5}px`,
+                        background: `linear-gradient(to bottom, ${ticket.primaryColor}${opacityHex}, transparent)`,
+                        borderRadius: '2px',
+                        marginRight: '4px',
+                      }}
+                    />
+                  );
+                })}
               </div>
-              <div
-                style={{
-                  display: 'flex',
-                  fontSize: '36px',
-                  fontWeight: '900',
-                  fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
-                  background: `linear-gradient(to right, ${ticket.primaryColor}, ${ticket.secondaryColor})`,
-                  backgroundClip: 'text',
-                  color: 'transparent',
-                  letterSpacing: '0.05em',
-                }}
-              >
-                {ticketNumberText}
-              </div>
-            </div>
-
-            {/* Visual Pattern */}
-            <div style={{ display: 'flex' }}>
-              {[...new Array(6)].map((_, i) => {
-                const opacity = Math.max(10, 100 - i * 15); // Prevent negative values
-                const opacityHex = Math.floor(opacity * 2.55)
-                  .toString(16)
-                  .padStart(2, '0');
-                return (
-                  <div
-                    // biome-ignore lint/suspicious/noArrayIndexKey: index will stay constant
-                    key={`pattern-${i}`}
-                    style={{
-                      display: 'flex',
-                      width: '4px',
-                      height: `${40 - i * 5}px`,
-                      background: `linear-gradient(to bottom, ${ticket.primaryColor}${opacityHex}, transparent)`,
-                      borderRadius: '2px',
-                      marginRight: '4px',
-                    }}
-                  />
-                );
-              })}
             </div>
           </div>
         </div>
-      </div>,
+      ),
       {
         width: 1200,
         height: 630,

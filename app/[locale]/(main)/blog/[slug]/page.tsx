@@ -23,7 +23,11 @@ export async function generateStaticParams() {
 
 type Params = Promise<{ slug: string }>;
 
-export async function generateMetadata({ params }: { params: Params }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Params;
+}): Promise<Metadata> {
   const { slug } = await params;
   const post = await reader.collections.posts.read(slug);
 
@@ -90,7 +94,9 @@ export default async function BlogPost({ params }: { params: Params }) {
           <div className="mb-4 flex items-center gap-4 text-gray-400">
             {post.publishedAt && (
               <>
-                <time dateTime={post.publishedAt}>{formatDate(post.publishedAt)}</time>
+                <time dateTime={post.publishedAt}>
+                  {formatDate(post.publishedAt)}
+                </time>
                 <span>·</span>
               </>
             )}
@@ -114,7 +120,7 @@ export default async function BlogPost({ params }: { params: Params }) {
         <div className="prose prose-invert prose-lg max-w-none prose-code:rounded prose-img:rounded-lg prose-pre:border prose-pre:border-zinc-800 prose-blockquote:border-l-purple-600 prose-code:bg-zinc-800 prose-pre:bg-zinc-900 prose-code:px-1 prose-code:py-0.5 prose-headings:font-bold prose-strong:font-semibold prose-a:text-purple-400 prose-blockquote:text-gray-400 prose-code:text-purple-300 prose-h1:text-3xl prose-h2:text-2xl prose-h3:text-xl prose-headings:text-white prose-ol:text-gray-300 prose-p:text-gray-300 prose-strong:text-white prose-ul:text-gray-300 prose-p:leading-relaxed prose-a:no-underline prose-img:shadow-lg hover:prose-a:text-purple-300">
           {(() => {
             // Transform the renderable tree to replace pre tags with CodeBlock
-            // biome-ignore lint/suspicious/noExplicitAny: rendering from markdoc
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const transformNode = (innerNode: any): any => {
               if (!innerNode) {
                 return innerNode;
@@ -128,9 +134,9 @@ export default async function BlogPost({ params }: { params: Params }) {
                   // Pass the language attribute and children directly
                   attributes: {
                     ...innerNode.attributes,
-                    children: innerNode.children?.[0] || ''
+                    children: innerNode.children?.[0] || '',
                   },
-                  children: []
+                  children: [],
                 };
               }
 
@@ -138,7 +144,7 @@ export default async function BlogPost({ params }: { params: Params }) {
               if (Array.isArray(innerNode.children)) {
                 return {
                   ...innerNode,
-                  children: innerNode.children.map(transformNode)
+                  children: innerNode.children.map(transformNode),
                 };
               }
 

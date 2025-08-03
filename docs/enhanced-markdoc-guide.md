@@ -174,7 +174,7 @@ const config = {
     card: {
       /* card configuration */
     },
-    "code-block": {
+    'code-block': {
       /* code block configuration */
     },
     video: {
@@ -271,13 +271,11 @@ const config = {
 ### Common Issues
 
 1. **Component Not Rendering**
-
    - Check tag syntax and attributes
    - Verify component is exported in MarkdownComponents
    - Check for typos in tag names
 
 2. **Copy Button Not Working**
-
    - Ensure client-side rendering is enabled
    - Check browser clipboard permissions
    - Verify JavaScript is enabled
@@ -298,7 +296,7 @@ export function parseMarkdoc(content: string) {
   const errors = Markdoc.validate(ast, config);
 
   if (errors.length) {
-    console.error("Markdoc validation errors:", errors);
+    console.error('Markdoc validation errors:', errors);
     // Handle errors appropriately
   }
 }
@@ -318,12 +316,12 @@ export function parseMarkdoc(content: string) {
 
 ```typescript
 const customTag = {
-  render: "CustomComponent",
+  render: 'CustomComponent',
   attributes: {
     customProp: {
       type: String,
       required: true,
-      description: "Custom property description",
+      description: 'Custom property description',
     },
   },
 };
@@ -370,4 +368,3 @@ If you encounter issues or have questions:
 2. Review component documentation
 3. Check GitHub issues
 4. Create a new issue with details
- 

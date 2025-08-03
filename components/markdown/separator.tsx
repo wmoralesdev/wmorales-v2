@@ -9,10 +9,8 @@ export function SeparatorComponent({ spacing = 'normal' }: SeparatorProps) {
   const spacingClasses = {
     small: 'my-4',
     normal: 'my-8',
-    large: 'my-12'
+    large: 'my-12',
   };
 
-  return (
-    <Separator className={cn('bg-gray-800', spacingClasses[spacing])} />
-  );
-} 
+  return <Separator className={cn('bg-gray-800', spacingClasses[spacing])} />;
+}

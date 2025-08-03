@@ -1,8 +1,9 @@
 ---
-description: 
-globs: 
+description:
+globs:
 alwaysApply: true
 ---
+
 # Architecture & Guidelines
 
 ## Strict Requirements
@@ -17,6 +18,7 @@ alwaysApply: true
 ## Project Structure
 
 Consider the following from the root directory:
+
 - Use the `/app` directory for all routes and layouts (Next.js 13+ app router).
 - Place shared components in `/components`.
 - Place hooks in `/hooks`.

@@ -96,7 +96,8 @@ async function main() {
                 },
                 {
                   questionOrder: 6,
-                  question: 'What topics are you interested in? (select all that apply)',
+                  question:
+                    'What topics are you interested in? (select all that apply)',
                   type: 'checkbox',
                   required: false,
                   options: {

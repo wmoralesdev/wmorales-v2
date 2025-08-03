@@ -8,6 +8,7 @@
 - CTA: Get to know me
 
 ## About
+
 - Title: Software Engineer | Cursor Ambassador
 - Short bio: Experienced Software Engineer with a focus on .NET, JavaScript, and cloud technologies. I love building scalable products and collaborating with global teams.
 - Currently learning: LLMs, AI, and Web3

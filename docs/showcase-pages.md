@@ -109,6 +109,7 @@ To add a new project, edit the `lib/data/projects.ts` file:
 ## Features
 
 ### Filtering
+
 - Filter by category
 - Filter by status
 - Filter by featured projects
@@ -116,12 +117,14 @@ To add a new project, edit the `lib/data/projects.ts` file:
 - Filter by year (future)
 
 ### Sorting
+
 - Newest first (default)
 - Oldest first
 - Alphabetical by title
 - By category
 
 ### Search
+
 - Search by project title
 - Search by description
 - Search by tags

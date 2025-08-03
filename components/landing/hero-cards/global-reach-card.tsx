@@ -9,16 +9,24 @@ export function GlobalReachCard(props: GlobalReachCardProps) {
   const t = useTranslations('homepage.cards');
 
   return (
-    <BaseCard className="border-gray-800 bg-gray-900/80 p-4 backdrop-blur-xl lg:p-6" id="global-reach" {...props}>
+    <BaseCard
+      className="border-gray-800 bg-gray-900/80 p-4 backdrop-blur-xl lg:p-6"
+      id="global-reach"
+      {...props}
+    >
       <div className="space-y-3">
         <div className="flex items-center justify-between">
           <Globe className="h-6 w-6 text-purple-400 lg:h-8 lg:w-8" />
-          <Badge className="border-purple-500/30 bg-purple-500/20 text-purple-400 text-xs">Global</Badge>
+          <Badge className="border-purple-500/30 bg-purple-500/20 text-purple-400 text-xs">
+            Global
+          </Badge>
         </div>
         <div>
           <div className="font-bold text-2xl text-white lg:text-3xl">10+</div>
           <p className="text-gray-400 text-xs lg:text-sm">{t('globalReach')}</p>
-          <p className="mt-1 text-gray-500 text-xs">{t('clientsFromAroundTheWorld')}</p>
+          <p className="mt-1 text-gray-500 text-xs">
+            {t('clientsFromAroundTheWorld')}
+          </p>
         </div>
       </div>
     </BaseCard>

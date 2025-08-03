@@ -1,4 +1,9 @@
-export { BaseCard, cardVariants, floatVariants, resetCardPositions } from './base-card';
+export {
+  BaseCard,
+  cardVariants,
+  floatVariants,
+  resetCardPositions,
+} from './base-card';
 export { CoffeeChatCard } from './coffee-chat-card';
 export { CurrentlyLearningCard } from './currently-learning-card';
 export { CursorAmbassadorCard } from './cursor-ambassador-card';

@@ -33,10 +33,14 @@ export function useGuestbookTicketsSWR(user: AuthUser | null) {
     data: userTicket = null,
     error: userTicketError,
     mutate: mutateUserTicket,
-  } = useSWR(user ? `guestbook-ticket-${user.id}` : null, () => fetchUserTicket(user?.id), {
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
+  } = useSWR(
+    user ? `guestbook-ticket-${user.id}` : null,
+    () => fetchUserTicket(user?.id),
+    {
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
 
   // Combined loading state
   const isLoadingTickets = !(allTickets || allTicketsError);
@@ -57,7 +61,9 @@ export function useGuestbookTicketsSWR(user: AuthUser | null) {
       if (!tickets) {
         return [newTicket];
       }
-      const index = tickets.findIndex((t: TicketData) => t.userEmail === newTicket.userEmail);
+      const index = tickets.findIndex(
+        (t: TicketData) => t.userEmail === newTicket.userEmail
+      );
       if (index >= 0) {
         const updated = [...tickets];
         updated[index] = newTicket;

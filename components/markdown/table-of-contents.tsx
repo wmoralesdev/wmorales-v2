@@ -20,8 +20,14 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
         <nav>
           <ul className="space-y-2">
             {headings.map((heading) => (
-              <li className={cn('text-sm', heading.level > 2 && 'ml-4')} key={heading.id}>
-                <Link className='text-gray-400 transition-colors hover:text-white' href={`#${heading.id}`}>
+              <li
+                className={cn('text-sm', heading.level > 2 && 'ml-4')}
+                key={heading.id}
+              >
+                <Link
+                  className="text-gray-400 transition-colors hover:text-white"
+                  href={`#${heading.id}`}
+                >
                   {heading.title}
                 </Link>
               </li>

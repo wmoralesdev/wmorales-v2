@@ -20,6 +20,21 @@ export type PollPresence = {
   userAvatar?: string;
 };
 
+// Helper to get session ID (client-side)
+// biome-ignore lint/suspicious/useAwait: async because server process needs to be async
+async function getSessionId() {
+  // Check if we're on the client
+  if (typeof window !== 'undefined') {
+    let sessionId = localStorage.getItem('poll_session_id');
+    if (!sessionId) {
+      sessionId = crypto.randomUUID();
+      localStorage.setItem('poll_session_id', sessionId);
+    }
+    return sessionId;
+  }
+  return 'server-side';
+}
+
 export function subscribeToPollUpdates(
   pollCode: string,
   onUpdate: (event: PollRealtimeEvent) => void,
@@ -101,27 +116,17 @@ export function subscribeToPollUpdates(
 
 // Client-side only broadcast function
 // biome-ignore lint/suspicious/useAwait: async because server process needs to be async
-export async function broadcastPollUpdate(_pollCode: string, _event: PollRealtimeEvent) {
+export async function broadcastPollUpdate(
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _pollCode: string,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  _event: PollRealtimeEvent
+) {
   // This function should only be called from server actions
   // For client-side, updates happen through subscriptions
   if (typeof window !== 'undefined') {
     return;
   }
-}
-
-// Helper to get session ID (client-side)
-// biome-ignore lint/suspicious/useAwait: async because server process needs to be async
-async function getSessionId() {
-  // Check if we're on the client
-  if (typeof window !== 'undefined') {
-    let sessionId = localStorage.getItem('poll_session_id');
-    if (!sessionId) {
-      sessionId = crypto.randomUUID();
-      localStorage.setItem('poll_session_id', sessionId);
-    }
-    return sessionId;
-  }
-  return 'server-side';
 }
 
 // Subscribe to polls list for active users count
@@ -179,6 +184,7 @@ export type EventRealtimeEvent = {
     imageUrl: string;
     caption?: string;
     createdAt: string;
+    userId: string;
   };
   imageId?: string;
   timestamp: string;
@@ -233,10 +239,25 @@ export function subscribeToEventUpdates(
         onPresenceUpdate(viewersCount);
       }
     })
+    .on('presence', { event: 'join' }, () => {
+      if (onPresenceUpdate) {
+        const state = channel.presenceState();
+        const viewersCount = Object.keys(state).length;
+        onPresenceUpdate(viewersCount);
+      }
+    })
+    .on('presence', { event: 'leave' }, () => {
+      if (onPresenceUpdate) {
+        const state = channel.presenceState();
+        const viewersCount = Object.keys(state).length;
+        onPresenceUpdate(viewersCount);
+      }
+    })
     .subscribe(async (status) => {
-      if (status === 'SUBSCRIBED' && onPresenceUpdate) {
+      if (status === 'SUBSCRIBED') {
         const sessionId = await getSessionId();
-        await channel.track({ sessionId, joinedAt: new Date().toISOString() });
+        const presenceData = { sessionId, joinedAt: new Date().toISOString() };
+        await channel.track(presenceData);
       }
     });
 

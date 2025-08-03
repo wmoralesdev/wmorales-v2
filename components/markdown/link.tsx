@@ -23,7 +23,9 @@ export function LinkComponent({ href, children, showIcon = true }: LinkProps) {
       target={isExternal ? '_blank' : undefined}
     >
       {children}
-      {isExternal && showIcon && <ArrowUpRight className="h-3 w-3 flex-shrink-0" />}
+      {isExternal && showIcon && (
+        <ArrowUpRight className="h-3 w-3 flex-shrink-0" />
+      )}
     </Link>
   );
 }

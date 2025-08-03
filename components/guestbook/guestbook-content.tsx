@@ -3,7 +3,10 @@
 import { ArrowRight, Palette, Share2, Sparkles } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
-import { createGuestbookEntry, updateGuestbookEntry } from '@/app/actions/guestbook.actions';
+import {
+  createGuestbookEntry,
+  updateGuestbookEntry,
+} from '@/app/actions/guestbook.actions';
 import { useAuth } from '@/components/auth/auth-provider';
 import { GuestbookLoading } from '@/components/guestbook/guestbook-loading';
 import { GuestbookTicketsCarousel } from '@/components/guestbook/guestbook-tickets-carousel';
@@ -16,32 +19,43 @@ import { useGuestbookTicketsSWR } from '@/hooks/use-guestbook-tickets-swr';
 import { authService } from '@/lib/auth';
 import type { TicketData } from '@/lib/types/guestbook.types';
 import { shareTicket } from '@/lib/utils/share';
+import { useTranslations } from 'next-intl';
 
 export function GuestbookContent() {
+  const t = useTranslations('guestbook');
+
   const { user, loading } = useAuth();
   const [customMessage, setCustomMessage] = useState('');
   const [isGeneratingColors, setIsGeneratingColors] = useState(false);
-  const { userTicket, allTickets, isLoadingTickets, updateUserTicket, refreshTickets } = useGuestbookTicketsSWR(user);
+  const {
+    userTicket,
+    allTickets,
+    isLoadingTickets,
+    updateUserTicket,
+    refreshTickets,
+  } = useGuestbookTicketsSWR(user);
 
   const handleSignIn = async (provider: 'github' | 'google') => {
     try {
       await authService.signInWithProvider(provider, '/guestbook');
     } catch {
-      toast.error('Failed to sign in. Please try again.');
+      toast.error(t('signInError'));
     }
   };
 
   const handleGenerateColors = async () => {
     if (!customMessage.trim()) {
-      toast.error('Please describe your mood or style first');
+      toast.error(t('moodRequired'));
       return;
     }
 
     setIsGeneratingColors(true);
     try {
-      const result = userTicket ? await updateGuestbookEntry(customMessage) : await createGuestbookEntry(customMessage);
+      const result = userTicket
+        ? await updateGuestbookEntry(customMessage)
+        : await createGuestbookEntry(customMessage);
 
-      toast.success(userTicket ? 'Your ticket has been updated!' : 'Your unique ticket has been created!');
+      toast.success(userTicket ? t('ticketUpdated') : t('ticketCreated'));
 
       // Update tickets using SWR
       updateUserTicket(result.ticket as unknown as TicketData);
@@ -51,7 +65,7 @@ export function GuestbookContent() {
 
       setCustomMessage('');
     } catch {
-      toast.error('Failed to generate ticket. Please try again.');
+      toast.error(t('generateError'));
     } finally {
       setIsGeneratingColors(false);
     }
@@ -104,9 +118,14 @@ export function GuestbookContent() {
                   }}
                 />
                 <div className="flex justify-center">
-                  <Button className="gap-2" onClick={handleShareTicket} size="sm" variant="outline">
+                  <Button
+                    className="gap-2"
+                    onClick={handleShareTicket}
+                    size="sm"
+                    variant="outline"
+                  >
                     <Share2 className="h-4 w-4" />
-                    Share Ticket
+                    {t('shareTicket')}
                   </Button>
                 </div>
               </div>
@@ -116,8 +135,10 @@ export function GuestbookContent() {
                   <div className="mb-4 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-4">
                     <Sparkles className="h-8 w-8 text-purple-400" />
                   </div>
-                  <h3 className="mb-2 font-semibold text-xl">No Ticket Yet</h3>
-                  <p className="text-gray-400">Create your first ticket by describing your mood</p>
+                  <h3 className="mb-2 font-semibold text-xl">
+                    {t('noTicketYet')}
+                  </h3>
+                  <p className="text-gray-400">{t('describeMood')}</p>
                 </CardContent>
               </Card>
             )}
@@ -131,12 +152,12 @@ export function GuestbookContent() {
                   <div className="rounded-lg bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-2">
                     <Palette className="h-5 w-5 text-purple-400" />
                   </div>
-                  <h2 className="font-semibold text-xl">{userTicket ? 'Update your ticket' : 'Create your ticket'}</h2>
+                  <h2 className="font-semibold text-xl">
+                    {userTicket ? t('updateTicket') : t('createTicketForm')}
+                  </h2>
                 </div>
                 <p className="text-gray-400 text-sm">
-                  {userTicket
-                    ? 'Change your mood to regenerate colors'
-                    : 'Tell us your mood and get a unique color palette'}
+                  {userTicket ? t('changeMood') : t('tellMood')}
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -150,12 +171,10 @@ export function GuestbookContent() {
                         handleGenerateColors();
                       }
                     }}
-                    placeholder="Describe your current mood, favorite colors, or what inspires you..."
+                    placeholder={t('moodPlaceholder')}
                     value={customMessage}
                   />
-                  <p className="text-gray-500 text-xs">
-                    Examples: "Feeling like a sunset over the ocean" or "Energetic and vibrant like a neon city"
-                  </p>
+                  <p className="text-gray-500 text-xs">{t('moodExamples')}</p>
                 </div>
                 <Button
                   className="w-full gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
@@ -166,12 +185,12 @@ export function GuestbookContent() {
                   {isGeneratingColors ? (
                     <>
                       <Sparkles className="h-4 w-4 animate-spin" />
-                      {userTicket ? 'Updating...' : 'Generating...'}
+                      {userTicket ? t('updating') : t('generating')}
                     </>
                   ) : (
                     <>
                       <Sparkles className="h-4 w-4" />
-                      {userTicket ? 'Update ticket' : 'Generate ticket'}
+                      {userTicket ? t('updateButton') : t('generateButton')}
                       <ArrowRight className="h-4 w-4" />
                     </>
                   )}

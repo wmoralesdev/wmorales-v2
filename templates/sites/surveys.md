@@ -41,7 +41,7 @@ Surveys are stored in the database and are retrieved from it, they should work a
               "path": "b"
             }
           ]
-        },
+        }
       ]
     },
     {
@@ -79,17 +79,20 @@ Surveys are stored in the database and are retrieved from it, they should work a
 ## UI
 
 ### /surveys
+
 The UI should be a simple and clean design, with a header, a list of surveys, and a form for the survey.
 
 ### /surveys/:id
+
 The page should be able to render the results of the survey in real time or close to it. This serves as a dashboard for the users who want to see the results.
 
 ### /surveys/:id/fill
+
 The page should be able to render the survey and handle the answers from the data retrieved from the database. There should be a rendering engine
 for the different types of questions and answers (radio, text, etc). Shadcn/ui components should be used for the UI.
 
-
 ## Tasks
+
 - [ ] Implement the data structure at prisma schema.
 - [ ] Create the surveys page route.
 - [ ] Add title.
@@ -102,6 +105,7 @@ for the different types of questions and answers (radio, text, etc). Shadcn/ui c
 - [ ] Handle the submission of the survey.
 
 ## Technical
+
 - Surveys are client side only, at least the fill page should be.
 - Use react-hook-form for the form handling.
 - Use shadcn/ui components for the UI.

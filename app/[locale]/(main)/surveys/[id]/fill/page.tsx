@@ -1,7 +1,10 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
-import { getActiveSurveys, getSurveyWithSections } from '@/app/actions/survey.actions';
+import {
+  getActiveSurveys,
+  getSurveyWithSections,
+} from '@/app/actions/survey.actions';
 import { SurveyRenderer } from '@/components/surveys/survey-renderer';
 import { routing } from '@/i18n/routing';
 import { createMetadata, siteConfig } from '@/lib/metadata';
@@ -22,7 +25,7 @@ export async function generateStaticParams() {
     }
 
     const surveys = result.data;
-    
+
     // Generate params for all locales and all surveys
     return routing.locales.flatMap((locale) =>
       surveys.map((survey) => ({
@@ -36,7 +39,9 @@ export async function generateStaticParams() {
   }
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { id } = await params;
   const result = await getSurveyWithSections(id);
 
@@ -74,10 +79,10 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function SurveyFillPage({ params }: PageProps) {
   const { locale, id } = await params;
-  
+
   // Enable static rendering
   setRequestLocale(locale);
-  
+
   const result = await getSurveyWithSections(id);
 
   if (result.error || !result.data) {

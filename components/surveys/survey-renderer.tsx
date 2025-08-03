@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -8,11 +9,26 @@ import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import * as z from 'zod';
-import { completeSurveyResponse, createSurveyResponse, saveSurveyAnswer } from '@/app/actions/survey.actions';
+import {
+  completeSurveyResponse,
+  createSurveyResponse,
+  saveSurveyAnswer,
+} from '@/app/actions/survey.actions';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Form } from '@/components/ui/form';
-import type { Question, SurveyQuestion, SurveySection, SurveyWithSections } from '@/lib/types/survey.types';
+import type {
+  Question,
+  SurveyQuestion,
+  SurveySection,
+  SurveyWithSections,
+} from '@/lib/types/survey.types';
 import { QuestionRenderer } from './question-renderer';
 
 type SurveyRendererProps = {
@@ -23,7 +39,6 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   const router = useRouter();
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [sectionPath, setSectionPath] = useState<string[]>([]);
-  // biome-ignore lint/suspicious/noExplicitAny: answers are built by engine, we can't type it
   const [answers, setAnswers] = useState<Record<string, any>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [responseId, setResponseId] = useState<string | null>(null);
@@ -50,10 +65,22 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   // Create dynamic schema based on current section questions
   const getQuestionSchema = (question: SurveyQuestion): z.ZodTypeAny => {
     const schemas = {
-      text: () => (question.required ? z.string().min(1, 'This field is required') : z.string().optional()),
-      textarea: () => (question.required ? z.string().min(1, 'This field is required') : z.string().optional()),
-      radio: () => (question.required ? z.string().min(1, 'Please select an option') : z.string().optional()),
-      select: () => (question.required ? z.string().min(1, 'Please select an option') : z.string().optional()),
+      text: () =>
+        question.required
+          ? z.string().min(1, 'This field is required')
+          : z.string().optional(),
+      textarea: () =>
+        question.required
+          ? z.string().min(1, 'This field is required')
+          : z.string().optional(),
+      radio: () =>
+        question.required
+          ? z.string().min(1, 'Please select an option')
+          : z.string().optional(),
+      select: () =>
+        question.required
+          ? z.string().min(1, 'Please select an option')
+          : z.string().optional(),
       checkbox: () =>
         question.required
           ? z.array(z.string()).min(1, 'Please select at least one option')
@@ -83,13 +110,16 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   // Update form when section changes
   useEffect(() => {
     form.reset(answers);
-  }, [answers, form.reset]);
+  }, [answers, form, form.reset]);
 
-  // biome-ignore lint/suspicious/noExplicitAny: form data is dynamic based on questions
   const findNextPath = (data: Record<string, any>): string | null => {
     for (const [questionId, answer] of Object.entries(data)) {
-      const question = currentSection.questions?.find((q) => q.id === questionId);
-      const selectedOption = question?.options?.find((opt) => opt.value === answer);
+      const question = currentSection.questions?.find(
+        (q) => q.id === questionId
+      );
+      const selectedOption = question?.options?.find(
+        (opt) => opt.value === answer
+      );
       if (selectedOption?.path) {
         return selectedOption.path;
       }
@@ -103,7 +133,25 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
     );
   };
 
-  // biome-ignore lint/suspicious/noExplicitAny: form data is dynamic based on questions
+  const handleSubmit = async () => {
+    if (!responseId) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    try {
+      // Complete the response (answers were already saved in handleNext)
+      await completeSurveyResponse(responseId);
+
+      // Redirect to thank you or results page
+      router.push(`/surveys/${survey.id}?completed=true`);
+    } catch (_error) {
+      toast.error('Failed to submit survey');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleNext = async (data: any) => {
     // Save answers locally
     const updatedAnswers = { ...answers, ...data };
@@ -125,7 +173,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
     }
 
     if (isLastSection(nextPath)) {
-      await handleSubmit(updatedAnswers);
+      await handleSubmit();
     } else {
       setCurrentSectionIndex(currentSectionIndex + 1);
     }
@@ -151,27 +199,6 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
       initResponse();
     }
   }, [survey.id, responseId]);
-
-  // biome-ignore lint/suspicious/noExplicitAny: answers are built by engine, we can't type it
-  // biome-ignore lint/suspicious/noExplicitAny: final answers are dynamic
-  const handleSubmit = async (_finalAnswers: any) => {
-    if (!responseId) {
-      return;
-    }
-
-    setIsSubmitting(true);
-    try {
-      // Complete the response (answers were already saved in handleNext)
-      await completeSurveyResponse(responseId);
-
-      // Redirect to thank you or results page
-      router.push(`/surveys/${survey.id}?completed=true`);
-    } catch (_error) {
-      toast.error('Failed to submit survey');
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
 
   return (
     <div className="app-container mx-auto max-w-4xl">
@@ -223,14 +250,19 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
                 {currentSection.title}
               </CardTitle>
               {currentSection.description && (
-                <CardDescription className="mt-2 text-gray-400 text-lg">{currentSection.description}</CardDescription>
+                <CardDescription className="mt-2 text-gray-400 text-lg">
+                  {currentSection.description}
+                </CardDescription>
               )}
             </CardHeader>
           </Card>
 
           {/* Questions Form */}
           <Form {...form}>
-            <form className="space-y-4" onSubmit={form.handleSubmit(handleNext)}>
+            <form
+              className="space-y-4"
+              onSubmit={form.handleSubmit(handleNext)}
+            >
               {currentSection.questions?.map((question, index) => (
                 <motion.div
                   animate={{ opacity: 1, y: 0 }}
@@ -240,7 +272,10 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
                 >
                   <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all duration-300 hover:border-purple-500/30">
                     <CardContent>
-                      <QuestionRenderer form={form} question={question as unknown as Question} />
+                      <QuestionRenderer
+                        form={form}
+                        question={question as unknown as Question}
+                      />
                     </CardContent>
                   </Card>
                 </motion.div>

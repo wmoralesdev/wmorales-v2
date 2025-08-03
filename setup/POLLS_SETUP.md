@@ -43,6 +43,7 @@ pnpm seed:poll
 ```
 
 This creates a poll with:
+
 - Single choice question: "Which feature would you like to see next?"
 - Multiple choice question: "What technologies are you interested in?"
 
@@ -51,6 +52,7 @@ The console will output the poll URL.
 ### 3. Access the Poll
 
 Polls can be accessed via:
+
 - Direct link: `/polls/[code]` (e.g., `/polls/clxyz123`)
 - Admin list: `/polls` (shows all polls)
 
@@ -80,6 +82,7 @@ Polls can be accessed via:
 ### Real-time Updates
 
 Uses Supabase Realtime broadcasting:
+
 ```typescript
 // Subscribe to updates
 const channel = subscribeToPollUpdates(pollCode, (event) => {
@@ -101,41 +104,45 @@ await createPoll({
       question: 'Your question?',
       type: 'single',
       options: [
-        { 
-          label: 'Option 1', 
+        {
+          label: 'Option 1',
           value: 'opt1',
           emoji: '🎯',
-          color: 'bg-blue-500/20' 
+          color: 'bg-blue-500/20',
         },
         // More options...
-      ]
-    }
+      ],
+    },
   ],
   settings: {
-    showResults: true,    // Show results to voters
+    showResults: true, // Show results to voters
     allowMultiple: false, // Allow changing vote
-    resultsDelay: 0      // Delay before showing results (seconds)
-  }
+    resultsDelay: 0, // Delay before showing results (seconds)
+  },
 });
 ```
 
 ## Poll Settings
 
 ### showResults
+
 - `true`: Voters can see results immediately
 - `false`: Only poll creator can see results
 
 ### allowMultiple
+
 - `true`: Users can change their vote
 - `false`: Vote is final once submitted
 
 ### resultsDelay
+
 - Number of seconds to wait after voting before showing results
 - Useful for preventing bias in early voting
 
 ## Session Management
 
 Polls use browser sessions to track voters:
+
 - Cookie-based session ID (`poll_session_id`)
 - 30-day expiration
 - No personal data collected
@@ -146,6 +153,7 @@ Polls use browser sessions to track voters:
 ### Vercel Deployment
 
 The feature is optimized for Vercel:
+
 - Real-time updates work via Supabase
 - No additional websocket server needed
 - Scales automatically
@@ -153,6 +161,7 @@ The feature is optimized for Vercel:
 ### Environment Variables
 
 Ensure these are set in production:
+
 ```env
 DATABASE_URL=your_database_url
 NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
@@ -164,10 +173,12 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
 ### Visual Customization
 
 Options support:
+
 - **emoji**: Display emoji next to option
 - **color**: Tailwind color class for result bars
 
 Example:
+
 ```typescript
 {
   label: 'Great!',
@@ -198,16 +209,19 @@ Example:
 ## Troubleshooting
 
 ### Votes not updating in real-time
+
 1. Check Supabase Realtime is enabled
 2. Verify environment variables
 3. Check browser console for errors
 
 ### Can't vote
+
 1. Clear cookies/session
 2. Check if poll is active
 3. Verify you haven't already voted
 
 ### Results not showing
+
 1. Check `showResults` setting
 2. Wait for `resultsDelay` if set
 3. Verify at least one vote exists

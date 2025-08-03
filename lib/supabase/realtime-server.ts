@@ -1,15 +1,54 @@
 import 'server-only';
-import type { EventRealtimeEvent, GuestbookRealtimeEvent, PollRealtimeEvent } from './realtime';
+import type {
+  EventRealtimeEvent,
+  GuestbookRealtimeEvent,
+  PollRealtimeEvent,
+} from './realtime';
 import { createClient } from './server';
 
 // Server-side broadcast function for poll updates
-export async function broadcastPollUpdate(pollCode: string, event: PollRealtimeEvent) {
+export async function broadcastPollUpdate(
+  pollCode: string,
+  event: PollRealtimeEvent
+) {
   const supabase = await createClient();
 
-  await supabase.channel(`poll:${pollCode}`).send({
-    type: 'broadcast',
-    event: 'poll_update',
-    payload: event,
+  const channel = supabase.channel(`poll:${pollCode}`);
+
+  // Subscribe first, then send when ready
+  await new Promise<void>((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      reject(new Error('Channel subscription timeout'));
+    }, 5000);
+
+    channel.subscribe((status) => {
+      if (status === 'SUBSCRIBED') {
+        clearTimeout(timeout);
+
+        // Send the broadcast message
+        channel
+          .send({
+            type: 'broadcast',
+            event: 'poll_update',
+            payload: event,
+          })
+          .then(() => {
+            // Clean up after a short delay to ensure message is sent
+            setTimeout(() => {
+              supabase.removeChannel(channel);
+            }, 100);
+            resolve();
+          })
+          .catch(reject);
+      } else if (
+        status === 'CHANNEL_ERROR' ||
+        status === 'TIMED_OUT' ||
+        status === 'CLOSED'
+      ) {
+        clearTimeout(timeout);
+        reject(new Error(`Channel subscription failed: ${status}`));
+      }
+    });
   });
 }
 
@@ -19,13 +58,41 @@ export async function broadcastGuestbookUpdate(event: GuestbookRealtimeEvent) {
 
   const channel = supabase.channel('guestbook:tickets');
 
-  await channel.send({
-    type: 'broadcast',
-    event: 'ticket_update',
-    payload: event,
-  });
+  // Subscribe first, then send when ready
+  await new Promise<void>((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      reject(new Error('Channel subscription timeout'));
+    }, 5000);
 
-  await supabase.removeChannel(channel);
+    channel.subscribe((status) => {
+      if (status === 'SUBSCRIBED') {
+        clearTimeout(timeout);
+
+        // Send the broadcast message
+        channel
+          .send({
+            type: 'broadcast',
+            event: 'ticket_update',
+            payload: event,
+          })
+          .then(() => {
+            // Clean up after a short delay to ensure message is sent
+            setTimeout(() => {
+              supabase.removeChannel(channel);
+            }, 100);
+            resolve();
+          })
+          .catch(reject);
+      } else if (
+        status === 'CHANNEL_ERROR' ||
+        status === 'TIMED_OUT' ||
+        status === 'CLOSED'
+      ) {
+        clearTimeout(timeout);
+        reject(new Error(`Channel subscription failed: ${status}`));
+      }
+    });
+  });
 }
 
 // Server-side broadcast for event updates
@@ -34,11 +101,39 @@ export async function broadcastEventUpdate(event: EventRealtimeEvent) {
 
   const channel = supabase.channel(`event:${event.eventId}`);
 
-  await channel.send({
-    type: 'broadcast',
-    event: 'event_update',
-    payload: event,
-  });
+  // Subscribe first, then send when ready
+  await new Promise<void>((resolve, reject) => {
+    const timeout = setTimeout(() => {
+      reject(new Error('Channel subscription timeout'));
+    }, 5000);
 
-  await supabase.removeChannel(channel);
+    channel.subscribe((status) => {
+      if (status === 'SUBSCRIBED') {
+        clearTimeout(timeout);
+
+        // Send the broadcast message
+        channel
+          .send({
+            type: 'broadcast',
+            event: 'event_update',
+            payload: event,
+          })
+          .then(() => {
+            // Clean up after a short delay to ensure message is sent
+            setTimeout(() => {
+              supabase.removeChannel(channel);
+            }, 100);
+            resolve();
+          })
+          .catch(reject);
+      } else if (
+        status === 'CHANNEL_ERROR' ||
+        status === 'TIMED_OUT' ||
+        status === 'CLOSED'
+      ) {
+        clearTimeout(timeout);
+        reject(new Error(`Channel subscription failed: ${status}`));
+      }
+    });
+  });
 }

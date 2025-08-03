@@ -65,13 +65,17 @@ export function CopyButton({ code }: CopyButtonProps) {
 
   return (
     <Button
-      className='h-8 w-8 text-gray-400 transition-colors hover:text-white'
+      className="h-8 w-8 text-gray-400 transition-colors hover:text-white"
       onClick={copyToClipboard}
       size="sm"
       title={copied ? 'Copied!' : 'Copy code'}
       variant="ghost"
     >
-      {copied ? <Check className="h-4 w-4 text-green-400" /> : <Copy className="h-4 w-4" />}
+      {copied ? (
+        <Check className="h-4 w-4 text-green-400" />
+      ) : (
+        <Copy className="h-4 w-4" />
+      )}
     </Button>
   );
 }

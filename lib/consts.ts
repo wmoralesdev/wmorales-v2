@@ -10,3 +10,5 @@ export const TIKTOK = 'https://www.tiktok.com/@wmoralesdev';
 export const INSTAGRAM = 'https://www.instagram.com/wmoralesdev/';
 export const FACEBOOK = 'https://www.facebook.com/wmoralesdev/';
 export const PINTEREST = 'https://www.pinterest.com/wmoralesdev/';
+
+export const EVENT_IMAGES_BUCKET = 'event-images';

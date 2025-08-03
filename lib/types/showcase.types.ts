@@ -48,7 +48,7 @@ export enum ProjectCategory {
   GAME = 'game',
   AI_ML = 'ai_ml',
   BLOCKCHAIN = 'blockchain',
-  OTHER = 'other'
+  OTHER = 'other',
 }
 
 export enum TechCategory {
@@ -60,14 +60,14 @@ export enum TechCategory {
   MOBILE = 'mobile',
   AI_ML = 'ai_ml',
   BLOCKCHAIN = 'blockchain',
-  OTHER = 'other'
+  OTHER = 'other',
 }
 
 export enum ProjectStatus {
   IN_PROGRESS = 'in_progress',
   COMPLETED = 'completed',
   MAINTAINED = 'maintained',
-  ARCHIVED = 'archived'
+  ARCHIVED = 'archived',
 }
 
 export interface ProjectFilter {

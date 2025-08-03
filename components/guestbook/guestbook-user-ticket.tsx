@@ -10,7 +10,10 @@ type GuestbookUserTicketProps = {
   onShare: () => void;
 };
 
-export function GuestbookUserTicket({ userTicket, onShare }: GuestbookUserTicketProps) {
+export function GuestbookUserTicket({
+  userTicket,
+  onShare,
+}: GuestbookUserTicketProps) {
   return (
     <div className="animate-delay-400 animate-fade-in-up">
       <Link className="group block" href={`/guestbook/${userTicket.id}`}>
@@ -38,8 +41,15 @@ export function GuestbookUserTicket({ userTicket, onShare }: GuestbookUserTicket
         <Card className="mx-auto mt-4 max-w-md">
           <CardContent className="">
             <div className="flex items-center justify-between">
-              <p className="text-center text-muted-foreground text-sm">Current mood: "{userTicket.entry.mood}"</p>
-              <Button className="gap-2" onClick={onShare} size="sm" variant="ghost">
+              <p className="text-center text-muted-foreground text-sm">
+                Current mood: &quot;{userTicket.entry.mood}&quot;
+              </p>
+              <Button
+                className="gap-2"
+                onClick={onShare}
+                size="sm"
+                variant="ghost"
+              >
                 <Share2 className="h-4 w-4" />
                 Share
               </Button>

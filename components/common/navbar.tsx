@@ -1,16 +1,25 @@
 'use client';
 
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
-import { Globe, Menu } from 'lucide-react';
+import { Globe, Menu, LogOut, LogIn, User } from 'lucide-react';
 import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
+import { toast } from 'sonner';
 import { SignInButton } from '@/components/auth/sign-in-button';
+import { useAuth } from '@/components/auth/auth-provider';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
-import { Sheet, SheetContent, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
+import {
+  Sheet,
+  SheetContent,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
 import { routing } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
+import { createClient } from '@/lib/supabase/client';
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -24,21 +33,37 @@ import { Clock } from './clock';
 const MotionMenuItem = motion.create(NavigationMenuItem);
 
 // Locale Toggle Component
-function LocaleToggle() {
+type LocaleToggleProps = {
+  showLabel?: boolean;
+};
+
+function LocaleToggle({ showLabel = true }: LocaleToggleProps) {
   const locale = useLocale();
   const router = useRouter();
   const pathname = usePathname();
 
   const toggleLocale = () => {
     const newLocale = locale === 'en' ? 'es' : 'en';
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     router.replace(pathname as any, { locale: newLocale });
   };
 
   return (
-    <motion.div transition={{ duration: 0.2 }} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-      <Button className='flex items-center gap-2 font-medium text-sm' onClick={toggleLocale} size="sm" variant="ghost">
+    <motion.div
+      transition={{ duration: 0.2 }}
+      whileHover={{ scale: 1.05 }}
+      whileTap={{ scale: 0.95 }}
+    >
+      <Button
+        className="flex items-center gap-2 font-medium text-sm"
+        onClick={toggleLocale}
+        size="sm"
+        variant="ghost"
+      >
         <Globe className="h-4 w-4" />
-        <span className="hidden sm:inline">{locale.toUpperCase()}</span>
+        {showLabel && (
+          <span className="hidden sm:inline">{locale.toUpperCase()}</span>
+        )}
       </Button>
     </motion.div>
   );
@@ -90,68 +115,200 @@ const mobileMenuVariants: Variants = {
     },
   },
 };
+
+// Mobile User Section Component
+function MobileUserSection() {
+  const { user, signOut } = useAuth();
+  const t = useTranslations('auth');
+  const [isLoading, setIsLoading] = useState(false);
+  const supabase = createClient();
+  const pathname = usePathname();
+
+  const handleSignOut = async () => {
+    setIsLoading(true);
+    try {
+      await signOut();
+      toast.success(t('signedOutSuccess'));
+    } catch (_error) {
+      toast.error(t('signOutError'));
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleSignInWithGoogle = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: `${window.location.origin}?redirectTo=${encodeURIComponent(pathname)}`,
+      },
+    });
+  };
+
+  const handleSignInWithGitHub = async () => {
+    await supabase.auth.signInWithOAuth({
+      provider: 'github',
+      options: {
+        redirectTo: `${window.location.origin}?redirectTo=${encodeURIComponent(pathname)}`,
+      },
+    });
+  };
+
+  const getInitials = (name: string) => {
+    return name
+      .split(' ')
+      .map((n) => n[0])
+      .join('')
+      .toUpperCase()
+      .slice(0, 2);
+  };
+
+  if (user) {
+    const displayName =
+      user.user_metadata?.full_name || user.email || t('user');
+    const initials = getInitials(displayName);
+
+    return (
+      <div className="space-y-3">
+        <div className="flex items-center gap-3">
+          <Avatar className="h-10 w-10">
+            <AvatarImage
+              alt={displayName}
+              src={user.user_metadata?.avatar_url}
+            />
+            <AvatarFallback className="bg-purple-500/20 text-purple-300">
+              {initials}
+            </AvatarFallback>
+          </Avatar>
+          <div className="flex-1 min-w-0">
+            <p className="text-sm font-medium text-white truncate">
+              {displayName}
+            </p>
+            <p className="text-xs text-gray-400 truncate">{user.email}</p>
+          </div>
+        </div>
+        <Button
+          onClick={handleSignOut}
+          disabled={isLoading}
+          variant="outline"
+          className="w-full border-gray-700 hover:bg-gray-800"
+        >
+          <LogOut className="h-4 w-4 mr-2" />
+          {isLoading ? t('loading') : t('signOut')}
+        </Button>
+      </div>
+    );
+  }
+
+  return (
+    <div className="space-y-3">
+      <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+        {t('account')}
+      </p>
+      <div className="space-y-2">
+        <Button
+          onClick={handleSignInWithGoogle}
+          variant="outline"
+          className="w-full justify-start border-gray-700 hover:bg-gray-800"
+        >
+          <Image
+            alt="Google"
+            height={16}
+            src="/google.svg"
+            width={16}
+            className="mr-2"
+          />
+          {t('continueWithGoogle')}
+        </Button>
+        <Button
+          onClick={handleSignInWithGitHub}
+          variant="outline"
+          className="w-full justify-start border-gray-700 hover:bg-gray-800"
+        >
+          <Image
+            alt="GitHub"
+            height={16}
+            src="/github.svg"
+            width={16}
+            className="mr-2"
+          />
+          {t('continueWithGitHub')}
+        </Button>
+      </div>
+    </div>
+  );
+}
+
 export function Navbar() {
   const pathname = usePathname();
+  const locale = useLocale();
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
-  const [scrolled, _setScrolled] = useState(false);
+  const [scrolled] = useState(false);
 
   const t = useTranslations('navigation');
 
-  const navItems = [
-    { name: 'Home', href: routing.pathnames['/'] },
-    { name: 'Blog', href: routing.pathnames['/blog'] },
-    { name: 'Guestbook', href: routing.pathnames['/guestbook'] },
-    { name: 'Showcase', href: routing.pathnames['/showcase'] },
-    {
-      name: 'Cursor',
-      children: [
-        { name: 'Surveys', href: '/surveys' },
-        { name: 'Polls', href: '/polls' },
-        { name: 'Cursor', href: '/cursor' },
-      ],
-    },
-  ];
+  if (pathname.endsWith('/gallery')) {
+    return null;
+  }
 
   return (
     <motion.nav
       animate="visible"
       className={cn(
-        'fixed top-0 right-0 left-0 z-50 inline-flex items-center justify-between border-b transition-all duration-300 lg:px-8',
-        scrolled ? 'bg-background/95 shadow-lg backdrop-blur-md' : 'bg-background/80 backdrop-blur-md'
+        'fixed top-0 right-0 left-0 z-50 border-b transition-all duration-300',
+        scrolled
+          ? 'bg-background/95 shadow-lg backdrop-blur-md'
+          : 'bg-background/80 backdrop-blur-md'
       )}
       initial="hidden"
       variants={navVariants}
     >
-      {/* Logo */}
-      <Link className="group flex cursor-pointer select-none items-center gap-2 outline-none" href="/">
-        <div>
-          <Image
-            alt="Walter Morales"
-            className="transform-gpu transition-transform duration-200 ease-in-out group-hover:rotate-180"
-            height={24}
-            priority
-            quality={100}
-            src="/wm.svg"
-            width={24}
-          />
-        </div>
-        <span className="font-bold text-lg text-white tracking-tighter group-hover:text-purple-400">WM</span>
-      </Link>
-      <div className="mx-auto px-4 lg:container sm:px-6 lg:px-20">
-        <div className="flex h-16 items-center justify-between lg:w-full">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          {/* Logo */}
+          <Link
+            className="group flex cursor-pointer select-none items-center gap-2 outline-none"
+            href="/"
+          >
+            <div>
+              <Image
+                alt="Walter Morales"
+                className="transform-gpu transition-transform duration-200 ease-in-out group-hover:rotate-180"
+                height={24}
+                priority
+                quality={100}
+                src="/wm.svg"
+                width={24}
+              />
+            </div>
+            <span className="font-bold text-lg text-white tracking-tighter group-hover:text-purple-400">
+              WM
+            </span>
+          </Link>
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden items-center space-x-8 md:flex">
             <NavigationMenuList>
-              <MotionMenuItem animate="visible" initial="hidden" key="home" variants={menuItemVariants}>
+              <MotionMenuItem
+                animate="visible"
+                initial="hidden"
+                key="home"
+                variants={menuItemVariants}
+              >
                 <NavigationMenuLink className="relative" href="/" key="home">
                   <Button
                     className={cn(
                       'relative cursor-pointer font-medium text-sm transition-colors',
-                      pathname === '/' ? 'text-purple-400' : 'hover:text-purple-400'
+                      pathname === '/'
+                        ? 'text-purple-400'
+                        : 'hover:text-purple-400'
                     )}
                     variant="ghost"
                   >
-                    <motion.span transition={{ duration: 0.2 }} whileHover={{ y: -2 }}>
+                    <motion.span
+                      transition={{ duration: 0.2 }}
+                      whileHover={{ y: -2 }}
+                    >
                       {t('home')}
                     </motion.span>
 
@@ -174,8 +331,17 @@ export function Navbar() {
                 </NavigationMenuLink>
               </MotionMenuItem>
 
-              <MotionMenuItem animate="visible" initial="hidden" key="blog" variants={menuItemVariants}>
-                <NavigationMenuLink className="relative" href={routing.pathnames['/blog']} key="blog">
+              <MotionMenuItem
+                animate="visible"
+                initial="hidden"
+                key="blog"
+                variants={menuItemVariants}
+              >
+                <NavigationMenuLink
+                  className="relative"
+                  href={routing.pathnames['/blog']}
+                  key="blog"
+                >
                   <Button
                     className={cn(
                       'relative cursor-pointer font-medium text-sm transition-colors',
@@ -185,13 +351,17 @@ export function Navbar() {
                     )}
                     variant="ghost"
                   >
-                    <motion.span transition={{ duration: 0.2 }} whileHover={{ y: -2 }}>
+                    <motion.span
+                      transition={{ duration: 0.2 }}
+                      whileHover={{ y: -2 }}
+                    >
                       {t('blog')}
                     </motion.span>
 
                     {/* Active indicator */}
                     <AnimatePresence>
-                      {(pathname === '/blog' || pathname.startsWith('/blog/')) && (
+                      {(pathname === '/blog' ||
+                        pathname.startsWith('/blog/')) && (
                         <motion.div
                           animate={{ scaleX: 1 }}
                           className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
@@ -208,16 +378,30 @@ export function Navbar() {
                 </NavigationMenuLink>
               </MotionMenuItem>
 
-              <MotionMenuItem animate="visible" initial="hidden" key="guestbook" variants={menuItemVariants}>
-                <NavigationMenuLink className="relative" href="/guestbook" key="guestbook">
+              <MotionMenuItem
+                animate="visible"
+                initial="hidden"
+                key="guestbook"
+                variants={menuItemVariants}
+              >
+                <NavigationMenuLink
+                  className="relative"
+                  href="/guestbook"
+                  key="guestbook"
+                >
                   <Button
                     className={cn(
                       'relative cursor-pointer font-medium text-sm transition-colors',
-                      pathname === '/guestbook' ? 'text-purple-400' : 'hover:text-purple-400'
+                      pathname === '/guestbook'
+                        ? 'text-purple-400'
+                        : 'hover:text-purple-400'
                     )}
                     variant="ghost"
                   >
-                    <motion.span transition={{ duration: 0.2 }} whileHover={{ y: -2 }}>
+                    <motion.span
+                      transition={{ duration: 0.2 }}
+                      whileHover={{ y: -2 }}
+                    >
                       {t('guestbook')}
                     </motion.span>
 
@@ -240,21 +424,81 @@ export function Navbar() {
                 </NavigationMenuLink>
               </MotionMenuItem>
 
-              <MotionMenuItem animate="visible" initial="hidden" key="cursor" variants={menuItemVariants}>
+              <MotionMenuItem
+                animate="visible"
+                initial="hidden"
+                key="showcase"
+                variants={menuItemVariants}
+              >
+                <NavigationMenuLink
+                  className="relative"
+                  href="/showcase"
+                  key="showcase"
+                >
+                  <Button
+                    className={cn(
+                      'relative cursor-pointer font-medium text-sm transition-colors',
+                      pathname === '/showcase'
+                        ? 'text-purple-400'
+                        : 'hover:text-purple-400'
+                    )}
+                    variant="ghost"
+                  >
+                    <motion.span
+                      transition={{ duration: 0.2 }}
+                      whileHover={{ y: -2 }}
+                    >
+                      {t('showcase')}
+                    </motion.span>
+
+                    {/* Active indicator */}
+                    <AnimatePresence>
+                      {pathname === '/showcase' && (
+                        <motion.div
+                          animate={{ scaleX: 1 }}
+                          className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
+                          exit={{ scaleX: 0 }}
+                          initial={{ scaleX: 0 }}
+                          transition={{
+                            duration: 0.3,
+                            ease: [0.25, 0.46, 0.45, 0.94],
+                          }}
+                        />
+                      )}
+                    </AnimatePresence>
+                  </Button>
+                </NavigationMenuLink>
+              </MotionMenuItem>
+
+              <MotionMenuItem
+                animate="visible"
+                initial="hidden"
+                key="cursor"
+                variants={menuItemVariants}
+              >
                 <NavigationMenuTrigger className="relative">
                   <span
                     className={cn(
                       'relative cursor-pointer font-medium text-sm transition-colors',
-                      ['/surveys', '/polls', '/cursor'].includes(pathname) ? 'text-purple-400' : 'hover:text-purple-400'
+                      ['/surveys', '/polls', '/cursor', '/events'].includes(
+                        pathname
+                      )
+                        ? 'text-purple-400'
+                        : 'hover:text-purple-400'
                     )}
                   >
-                    <motion.span transition={{ duration: 0.2 }} whileHover={{ y: -2 }}>
+                    <motion.span
+                      transition={{ duration: 0.2 }}
+                      whileHover={{ y: -2 }}
+                    >
                       Cursor
                     </motion.span>
 
                     {/* Active indicator */}
                     <AnimatePresence>
-                      {['/surveys', '/polls', '/cursor'].includes(pathname) && (
+                      {['/surveys', '/polls', '/cursor', '/events'].includes(
+                        pathname
+                      ) && (
                         <motion.div
                           animate={{ scaleX: 1 }}
                           className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
@@ -277,7 +521,9 @@ export function Navbar() {
                           className="flex h-full w-full flex-col justify-start from-muted/50 to-muted p-6"
                           href="/cursor"
                         >
-                          <div className="mt-4 mb-2 font-medium text-lg">{t('ambassador')}</div>
+                          <div className="mt-4 mb-2 font-medium text-lg">
+                            {t('ambassador')}
+                          </div>
                           <p className="mb-4 text-muted-foreground text-sm leading-tight">
                             {t('descriptions.ambassador')}
                           </p>
@@ -286,25 +532,40 @@ export function Navbar() {
                     </li>
                     <li>
                       <NavigationMenuLink asChild>
-                        <Link className="flex h-full w-full flex-col from-muted/50 to-muted p-3" href="/surveys">
+                        <Link
+                          className="flex h-full w-full flex-col from-muted/50 to-muted p-3"
+                          href="/surveys"
+                        >
                           <div className="mb-2 font-medium">{t('surveys')}</div>
-                          <p className="text-muted-foreground text-sm leading-tight">{t('descriptions.surveys')}</p>
+                          <p className="text-muted-foreground text-sm leading-tight">
+                            {t('descriptions.surveys')}
+                          </p>
                         </Link>
                       </NavigationMenuLink>
                     </li>
                     <li>
                       <NavigationMenuLink asChild>
-                        <Link className="flex h-full w-full flex-col from-muted/50 to-muted p-3" href="/polls">
+                        <Link
+                          className="flex h-full w-full flex-col from-muted/50 to-muted p-3"
+                          href="/polls"
+                        >
                           <div className="mb-2 font-medium">{t('polls')}</div>
-                          <p className="text-muted-foreground text-sm leading-tight">{t('descriptions.polls')}</p>
+                          <p className="text-muted-foreground text-sm leading-tight">
+                            {t('descriptions.polls')}
+                          </p>
                         </Link>
                       </NavigationMenuLink>
                     </li>
                     <li>
                       <NavigationMenuLink asChild>
-                        <Link className="flex h-full w-full flex-col from-muted/50 to-muted p-3" href="/events">
+                        <Link
+                          className="flex h-full w-full flex-col from-muted/50 to-muted p-3"
+                          href="/events"
+                        >
                           <div className="mb-2 font-medium">{t('events')}</div>
-                          <p className="text-muted-foreground text-sm leading-tight">{t('descriptions.events')}</p>
+                          <p className="text-muted-foreground text-sm leading-tight">
+                            {t('descriptions.events')}
+                          </p>
                         </Link>
                       </NavigationMenuLink>
                     </li>
@@ -314,16 +575,28 @@ export function Navbar() {
             </NavigationMenuList>
           </NavigationMenu>
 
+          {/* Desktop Right Side Elements */}
+          <div className="hidden md:flex items-center gap-4">
+            <Clock />
+            <LocaleToggle />
+            <SignInButton />
+          </div>
+
           {/* Mobile Navigation */}
           <div className="flex items-center gap-2 md:hidden">
-            <LocaleToggle />
             <SignInButton size="sm" variant="ghost" />
             <Sheet onOpenChange={setIsOpen} open={isOpen}>
               <SheetTitle className="sr-only">{t('menu')}</SheetTitle>
               <SheetTrigger asChild>
-                <motion.div whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}>
-                  <Button size="sm" variant="ghost">
-                    <motion.div animate={isOpen ? { rotate: 90 } : { rotate: 0 }} transition={{ duration: 0.3 }}>
+                <motion.div
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
+                >
+                  <Button size="icon" variant="ghost">
+                    <motion.div
+                      animate={isOpen ? { rotate: 90 } : { rotate: 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
                       <Menu className="h-5 w-5" />
                     </motion.div>
                   </Button>
@@ -331,35 +604,204 @@ export function Navbar() {
               </SheetTrigger>
               <AnimatePresence>
                 {isOpen && (
-                  <SheetContent className="w-64" side="right">
+                  <SheetContent
+                    className="w-[300px] overflow-y-auto"
+                    side="right"
+                  >
                     <motion.div
                       animate="visible"
-                      className="mt-8 flex flex-col space-y-4"
+                      className="mt-8 flex flex-col space-y-2"
                       exit="exit"
                       initial="hidden"
                       variants={mobileMenuVariants}
                     >
-                      {/* {navItems.map((item, index) => (
-                        <MotionMenuItem
-                          animate="visible"
-                          custom={index}
-                          href={item.href}
-                          initial="hidden"
-                          key={item.name}
-                          variants={menuItemVariants}
-                        >
+                      {/* Logo and Close hint */}
+                      <div className="flex items-center justify-between mb-6 px-3">
+                        <div className="flex items-center gap-2">
+                          <Image
+                            alt="Walter Morales"
+                            className="h-6 w-6"
+                            height={24}
+                            src="/wm.svg"
+                            width={24}
+                          />
+                          <span className="font-bold text-lg text-white">
+                            WM
+                          </span>
+                        </div>
+                        <p className="text-xs text-gray-500">ESC to close</p>
+                      </div>
+
+                      {/* Navigation Links */}
+                      <div className="space-y-1">
+                        <Link href="/" onClick={() => setIsOpen(false)}>
                           <Button
-                            className={`w-full justify-start text-left ${
-                              pathname === item.href ? 'bg-purple-400/10 text-purple-400' : ''
-                            }`}
+                            className={cn(
+                              'w-full justify-start',
+                              pathname === '/' &&
+                                'bg-purple-400/10 text-purple-400'
+                            )}
                             variant="ghost"
                           >
-                            <motion.span transition={{ duration: 0.2 }} whileHover={{ x: 5 }}>
-                              {item.name}
-                            </motion.span>
+                            {t('home')}
                           </Button>
-                        </MotionMenuItem>
-                      ))} */}
+                        </Link>
+
+                        <Link href="/blog" onClick={() => setIsOpen(false)}>
+                          <Button
+                            className={cn(
+                              'w-full justify-start',
+                              pathname.startsWith('/blog') &&
+                                'bg-purple-400/10 text-purple-400'
+                            )}
+                            variant="ghost"
+                          >
+                            {t('blog')}
+                          </Button>
+                        </Link>
+
+                        <Link
+                          href="/guestbook"
+                          onClick={() => setIsOpen(false)}
+                        >
+                          <Button
+                            className={cn(
+                              'w-full justify-start',
+                              pathname === '/guestbook' &&
+                                'bg-purple-400/10 text-purple-400'
+                            )}
+                            variant="ghost"
+                          >
+                            {t('guestbook')}
+                          </Button>
+                        </Link>
+
+                        <Link href="/showcase" onClick={() => setIsOpen(false)}>
+                          <Button
+                            className={cn(
+                              'w-full justify-start',
+                              pathname === '/showcase' &&
+                                'bg-purple-400/10 text-purple-400'
+                            )}
+                            variant="ghost"
+                          >
+                            {t('showcase')}
+                          </Button>
+                        </Link>
+                      </div>
+
+                      {/* Cursor Submenu */}
+                      <div className="space-y-2 pt-2">
+                        <p className="px-3 text-sm font-medium text-gray-400">
+                          Cursor
+                        </p>
+
+                        <Link href="/cursor" onClick={() => setIsOpen(false)}>
+                          <Button
+                            className={cn(
+                              'w-full justify-start pl-6',
+                              pathname === '/cursor' &&
+                                'bg-purple-400/10 text-purple-400'
+                            )}
+                            variant="ghost"
+                          >
+                            {t('ambassador')}
+                          </Button>
+                        </Link>
+
+                        <Link href="/surveys" onClick={() => setIsOpen(false)}>
+                          <Button
+                            className={cn(
+                              'w-full justify-start pl-6',
+                              pathname === '/surveys' &&
+                                'bg-purple-400/10 text-purple-400'
+                            )}
+                            variant="ghost"
+                          >
+                            {t('surveys')}
+                          </Button>
+                        </Link>
+
+                        <Link href="/polls" onClick={() => setIsOpen(false)}>
+                          <Button
+                            className={cn(
+                              'w-full justify-start pl-6',
+                              pathname === '/polls' &&
+                                'bg-purple-400/10 text-purple-400'
+                            )}
+                            variant="ghost"
+                          >
+                            {t('polls')}
+                          </Button>
+                        </Link>
+
+                        <Link href="/events" onClick={() => setIsOpen(false)}>
+                          <Button
+                            className={cn(
+                              'w-full justify-start pl-6',
+                              pathname === '/events' &&
+                                'bg-purple-400/10 text-purple-400'
+                            )}
+                            variant="ghost"
+                          >
+                            {t('events')}
+                          </Button>
+                        </Link>
+                      </div>
+
+                      {/* Divider */}
+                      <div className="my-4 border-t border-gray-800" />
+
+                      {/* User Section & Actions */}
+                      <div className="space-y-4 px-3">
+                        {/* Language Toggle */}
+                        <div className="space-y-2">
+                          <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">
+                            {t('language')}
+                          </p>
+                          <div className="flex rounded-lg bg-gray-800/50 p-1">
+                            <button
+                              onClick={() => {
+                                if (locale !== 'en') {
+                                  const newLocale = 'en';
+                                  router.replace(pathname as any, {
+                                    locale: newLocale,
+                                  });
+                                }
+                              }}
+                              className={cn(
+                                'flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-all',
+                                locale === 'en'
+                                  ? 'bg-purple-500 text-white shadow-sm'
+                                  : 'text-gray-400 hover:text-white'
+                              )}
+                            >
+                              EN
+                            </button>
+                            <button
+                              onClick={() => {
+                                if (locale !== 'es') {
+                                  const newLocale = 'es';
+                                  router.replace(pathname as any, {
+                                    locale: newLocale,
+                                  });
+                                }
+                              }}
+                              className={cn(
+                                'flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-all',
+                                locale === 'es'
+                                  ? 'bg-purple-500 text-white shadow-sm'
+                                  : 'text-gray-400 hover:text-white'
+                              )}
+                            >
+                              ES
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* User Info & Auth */}
+                        <MobileUserSection />
+                      </div>
                     </motion.div>
                   </SheetContent>
                 )}
@@ -368,19 +810,6 @@ export function Navbar() {
           </div>
         </div>
       </div>
-
-      {/* Sign In Button */}
-      <motion.div
-        animate="visible"
-        className="inline-flex min-w-fit items-center gap-4"
-        custom={navItems.length + 1}
-        initial="hidden"
-        variants={menuItemVariants}
-      >
-        <Clock className="hidden font-medium text-muted-foreground text-sm md:block" />
-        <LocaleToggle />
-        <SignInButton variant="ghost" />
-      </motion.div>
     </motion.nav>
   );
 }

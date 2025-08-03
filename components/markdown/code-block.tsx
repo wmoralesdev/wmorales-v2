@@ -10,7 +10,11 @@ type CodeBlockProps = {
   filename?: string;
 };
 
-export function CodeBlock({ children, language = 'javascript', filename }: CodeBlockProps) {
+export function CodeBlock({
+  children,
+  language = 'javascript',
+  filename,
+}: CodeBlockProps) {
   const [highlightedCode, setHighlightedCode] = useState<string>('');
   const [isLoading, setIsLoading] = useState(true);
 
@@ -20,7 +24,10 @@ export function CodeBlock({ children, language = 'javascript', filename }: CodeB
         setIsLoading(true);
 
         // Normalize language names
-        const normalizedLang = language.toLowerCase().replace('js', 'javascript').replace('ts', 'typescript');
+        const normalizedLang = language
+          .toLowerCase()
+          .replace('js', 'javascript')
+          .replace('ts', 'typescript');
 
         // Use Shiki to highlight the code
         const html = await codeToHtml(children, {
@@ -67,7 +74,7 @@ export function CodeBlock({ children, language = 'javascript', filename }: CodeB
     <div className="group relative my-6">
       {filename && (
         <div className="flex items-center justify-between rounded-t-lg border border-gray-700/50 border-b-0 bg-gray-800 px-4 py-2">
-          <span className='font-medium text-gray-300 text-sm'>{filename}</span>
+          <span className="font-medium text-gray-300 text-sm">{filename}</span>
           <CopyButton code={children} />
         </div>
       )}
@@ -81,7 +88,9 @@ export function CodeBlock({ children, language = 'javascript', filename }: CodeB
               <div className="animate-pulse font-mono text-gray-400 text-sm">
                 {children.split('\n').map((_, i) => {
                   // Use deterministic width based on index to avoid hydration mismatch
-                  const widths = [95, 85, 90, 75, 88, 92, 80, 95, 70, 85, 88, 95];
+                  const widths = [
+                    95, 85, 90, 75, 88, 92, 80, 95, 70, 85, 88, 95,
+                  ];
                   const width = widths[i % widths.length];
                   return (
                     <div

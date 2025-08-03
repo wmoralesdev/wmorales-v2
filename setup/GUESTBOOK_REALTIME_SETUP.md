@@ -52,10 +52,7 @@ SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
 import { GuestbookTicketsCarousel } from '@/components/guestbook-tickets-carousel';
 
 // In your component
-<GuestbookTicketsCarousel 
-  initialTickets={tickets} 
-  maxTickets={25} 
-/>
+<GuestbookTicketsCarousel initialTickets={tickets} maxTickets={25} />;
 ```
 
 ### Customization

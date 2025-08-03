@@ -30,8 +30,12 @@ export function CoffeeChatCard({ onChatClick, ...props }: CoffeeChatCardProps) {
             <Coffee className="h-6 w-6 text-purple-400" />
           </motion.div>
           <div>
-            <h3 className="font-semibold text-sm text-white">{t('coffeeChat')}</h3>
-            <p className="text-gray-400 text-xs">{t('bestIdeasStartWithAConversation')}</p>
+            <h3 className="font-semibold text-sm text-white">
+              {t('coffeeChat')}
+            </h3>
+            <p className="text-gray-400 text-xs">
+              {t('bestIdeasStartWithAConversation')}
+            </p>
           </div>
         </div>
         <Button

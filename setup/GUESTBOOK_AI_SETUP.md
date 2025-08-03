@@ -5,6 +5,7 @@ This guide will help you set up the AI integration for the guestbook feature, wh
 ## AI Model Selection
 
 We use **OpenAI GPT-3.5 Turbo** for color palette generation because:
+
 - Cost-effective ($0.0005 per 1K input tokens, $0.0015 per 1K output tokens)
 - Fast response times
 - Excellent at understanding mood/style descriptions
@@ -47,12 +48,14 @@ To prevent unexpected charges:
 ## How It Works
 
 The AI generates a color palette with four hex colors:
+
 - **Primary Color**: Gradient start color
 - **Secondary Color**: Gradient end color
 - **Accent Color**: Highlight color
 - **Background Color**: Card background
 
 Example prompt: "I'm feeling happy and creative" might generate:
+
 ```json
 {
   "primaryColor": "#FFD93D",
@@ -71,17 +74,21 @@ Example prompt: "I'm feeling happy and creative" might generate:
 ## Troubleshooting
 
 ### API Key Not Working
+
 - Ensure the key starts with `sk-`
 - Check if the key has been revoked
 - Verify billing is set up on your OpenAI account
 
 ### Generation Fails
+
 - Check if you have API credits
 - Verify the API key is correctly set
 - Check server logs for specific errors
 
 ### Fallback Colors
+
 If AI generation fails, the system uses default colors:
+
 - Primary: `#8b5cf6` (Purple)
 - Secondary: `#ec4899` (Pink)
 - Accent: `#a78bfa` (Light Purple)

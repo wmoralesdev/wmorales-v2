@@ -42,7 +42,12 @@ const getTicketColors = (colors?: UserTicketProps['colors']) => {
   };
 };
 
-export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: UserTicketProps) {
+export function UserTicket({
+  user,
+  colors,
+  ticketNumber,
+  scale = 'normal',
+}: UserTicketProps) {
   const ticketColors = getTicketColors(colors);
   const isSmall = scale === 'small';
 
@@ -70,7 +75,8 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
           className="relative overflow-hidden rounded-[32px] shadow-2xl"
           style={{
             background: ticketColors.background,
-            clipPath: 'polygon(0 40px, 40px 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%)',
+            clipPath:
+              'polygon(0 40px, 40px 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%)',
           }}
         >
           {/* Grid Pattern Background */}
@@ -106,8 +112,12 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
                     <Sparkles className="h-4 w-4 text-white" />
                   </div>
                   <div>
-                    <h3 className="font-bold text-gray-300 text-xs uppercase tracking-wider">Cursor meetup</h3>
-                    <p className="text-[10px] text-gray-500">Digital Guestbook</p>
+                    <h3 className="font-bold text-gray-300 text-xs uppercase tracking-wider">
+                      Cursor meetup
+                    </h3>
+                    <p className="text-[10px] text-gray-500">
+                      Digital Guestbook
+                    </p>
                   </div>
                 </div>
 
@@ -146,7 +156,11 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
-                    <h2 className={`font-bold ${isSmall ? 'text-xl' : 'text-2xl'} mb-1 text-white`}>{user.name}</h2>
+                    <h2
+                      className={`font-bold ${isSmall ? 'text-xl' : 'text-2xl'} mb-1 text-white`}
+                    >
+                      {user.name}
+                    </h2>
                     <p className="text-gray-400 text-sm">{user.email}</p>
                   </div>
                 </div>
@@ -163,7 +177,9 @@ export function UserTicket({ user, colors, ticketNumber, scale = 'normal' }: Use
             <div className={`${isSmall ? 'px-6 py-4' : 'px-8 py-6'} pt-6`}>
               <div className="flex items-end justify-between">
                 <div>
-                  <p className="mb-2 text-[10px] text-gray-500 uppercase tracking-wider">Ticket Number</p>
+                  <p className="mb-2 text-[10px] text-gray-500 uppercase tracking-wider">
+                    Ticket Number
+                  </p>
                   <div className="flex items-baseline gap-3">
                     <span
                       className={`font-bold font-mono ${isSmall ? 'text-2xl' : 'text-3xl'}`}

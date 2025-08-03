@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 
 import type { RealtimeChannel } from '@supabase/supabase-js';
@@ -5,10 +6,20 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Activity, BarChart3, PieChart, RefreshCw, Users } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { usePollResultsSWR } from '@/hooks/use-poll-results-swr';
-import { type PollPresence, type PollRealtimeEvent, subscribeToPollUpdates } from '@/lib/supabase/realtime';
+import {
+  type PollPresence,
+  type PollRealtimeEvent,
+  subscribeToPollUpdates,
+} from '@/lib/supabase/realtime';
 import type { PollResults } from '@/lib/types/poll.types';
 import { cn } from '@/lib/utils';
 
@@ -43,7 +54,12 @@ function useDebounce<T>(value: T, delay: number): T {
   return debouncedValue;
 }
 
-export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResults }: PollResultsDashboardProps) {
+export function PollResultsDashboard({
+  pollId,
+  pollCode,
+  pollTitle,
+  initialResults,
+}: PollResultsDashboardProps) {
   const { results, refresh } = usePollResultsSWR(pollId, initialResults);
   const [activeUsers, setActiveUsers] = useState<PollPresence[]>([]);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -99,10 +115,16 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
     <div className="space-y-6">
       {/* Header Stats */}
       <div className="grid grid-cols-1 gap-4 md:grid-cols-3">
-        <motion.div animate={{ opacity: 1, y: 0 }} initial={{ opacity: 0, y: 20 }} transition={{ duration: 0.5 }}>
+        <motion.div
+          animate={{ opacity: 1, y: 0 }}
+          initial={{ opacity: 0, y: 20 }}
+          transition={{ duration: 0.5 }}
+        >
           <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="font-medium text-gray-300 text-sm">Total Participants</CardTitle>
+              <CardTitle className="font-medium text-gray-300 text-sm">
+                Total Participants
+              </CardTitle>
               <Users className="h-4 w-4 text-purple-400" />
             </CardHeader>
             <CardContent>
@@ -119,12 +141,16 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
         >
           <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="font-medium text-gray-300 text-sm">Active Now</CardTitle>
+              <CardTitle className="font-medium text-gray-300 text-sm">
+                Active Now
+              </CardTitle>
               <Activity className="h-4 w-4 text-green-400" />
             </CardHeader>
             <CardContent>
               <div className="flex items-center gap-2">
-                <div className="font-bold text-2xl text-white">{activeUsersCount}</div>
+                <div className="font-bold text-2xl text-white">
+                  {activeUsersCount}
+                </div>
                 <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
               </div>
               <p className="text-gray-500 text-xs">Viewing results</p>
@@ -139,11 +165,15 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
         >
           <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="font-medium text-gray-300 text-sm">Questions</CardTitle>
+              <CardTitle className="font-medium text-gray-300 text-sm">
+                Questions
+              </CardTitle>
               <BarChart3 className="h-4 w-4 text-purple-400" />
             </CardHeader>
             <CardContent>
-              <div className="font-bold text-2xl text-white">{results?.questions.length || 0}</div>
+              <div className="font-bold text-2xl text-white">
+                {results?.questions.length || 0}
+              </div>
               <p className="text-gray-500 text-xs">Total questions</p>
             </CardContent>
           </Card>
@@ -161,10 +191,15 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle className="text-white">Live Results</CardTitle>
-                <CardDescription className="text-gray-400">Real-time voting results for {pollTitle}</CardDescription>
+                <CardDescription className="text-gray-400">
+                  Real-time voting results for {pollTitle}
+                </CardDescription>
               </div>
               {isUpdating && (
-                <motion.div animate={{ rotate: 360 }} transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY }}>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Number.POSITIVE_INFINITY }}
+                >
                   <RefreshCw className="h-4 w-4 text-purple-400" />
                 </motion.div>
               )}
@@ -188,14 +223,12 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
               </TabsList>
 
               <TabsContent className="mt-6 space-y-6" value="overview">
-                {/** biome-ignore lint/suspicious/noExplicitAny: form is built by engine, we can't type it */}
                 {results?.questions.map((question: any, index: number) => (
                   <div className="space-y-4" key={question.questionId}>
                     <h3 className="font-semibold text-lg text-white">
                       {index + 1}. {question.question}
                     </h3>
                     <div className="space-y-3">
-                      {/** biome-ignore lint/suspicious/noExplicitAny: form is built by engine, we can't type it */}
                       {question.options.map((option: any) => (
                         <motion.div
                           animate={{ opacity: 1, x: 0 }}
@@ -206,12 +239,20 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
-                              {option.emoji && <span className="text-xl">{option.emoji}</span>}
-                              <span className="font-medium text-gray-300">{option.label}</span>
+                              {option.emoji && (
+                                <span className="text-xl">{option.emoji}</span>
+                              )}
+                              <span className="font-medium text-gray-300">
+                                {option.label}
+                              </span>
                             </div>
                             <div className="flex items-center gap-3">
-                              <span className="font-medium text-sm text-white">{option.percentage}%</span>
-                              <span className="text-gray-500 text-sm">({option.voteCount} votes)</span>
+                              <span className="font-medium text-sm text-white">
+                                {option.percentage}%
+                              </span>
+                              <span className="text-gray-500 text-sm">
+                                ({option.voteCount} votes)
+                              </span>
                             </div>
                           </div>
                           <div className="relative h-3 overflow-hidden rounded-full bg-gray-800/50">
@@ -230,46 +271,63 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
               </TabsContent>
 
               <TabsContent className="mt-6 space-y-6" value="details">
-                {/** biome-ignore lint/suspicious/noExplicitAny: form is built by engine, we can't type it */}
                 {results?.questions.map((question: any, index: number) => (
-                  <Card className="border-gray-700 bg-gray-800/50 backdrop-blur" key={question.questionId}>
+                  <Card
+                    className="border-gray-700 bg-gray-800/50 backdrop-blur"
+                    key={question.questionId}
+                  >
                     <CardHeader>
                       <CardTitle className="text-base text-white">
                         Question {index + 1}: {question.question}
                       </CardTitle>
                       <CardDescription className="text-gray-400">
-                        {question.totalQuestionVotes} total responses • {question.type} choice
+                        {question.totalQuestionVotes} total responses •{' '}
+                        {question.type} choice
                       </CardDescription>
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-2">
                         {question.options
-                          // biome-ignore lint/suspicious/noExplicitAny: form is built by engine, we can't type it
                           .sort((a: any, b: any) => b.voteCount - a.voteCount)
-                          // biome-ignore lint/suspicious/noExplicitAny: form is built by engine, we can't type it
                           .map((option: any, optionIndex: number) => (
                             <div
                               className={cn(
                                 'flex items-center justify-between rounded-lg border border-transparent p-3',
-                                optionIndex === 0 && 'border-purple-500/30 bg-purple-500/10'
+                                optionIndex === 0 &&
+                                  'border-purple-500/30 bg-purple-500/10'
                               )}
                               key={option.optionId}
                             >
                               <div className="flex items-center gap-3">
-                                <span className="font-bold text-gray-500 text-sm">#{optionIndex + 1}</span>
-                                {option.emoji && <span className="text-lg">{option.emoji}</span>}
+                                <span className="font-bold text-gray-500 text-sm">
+                                  #{optionIndex + 1}
+                                </span>
+                                {option.emoji && (
+                                  <span className="text-lg">
+                                    {option.emoji}
+                                  </span>
+                                )}
                                 <span
-                                  className={cn('font-medium', optionIndex === 0 ? 'text-purple-300' : 'text-gray-300')}
+                                  className={cn(
+                                    'font-medium',
+                                    optionIndex === 0
+                                      ? 'text-purple-300'
+                                      : 'text-gray-300'
+                                  )}
                                 >
                                   {option.label}
                                 </span>
-                                {optionIndex === 0 && <PieChart className="h-4 w-4 text-purple-400" />}
+                                {optionIndex === 0 && (
+                                  <PieChart className="h-4 w-4 text-purple-400" />
+                                )}
                               </div>
                               <div className="flex items-center gap-4">
                                 <div className="w-24">
                                   <div className="relative h-2 overflow-hidden rounded-full bg-gray-700">
                                     <motion.div
-                                      animate={{ width: `${option.percentage}%` }}
+                                      animate={{
+                                        width: `${option.percentage}%`,
+                                      }}
                                       className="h-full bg-gradient-to-r from-purple-500 to-purple-600"
                                       initial={{ width: 0 }}
                                       transition={{ duration: 0.5 }}
@@ -279,7 +337,9 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
                                 <span className="w-12 text-right font-medium text-sm text-white">
                                   {option.percentage}%
                                 </span>
-                                <span className="w-16 text-right text-gray-500 text-sm">({option.voteCount})</span>
+                                <span className="w-16 text-right text-gray-500 text-sm">
+                                  ({option.voteCount})
+                                </span>
                               </div>
                             </div>
                           ))}
@@ -322,7 +382,10 @@ export function PollResultsDashboard({ pollId, pollCode, pollTitle, initialResul
                       transition={{ duration: 0.2 }}
                     >
                       <Avatar className="h-8 w-8 border border-gray-700">
-                        <AvatarImage alt={user.userName || 'User'} src={user.userAvatar} />
+                        <AvatarImage
+                          alt={user.userName || 'User'}
+                          src={user.userAvatar}
+                        />
                         <AvatarFallback className="bg-purple-500/20 text-purple-300 text-xs">
                           {getInitials(user.userName)}
                         </AvatarFallback>
