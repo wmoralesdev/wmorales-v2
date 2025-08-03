@@ -62,7 +62,7 @@ export function LiveEventView({
             {
               id: update.image!.id,
               eventId: event.id,
-              userId: update.image!.userId,
+              profileId: update.image!.profileId,
               imageUrl: update.image!.imageUrl,
               caption: update.image!.caption || null,
               createdAt: new Date(update.image!.createdAt),
@@ -201,7 +201,7 @@ export function LiveEventView({
                       images={sortedImages}
                       onImageClick={(image) => setSelectedImage(image)}
                       onImageDelete={(imageId) => handleImageDelete(imageId)}
-                      currentUserId={user?.id}
+                      currentProfileId={user?.id}
                       locale={locale}
                     />
                   </div>

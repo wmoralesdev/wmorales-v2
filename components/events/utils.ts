@@ -26,7 +26,7 @@ export function groupImagesByDate(
 
 // Get unique contributors count
 export function getUniqueContributorsCount(images: EventImage[]): number {
-  return new Set(images.map((img) => img.userId)).size;
+  return new Set(images.map((img) => img.profileId)).size;
 }
 
 // Handle share functionality

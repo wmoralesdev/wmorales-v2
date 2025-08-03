@@ -21,7 +21,7 @@ type PhotoGridProps = {
   images: EventImage[];
   onImageClick: (image: EventImage, index: number) => void;
   onImageDelete: (imageId: string) => void | Promise<void>;
-  currentUserId?: string;
+  currentProfileId?: string;
   locale: string;
   className?: string;
 };
@@ -30,7 +30,7 @@ export function PhotoGrid({
   images,
   onImageClick,
   onImageDelete,
-  currentUserId,
+  currentProfileId,
   locale,
   className = '',
 }: PhotoGridProps) {
@@ -84,7 +84,7 @@ export function PhotoGrid({
             </div>
           </div>
 
-          {currentUserId && currentUserId === image.userId && (
+          {currentProfileId && currentProfileId === image.profileId && (
             <div
               className={cn(
                 'absolute top-2 right-2 size-8 rounded-full bg-red-500 flex items-center justify-center z-10',

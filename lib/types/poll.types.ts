@@ -49,7 +49,7 @@ export type PollSession = {
   id: string;
   pollId: string;
   sessionId: string;
-  userId: string | null;
+  profileId: string | null;
   userAgent: string | null;
   ipHash: string | null;
   createdAt: Date;

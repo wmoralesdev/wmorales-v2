@@ -11,7 +11,7 @@ export type PollRealtimeEvent = {
 };
 
 export type PollPresence = {
-  userId?: string;
+  profileId?: string;
   sessionId: string;
   joinedAt: string;
   // User information for avatar display
@@ -62,7 +62,7 @@ export function subscribeToPollUpdates(
 
       // Add user information if authenticated
       if (user) {
-        presenceData.userId = user.id;
+        presenceData.profileId = user.id;
         presenceData.userEmail = user.email;
         presenceData.userName = user.user_metadata?.full_name || user.email;
         presenceData.userAvatar = user.user_metadata?.avatar_url;
@@ -184,7 +184,7 @@ export type EventRealtimeEvent = {
     imageUrl: string;
     caption?: string;
     createdAt: string;
-    userId: string;
+    profileId: string;
   };
   imageId?: string;
   timestamp: string;

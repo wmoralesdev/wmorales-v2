@@ -31,7 +31,7 @@ export type PostEventViewProps = {
 export type UserEventImage = {
   id: string;
   eventId: string;
-  userId: string;
+  profileId: string;
   imageUrl: string;
   caption?: string;
   createdAt: Date;

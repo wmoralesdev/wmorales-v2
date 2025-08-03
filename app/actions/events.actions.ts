@@ -156,7 +156,7 @@ export async function getEventBySlug(slug: string): Promise<
   }
 
   // Count distinct users who have uploaded images
-  const uniqueUsers = new Set(event.images.map((img) => img.userId));
+  const uniqueUsers = new Set(event.images.map((img) => img.profileId));
 
   return {
     ...event,
@@ -203,7 +203,7 @@ export async function uploadEventImage(
     db.client.eventImage.count({
       where: {
         eventId: event.id,
-        userId: user.id,
+        profileId: user.id,
       },
     })
   );
@@ -219,7 +219,7 @@ export async function uploadEventImage(
     db.client.eventImage.create({
       data: {
         eventId: event.id,
-        userId: user.id,
+        profileId: user.id,
         imageUrl: validatedData.imageUrl,
         caption: validatedData.caption,
       },
@@ -236,7 +236,7 @@ export async function uploadEventImage(
         imageUrl: image.imageUrl,
         caption: image.caption || undefined,
         createdAt: image.createdAt.toISOString(),
-        userId: image.userId,
+        profileId: image.profileId,
       },
       timestamp: new Date().toISOString(),
     });
@@ -265,7 +265,7 @@ export async function getUserEventImages(
     db.client.eventImage.findMany({
       where: {
         eventId,
-        userId: user.id,
+        profileId: user.id,
       },
       orderBy: { createdAt: 'desc' },
     })
@@ -290,7 +290,7 @@ export async function deleteEventImage(imageId: string) {
     db.client.eventImage.findFirst({
       where: {
         id: imageId,
-        userId: user.id,
+        profileId: user.id,
       },
     })
   );

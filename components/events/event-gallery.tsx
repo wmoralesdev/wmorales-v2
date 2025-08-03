@@ -40,7 +40,7 @@ export function EventGallery({
       const optimisticImage: UserEventImage = {
         id: tempId,
         eventId: event.id,
-        userId: 'current-user', // This will be replaced by the server
+        profileId: 'current-user', // This will be replaced by the server
         imageUrl,
         caption,
         createdAt: new Date(),

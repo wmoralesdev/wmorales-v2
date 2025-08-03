@@ -69,7 +69,7 @@ export async function createSurveyResponse(surveyId: string) {
       db.client.surveyResponse.create({
         data: {
           surveyId,
-          userId: user?.id || null,
+          profileId: user?.id || null,
           sessionId,
         },
       })

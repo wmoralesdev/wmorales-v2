@@ -105,7 +105,7 @@ export async function createGuestbookEntry(mood: string, message?: string) {
     // Create guestbook entry
     const entry = await tx.guestbookEntry.create({
       data: {
-        userId: user.id,
+        profileId: user.id,
         mood,
         message,
       },
@@ -116,7 +116,7 @@ export async function createGuestbookEntry(mood: string, message?: string) {
       data: {
         ticketNumber,
         entryId: entry.id,
-        userId: user.id,
+        profileId: user.id,
         userName,
         userEmail: user.email || '',
         userAvatar,
@@ -165,7 +165,7 @@ export async function getUserTicket() {
   }
 
   const ticket = await prisma.guestbookTicket.findFirst({
-    where: { userId: user.id },
+    where: { profileId: user.id },
     include: { entry: true },
   });
 
@@ -209,7 +209,7 @@ export async function updateGuestbookEntry(
 
   // Find existing entry
   const existingEntry = await prisma.guestbookEntry.findFirst({
-    where: { userId: user.id },
+    where: { profileId: user.id },
     include: { ticket: true },
   });
 

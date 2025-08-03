@@ -45,7 +45,7 @@ model Event {
 model EventImage {
   id        String   @id @default(uuid())
   eventId   String
-  userId    String
+  profileId String
   imageUrl  String
   caption   String?
   createdAt DateTime @default(now())

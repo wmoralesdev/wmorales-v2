@@ -217,7 +217,7 @@ export function ArtisticGallery({
           const newImage: EventImage = {
             id: imageData.id,
             eventId: event.id,
-            userId: '',
+            profileId: '',
             imageUrl: imageData.imageUrl,
             caption: imageData.caption || null,
             createdAt: new Date(imageData.createdAt),
