@@ -7,7 +7,7 @@ import { getUserEventImages } from '@/app/actions/events.actions';
 type EventImage = {
   id: string;
   eventId: string;
-  userId: string;
+  profileId: string;
   imageUrl: string;
   caption?: string;
   createdAt: Date;
@@ -46,7 +46,7 @@ export function useUserEventImages(
         (img): EventImage => ({
           id: img.id,
           eventId: img.eventId,
-          userId: img.userId,
+          profileId: img.profileId,
           imageUrl: img.imageUrl,
           caption: img.caption || undefined,
           createdAt: new Date(img.createdAt),

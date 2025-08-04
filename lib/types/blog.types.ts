@@ -15,7 +15,7 @@ export type BlogPost = {
 export type CommentWithReplies = {
   id: string;
   slug: string;
-  userId: string;
+  profileId: string;
   userName: string;
   content: string;
   parentId: string | null;
@@ -31,13 +31,13 @@ export type CommentWithReplies = {
 
 export type NotificationType = {
   id: string;
-  userId: string;
+  profileId: string;
   type: string;
   title: string;
   message: string;
   entityType: string;
   entityId: string;
-  triggerUserId: string | null;
+  triggerProfileId: string | null;
   triggerCommentId: string | null;
   metadata: Record<string, unknown>;
   isRead: boolean;

@@ -8,13 +8,13 @@ import { BlogPost } from '@/lib/types/blog.types';
 
 // Notification helpers
 async function createNotification(data: {
-  userId: string;
+  profileId: string;
   type: string;
   title: string;
   message: string;
   entityType: string;
   entityId: string;
-  triggerUserId?: string;
+  triggerProfileId?: string;
   triggerCommentId?: string;
   metadata?: JsonValue;
 }) {
@@ -27,7 +27,7 @@ async function createNotification(data: {
 
   // Broadcast to user via Supabase
   const supabase = await createClient();
-  const channel = supabase.channel(`user:${data.userId}`);
+  const channel = supabase.channel(`user:${data.profileId}`);
   await channel.send({
     type: 'broadcast',
     event: 'new_notification',
@@ -151,7 +151,7 @@ export async function trackView(slug: string, sessionId?: string) {
     await prisma.blogView.create({
       data: {
         slug,
-        userId: user?.id || null,
+        profileId: user?.id || null,
         sessionId: finalSessionId,
       },
     });
@@ -200,14 +200,14 @@ export async function getComments(slug: string) {
   type CommentVote = {
     id: string;
     vote: number;
-    userId: string;
+    profileId: string;
     commentId: string;
   };
 
   type CommentWithVotes = {
     id: string;
     content: string;
-    userId: string;
+    profileId: string;
     createdAt: Date;
     votes: CommentVote[];
     replies?: CommentWithVotes[];
@@ -226,7 +226,7 @@ export async function getComments(slug: string) {
       0
     );
     const userVote = user
-      ? (comment.votes.find((v: CommentVote) => v.userId === user.id)?.vote ??
+      ? (comment.votes.find((v: CommentVote) => v.profileId === user.id)?.vote ??
         null)
       : null;
 
@@ -263,7 +263,7 @@ export async function submitComment(
   const comment = await prisma.blogComment.create({
     data: {
       slug,
-      userId: user.id,
+      profileId: user.id,
       content,
       parentId,
       depth,
@@ -276,15 +276,15 @@ export async function submitComment(
       where: { id: parentId },
     });
 
-    if (parentComment && parentComment.userId !== user.id) {
+    if (parentComment && parentComment.profileId !== user.id) {
       await createNotification({
-        userId: parentComment.userId,
+        profileId: parentComment.profileId,
         type: 'comment_reply',
         title: 'New reply to your comment',
         message: `Someone replied to your comment on "${slug}"`,
         entityType: 'blog_comment',
         entityId: comment.id,
-        triggerUserId: user.id,
+        triggerProfileId: user.id,
         triggerCommentId: comment.id,
         metadata: { slug, parentCommentId: parentId },
       });
@@ -317,22 +317,22 @@ export async function voteComment(commentId: string, vote: -1 | 0 | 1) {
     await prisma.blogCommentVote.deleteMany({
       where: {
         commentId,
-        userId: user.id,
+        profileId: user.id,
       },
     });
   } else {
     // Upsert vote
     await prisma.blogCommentVote.upsert({
       where: {
-        commentId_userId: {
+        commentId_profileId: {
           commentId,
-          userId: user.id,
+          profileId: user.id,
         },
       },
       update: { vote },
       create: {
         commentId,
-        userId: user.id,
+        profileId: user.id,
         vote,
       },
     });
@@ -343,15 +343,15 @@ export async function voteComment(commentId: string, vote: -1 | 0 | 1) {
         where: { id: commentId },
       });
 
-      if (comment && comment.userId !== user.id) {
+      if (comment && comment.profileId !== user.id) {
         await createNotification({
-          userId: comment.userId,
+          profileId: comment.profileId,
           type: 'comment_vote',
           title: 'Your comment was upvoted',
           message: 'Someone upvoted your comment',
           entityType: 'blog_comment',
           entityId: commentId,
-          triggerUserId: user.id,
+          triggerProfileId: user.id,
           metadata: { vote },
         });
       }
@@ -373,7 +373,7 @@ export async function deleteComment(commentId: string) {
   await prisma.blogComment.update({
     where: {
       id: commentId,
-      userId: user.id, // Ensure user owns the comment
+      profileId: user.id, // Ensure user owns the comment
     },
     data: {
       deletedAt: new Date(),

@@ -41,7 +41,7 @@ export type SurveyQuestionOption = {
 export type SurveyResponse = {
   id: string;
   surveyId: string;
-  userId?: string | null;
+  profileId?: string | null;
   sessionId?: string | null;
   startedAt: Date;
   completedAt?: Date | null;

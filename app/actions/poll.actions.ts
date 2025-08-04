@@ -171,7 +171,7 @@ export async function createPollSession(pollId: string) {
         data: {
           pollId,
           sessionId,
-          userId: user.id, // Always use authenticated user ID
+          profileId: user.id, // Always use authenticated user ID
           userAgent: headersList.get('user-agent'),
           ipHash: await getHashedIp(),
         },
@@ -336,12 +336,12 @@ export async function getUserVotes(pollId: string) {
       data: { user },
     } = await supabase.auth.getUser();
 
-    // Find sessions by both sessionId and userId
+    // Find sessions by both sessionId and profileId
     const sessions = await db.query(() =>
       db.client.pollSession.findMany({
         where: {
           pollId,
-          OR: [{ sessionId }, ...(user ? [{ userId: user.id }] : [])],
+          OR: [{ sessionId }, ...(user ? [{ profileId: user.id }] : [])],
         },
         include: {
           votes: {
