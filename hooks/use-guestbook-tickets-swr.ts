@@ -20,9 +20,10 @@ const fetchUserTicket = async (userId: string | undefined) => {
 export function useGuestbookTicketsSWR(user: AuthUser | null) {
   // Fetch all tickets
   const {
-    data: allTickets = [],
+    data: allTickets,
     error: allTicketsError,
     mutate: mutateAllTickets,
+    isLoading: isLoadingAllTickets,
   } = useSWR('guestbook-tickets-all', fetchAllTickets, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
@@ -30,9 +31,10 @@ export function useGuestbookTicketsSWR(user: AuthUser | null) {
 
   // Fetch user's ticket
   const {
-    data: userTicket = null,
+    data: userTicket,
     error: userTicketError,
     mutate: mutateUserTicket,
+    isLoading: isLoadingUserTicket,
   } = useSWR(
     user ? `guestbook-ticket-${user.id}` : null,
     () => fetchUserTicket(user?.id),
@@ -43,8 +45,7 @@ export function useGuestbookTicketsSWR(user: AuthUser | null) {
   );
 
   // Combined loading state
-  const isLoadingTickets = !(allTickets || allTicketsError);
-  const isLoadingUserTicket = user && !userTicket && !userTicketError;
+  const isLoadingTickets = isLoadingAllTickets || (user ? isLoadingUserTicket : false);
 
   // Function to refresh both tickets
   const refreshTickets = async () => {
@@ -74,9 +75,9 @@ export function useGuestbookTicketsSWR(user: AuthUser | null) {
   };
 
   return {
-    allTickets,
-    userTicket,
-    isLoadingTickets: isLoadingTickets || isLoadingUserTicket,
+    allTickets: allTickets || [],
+    userTicket: userTicket || null,
+    isLoadingTickets,
     error: allTicketsError || userTicketError,
     refreshTickets,
     updateUserTicket,

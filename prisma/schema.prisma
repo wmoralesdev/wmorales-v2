@@ -269,6 +269,7 @@ model GuestbookEntry {
 
 model GuestbookTicket {
   id              String   @id @default(uuid())
+  shortId         String   @unique @map("short_id") // Format: C-000000
   ticketNumber    String   @unique @map("ticket_number") // Format: C-000000
   entryId         String   @unique @map("entry_id")
   profileId       String   @map("profile_id")

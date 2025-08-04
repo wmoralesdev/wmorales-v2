@@ -15,7 +15,15 @@ export function useGuestbookRealtime(
   const handleTicketUpdate = useCallback(
     (event: GuestbookRealtimeEvent) => {
       setTickets((prevTickets) => {
-        const ticketData = event.ticket as unknown as TicketData;
+        // Convert the ticket data and ensure createdAt is a Date
+        const ticketData: TicketData = {
+          ...event.ticket,
+          createdAt: new Date(event.ticket.createdAt),
+          entry: {
+            message: null,
+            mood: null,
+          },
+        } as TicketData;
 
         switch (event.type) {
           case 'ticket_created': {

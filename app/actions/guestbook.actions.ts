@@ -22,22 +22,17 @@ const colorPaletteSchema = z.object({
 
 type ColorPalette = z.infer<typeof colorPaletteSchema>;
 
-// Generate the next ticket number
-async function generateTicketNumber(): Promise<string> {
-  const lastTicket = await prisma.guestbookTicket.findFirst({
-    orderBy: { ticketNumber: 'desc' },
-    select: { ticketNumber: true },
-  });
+// Generate the next ticket number using PostgreSQL sequence
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+async function generateTicketNumber(tx?: any): Promise<string> {
+  const prismaClient = tx || prisma;
 
-  let nextNumber = 1;
-  if (lastTicket) {
-    const lastNumber = Number.parseInt(
-      lastTicket.ticketNumber.split('-')[1],
-      10
-    );
-    nextNumber = lastNumber + 1;
-  }
+  // Use PostgreSQL sequence for guaranteed unique numbers
+  const result = await prismaClient.$queryRaw<[{ nextval: bigint }]>`
+    SELECT nextval('guestbook_ticket_number_seq')
+  `;
 
+  const nextNumber = Number(result[0].nextval);
   return `C-${nextNumber.toString().padStart(6, '0')}`;
 }
 
@@ -87,9 +82,6 @@ export async function createGuestbookEntry(mood: string, message?: string) {
   // Generate color palette
   const colors = await generateColorPalette(mood);
 
-  // Generate ticket number
-  const ticketNumber = await generateTicketNumber();
-
   // Get user metadata
   const userMetadata = user.user_metadata || {};
   const userName =
@@ -102,6 +94,9 @@ export async function createGuestbookEntry(mood: string, message?: string) {
 
   // Create entry and ticket in transaction
   const result = await prisma.$transaction(async (tx) => {
+    // Generate ticket number using sequence (guaranteed unique)
+    const ticketNumber = await generateTicketNumber(tx);
+
     // Create guestbook entry
     const entry = await tx.guestbookEntry.create({
       data: {
