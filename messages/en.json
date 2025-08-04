@@ -1,114 +1,66 @@
 {
-  "navigation": {
-    "home": "Home",
-    "blog": "Blog",
-    "cursor": "Cursor",
-    "events": "Events",
-    "guestbook": "Guestbook",
-    "polls": "Polls",
-    "surveys": "Surveys",
-    "showcase": "Showcase",
-    "ambassador": "Ambassador",
-    "menu": "Menu",
-    "language": "Language",
-    "descriptions": {
-      "ambassador": "Discover my background, services, and experience as a software developer and Cursor ambassador.",
-      "surveys": "Answer questions to help us improve Cursor's community.",
-      "polls": "Vote in real-time polls. See what others think.",
-      "events": "See what's coming up. Join the fun and upload your pictures at the events."
+  "auth": {
+    "signIn": "Sign In",
+    "signOut": "Sign Out",
+    "loading": "Loading...",
+    "user": "User",
+    "google": "Google",
+    "github": "GitHub",
+    "signedOutSuccess": "Signed out successfully",
+    "signOutError": "Failed to sign out",
+    "account": "Account",
+    "continueWithGoogle": "Continue with Google",
+    "continueWithGitHub": "Continue with GitHub"
+  },
+  "blog": {
+    "title": "Blog",
+    "description": "Software development, AI, Cursor, LATAM and the technologies shaping our future.",
+    "searchPlaceholder": "Search posts by title, description, or content...",
+    "noResults": "No posts found",
+    "readingTime": "min read",
+    "backToBlog": "Back to Blog",
+    "filters": "Filters",
+    "clearAll": "Clear All",
+    "sortBy": {
+      "latest": "Latest First",
+      "oldest": "Oldest First",
+      "titleAZ": "Title A-Z",
+      "titleZA": "Title Z-A",
+      "featured": "Featured First"
+    },
+    "filterByTags": "Filter by Tags",
+    "featuredOnly": "Featured Posts Only",
+    "showingResults": "Showing {filteredCount} of {totalPosts} posts",
+    "totalPosts": "{totalPosts} posts",
+    "activeFilters": "Active filters:",
+    "searchIn": {
+      "title": "Title",
+      "description": "Description",
+      "featured": "Featured"
     }
   },
-  "homepage": {
-    "hero": {
-      "availableForNewProjects": "Available for new projects",
-      "title": "I'm Walter, and I",
-      "innovate": "innovate",
-      "developmentWith": "Development with",
-      "passion": "passion",
-      "toCreateImpactful": "to create impactful",
-      "products": "products",
-      "letsWorkTogether": "Let's work together"
-    },
-    "cards": {
-      "globalReach": "Countries",
-      "clientsFromAroundTheWorld": "Clients from around the world",
-      "active": "Active",
-      "cursorAmbassador": "Cursor Ambassador",
-      "empoweringDevelopersWithAI": "Empowering developers with AI",
-      "currentlyLearning": "Currently Learning",
-      "alwaysExploringNewTechnologies": "Always exploring new technologies",
-      "techStack": "Tech Stack",
-      "terminal": "Terminal",
-      "proficiency": "Proficiency",
-      "coffeeChat": "Coffee Chat",
-      "bestIdeasStartWithAConversation": "Best ideas start with a conversation",
-      "experience": "Years of experience",
-      "commitMessage": "feat: ship amazing products",
-      "chat": "Chat"
-    },
-    "experience": {
-      "sectionLabel": "Professional Journey",
-      "sectionTitle": "Work Experience",
-      "sectionDescription": "Building impactful solutions across diverse industries and technologies",
-      "companies": {
-        "Southworks": {
-          "role": "Sr Software Engineer",
-          "period": "Apr 2023 – Now",
-          "achievements": [
-            "Developed cloud-based solutions using .NET & NodeJS + ReactJS",
-            "Mentored junior engineers"
-          ]
-        },
-        "Freelance": {
-          "role": "Product Engineer",
-          "period": "Apr 2023 – Jan 2024",
-          "achievements": [
-            "Architected and led development of a government web service application",
-            "Delivered project on time and within budget"
-          ]
-        },
-        "Ravn": {
-          "role": "Sr Software Engineer",
-          "period": "Jan 2023 – Mar 2023",
-          "achievements": [
-            "API migration to .NET environment",
-            "Provided technical consultancy"
-          ]
-        },
-        "Resultier": {
-          "role": ".NET Developer",
-          "period": "Apr 2022 – Dec 2022",
-          "achievements": [
-            "Built medical software for patient vital sign analysis",
-            "Collaborated with cross-functional teams"
-          ]
-        },
-        "InnRoad": {
-          "role": "Software Engineer",
-          "period": "Apr 2021 – Apr 2022",
-          "achievements": [
-            "Developed microservices for Airbnb and Hotel Booking integrations",
-            "Enhanced system reliability and uptime"
-          ]
-        },
-        "Elaniin": {
-          "role": "JavaScript Fullstack Developer",
-          "period": "Nov 2020 – Jan 2022",
-          "achievements": [
-            "Developed enterprise software in JavaScript and .NET",
-            "Led migration to cloud infrastructure"
-          ]
-        },
-        "VincuHub": {
-          "role": "Fullstack Developer",
-          "period": "Jan 2020 – Nov 2020",
-          "achievements": [
-            "Created and managed .NET applications and ReactJS websites",
-            "Improved deployment pipeline, reducing release time by 30%"
-          ]
-        }
-      }
-    }
+  "common": {
+    "loading": "Loading...",
+    "error": "An error occurred",
+    "tryAgain": "Try Again",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "next": "Next",
+    "previous": "Previous",
+    "submit": "Submit",
+    "back": "Back",
+    "view": "View",
+    "open": "Open",
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info"
   },
   "cursor": {
     "title": "Cursor Ambassador",
@@ -338,6 +290,20 @@
     "checkOutEventPhotos": "Check out the photos from this event!",
     "photosInGallery": "{count} photos in this gallery"
   },
+  "footer": {
+    "quickLinks": "Quick Links",
+    "title": "Software Engineer",
+    "cursorAmbassador": "Cursor Ambassador",
+    "letsConnect": "Let's Connect",
+    "availableForOpportunities": "Available for opportunities",
+    "location": "El Salvador 🇸🇻 • Working globally",
+    "getInTouch": "Get in touch",
+    "copyright": "© {year} Walter Morales. Crafted with",
+    "home": "Home",
+    "experience": "Experience",
+    "guestbook": "Guestbook",
+    "surveys": "Surveys"
+  },
   "guestbook": {
     "title": "Digital Guestbook",
     "description": "Create your unique conference-style ticket with AI-generated colors based on your mood",
@@ -376,6 +342,117 @@
     "viewingNow": "{count, plural, =1 {1 person} other {# people}} viewing now",
     "loadingGuestbook": "Loading guestbook..."
   },
+  "homepage": {
+    "hero": {
+      "availableForNewProjects": "Available for new projects",
+      "title": "I'm Walter, and I",
+      "innovate": "innovate",
+      "developmentWith": "Development with",
+      "passion": "passion",
+      "toCreateImpactful": "to create impactful",
+      "products": "products",
+      "letsWorkTogether": "Let's work together"
+    },
+    "cards": {
+      "globalReach": "Countries",
+      "clientsFromAroundTheWorld": "Clients from around the world",
+      "active": "Active",
+      "cursorAmbassador": "Cursor Ambassador",
+      "empoweringDevelopersWithAI": "Empowering developers with AI",
+      "currentlyLearning": "Currently Learning",
+      "alwaysExploringNewTechnologies": "Always exploring new technologies",
+      "techStack": "Tech Stack",
+      "terminal": "Terminal",
+      "proficiency": "Proficiency",
+      "coffeeChat": "Coffee Chat",
+      "bestIdeasStartWithAConversation": "Best ideas start with a conversation",
+      "experience": "Years of experience",
+      "commitMessage": "feat: ship amazing products",
+      "chat": "Chat"
+    },
+    "experience": {
+      "sectionLabel": "Professional Journey",
+      "sectionTitle": "Work Experience",
+      "sectionDescription": "Building impactful solutions across diverse industries and technologies",
+      "companies": {
+        "Southworks": {
+          "role": "Sr Software Engineer",
+          "period": "Apr 2023 – Now",
+          "achievements": [
+            "Developed cloud-based solutions using .NET & NodeJS + ReactJS",
+            "Mentored junior engineers"
+          ]
+        },
+        "Freelance": {
+          "role": "Product Engineer",
+          "period": "Apr 2023 – Jan 2024",
+          "achievements": [
+            "Architected and led development of a government web service application",
+            "Delivered project on time and within budget"
+          ]
+        },
+        "Ravn": {
+          "role": "Sr Software Engineer",
+          "period": "Jan 2023 – Mar 2023",
+          "achievements": [
+            "API migration to .NET environment",
+            "Provided technical consultancy"
+          ]
+        },
+        "Resultier": {
+          "role": ".NET Developer",
+          "period": "Apr 2022 – Dec 2022",
+          "achievements": [
+            "Built medical software for patient vital sign analysis",
+            "Collaborated with cross-functional teams"
+          ]
+        },
+        "InnRoad": {
+          "role": "Software Engineer",
+          "period": "Apr 2021 – Apr 2022",
+          "achievements": [
+            "Developed microservices for Airbnb and Hotel Booking integrations",
+            "Enhanced system reliability and uptime"
+          ]
+        },
+        "Elaniin": {
+          "role": "JavaScript Fullstack Developer",
+          "period": "Nov 2020 – Jan 2022",
+          "achievements": [
+            "Developed enterprise software in JavaScript and .NET",
+            "Led migration to cloud infrastructure"
+          ]
+        },
+        "VincuHub": {
+          "role": "Fullstack Developer",
+          "period": "Jan 2020 – Nov 2020",
+          "achievements": [
+            "Created and managed .NET applications and ReactJS websites",
+            "Improved deployment pipeline, reducing release time by 30%"
+          ]
+        }
+      }
+    }
+  },
+  "navigation": {
+    "home": "Home",
+    "blog": "Blog",
+    "cursor": "Cursor",
+    "events": "Events",
+    "guestbook": "Guestbook",
+    "polls": "Polls",
+    "surveys": "Surveys",
+    "showcase": "Showcase",
+    "ambassador": "Ambassador",
+    "menu": "Menu",
+    "language": "Language",
+    "descriptions": {
+      "ambassador": "Discover my background, services, and experience as a software developer and Cursor ambassador.",
+      "surveys": "Answer questions to help us improve Cursor's community.",
+      "polls": "Vote in real-time polls. See what others think.",
+      "events": "See what's coming up. Join the fun and upload your pictures at the events."
+    }
+  },
   "polls": {
     "title": "Live Polls",
     "description": "Vote with fellow attendees and see the results in real-time",
@@ -389,82 +466,5 @@
     "noSurveys": "No active surveys available.",
     "participate": "Participate",
     "complete": "Complete Survey"
-  },
-  "auth": {
-    "signIn": "Sign In",
-    "signOut": "Sign out",
-    "loading": "Loading...",
-    "user": "User",
-    "google": "Google",
-    "github": "GitHub",
-    "signedOutSuccess": "Signed out successfully",
-    "signOutError": "Failed to sign out",
-    "account": "Account",
-    "continueWithGoogle": "Continue with Google",
-    "continueWithGitHub": "Continue with GitHub"
-  },
-  "footer": {
-    "quickLinks": "Quick Links",
-    "title": "Software Engineer",
-    "cursorAmbassador": "Cursor Ambassador",
-    "letsConnect": "Let's Connect",
-    "availableForOpportunities": "Available for opportunities",
-    "location": "El Salvador 🇸🇻 • Working globally",
-    "getInTouch": "Get in touch",
-    "copyright": "© {year} Walter Morales. Crafted with",
-    "home": "Home",
-    "experience": "Experience",
-    "guestbook": "Guestbook",
-    "surveys": "Surveys"
-  },
-  "blog": {
-    "title": "Blog",
-    "description": "Software development, AI, Cursor, LATAM and the technologies shaping our future.",
-    "searchPlaceholder": "Search posts by title, description, or content...",
-    "noResults": "No posts found",
-    "readingTime": "min read",
-    "backToBlog": "Back to Blog",
-    "filters": "Filters",
-    "clearAll": "Clear All",
-    "sortBy": {
-      "latest": "Latest First",
-      "oldest": "Oldest First",
-      "titleAZ": "Title A-Z",
-      "titleZA": "Title Z-A",
-      "featured": "Featured First"
-    },
-    "filterByTags": "Filter by Tags",
-    "featuredOnly": "Featured Posts Only",
-    "showingResults": "Showing {filteredCount} of {totalPosts} posts",
-    "totalPosts": "{totalPosts} posts",
-    "activeFilters": "Active filters:",
-    "searchIn": {
-      "title": "Title",
-      "description": "Description",
-      "featured": "Featured"
-    }
-  },
-  "common": {
-    "loading": "Loading...",
-    "error": "An error occurred",
-    "tryAgain": "Try again",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
-    "save": "Save",
-    "delete": "Delete",
-    "edit": "Edit",
-    "close": "Close",
-    "next": "Next",
-    "previous": "Previous",
-    "submit": "Submit",
-    "back": "Back",
-    "view": "View",
-    "open": "Open",
-    "yes": "Yes",
-    "no": "No",
-    "ok": "OK",
-    "success": "Success",
-    "warning": "Warning",
-    "info": "Info"
   }
 }
