@@ -9,6 +9,7 @@ type SignInCardProps = {
 
 export function SignInCard({ onSignIn }: SignInCardProps) {
   const t = useTranslations('guestbook');
+  const tAuth = useTranslations('auth');
 
   return (
     <Card className="mx-auto max-w-md">
@@ -28,7 +29,7 @@ export function SignInCard({ onSignIn }: SignInCardProps) {
           variant="outline"
         >
           <Github className="mr-3 h-5 w-5" />
-          {t('continueWith', { provider: 'GitHub' })}
+          {tAuth('continueWith', { provider: 'GitHub' })}
         </Button>
 
         <Button
@@ -37,7 +38,7 @@ export function SignInCard({ onSignIn }: SignInCardProps) {
           variant="outline"
         >
           <Mail className="mr-3 h-5 w-5" />
-          {t('continueWith', { provider: 'Google' })}
+          {tAuth('continueWith', { provider: 'Google' })}
         </Button>
 
         <div className="pt-4 text-center">
