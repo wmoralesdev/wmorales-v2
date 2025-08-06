@@ -21,7 +21,9 @@ export function PhotoCarousel({
   if (images.length === 0) return null;
 
   return (
-    <div className={`relative aspect-[16/9] bg-gray-800 rounded-lg overflow-hidden ${className}`}>
+    <div
+      className={`relative aspect-[16/9] bg-gray-800 rounded-lg overflow-hidden ${className}`}
+    >
       <AnimatePresence mode="wait">
         <motion.div
           key={currentIndex}
@@ -32,16 +34,16 @@ export function PhotoCarousel({
           className="absolute inset-0"
         >
           <Image
-            src={images[currentIndex].imageUrl}
-            alt={images[currentIndex].caption || 'Event photo'}
+            src={images[currentIndex]?.imageUrl}
+            alt={images[currentIndex]?.caption || 'Event photo'}
             fill
             className="object-contain bg-white/10"
             sizes="(max-width: 768px) 100vw, 66vw"
           />
-          {images[currentIndex].caption && (
+          {images[currentIndex]?.caption && (
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
               <p className="text-white text-sm line-clamp-2">
-                {images[currentIndex].caption}
+                {images[currentIndex]?.caption}
               </p>
             </div>
           )}

@@ -1,7 +1,7 @@
 'use client';
 
 import { AnimatePresence, motion, type Variants } from 'framer-motion';
-import { Globe, Menu, LogOut, LogIn, User } from 'lucide-react';
+import { Globe, Menu, LogOut } from 'lucide-react';
 import Image from 'next/image';
 import { useLocale, useTranslations } from 'next-intl';
 import { useState } from 'react';
@@ -17,16 +17,13 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Link, usePathname, useRouter } from '@/i18n/navigation';
-import { routing } from '@/i18n/routing';
 import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/client';
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
 } from '../ui/navigation-menu';
 import { Clock } from './clock';
 
@@ -334,53 +331,6 @@ export function Navbar() {
               <MotionMenuItem
                 animate="visible"
                 initial="hidden"
-                key="blog"
-                variants={menuItemVariants}
-              >
-                <NavigationMenuLink
-                  className="relative"
-                  href={routing.pathnames['/blog']}
-                  key="blog"
-                >
-                  <Button
-                    className={cn(
-                      'relative cursor-pointer font-medium text-sm transition-colors',
-                      pathname === '/blog' || pathname.startsWith('/blog/')
-                        ? 'text-purple-400'
-                        : 'hover:text-purple-400'
-                    )}
-                    variant="ghost"
-                  >
-                    <motion.span
-                      transition={{ duration: 0.2 }}
-                      whileHover={{ y: -2 }}
-                    >
-                      {t('blog')}
-                    </motion.span>
-
-                    {/* Active indicator */}
-                    <AnimatePresence>
-                      {(pathname === '/blog' ||
-                        pathname.startsWith('/blog/')) && (
-                        <motion.div
-                          animate={{ scaleX: 1 }}
-                          className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
-                          exit={{ scaleX: 0 }}
-                          initial={{ scaleX: 0 }}
-                          transition={{
-                            duration: 0.3,
-                            ease: [0.25, 0.46, 0.45, 0.94],
-                          }}
-                        />
-                      )}
-                    </AnimatePresence>
-                  </Button>
-                </NavigationMenuLink>
-              </MotionMenuItem>
-
-              <MotionMenuItem
-                animate="visible"
-                initial="hidden"
                 key="guestbook"
                 variants={menuItemVariants}
               >
@@ -427,18 +377,18 @@ export function Navbar() {
               <MotionMenuItem
                 animate="visible"
                 initial="hidden"
-                key="showcase"
+                key="events"
                 variants={menuItemVariants}
               >
                 <NavigationMenuLink
                   className="relative"
-                  href="/showcase"
-                  key="showcase"
+                  href="/events"
+                  key="events"
                 >
                   <Button
                     className={cn(
                       'relative cursor-pointer font-medium text-sm transition-colors',
-                      pathname === '/showcase'
+                      pathname === '/events'
                         ? 'text-purple-400'
                         : 'hover:text-purple-400'
                     )}
@@ -448,12 +398,56 @@ export function Navbar() {
                       transition={{ duration: 0.2 }}
                       whileHover={{ y: -2 }}
                     >
-                      {t('showcase')}
+                      {t('events')}
                     </motion.span>
 
-                    {/* Active indicator */}
                     <AnimatePresence>
-                      {pathname === '/showcase' && (
+                      {pathname === '/events' && (
+                        <motion.div
+                          animate={{ scaleX: 1 }}
+                          className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
+                          exit={{ scaleX: 0 }}
+                          initial={{ scaleX: 0 }}
+                          transition={{
+                            duration: 0.3,
+                            ease: [0.25, 0.46, 0.45, 0.94],
+                          }}
+                        />
+                      )}
+                    </AnimatePresence>
+                  </Button>
+                </NavigationMenuLink>
+              </MotionMenuItem>
+
+              <MotionMenuItem
+                animate="visible"
+                initial="hidden"
+                key="polls"
+                variants={menuItemVariants}
+              >
+                <NavigationMenuLink
+                  className="relative"
+                  href="/polls"
+                  key="polls"
+                >
+                  <Button
+                    className={cn(
+                      'relative cursor-pointer font-medium text-sm transition-colors',
+                      pathname === '/polls'
+                        ? 'text-purple-400'
+                        : 'hover:text-purple-400'
+                    )}
+                    variant="ghost"
+                  >
+                    <motion.span
+                      transition={{ duration: 0.2 }}
+                      whileHover={{ y: -2 }}
+                    >
+                      {t('polls')}
+                    </motion.span>
+
+                    <AnimatePresence>
+                      {pathname === '/polls' && (
                         <motion.div
                           animate={{ scaleX: 1 }}
                           className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
@@ -476,29 +470,29 @@ export function Navbar() {
                 key="cursor"
                 variants={menuItemVariants}
               >
-                <NavigationMenuTrigger className="relative">
-                  <span
+                <NavigationMenuLink
+                  className="relative"
+                  href="/cursor"
+                  key="cursor"
+                >
+                  <Button
                     className={cn(
                       'relative cursor-pointer font-medium text-sm transition-colors',
-                      ['/surveys', '/polls', '/cursor', '/events'].includes(
-                        pathname
-                      )
+                      pathname === '/cursor'
                         ? 'text-purple-400'
                         : 'hover:text-purple-400'
                     )}
+                    variant="ghost"
                   >
                     <motion.span
                       transition={{ duration: 0.2 }}
                       whileHover={{ y: -2 }}
                     >
-                      Cursor
+                      {t('cursor')}
                     </motion.span>
 
-                    {/* Active indicator */}
                     <AnimatePresence>
-                      {['/surveys', '/polls', '/cursor', '/events'].includes(
-                        pathname
-                      ) && (
+                      {pathname === '/cursor' && (
                         <motion.div
                           animate={{ scaleX: 1 }}
                           className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
@@ -511,66 +505,8 @@ export function Navbar() {
                         />
                       )}
                     </AnimatePresence>
-                  </span>
-                </NavigationMenuTrigger>
-                <NavigationMenuContent>
-                  <ul className="grid gap-2 md:w-[400px] lg:w-[500px] lg:grid-cols-2">
-                    <li className="row-span-3">
-                      <NavigationMenuLink asChild>
-                        <Link
-                          className="flex h-full w-full flex-col justify-start from-muted/50 to-muted p-6"
-                          href="/cursor"
-                        >
-                          <div className="mt-4 mb-2 font-medium text-lg">
-                            {t('ambassador')}
-                          </div>
-                          <p className="mb-4 text-muted-foreground text-sm leading-tight">
-                            {t('descriptions.ambassador')}
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          className="flex h-full w-full flex-col from-muted/50 to-muted p-3"
-                          href="/surveys"
-                        >
-                          <div className="mb-2 font-medium">{t('surveys')}</div>
-                          <p className="text-muted-foreground text-sm leading-tight">
-                            {t('descriptions.surveys')}
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          className="flex h-full w-full flex-col from-muted/50 to-muted p-3"
-                          href="/polls"
-                        >
-                          <div className="mb-2 font-medium">{t('polls')}</div>
-                          <p className="text-muted-foreground text-sm leading-tight">
-                            {t('descriptions.polls')}
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                    <li>
-                      <NavigationMenuLink asChild>
-                        <Link
-                          className="flex h-full w-full flex-col from-muted/50 to-muted p-3"
-                          href="/events"
-                        >
-                          <div className="mb-2 font-medium">{t('events')}</div>
-                          <p className="text-muted-foreground text-sm leading-tight">
-                            {t('descriptions.events')}
-                          </p>
-                        </Link>
-                      </NavigationMenuLink>
-                    </li>
-                  </ul>
-                </NavigationMenuContent>
+                  </Button>
+                </NavigationMenuLink>
               </MotionMenuItem>
             </NavigationMenuList>
           </NavigationMenu>
@@ -647,19 +583,6 @@ export function Navbar() {
                           </Button>
                         </Link>
 
-                        <Link href="/blog" onClick={() => setIsOpen(false)}>
-                          <Button
-                            className={cn(
-                              'w-full justify-start',
-                              pathname.startsWith('/blog') &&
-                                'bg-purple-400/10 text-purple-400'
-                            )}
-                            variant="ghost"
-                          >
-                            {t('blog')}
-                          </Button>
-                        </Link>
-
                         <Link
                           href="/guestbook"
                           onClick={() => setIsOpen(false)}
@@ -676,56 +599,23 @@ export function Navbar() {
                           </Button>
                         </Link>
 
-                        <Link href="/showcase" onClick={() => setIsOpen(false)}>
+                        <Link href="/events" onClick={() => setIsOpen(false)}>
                           <Button
                             className={cn(
                               'w-full justify-start',
-                              pathname === '/showcase' &&
+                              pathname === '/events' &&
                                 'bg-purple-400/10 text-purple-400'
                             )}
                             variant="ghost"
                           >
-                            {t('showcase')}
-                          </Button>
-                        </Link>
-                      </div>
-
-                      {/* Cursor Submenu */}
-                      <div className="space-y-2 pt-2">
-                        <p className="px-3 text-sm font-medium text-gray-400">
-                          Cursor
-                        </p>
-
-                        <Link href="/cursor" onClick={() => setIsOpen(false)}>
-                          <Button
-                            className={cn(
-                              'w-full justify-start pl-6',
-                              pathname === '/cursor' &&
-                                'bg-purple-400/10 text-purple-400'
-                            )}
-                            variant="ghost"
-                          >
-                            {t('ambassador')}
-                          </Button>
-                        </Link>
-
-                        <Link href="/surveys" onClick={() => setIsOpen(false)}>
-                          <Button
-                            className={cn(
-                              'w-full justify-start pl-6',
-                              pathname === '/surveys' &&
-                                'bg-purple-400/10 text-purple-400'
-                            )}
-                            variant="ghost"
-                          >
-                            {t('surveys')}
+                            {t('events')}
                           </Button>
                         </Link>
 
                         <Link href="/polls" onClick={() => setIsOpen(false)}>
                           <Button
                             className={cn(
-                              'w-full justify-start pl-6',
+                              'w-full justify-start',
                               pathname === '/polls' &&
                                 'bg-purple-400/10 text-purple-400'
                             )}
@@ -735,16 +625,16 @@ export function Navbar() {
                           </Button>
                         </Link>
 
-                        <Link href="/events" onClick={() => setIsOpen(false)}>
+                        <Link href="/cursor" onClick={() => setIsOpen(false)}>
                           <Button
                             className={cn(
-                              'w-full justify-start pl-6',
-                              pathname === '/events' &&
+                              'w-full justify-start',
+                              pathname === '/cursor' &&
                                 'bg-purple-400/10 text-purple-400'
                             )}
                             variant="ghost"
                           >
-                            {t('events')}
+                            {t('cursor')}
                           </Button>
                         </Link>
                       </div>
@@ -764,6 +654,7 @@ export function Navbar() {
                               onClick={() => {
                                 if (locale !== 'en') {
                                   const newLocale = 'en';
+                                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                   router.replace(pathname as any, {
                                     locale: newLocale,
                                   });
@@ -782,6 +673,7 @@ export function Navbar() {
                               onClick={() => {
                                 if (locale !== 'es') {
                                   const newLocale = 'es';
+                                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
                                   router.replace(pathname as any, {
                                     locale: newLocale,
                                   });

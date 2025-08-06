@@ -288,7 +288,10 @@
     "photosDownloaded": "Photos downloaded successfully",
     "downloadFailed": "Failed to download photos",
     "checkOutEventPhotos": "Check out the photos from this event!",
-    "photosInGallery": "{count} photos in this gallery"
+    "photosInGallery": "{count} photos in this gallery",
+    "signInToUpload": "Sign in to upload photos",
+    "signInToSharePhotos": "Sign in to share your photos with the community",
+    "signInError": "Failed to sign in. Please try again."
   },
   "footer": {
     "quickLinks": "Quick Links",
@@ -315,7 +318,6 @@
     "joinDescription": "Join the guestbook and get your own unique AI-generated ticket!",
     "signInTitle": "Sign in to continue",
     "signInDescription": "Choose your preferred method to sign in and create your personalized ticket",
-    "continueWith": "Continue with {provider}",
     "termsText": "By signing in, you agree to create a personalized ticket and optionally leave a message",
     "updateTicket": "Update your ticket",
     "createTicketForm": "Create your ticket",

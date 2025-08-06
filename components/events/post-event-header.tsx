@@ -10,7 +10,7 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import type { EventWithContentAndImages } from './types';
+import type { EventWithContentAndImages } from '../../lib/types/event.types';
 
 type PostEventHeaderProps = {
   event: EventWithContentAndImages;
@@ -30,15 +30,15 @@ export function PostEventHeader({
   const t = useTranslations('events');
 
   return (
-    <Card className={`border-0 sm:border border-gray-800 bg-gray-900/80 backdrop-blur-xl overflow-hidden rounded-none sm:rounded-lg shadow-none sm:shadow-md ${className}`}>
+    <Card
+      className={`border-0 sm:border border-gray-800 bg-gray-900/80 backdrop-blur-xl overflow-hidden rounded-none sm:rounded-lg shadow-none sm:shadow-md ${className}`}
+    >
       <div className="absolute top-0 right-0 w-32 h-32 sm:w-48 sm:h-48 lg:w-64 lg:h-64 bg-purple-500/10 rounded-full blur-3xl" />
       <CardHeader className="relative z-10 p-4 sm:p-6">
         <div className="flex flex-col gap-4">
           <div>
             <CardTitle className="text-lg sm:text-xl lg:text-2xl text-white">
-              <span className="block sm:inline">
-                {event.content[0].title}
-              </span>
+              <span className="block sm:inline">{event.content[0].title}</span>
               <Badge className="bg-gray-500/20 text-gray-300 border-gray-500/30 ml-0 sm:ml-2 mt-2 sm:mt-0 inline-flex">
                 {t('ended')}
               </Badge>

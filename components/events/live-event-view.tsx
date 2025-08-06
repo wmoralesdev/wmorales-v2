@@ -1,17 +1,17 @@
 'use client';
 
-import type { EventImage } from '@prisma/client';
 import { Camera, Eye, Sparkles } from 'lucide-react';
 import { useLocale, useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { toast } from 'sonner';
-import { ImageUpload } from '@/components/events/image-upload';
+import { AuthenticatedImageUpload } from '@/components/events/authenticated-image-upload';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 import { useAuth } from '@/components/auth/auth-provider';
 import { useUserEventImages } from '@/hooks/use-user-event-images';
 import { subscribeToEventUpdates } from '@/lib/supabase/realtime';
+import { useLiveEventStore } from '@/lib/stores/live-event-store';
 import { LiveEventHeader } from './live-event-header';
 import { EventStats } from './event-stats';
 import { PhotoCarousel } from './photo-carousel';
@@ -19,7 +19,7 @@ import { PhotoGrid } from './photo-grid';
 import { QRCodeDialog } from './qr-code-dialog';
 import { ImageLightbox } from './image-lightbox';
 import { sortImagesByDate, getEventUrl } from './utils';
-import { EventFullDetails } from './types';
+import { EventFullDetails } from '../../lib/types/event.types';
 
 type LiveEventViewProps = {
   event: EventFullDetails;
@@ -35,12 +35,24 @@ export function LiveEventView({
   const t = useTranslations('events');
   const locale = useLocale();
   const { user } = useAuth();
-  const [activeViewers, setActiveViewers] = useState(1); // Start with 1 (current user)
-  const [showQRCode, setShowQRCode] = useState(false);
-  const [uploading, setUploading] = useState(false);
-  const [currentPhotoIndex, setCurrentPhotoIndex] = useState(0);
-  const [selectedImage, setSelectedImage] = useState<EventImage | null>(null);
-  const [eventImages, setEventImages] = useState<EventImage[]>(event.images);
+
+  // Zustand store
+  const {
+    activeViewers,
+    showQRCode,
+    uploading,
+    currentPhotoIndex,
+    selectedImage,
+    eventImages,
+    setActiveViewers,
+    setShowQRCode,
+    setUploading,
+    setCurrentPhotoIndex,
+    setSelectedImage,
+    setEventImages,
+    addEventImage,
+    removeEventImage,
+  } = useLiveEventStore();
 
   const { userImages, isLoading: isLoadingUserImages } = useUserEventImages(
     event.id
@@ -51,6 +63,11 @@ export function LiveEventView({
   // Get event URL for QR code
   const eventUrl = getEventUrl(event.slug);
 
+  // Initialize event images from props
+  useEffect(() => {
+    setEventImages(event.images);
+  }, [event.images, setEventImages]);
+
   // Subscribe to realtime updates
   useEffect(() => {
     const channel = subscribeToEventUpdates(
@@ -58,26 +75,21 @@ export function LiveEventView({
       (update) => {
         if (update.type === 'image_uploaded' && update.image) {
           // Add new image to the list
-          setEventImages((prev) => [
-            {
-              id: update.image!.id,
-              eventId: event.id,
-              profileId: update.image!.profileId,
-              imageUrl: update.image!.imageUrl,
-              caption: update.image!.caption || null,
-              createdAt: new Date(update.image!.createdAt),
+          addEventImage({
+            id: update.image!.id,
+            eventId: event.id,
+            profileId: update.image!.profileId,
+            imageUrl: update.image!.imageUrl,
+            caption: update.image!.caption || null,
+            createdAt: new Date(update.image!.createdAt),
+            profile: {
+              name: update.image!.profile.name,
+              avatar: update.image!.profile.avatar || undefined,
             },
-            ...prev,
-          ]);
+          });
         } else if (update.type === 'image_deleted' && update.imageId) {
           // Remove deleted image from the list
-          setEventImages((prev) =>
-            prev.filter((img) => img.id !== update.imageId)
-          );
-          // Also remove from selected image if it's the one being deleted
-          setSelectedImage((prev) =>
-            prev?.id === update.imageId ? null : prev
-          );
+          removeEventImage(update.imageId);
         }
       },
       (count) => {
@@ -88,24 +100,24 @@ export function LiveEventView({
     return () => {
       channel.unsubscribe();
     };
-  }, [event.id]);
+  }, [event.id, addEventImage, removeEventImage, setActiveViewers]);
 
   // Auto-cycle through photos for live slideshow
   useEffect(() => {
     if (eventImages.length === 0) return;
 
     const interval = setInterval(() => {
-      setCurrentPhotoIndex((prev) => (prev + 1) % eventImages.length);
+      const nextIndex = (currentPhotoIndex + 1) % eventImages.length;
+      setCurrentPhotoIndex(nextIndex);
     }, 5000); // Change photo every 5 seconds
 
     return () => clearInterval(interval);
-  }, [eventImages.length]);
+  }, [eventImages.length, currentPhotoIndex, setCurrentPhotoIndex]);
 
   const handleImageUpload = async (imageUrl: string, caption?: string) => {
     setUploading(true);
     try {
       await onImageUpload(imageUrl, caption);
-      toast.success(t('photoUploaded'));
     } catch (error) {
       toast.error(t('uploadError'));
     } finally {
@@ -137,7 +149,7 @@ export function LiveEventView({
           <Card className="border-0 sm:border border-gray-800 bg-gray-900/80 backdrop-blur-xl rounded-none sm:rounded-lg shadow-none sm:shadow-md">
             <CardContent className="px-0 lg:px-6">
               {canUpload ? (
-                <ImageUpload
+                <AuthenticatedImageUpload
                   maxImages={event.maxImages - userImageCount}
                   onUpload={handleImageUpload}
                   slug={event.slug}
@@ -236,7 +248,6 @@ export function LiveEventView({
         selectedImage={selectedImage}
         onClose={() => setSelectedImage(null)}
         locale={locale}
-        showNavigation={false}
       />
     </div>
   );

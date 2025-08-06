@@ -32,7 +32,6 @@ export type PollOption = {
   label: string;
   value: string;
   color: string | null;
-  emoji: string | null;
   createdAt: Date;
   voteCount?: number; // For aggregated results
 };
@@ -74,7 +73,6 @@ export type PollResults = {
       label: string;
       value: string;
       color: string | null;
-      emoji: string | null;
       voteCount: number;
       percentage: number;
     }[];

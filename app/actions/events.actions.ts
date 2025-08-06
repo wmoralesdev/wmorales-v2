@@ -7,6 +7,7 @@ import { EVENT_IMAGES_BUCKET } from '@/lib/consts';
 import { db } from '@/lib/db-utils';
 import { broadcastEventUpdate } from '@/lib/supabase/realtime-server';
 import { createClient } from '@/lib/supabase/server';
+import { ExtendedEventImage } from '@/lib/types/event.types';
 
 // Validation schemas
 const createEventSchema = z.object({
@@ -128,7 +129,7 @@ export async function getEventById(
 export async function getEventBySlug(slug: string): Promise<
   Event & {
     content: EventContent[];
-    images: EventImage[];
+    images: ExtendedEventImage[];
     contributors: number;
   }
 > {
@@ -146,6 +147,14 @@ export async function getEventBySlug(slug: string): Promise<
         images: {
           orderBy: { createdAt: 'desc' },
           take: 50,
+          include: {
+            profile: {
+              select: {
+                name: true,
+                avatar: true,
+              },
+            },
+          },
         },
       },
     })
@@ -160,6 +169,14 @@ export async function getEventBySlug(slug: string): Promise<
 
   return {
     ...event,
+    images: event.images.map((img) => ({
+      ...img,
+      caption: img.caption || null,
+      profile: {
+        name: img.profile.name || 'Unknown',
+        avatar: img.profile.avatar || undefined,
+      },
+    })),
     contributors: uniqueUsers.size,
   };
 }
@@ -223,6 +240,14 @@ export async function uploadEventImage(
         imageUrl: validatedData.imageUrl,
         caption: validatedData.caption,
       },
+      include: {
+        profile: {
+          select: {
+            name: true,
+            avatar: true,
+          },
+        },
+      },
     })
   );
 
@@ -237,6 +262,10 @@ export async function uploadEventImage(
         caption: image.caption || undefined,
         createdAt: image.createdAt.toISOString(),
         profileId: image.profileId,
+        profile: {
+          name: image.profile.name || 'Unknown',
+          avatar: image.profile.avatar || undefined,
+        },
       },
       timestamp: new Date().toISOString(),
     });

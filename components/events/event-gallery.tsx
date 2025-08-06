@@ -9,7 +9,10 @@ import {
   uploadEventImage,
 } from '@/app/actions/events.actions';
 import { useUserEventImages } from '@/hooks/use-user-event-images';
-import type { EventGalleryProps, UserEventImage } from './types';
+import type {
+  EventGalleryProps,
+  UserEventImage,
+} from '../../lib/types/event.types';
 import { isEventEnded } from './utils';
 
 // Import the new components dynamically
@@ -63,8 +66,6 @@ export function EventGallery({
           caption: result.caption || undefined,
           createdAt: new Date(result.createdAt),
         });
-
-        toast.success(t('photoUploadedSuccessfully'));
       } catch (error) {
         // Remove optimistic update on error
         optimisticRemove(optimisticImage.id);

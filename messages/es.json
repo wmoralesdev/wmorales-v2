@@ -9,8 +9,7 @@
     "signedOutSuccess": "Sesión cerrada exitosamente",
     "signOutError": "Error al cerrar sesión",
     "account": "Cuenta",
-    "continueWithGoogle": "Continuar con Google",
-    "continueWithGitHub": "Continuar con GitHub"
+    "continueWith": "Continuar con {provider}"
   },
   "blog": {
     "title": "Blog",
@@ -269,7 +268,10 @@
     "photosDownloaded": "Fotos descargadas exitosamente",
     "downloadFailed": "Error al descargar las fotos",
     "checkOutEventPhotos": "¡Mira las fotos de este evento!",
-    "photosInGallery": "{count} fotos en esta galería"
+    "photosInGallery": "{count} fotos en esta galería",
+    "signInToUpload": "Inicia sesión para subir fotos",
+    "signInToSharePhotos": "Inicia sesión para compartir tus fotos con la comunidad",
+    "signInError": "Error al iniciar sesión. Por favor intenta de nuevo."
   },
   "footer": {
     "title": "Ingeniero de software",
@@ -296,7 +298,6 @@
     "joinDescription": "¡Únete al libro de visitas y obtén tu propio boleto único generado por IA!",
     "signInTitle": "Inicia sesión para continuar",
     "signInDescription": "Elige tu método preferido para iniciar sesión y crear tu boleto personalizado",
-    "continueWith": "Continuar con {provider}",
     "termsText": "Al iniciar sesión, aceptas crear un boleto personalizado y opcionalmente dejar un mensaje",
     "updateTicket": "Actualizar tu boleto",
     "createTicketForm": "Crear tu boleto",

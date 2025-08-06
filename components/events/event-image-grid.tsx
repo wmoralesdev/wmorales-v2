@@ -13,24 +13,9 @@ type EventImageGridProps = {
 
 export function EventImageGrid({ images, locale }: EventImageGridProps) {
   const [selectedImage, setSelectedImage] = useState<EventImage | null>(null);
-  const [currentIndex, setCurrentIndex] = useState(0);
 
-  const handleImageClick = (image: EventImage, index: number) => {
+  const handleImageClick = (image: EventImage) => {
     setSelectedImage(image);
-    setCurrentIndex(index);
-  };
-
-  const handleNavigate = (direction: 'prev' | 'next') => {
-    if (images.length === 0) return;
-
-    setCurrentIndex((prev) => {
-      const newIndex = direction === 'prev'
-        ? prev === 0 ? images.length - 1 : prev - 1
-        : (prev + 1) % images.length;
-
-      setSelectedImage(images[newIndex]);
-      return newIndex;
-    });
   };
 
   return (
@@ -44,10 +29,10 @@ export function EventImageGrid({ images, locale }: EventImageGridProps) {
             animate={{ opacity: 1, scale: 1 }}
             transition={{
               delay: Math.min(index * 0.02, 0.3),
-              duration: 0.3
+              duration: 0.3,
             }}
             className="relative aspect-square cursor-pointer group overflow-hidden bg-gray-900"
-            onClick={() => handleImageClick(image, index)}
+            onClick={() => handleImageClick(image)}
           >
             <Image
               src={image.imageUrl}
@@ -68,9 +53,7 @@ export function EventImageGrid({ images, locale }: EventImageGridProps) {
       <ImageLightbox
         selectedImage={selectedImage}
         onClose={() => setSelectedImage(null)}
-        onNavigate={handleNavigate}
         locale={locale}
-        showNavigation={true}
       />
     </>
   );

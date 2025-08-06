@@ -45,7 +45,8 @@ export function useGuestbookTicketsSWR(user: AuthUser | null) {
   );
 
   // Combined loading state
-  const isLoadingTickets = isLoadingAllTickets || (user ? isLoadingUserTicket : false);
+  const isLoadingTickets =
+    isLoadingAllTickets || (user ? isLoadingUserTicket : false);
 
   // Function to refresh both tickets
   const refreshTickets = async () => {

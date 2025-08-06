@@ -4,7 +4,6 @@ import { JetBrains_Mono, Poppins, Space_Grotesk } from 'next/font/google';
 import { Toaster } from 'sonner';
 import { AuthProvider } from '@/components/auth/auth-provider';
 import { AnimatedMesh } from '@/components/common/animated-mesh';
-import { baseMetadata } from '@/lib/metadata';
 import { cn } from '@/lib/utils';
 
 const spaceGrotesk = Space_Grotesk({
@@ -25,8 +24,6 @@ const jetbrainsMono = JetBrains_Mono({
   variable: '--mono-family',
 });
 
-export const metadata = baseMetadata;
-
 type Props = {
   children: React.ReactNode;
   params: Promise<{ locale: string }>;
@@ -38,6 +35,11 @@ export default async function RootLayout({ children, params }: Props) {
 
   return (
     <html className="dark" lang={locale}>
+      <head>
+        <link rel="icon" href="/wm.ico" />
+        <link rel="shortcut icon" href="/wm.ico" />
+        <link rel="apple-touch-icon" href="/wm.png" />
+      </head>
       <body
         className={cn(
           spaceGrotesk.variable,

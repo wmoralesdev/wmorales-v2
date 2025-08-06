@@ -3,7 +3,7 @@
 import { useTranslations } from 'next-intl';
 import { Card, CardContent } from '@/components/ui/card';
 import { cn, formatDistanceToNowLocalized } from '@/lib/utils';
-import type { EventStatsData } from './types';
+import type { EventStatsData } from '../../lib/types/event.types';
 
 type EventStatsProps = {
   stats: EventStatsData;

@@ -579,11 +579,6 @@ export function PollVoting({
                                 className="flex flex-1 cursor-pointer items-center gap-2 text-gray-300"
                                 htmlFor={option.id}
                               >
-                                {option.emoji && (
-                                  <span className="text-xl">
-                                    {option.emoji}
-                                  </span>
-                                )}
                                 <span>{option.label}</span>
                                 {isSelected && (
                                   <Check className="ml-auto h-4 w-4 text-purple-400" />
@@ -654,11 +649,6 @@ export function PollVoting({
                                 className="flex flex-1 cursor-pointer items-center gap-2 text-gray-300"
                                 htmlFor={option.id}
                               >
-                                {option.emoji && (
-                                  <span className="text-xl">
-                                    {option.emoji}
-                                  </span>
-                                )}
                                 <span>{option.label}</span>
                                 {isSelected && (
                                   <Check className="ml-auto h-4 w-4 text-purple-400" />

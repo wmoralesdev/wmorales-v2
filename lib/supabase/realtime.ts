@@ -185,6 +185,10 @@ export type EventRealtimeEvent = {
     caption?: string;
     createdAt: string;
     profileId: string;
+    profile: {
+      name: string;
+      avatar?: string;
+    };
   };
   imageId?: string;
   timestamp: string;

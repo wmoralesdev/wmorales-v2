@@ -2,9 +2,9 @@
 
 import { Grid3x3, QrCode, Users } from 'lucide-react';
 import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 
 type LiveEventHeaderProps = {
   activeViewers: number;
@@ -20,11 +20,6 @@ export function LiveEventHeader({
   locale,
 }: LiveEventHeaderProps) {
   const t = useTranslations('events');
-  const router = useRouter();
-
-  const handleViewGallery = () => {
-    router.push(`/${locale}/events/${eventSlug}/gallery`);
-  };
 
   return (
     <div className="mb-4 sm:mb-8 px-4 sm:px-0">
@@ -43,12 +38,14 @@ export function LiveEventHeader({
         </div>
         <div className="flex gap-2">
           <Button
-            onClick={handleViewGallery}
             variant="outline"
             className="border-gray-700 hover:bg-gray-800"
+            asChild
           >
-            <Grid3x3 className="h-4 w-4 mr-2" />
-            {t('viewGallery')}
+            <Link href={`/${locale}/events/${eventSlug}/gallery`}>
+              <Grid3x3 className="h-4 w-4 mr-2" />
+              {t('viewGallery')}
+            </Link>
           </Button>
           <Button
             onClick={onShowQRCode}

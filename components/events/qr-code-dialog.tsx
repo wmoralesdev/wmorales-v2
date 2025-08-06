@@ -18,7 +18,11 @@ type QRCodeDialogProps = {
   eventUrl: string;
 };
 
-export function QRCodeDialog({ open, onOpenChange, eventUrl }: QRCodeDialogProps) {
+export function QRCodeDialog({
+  open,
+  onOpenChange,
+  eventUrl,
+}: QRCodeDialogProps) {
   const t = useTranslations('events');
 
   const handleCopyLink = () => {

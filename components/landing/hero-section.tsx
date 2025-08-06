@@ -6,9 +6,7 @@ import {
   CoffeeChatCard,
   CurrentlyLearningCard,
   CursorAmbassadorCard,
-  ExperienceCard,
   GlobalReachCard,
-  ProficiencyCard,
   TechStackCard,
   TerminalCard,
 } from '@/components/landing/hero-cards';
@@ -40,12 +38,8 @@ const itemVariants: Variants = {
   },
 };
 
-const START_YEAR = 2020;
-
 export function HeroSection() {
   const t = useTranslations('homepage.hero');
-  const tCards = useTranslations('homepage.cards');
-  const years = Math.abs(new Date().getFullYear() - START_YEAR);
 
   const scrollToContact = () => {
     document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
@@ -153,17 +147,10 @@ export function HeroSection() {
                 transition={{ delay: 0.4 }}
               />
 
-              {/* <ProficiencyCard containerClassName="absolute top-44 right-8 w-60" transition={{ delay: 0.5 }} /> */}
-
               <CoffeeChatCard
                 containerClassName="absolute bottom-0 left-1/2 -translate-x-1/2 w-72"
                 onChatClick={scrollToContact}
                 transition={{ delay: 0.6 }}
-              />
-
-              <ExperienceCard
-                containerClassName="absolute top-72 left-1/3 w-48"
-                transition={{ delay: 0.7 }}
               />
             </div>
 
@@ -177,10 +164,6 @@ export function HeroSection() {
                 containerClassName="sm:col-span-2"
                 transition={{ delay: 0.4 }}
               />
-              <ProficiencyCard
-                containerClassName="sm:col-span-2"
-                transition={{ delay: 0.5 }}
-              />
               <CoffeeChatCard
                 containerClassName="sm:col-span-2"
                 onChatClick={scrollToContact}
@@ -189,20 +172,6 @@ export function HeroSection() {
             </div>
           </motion.div>
         </div>
-
-        {/* Experience Badge - Mobile only now */}
-        <motion.div
-          animate="visible"
-          className="mt-8 flex justify-center lg:hidden"
-          initial="hidden"
-          variants={itemVariants}
-        >
-          <div className="rounded-full border border-purple-500/30 bg-gradient-to-r from-purple-500/20 to-purple-600/20 px-6 py-3 text-center backdrop-blur-xl">
-            <span className="font-medium text-base text-purple-300">
-              {years}+ {tCards('experience')}
-            </span>
-          </div>
-        </motion.div>
       </div>
 
       {/* Scroll indicator */}

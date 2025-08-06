@@ -1,5 +1,12 @@
 import type { Event, EventContent, EventImage } from '@prisma/client';
 
+export type ExtendedEvent = EventImage & {
+  profile: {
+    name: string;
+    avatar?: string;
+  };
+};
+
 // Event types with includes
 export type EventWithContent = Event & {
   content: EventContent[];
@@ -7,13 +14,13 @@ export type EventWithContent = Event & {
 
 export type EventWithContentAndImages = Event & {
   content: EventContent[];
-  images: EventImage[];
+  images: ExtendedEventImage[];
   contributors: number;
 };
 
 export type EventFullDetails = Event & {
   content: EventContent[];
-  images: EventImage[];
+  images: ExtendedEvent[];
   contributors: number;
 };
 
@@ -35,6 +42,13 @@ export type UserEventImage = {
   imageUrl: string;
   caption?: string;
   createdAt: Date;
+};
+
+export type ExtendedEventImage = EventImage & {
+  profile: {
+    name: string;
+    avatar?: string;
+  };
 };
 
 // View modes for post-event view

@@ -8,7 +8,7 @@ export const siteConfig = {
   description:
     'Software Engineer and pioneering Cursor Ambassador from El Salvador. Building impactful digital solutions with 5+ years of experience in .NET, JavaScript, TypeScript, React, and cloud technologies.',
   shortDescription: 'Software Engineer & Cursor Ambassador from El Salvador',
-  url: process.env.NEXT_PUBLIC_APP_URL || 'https://waltermorales.dev',
+  url: process.env.NEXT_PUBLIC_APP_URL || 'https://wmorales.dev',
   ogImage: '/og-image.png', // You should create this
   author: {
     name: 'Walter Morales',

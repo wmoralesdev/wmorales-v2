@@ -1,6 +1,6 @@
 'use client';
 
-import type { Event, EventContent, EventImage } from '@prisma/client';
+import type { Event, EventContent } from '@prisma/client';
 import {
   motion,
   useScroll,
@@ -16,9 +16,11 @@ import { Button } from '@/components/ui/button';
 import { subscribeToEventUpdates } from '@/lib/supabase/realtime';
 import { cn } from '@/lib/utils';
 import { useTranslations } from 'next-intl';
+import { ExtendedEventImage } from '@/lib/types/event.types';
+import { useArtisticGalleryStore } from '@/lib/stores/artistic-gallery-store';
 
 type EventWithImages = Event & {
-  images: EventImage[];
+  images: ExtendedEventImage[];
 };
 
 type ArtisticGalleryProps = {
@@ -52,7 +54,7 @@ const generateImageLayout = (index: number) => {
 
 // Image Item Component
 type ImageItemProps = {
-  image: EventImage;
+  image: ExtendedEventImage;
   index: number;
   scrollYProgress: MotionValue<number>;
 };
@@ -179,7 +181,12 @@ function ImageItem({ image, index, scrollYProgress }: ImageItemProps) {
         </div>
 
         {/* Optional caption area (like polaroid bottom) */}
-        <div className="h-8 sm:h-10 lg:h-12" />
+        <div className="h-8 sm:h-10 lg:h-12 flex items-center justify-end">
+          <p className="text-xs text-gray-500 font-display font-bold md:text-sm lg:text-base select-none">
+            @{image.profile.name.replace(/\s+/g, '-').toLowerCase()}
+          </p>
+          <p className="text-xs text-gray-500">{image.caption}</p>
+        </div>
       </motion.div>
     </motion.div>
   );
@@ -192,15 +199,50 @@ export function ArtisticGallery({
 }: ArtisticGalleryProps) {
   const t = useTranslations('events');
 
-  const [images, setImages] = useState<EventImage[]>(event.images);
-  const [showGallery, setShowGallery] = useState(false);
-  const [isTransitioning, setIsTransitioning] = useState(false);
+  // Use zustand store for state management
+  const {
+    images,
+    showGallery,
+    isTransitioning,
+    setImages,
+    addImage,
+    removeImage,
+    handleShowGallery,
+  } = useArtisticGalleryStore();
+
   const containerRef = useRef<HTMLDivElement>(null);
   const galleryRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: galleryRef,
     offset: ['start start', 'end end'],
   });
+
+  // Initialize images on mount
+  useEffect(() => {
+    setImages(event.images);
+  }, [event.images, setImages]);
+
+  // Block scroll when gallery is not shown
+  useEffect(() => {
+    if (!showGallery) {
+      // Block scrolling
+      document.body.style.overflow = 'hidden';
+      document.body.style.position = 'fixed';
+      document.body.style.width = '100%';
+    } else {
+      // Restore scrolling
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    }
+
+    // Cleanup on unmount
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
+  }, [showGallery]);
 
   // Subscribe to realtime updates if event is active
   useEffect(() => {
@@ -209,41 +251,28 @@ export function ArtisticGallery({
     const channel = subscribeToEventUpdates(event.id, (eventUpdate) => {
       if (eventUpdate.type === 'image_uploaded' && eventUpdate.image) {
         const imageData = eventUpdate.image;
-        setImages((prev) => {
-          if (prev.some((img) => img.id === imageData.id)) {
-            return prev;
-          }
-
-          const newImage: EventImage = {
-            id: imageData.id,
-            eventId: event.id,
-            profileId: '',
-            imageUrl: imageData.imageUrl,
-            caption: imageData.caption || null,
-            createdAt: new Date(imageData.createdAt),
-          };
-
-          return [newImage, ...prev];
-        });
+        const newImage: ExtendedEventImage = {
+          id: imageData.id,
+          eventId: event.id,
+          profileId: imageData.profileId,
+          imageUrl: imageData.imageUrl,
+          caption: imageData.caption || null,
+          createdAt: new Date(imageData.createdAt),
+          profile: {
+            name: imageData.profile.name,
+            avatar: imageData.profile.avatar || undefined,
+          },
+        };
+        addImage(newImage);
       } else if (eventUpdate.type === 'image_deleted' && eventUpdate.imageId) {
-        setImages((prev) =>
-          prev.filter((img) => img.id !== eventUpdate.imageId)
-        );
+        removeImage(eventUpdate.imageId);
       }
     });
 
     return () => {
       channel.unsubscribe();
     };
-  }, [event.id, event.isActive]);
-
-  const handleShowGallery = () => {
-    setIsTransitioning(true);
-    setShowGallery(true);
-    setTimeout(() => {
-      setIsTransitioning(false);
-    }, 1000);
-  };
+  }, [event.id, event.isActive, addImage, removeImage]);
 
   return (
     <div ref={containerRef} className="min-h-screen relative overflow-hidden">
@@ -283,7 +312,7 @@ export function ArtisticGallery({
           layout
           className={cn(
             showGallery
-              ? 'p-6 lg:p-8 h-full flex flex-col'
+              ? 'p-6 lg:p-8 h-full flex flex-col bg-gray-900'
               : 'flex items-center justify-center h-full px-6',
             'transition-all duration-700'
           )}
@@ -294,7 +323,7 @@ export function ArtisticGallery({
                 // Final sidebar/topbar content
                 <motion.div
                   key="sidebar-content"
-                  className="w-full"
+                  className="w-full "
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   exit={{ opacity: 0, scale: 0.95 }}
@@ -311,20 +340,20 @@ export function ArtisticGallery({
                   <div className="lg:flex-1">
                     <div className="flex items-center gap-4">
                       <Image src="/wm.png" alt="Logo" width={24} height={24} />
-                      <h1 className="text-2xl lg:text-3xl font-light text-white mb-4">
+                      <h1 className="text-lg md:text-2xl lg:text-3xl font-light text-white mb-4">
                         {eventContent.title}
                       </h1>
                     </div>
 
                     {eventContent.description && (
-                      <p className="text-gray-400 leading-relaxed">
+                      <p className="text-gray-400 leading-relaxed text-sm md:text-base">
                         {eventContent.description}
                       </p>
                     )}
                   </div>
 
-                  <div className="mt-6">
-                    <p className="text-sm text-gray-500">
+                  <div className="mt-2 sm:mt-4 md:mt-6">
+                    <p className="text-xs md:text-sm text-gray-500 text-center">
                       {t('photosInGallery', { count: images.length })}
                     </p>
                   </div>

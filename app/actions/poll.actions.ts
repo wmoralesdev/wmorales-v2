@@ -61,7 +61,6 @@ export async function createPoll(data: {
       label: string;
       value: string;
       color?: string;
-      emoji?: string;
     }[];
   }[];
   settings?: {
@@ -91,7 +90,6 @@ export async function createPoll(data: {
                   label: opt.label,
                   value: opt.value,
                   color: opt.color,
-                  emoji: opt.emoji,
                 })),
               },
             })),
@@ -312,7 +310,6 @@ export async function getPollResults(pollId: string) {
           label: option.label,
           value: option.value,
           color: option.color,
-          emoji: option.emoji,
           voteCount: option._count.votes,
           percentage:
             question._count.votes > 0

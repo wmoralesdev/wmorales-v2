@@ -2,6 +2,7 @@ import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { getEventBySlug } from '@/app/actions/events.actions';
 import { ArtisticGallery } from '@/components/events/artistic-gallery';
+import { BackToTop } from '@/components/common/backtotop';
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
@@ -43,11 +44,15 @@ export default async function EventGalleryPage({ params }: Props) {
       event.content.find((c) => c.language === locale) || event.content[0];
 
     return (
-      <ArtisticGallery
-        event={event}
-        eventContent={eventContent}
-        locale={locale}
-      />
+      <>
+        <ArtisticGallery
+          event={event}
+          eventContent={eventContent}
+          locale={locale}
+        />
+
+        <BackToTop />
+      </>
     );
   } catch (error) {
     notFound();

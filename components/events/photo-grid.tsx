@@ -1,6 +1,5 @@
 'use client';
 
-import type { EventImage } from '@prisma/client';
 import { motion } from 'framer-motion';
 import { Eye, Loader2, Trash } from 'lucide-react';
 import Image from 'next/image';
@@ -16,10 +15,12 @@ import {
   AlertDialogTrigger,
 } from '../ui/alert-dialog';
 import { useTranslations } from 'next-intl';
+import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
+import { ExtendedEventImage } from '@/lib/types/event.types';
 
 type PhotoGridProps = {
-  images: EventImage[];
-  onImageClick: (image: EventImage, index: number) => void;
+  images: ExtendedEventImage[];
+  onImageClick: (image: ExtendedEventImage, index: number) => void;
   onImageDelete: (imageId: string) => void | Promise<void>;
   currentProfileId?: string;
   locale: string;
@@ -38,7 +39,12 @@ export function PhotoGrid({
   const [deletingImageId, setDeletingImageId] = useState<string | null>(null);
 
   return (
-    <div className={cn('grid grid-cols-3 gap-0 sm:gap-2', className)}>
+    <div
+      className={cn(
+        'grid grid-cols-2 sm:grid-cols-3 gap-1 sm:gap-2',
+        className
+      )}
+    >
       {images.map((image, index) => (
         <motion.div
           key={image.id}
@@ -62,6 +68,15 @@ export function PhotoGrid({
             sizes="(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 20vw"
           />
           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+
+          {/* Corner overlay for better icon visibility */}
+          <div className="absolute inset-0 z-[40]">
+            {/* Top-right corner gradient */}
+            <div className="absolute inset-0 bg-gradient-to-bl from-black/40 via-transparent to-transparent" />
+            {/* Bottom-left corner gradient */}
+            <div className="absolute inset-0 bg-gradient-to-tr from-black/40 via-transparent to-transparent" />
+          </div>
+
           {/* Hover overlay */}
           <div className="absolute inset-0 flex items-center justify-center bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity">
             <div className="text-center">
@@ -87,7 +102,7 @@ export function PhotoGrid({
           {currentProfileId && currentProfileId === image.profileId && (
             <div
               className={cn(
-                'absolute top-2 right-2 size-8 rounded-full bg-red-500 flex items-center justify-center z-10',
+                'absolute top-2 right-2 size-8 rounded-full bg-red-500 flex items-center justify-center z-50',
                 deletingImageId === image.id
                   ? 'cursor-not-allowed opacity-70'
                   : 'cursor-pointer hover:bg-red-600 transition-all duration-300 hover:scale-110'
@@ -156,6 +171,12 @@ export function PhotoGrid({
               </AlertDialog>
             </div>
           )}
+          <div className="absolute bottom-2 left-2 size-8 rounded-full bg-red-500 flex items-center justify-center z-50">
+            <Avatar>
+              <AvatarImage src={image.profile?.avatar} />
+              <AvatarFallback>{image.profile?.name.slice(0, 2)}</AvatarFallback>
+            </Avatar>
+          </div>
         </motion.div>
       ))}
     </div>

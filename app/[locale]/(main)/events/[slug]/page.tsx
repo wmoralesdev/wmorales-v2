@@ -1,4 +1,4 @@
-import type { Event, EventContent, EventImage } from '@prisma/client';
+import type { Event, EventContent } from '@prisma/client';
 import { AlertTriangle, Sparkles } from 'lucide-react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import {
@@ -9,6 +9,8 @@ import { EventGallery } from '@/components/events/event-gallery';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { createClient } from '@/lib/supabase/server';
 import { InnerHero } from '@/components/common/inner-hero';
+import { BackToTop } from '@/components/common/backtotop';
+import { ExtendedEventImage } from '@/lib/types/event.types';
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
@@ -17,7 +19,7 @@ type Props = {
 // Prisma type with includes
 type EventWithContentAndImages = Event & {
   content: EventContent[];
-  images: EventImage[];
+  images: ExtendedEventImage[];
   contributors: number;
 };
 
@@ -88,7 +90,11 @@ export default async function EventPage({ params }: Props) {
     ...event,
     images: event.images.map((img) => ({
       ...img,
-      caption: img.caption, // Keep as string | null from Prisma
+      caption: img.caption || null,
+      profile: {
+        name: img.profile.name || 'Unknown',
+        avatar: img.profile.avatar || undefined,
+      },
     })),
   };
 
@@ -112,6 +118,8 @@ export default async function EventPage({ params }: Props) {
 
         <EventGallery event={eventForGallery} initialUserImages={userImages} />
       </div>
+
+      <BackToTop />
     </div>
   );
 }

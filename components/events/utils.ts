@@ -1,8 +1,10 @@
-import type { EventImage } from '@prisma/client';
+import { ExtendedEventImage } from '@/lib/types/event.types';
 import { toast } from 'sonner';
 
 // Sort images by creation date (newest first)
-export function sortImagesByDate(images: EventImage[]): EventImage[] {
+export function sortImagesByDate(
+  images: ExtendedEventImage[]
+): ExtendedEventImage[] {
   return [...images].sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
   );
@@ -10,9 +12,9 @@ export function sortImagesByDate(images: EventImage[]): EventImage[] {
 
 // Group images by upload date for timeline view
 export function groupImagesByDate(
-  images: EventImage[],
+  images: ExtendedEventImage[],
   locale: string
-): Record<string, EventImage[]> {
+): Record<string, ExtendedEventImage[]> {
   return images.reduce(
     (acc, image) => {
       const date = new Date(image.createdAt).toLocaleDateString(locale);
@@ -20,12 +22,14 @@ export function groupImagesByDate(
       acc[date].push(image);
       return acc;
     },
-    {} as Record<string, EventImage[]>
+    {} as Record<string, ExtendedEventImage[]>
   );
 }
 
 // Get unique contributors count
-export function getUniqueContributorsCount(images: EventImage[]): number {
+export function getUniqueContributorsCount(
+  images: ExtendedEventImage[]
+): number {
   return new Set(images.map((img) => img.profileId)).size;
 }
 
@@ -80,7 +84,10 @@ export function validateImageFile(
   // Check file size
   const maxSizeBytes = maxSizeMB * 1024 * 1024;
   if (file.size > maxSizeBytes) {
-    return { valid: false, error: `File size must be less than ${maxSizeMB}MB` };
+    return {
+      valid: false,
+      error: `File size must be less than ${maxSizeMB}MB`,
+    };
   }
 
   return { valid: true };

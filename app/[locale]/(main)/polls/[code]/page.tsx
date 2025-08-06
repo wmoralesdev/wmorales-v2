@@ -1,5 +1,5 @@
 import type { Metadata } from 'next';
-import { notFound, redirect } from 'next/navigation';
+import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
 import { routing } from '@/i18n/routing';
 import {
@@ -10,7 +10,6 @@ import {
 } from '@/app/actions/poll.actions';
 import { PollVoting } from '@/components/polls/poll-voting';
 import { createMetadata, siteConfig } from '@/lib/metadata';
-import { createClient } from '@/lib/supabase/server';
 import type { PollWithQuestions } from '@/lib/types/poll.types';
 
 type Props = {

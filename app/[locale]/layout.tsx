@@ -2,6 +2,8 @@ import { NextIntlClientProvider } from 'next-intl';
 import { getMessages } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { routing } from '@/i18n/routing';
+import { baseMetadata } from '@/lib/metadata';
+import type { Metadata } from 'next';
 
 type Props = {
   children: React.ReactNode;
@@ -10,6 +12,10 @@ type Props = {
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  return baseMetadata;
 }
 
 export default async function LocaleLayout({ children, params }: Props) {
