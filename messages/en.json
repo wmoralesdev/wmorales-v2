@@ -9,8 +9,7 @@
     "signedOutSuccess": "Signed out successfully",
     "signOutError": "Failed to sign out",
     "account": "Account",
-    "continueWithGoogle": "Continue with Google",
-    "continueWithGitHub": "Continue with GitHub"
+    "continueWith": "Continue with {provider}"
   },
   "blog": {
     "title": "Blog",
