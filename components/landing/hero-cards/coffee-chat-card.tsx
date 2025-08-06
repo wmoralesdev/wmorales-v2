@@ -47,7 +47,7 @@ export function CoffeeChatCard({ onChatClick, ...props }: CoffeeChatCardProps) {
       if (scriptRef.current && window.calendar?.schedulingButton) {
         try {
           window.calendar.schedulingButton.load({
-            url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2aY5aDah-QjutEWgNBdEFvpZhAkTLmZu3zJoOuwLgLNya648cpJaK6BE1NzVMVQHp9Mb0XuGxl?gv=true',
+            url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ3le7owokGKyKwsSTL9NavJ_kVj19-XBgqzGbwLcx5Q8qmSQNOK-C0rYCpJqDumc8mHycf9P-lg?gv=true',
             color: '#fff',
             label: t('chat'),
             target: scriptRef.current,
