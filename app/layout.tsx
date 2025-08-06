@@ -5,6 +5,8 @@ import { Toaster } from 'sonner';
 import { AuthProvider } from '@/components/auth/auth-provider';
 import { AnimatedMesh } from '@/components/common/animated-mesh';
 import { cn } from '@/lib/utils';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ['latin'],
@@ -51,6 +53,8 @@ export default async function RootLayout({ children, params }: Props) {
         <AnimatedMesh />
         <AuthProvider>{children}</AuthProvider>
         <Toaster position="bottom-right" />
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
