@@ -3,7 +3,6 @@
 import type { Event, EventContent, EventImage } from '@prisma/client';
 import { motion, type Variants } from 'framer-motion';
 import { ArrowRight, Calendar, Image, Sparkles, Users } from 'lucide-react';
-import { useRouter } from 'next/navigation';
 import { useLocale, useTranslations } from 'next-intl';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -47,12 +46,7 @@ const itemVariants: Variants = {
 
 export function EventsList({ events }: { events: EventWithContent[] }) {
   const t = useTranslations('events');
-  const router = useRouter();
   const locale = useLocale();
-
-  const handleEventClick = (eventId: string) => {
-    router.push(`/events/${eventId}`);
-  };
 
   if (events.length === 0) {
     return (
@@ -104,7 +98,7 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
         <motion.div key={event.id} variants={itemVariants}>
           <Link href={`/events/${event.slug}`}>
             <Card className="group cursor-pointer border-0 sm:border border-gray-800 bg-gray-900/60 backdrop-blur-xl transition-all duration-300 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10 rounded-none sm:rounded-lg shadow-none sm:shadow-md border-b">
-              <CardHeader className="p-4 sm:p-6">
+              <CardHeader className="p-4 sm:px-6 md:py-0">
                 <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
                   <div className="flex-1">
                     <CardTitle className="text-base sm:text-lg text-white transition-colors group-hover:text-purple-300">
@@ -140,7 +134,7 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+              <CardContent className="p-4 sm:px-6 pt-0 sm:pt-0">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div className="flex flex-wrap items-center gap-3 text-gray-500 text-xs sm:text-sm">
                     <div className="flex items-center gap-1">
@@ -179,10 +173,6 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
                   </div>
                   <Button
                     className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg shadow-purple-500/25 transition-all hover:from-purple-600 hover:to-purple-700 group-hover:shadow-purple-500/40 w-full sm:w-auto"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleEventClick(event.id);
-                    }}
                     size="sm"
                   >
                     {t('viewGallery')}
