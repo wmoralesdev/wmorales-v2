@@ -321,4 +321,108 @@
   .bg-300\% {
     background-size: 300% 300%;
   }
+
+  /* Google Calendar Scheduling Button Container */
+  .google-calendar-button-container {
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  /* Google Calendar Scheduling Button Styles */
+  .google-calendar-button-container button {
+    background: transparent !important;
+    border: 1px solid rgb(168 85 247 / 0.5) !important;
+    color: rgb(216 180 254) !important;
+    padding: 0.25rem 0.75rem !important;
+    font-size: 0.75rem !important;
+    line-height: 1rem !important;
+    border-radius: 0.375rem !important;
+    font-weight: 500 !important;
+    transition: all 0.2s !important;
+    height: 32px !important;
+    min-height: unset !important;
+    font-family: inherit !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    min-width: unset !important;
+    margin: 0 !important;
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    min-width: 65px !important;
+  }
+
+  .google-calendar-button-container .bookingjs-calendar-button:hover,
+  .google-calendar-button-container .pBWO3e:hover {
+    background: rgb(168 85 247 / 0.2) !important;
+    border-color: rgb(168 85 247 / 0.7) !important;
+    color: rgb(233 213 255) !important;
+  }
+
+  .google-calendar-button-container .bookingjs-calendar-button:focus,
+  .google-calendar-button-container .pBWO3e:focus {
+    outline: 2px solid transparent !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 2px rgb(168 85 247 / 0.5) !important;
+  }
+
+  /* Hide Google Calendar button icon if present */
+  .google-calendar-button-container .bm2rHe {
+    display: none !important;
+  }
+
+  /* Hero Google Calendar Button Container */
+  .hero-google-calendar-button-container {
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  /* Hero Google Calendar Button Styles */
+  .hero-google-calendar-button-container button {
+    background: linear-gradient(
+      to right,
+      rgb(168 85 247),
+      rgb(147 51 234)
+    ) !important;
+    border: none !important;
+    color: white !important;
+    padding: 0.75rem 1.5rem !important;
+    font-size: 1rem !important;
+    line-height: 1.5rem !important;
+    border-radius: 9999px !important;
+    font-weight: 500 !important;
+    transition: all 0.3s !important;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1) !important;
+    height: auto !important;
+    min-height: unset !important;
+    font-family: inherit !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 !important;
+    position: relative !important;
+    top: auto !important;
+    right: auto !important;
+    bottom: auto !important;
+    left: auto !important;
+    min-width: unset !important;
+  }
+
+  .hero-google-calendar-button-container button:hover {
+    background: linear-gradient(
+      to right,
+      rgb(147 51 234),
+      rgb(126 34 206)
+    ) !important;
+    box-shadow: 0 10px 25px -5px rgb(168 85 247 / 0.25) !important;
+  }
+
+  .hero-google-calendar-button-container button:focus {
+    outline: 2px solid transparent !important;
+    outline-offset: 2px !important;
+    box-shadow: 0 0 0 3px rgb(168 85 247 / 0.5) !important;
+  }
 }

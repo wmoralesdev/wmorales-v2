@@ -41,6 +41,11 @@ export default async function RootLayout({ children, params }: Props) {
         <link rel="icon" href="/wm.ico" />
         <link rel="shortcut icon" href="/wm.ico" />
         <link rel="apple-touch-icon" href="/wm.png" />
+        {/* Google Calendar Appointment Scheduling */}
+        <link
+          href="https://calendar.google.com/calendar/scheduling-button-script.css"
+          rel="stylesheet"
+        />
       </head>
       <body
         className={cn(

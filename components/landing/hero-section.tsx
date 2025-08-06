@@ -13,6 +13,23 @@ import {
 import { Button } from '@/components/ui/button';
 import { EMAIL } from '@/lib/consts';
 import { useTranslations } from 'next-intl';
+import { useEffect, useRef, useState } from 'react';
+
+// Type definitions for Google Calendar API
+declare global {
+  interface Window {
+    calendar?: {
+      schedulingButton: {
+        load: (options: {
+          url: string;
+          color: string;
+          label: string;
+          target: HTMLElement;
+        }) => void;
+      };
+    };
+  }
+}
 
 // Animation variants
 const containerVariants: Variants = {
@@ -40,9 +57,70 @@ const itemVariants: Variants = {
 
 export function HeroSection() {
   const t = useTranslations('homepage.hero');
+  const mainButtonRef = useRef<HTMLScriptElement | null>(null);
+  const [mainScriptLoaded, setMainScriptLoaded] = useState(false);
+  const [mainButtonInitialized, setMainButtonInitialized] = useState(false);
 
   const scrollToContact = () => {
     document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
+  useEffect(() => {
+    // Load the Google Calendar script for main button
+    const script = document.createElement('script');
+    script.src =
+      'https://calendar.google.com/calendar/scheduling-button-script.js';
+    script.async = true;
+
+    script.onload = () => {
+      setMainScriptLoaded(true);
+
+      // Initialize the button after script loads
+      if (mainButtonRef.current && window.calendar?.schedulingButton) {
+        try {
+          window.calendar.schedulingButton.load({
+            url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2aY5aDah-QjutEWgNBdEFvpZhAkTLmZu3zJoOuwLgLNya648cpJaK6BE1NzVMVQHp9Mb0XuGxl?gv=true',
+            color: '#fff',
+            label: t('letsWorkTogether'),
+            target: mainButtonRef.current,
+          });
+          setMainButtonInitialized(true);
+        } catch (error) {
+          console.error(
+            'Failed to initialize main Google Calendar button:',
+            error
+          );
+        }
+      }
+    };
+
+    script.onerror = () => {
+      console.error('Failed to load Google Calendar script for main button');
+      setMainScriptLoaded(true); // Set as loaded to show fallback
+    };
+
+    // Insert the script where we want the button to appear
+    if (mainButtonRef.current) {
+      mainButtonRef.current.parentNode?.insertBefore(
+        script,
+        mainButtonRef.current.nextSibling
+      );
+    }
+
+    return () => {
+      // Cleanup
+      if (script.parentNode) {
+        script.parentNode.removeChild(script);
+      }
+    };
+  }, [t]);
+
+  const handleMainFallbackClick = () => {
+    window.open(
+      'https://calendar.google.com/calendar/appointments/schedules/AcZssZ2aY5aDah-QjutEWgNBdEFvpZhAkTLmZu3zJoOuwLgLNya648cpJaK6BE1NzVMVQHp9Mb0XuGxl?gv=true',
+      '_blank',
+      'noopener,noreferrer'
+    );
   };
 
   return (
@@ -103,13 +181,33 @@ export function HeroSection() {
               className="flex justify-center lg:justify-start"
               variants={itemVariants}
             >
-              <Button
-                className="rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25"
-                onClick={scrollToContact}
-                size="lg"
-              >
-                {t('letsWorkTogether')}
-              </Button>
+              {/* Google Calendar Button Container */}
+              <div className="hero-google-calendar-button-container inline-flex">
+                {/* Fallback button shown while loading or if script fails */}
+                {!mainButtonInitialized && mainScriptLoaded && (
+                  <Button
+                    className="rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25"
+                    onClick={handleMainFallbackClick}
+                    size="lg"
+                  >
+                    {t('letsWorkTogether')}
+                  </Button>
+                )}
+
+                {/* Loading state */}
+                {!mainScriptLoaded && (
+                  <Button
+                    className="rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white shadow-lg opacity-50"
+                    disabled
+                    size="lg"
+                  >
+                    {t('letsWorkTogether')}
+                  </Button>
+                )}
+
+                {/* This script ref is used as the target for the Google Calendar button */}
+                <script ref={mainButtonRef} type="text/javascript" />
+              </div>
             </motion.div>
           </motion.div>
 
