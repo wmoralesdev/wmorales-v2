@@ -1,9 +1,7 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
-import { routing } from '@/i18n/routing';
 import {
-  getAllPolls,
   getPollByCode,
   getPollResults,
   getUserVotes,
@@ -17,23 +15,6 @@ type Props = {
 };
 
 export const dynamic = 'force-dynamic';
-
-export async function generateStaticParams() {
-  try {
-    const polls = await getAllPolls();
-
-    // Generate params for all locales and all active polls
-    return routing.locales.flatMap((locale) =>
-      polls.map((poll) => ({
-        locale,
-        code: poll.code,
-      }))
-    );
-  } catch (error) {
-    // Error generating static params for polls
-    return [];
-  }
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { code } = await params;
