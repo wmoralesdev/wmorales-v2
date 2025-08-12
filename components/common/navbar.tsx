@@ -16,7 +16,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from '@/components/ui/sheet';
-import { Link, usePathname, useRouter } from '@/i18n/navigation';
+import { Link, usePathname } from '@/i18n/navigation';
 import { cn } from '@/lib/utils';
 import { createClient } from '@/lib/supabase/client';
 import {
@@ -36,13 +36,28 @@ type LocaleToggleProps = {
 
 function LocaleToggle({ showLabel = true }: LocaleToggleProps) {
   const locale = useLocale();
-  const router = useRouter();
-  const pathname = usePathname();
 
   const toggleLocale = () => {
     const newLocale = locale === 'en' ? 'es' : 'en';
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    router.replace(pathname as any, { locale: newLocale });
+
+    // Extract dynamic route parameters from the current URL
+    const currentUrl = new URL(window.location.href);
+    const pathSegments = currentUrl.pathname.split('/').filter(Boolean);
+
+    // Remove the locale from the path segments
+    if (pathSegments[0] === locale) {
+      pathSegments.shift();
+    }
+
+    // Reconstruct the path for the new locale
+    const newPath = `/${newLocale}/${pathSegments.join('/')}`;
+
+    // Add search parameters if they exist
+    const searchParams = currentUrl.searchParams.toString();
+    const fullUrl = searchParams ? `${newPath}?${searchParams}` : newPath;
+
+    // Use window.location.href for direct navigation to avoid next-intl router issues
+    window.location.href = fullUrl;
   };
 
   return (
@@ -215,7 +230,7 @@ function MobileUserSection() {
             width={16}
             className="mr-2"
           />
-          {t('continueWithGoogle')}
+          {t('continueWith', { provider: 'Google' })}
         </Button>
         <Button
           onClick={handleSignInWithGitHub}
@@ -229,7 +244,7 @@ function MobileUserSection() {
             width={16}
             className="mr-2"
           />
-          {t('continueWithGitHub')}
+          {t('continueWith', { provider: 'GitHub' })}
         </Button>
       </div>
     </div>
@@ -239,9 +254,9 @@ function MobileUserSection() {
 export function Navbar() {
   const pathname = usePathname();
   const locale = useLocale();
-  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled] = useState(false);
+  const tCommon = useTranslations('common');
 
   const t = useTranslations('navigation');
 
@@ -565,7 +580,9 @@ export function Navbar() {
                             WM
                           </span>
                         </div>
-                        <p className="text-xs text-gray-500">ESC to close</p>
+                        <p className="hidden lg:block text-xs text-gray-500">
+                          {tCommon('escToClose')}
+                        </p>
                       </div>
 
                       {/* Navigation Links */}
@@ -654,10 +671,32 @@ export function Navbar() {
                               onClick={() => {
                                 if (locale !== 'en') {
                                   const newLocale = 'en';
-                                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                  router.replace(pathname as any, {
-                                    locale: newLocale,
-                                  });
+
+                                  // Extract dynamic route parameters from the current URL
+                                  const currentUrl = new URL(
+                                    window.location.href
+                                  );
+                                  const pathSegments = currentUrl.pathname
+                                    .split('/')
+                                    .filter(Boolean);
+
+                                  // Remove the locale from the path segments
+                                  if (pathSegments[0] === locale) {
+                                    pathSegments.shift();
+                                  }
+
+                                  // Reconstruct the path for the new locale
+                                  const newPath = `/${newLocale}/${pathSegments.join('/')}`;
+
+                                  // Add search parameters if they exist
+                                  const searchParams =
+                                    currentUrl.searchParams.toString();
+                                  const fullUrl = searchParams
+                                    ? `${newPath}?${searchParams}`
+                                    : newPath;
+
+                                  // Use window.location.href for direct navigation
+                                  window.location.href = fullUrl;
                                 }
                               }}
                               className={cn(
@@ -673,10 +712,32 @@ export function Navbar() {
                               onClick={() => {
                                 if (locale !== 'es') {
                                   const newLocale = 'es';
-                                  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                                  router.replace(pathname as any, {
-                                    locale: newLocale,
-                                  });
+
+                                  // Extract dynamic route parameters from the current URL
+                                  const currentUrl = new URL(
+                                    window.location.href
+                                  );
+                                  const pathSegments = currentUrl.pathname
+                                    .split('/')
+                                    .filter(Boolean);
+
+                                  // Remove the locale from the path segments
+                                  if (pathSegments[0] === locale) {
+                                    pathSegments.shift();
+                                  }
+
+                                  // Reconstruct the path for the new locale
+                                  const newPath = `/${newLocale}/${pathSegments.join('/')}`;
+
+                                  // Add search parameters if they exist
+                                  const searchParams =
+                                    currentUrl.searchParams.toString();
+                                  const fullUrl = searchParams
+                                    ? `${newPath}?${searchParams}`
+                                    : newPath;
+
+                                  // Use window.location.href for direct navigation
+                                  window.location.href = fullUrl;
                                 }
                               }}
                               className={cn(

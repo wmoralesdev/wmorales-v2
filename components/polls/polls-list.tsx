@@ -2,6 +2,7 @@
 
 import { motion, type Variants } from 'framer-motion';
 import { BarChart3, Check, Copy, ExternalLink, Users } from 'lucide-react';
+import { useLocale, useTranslations } from 'next-intl';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import { Badge } from '@/components/ui/badge';
@@ -63,6 +64,8 @@ const cardVariants: Variants = {
 };
 
 export function PollsList({ polls }: PollsListProps) {
+  const t = useTranslations('polls');
+  const locale = useLocale();
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeUsers, setActiveUsers] = useState<Record<string, number>>({});
 
@@ -123,8 +126,7 @@ export function PollsList({ polls }: PollsListProps) {
                       {poll.title}
                     </CardTitle>
                     <CardDescription className="line-clamp-2 text-gray-400">
-                      {poll.description ||
-                        'Help us decide our next feature by voting on your favorite option!'}
+                      {poll.description || t('defaultDescription')}
                     </CardDescription>
                   </div>
                   <div className="ml-4 flex flex-col items-end gap-2">
@@ -136,7 +138,7 @@ export function PollsList({ polls }: PollsListProps) {
                       }
                       variant={poll.isActive ? 'default' : 'secondary'}
                     >
-                      {poll.isActive ? 'Active' : 'Closed'}
+                      {poll.isActive ? t('active') : t('closed')}
                     </Badge>
                     {currentActiveUsers > 0 && poll.isActive && (
                       <Badge
@@ -144,7 +146,7 @@ export function PollsList({ polls }: PollsListProps) {
                         variant="outline"
                       >
                         <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
-                        {currentActiveUsers} live
+                        {currentActiveUsers} {t('live')}
                       </Badge>
                     )}
                   </div>
@@ -154,11 +156,11 @@ export function PollsList({ polls }: PollsListProps) {
                 <div className="flex items-center gap-4 text-gray-500 text-sm">
                   <div className="flex items-center gap-1">
                     <BarChart3 className="h-4 w-4" />
-                    <span>{poll._count.questions} questions</span>
+                    <span>{t('questions', { count: poll._count.questions })}</span>
                   </div>
                   <div className="flex items-center gap-1">
                     <Users className="h-4 w-4" />
-                    <span>{poll._count.sessions} total</span>
+                    <span>{t('totalVoters', { count: poll._count.sessions })}</span>
                   </div>
                 </div>
 
@@ -186,7 +188,7 @@ export function PollsList({ polls }: PollsListProps) {
                       className="h-9 flex-1 bg-gradient-to-r from-purple-500 to-purple-600 text-white transition-all duration-300 hover:from-purple-600 hover:to-purple-700"
                     >
                       <Link href={`/polls/${poll.code}`}>
-                        View Poll
+                        {t('viewPoll')}
                         <ExternalLink className="ml-2 h-3 w-3" />
                       </Link>
                     </Button>
@@ -194,7 +196,7 @@ export function PollsList({ polls }: PollsListProps) {
                 </div>
 
                 <div className="text-gray-500 text-xs">
-                  Created {new Date(poll.createdAt).toLocaleDateString()}
+                  {t('created')} {new Date(poll.createdAt).toLocaleDateString(locale)}
                 </div>
               </CardContent>
             </Card>

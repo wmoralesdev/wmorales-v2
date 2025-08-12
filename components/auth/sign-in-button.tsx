@@ -25,6 +25,8 @@ export function SignInButton({
     );
   }
 
+  console.log(user);
+
   if (user) {
     return <UserNav />;
   }

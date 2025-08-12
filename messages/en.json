@@ -59,7 +59,8 @@
     "ok": "OK",
     "success": "Success",
     "warning": "Warning",
-    "info": "Info"
+    "info": "Info",
+    "escToClose": "ESC to close"
   },
   "cursor": {
     "title": "Cursor Ambassador",
@@ -304,7 +305,9 @@
     "home": "Home",
     "experience": "Experience",
     "guestbook": "Guestbook",
-    "surveys": "Surveys"
+    "surveys": "Surveys",
+    "events": "Events",
+    "cursor": "Cursor"
   },
   "guestbook": {
     "title": "Digital Guestbook",
@@ -341,7 +344,13 @@
     "noTicketsYet": "No tickets yet. Sign in to create the first one!",
     "uniqueTicketsCount": "{count, plural, =1 {1 unique ticket} other {# unique tickets}} created by our visitors",
     "viewingNow": "{count, plural, =1 {1 person} other {# people}} viewing now",
-    "loadingGuestbook": "Loading guestbook..."
+    "loadingGuestbook": "Loading guestbook...",
+    "ticketNotFound": "Ticket Not Found",
+    "ticketNotFoundDescription": "The requested ticket could not be found.",
+    "metaTitle": "{userName}'s Guestbook Ticket",
+    "metaDescription": "Check out {userName}'s unique AI-generated ticket on Walter Morales' digital guestbook. Each ticket features personalized colors based on mood.",
+    "ogSubtitle": "Digital Guestbook",
+    "ogTicketNumber": "Ticket Number"
   },
   "homepage": {
     "hero": {
@@ -459,7 +468,18 @@
     "description": "Vote with fellow attendees and see the results in real-time",
     "noPolls": "No polls created yet.",
     "vote": "Vote",
-    "results": "Results"
+    "results": "Results",
+    "signInTitle": "Sign in to Vote",
+    "signInDescription": "Authentication is required to participate in \"{pollTitle}\"",
+    "signInTerms": "Your vote will be recorded securely and only one vote per user is allowed",
+    "viewPoll": "View Poll",
+    "active": "Active",
+    "closed": "Closed",
+    "questions": "{count} questions",
+    "totalVoters": "{count} total",
+    "created": "Created",
+    "live": "live",
+    "defaultDescription": "Help us decide our next feature by voting on your favorite option!"
   },
   "surveys": {
     "title": "Active Surveys",

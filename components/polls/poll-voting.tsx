@@ -3,9 +3,11 @@
 
 import { AnimatePresence, motion } from 'framer-motion';
 import { AlertCircle, Check, ChevronRight, Loader2, Users } from 'lucide-react';
-import { useCallback, useEffect, useReducer } from 'react';
+import { useCallback, useEffect, useReducer, useState } from 'react';
+import { usePathname } from 'next/navigation';
 import { getPollResults, votePoll } from '@/app/actions/poll.actions';
 import { PollResultsDashboard } from '@/components/polls/poll-results-dashboard';
+import { PollSignInCard } from '@/components/polls/poll-sign-in-card';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -19,6 +21,7 @@ import {
 import { Checkbox } from '@/components/ui/checkbox';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { authService } from '@/lib/auth';
 import {
   type PollPresence,
   type PollRealtimeEvent,
@@ -54,9 +57,9 @@ type PollVotingState = {
 type PollVotingAction =
   | { type: 'SET_SELECTED_OPTIONS'; payload: Record<string, string | string[]> }
   | {
-      type: 'UPDATE_SELECTED_OPTION';
-      payload: { questionId: string; value: string | string[] };
-    }
+    type: 'UPDATE_SELECTED_OPTION';
+    payload: { questionId: string; value: string | string[] };
+  }
   | { type: 'SET_USER_VOTES'; payload: Record<string, string[]> }
   | { type: 'SET_RESULTS'; payload: PollResults }
   | { type: 'SET_VOTING'; payload: boolean }
@@ -116,6 +119,8 @@ export function PollVoting({
   initialResults,
   initialUserVotes = {},
 }: PollVotingProps) {
+  const pathname = usePathname();
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null);
   const [state, dispatch] = useReducer(pollVotingReducer, {
     selectedOptions: {},
     userVotes: initialUserVotes,
@@ -131,6 +136,29 @@ export function PollVoting({
   const allQuestionsAnswered = poll.questions.every(
     (q) => state.userVotes[q.id]?.length > 0
   );
+
+  // Check authentication status
+  useEffect(() => {
+    const checkAuth = async () => {
+      const user = await authService.getUser();
+      setIsAuthenticated(!!user);
+    };
+
+    checkAuth();
+
+    // Subscribe to auth changes
+    const { data: authListener } = authService.onAuthStateChange((user) => {
+      setIsAuthenticated(!!user);
+      // Reload page if user just signed in
+      if (user && isAuthenticated === false) {
+        window.location.reload();
+      }
+    });
+
+    return () => {
+      authListener?.subscription.unsubscribe();
+    };
+  }, []);
 
   useEffect(() => {
     const initial: Record<string, string | string[]> = {};
@@ -233,6 +261,14 @@ export function PollVoting({
       if (!result.error) {
         return Array.isArray(selected) ? selected : [selected];
       }
+      // If the error indicates the user has already voted, we can still consider it successful
+      if (result.error === 'You have already voted for this question') {
+        return Array.isArray(selected) ? selected : [selected];
+      }
+      // For authentication errors, throw to handle at the component level
+      if (result.error === 'Authentication required') {
+        throw new Error(result.error);
+      }
       return null;
     },
     [poll.id]
@@ -315,6 +351,13 @@ export function PollVoting({
         () => dispatch({ type: 'SET_SHOW_DASHBOARD', payload: true }),
         500
       );
+    } catch (error) {
+      // Handle authentication errors
+      if (error instanceof Error && error.message === 'Authentication required') {
+        setIsAuthenticated(false);
+      } else {
+        dispatch({ type: 'SET_VALIDATION_ERRORS', payload: ['Failed to submit votes. Please try again.'] });
+      }
     } finally {
       dispatch({ type: 'SET_VOTING', payload: false });
     }
@@ -379,6 +422,28 @@ export function PollVoting({
 
   const canShowResults =
     state.showResults && (poll.showResults || hasVoted(poll.questions[0]?.id));
+
+  // Loading state for authentication check
+  if (isAuthenticated === null) {
+    return (
+      <div className="app-container">
+        <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl">
+          <CardContent className="flex items-center justify-center py-12">
+            <Loader2 className="h-8 w-8 animate-spin text-purple-400" />
+          </CardContent>
+        </Card>
+      </div>
+    );
+  }
+
+  // Show sign-in card if not authenticated and haven't voted yet
+  if (!isAuthenticated && !allQuestionsAnswered) {
+    return (
+      <div className="app-container">
+        <PollSignInCard pollTitle={poll.title} currentPath={pathname} />
+      </div>
+    );
+  }
 
   // Show dashboard if all questions are answered
   if (state.showDashboard && state.results) {
@@ -597,7 +662,7 @@ export function PollVoting({
                                   className={cn(
                                     'h-full',
                                     option.color ||
-                                      'bg-gradient-to-r from-purple-500/20 to-purple-600/20'
+                                    'bg-gradient-to-r from-purple-500/20 to-purple-600/20'
                                   )}
                                   initial={{ width: 0 }}
                                   transition={{
@@ -667,7 +732,7 @@ export function PollVoting({
                                   className={cn(
                                     'h-full',
                                     option.color ||
-                                      'bg-gradient-to-r from-purple-500/20 to-purple-600/20'
+                                    'bg-gradient-to-r from-purple-500/20 to-purple-600/20'
                                   )}
                                   initial={{ width: 0 }}
                                   transition={{

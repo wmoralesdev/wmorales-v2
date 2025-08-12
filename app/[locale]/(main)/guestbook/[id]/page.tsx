@@ -32,19 +32,20 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { id } = await params;
+  const { locale, id } = await params;
   const ticket = await getTicketById(id);
+  const t = await getTranslations({ locale, namespace: 'guestbook' });
 
   if (!ticket) {
     return createMetadata({
-      title: 'Ticket Not Found',
-      description: 'The requested ticket could not be found.',
+      title: t('ticketNotFound'),
+      description: t('ticketNotFoundDescription'),
     });
   }
 
-  const ogImageUrl = `${siteConfig.url}/api/og/ticket/${ticket.id}`;
-  const title = `${ticket.userName}'s Guestbook Ticket`;
-  const description = `Check out ${ticket.userName}'s unique AI-generated ticket on Walter Morales' digital guestbook. Each ticket features personalized colors based on mood.`;
+  const ogImageUrl = `${siteConfig.url}/api/og/ticket/${ticket.id}?locale=${locale}`;
+  const title = t('metaTitle', { userName: ticket.userName });
+  const description = t('metaDescription', { userName: ticket.userName });
 
   return createMetadata({
     title,

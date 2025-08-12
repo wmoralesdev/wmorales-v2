@@ -55,9 +55,9 @@ export function Footer() {
 
   const navigation = [
     { name: t('home'), href: '/' },
-    { name: t('experience'), href: '/#experience' },
     { name: t('guestbook'), href: '/guestbook' },
-    { name: t('surveys'), href: '/surveys' },
+    { name: t('events'), href: '/events' },
+    { name: t('cursor'), href: '/cursor' },
   ];
 
   return (

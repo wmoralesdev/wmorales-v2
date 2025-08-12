@@ -40,7 +40,8 @@
     "ok": "OK",
     "success": "Éxito",
     "warning": "Advertencia",
-    "info": "Info"
+    "info": "Info",
+    "escToClose": "ESC para cerrar"
   },
   "cursor": {
     "title": "Embajador de Cursor",
@@ -285,7 +286,9 @@
     "home": "Inicio",
     "experience": "Experiencia",
     "guestbook": "Libro de visitas",
-    "surveys": "Formularios"
+    "surveys": "Formularios",
+    "events": "Eventos",
+    "cursor": "Cursor"
   },
   "guestbook": {
     "title": "Libro de visitas",
@@ -322,7 +325,13 @@
     "noTicketsYet": "Aún no hay boletos. ¡Inicia sesión para crear el primero!",
     "uniqueTicketsCount": "{count, plural, =1 {1 boleto único} other {# boletos únicos}} creados por nuestros visitantes",
     "viewingNow": "{count, plural, =1 {1 persona} other {# personas}} viendo ahora",
-    "loadingGuestbook": "Cargando libro de visitas..."
+    "loadingGuestbook": "Cargando libro de visitas...",
+    "ticketNotFound": "Boleto no encontrado",
+    "ticketNotFoundDescription": "El boleto solicitado no pudo ser encontrado.",
+    "metaTitle": "Boleto de libro de visitas de {userName}",
+    "metaDescription": "Mira el boleto único generado por IA de {userName} en el libro de visitas digital de Walter Morales. Cada boleto presenta colores personalizados basados en el estado de ánimo.",
+    "ogSubtitle": "Libro de visitas digital",
+    "ogTicketNumber": "Número de boleto"
   },
   "homepage": {
     "hero": {
@@ -440,7 +449,18 @@
     "description": "Vota con otros asistentes y ve los resultados en tiempo real",
     "noPolls": "No hay encuestas creadas aún.",
     "vote": "Votar",
-    "results": "Resultados"
+    "results": "Resultados",
+    "signInTitle": "Inicia sesión para votar",
+    "signInDescription": "Se requiere autenticación para participar en \"{pollTitle}\"",
+    "signInTerms": "Tu voto se registrará de forma segura y solo se permite un voto por usuario",
+    "viewPoll": "Ver Encuesta",
+    "active": "Activa",
+    "closed": "Cerrada",
+    "questions": "{count} preguntas",
+    "totalVoters": "{count} total",
+    "created": "Creada",
+    "live": "en vivo",
+    "defaultDescription": "¡Ayúdanos a decidir nuestra próxima función votando por tu opción favorita!"
   },
   "surveys": {
     "title": "Formularios activos",

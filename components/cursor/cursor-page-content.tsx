@@ -460,7 +460,7 @@ export function CursorPageContent() {
                   {t('cta.schedule')}
                 </Button>
               </Link>
-              <Link href="mailto:hello@wmorales.dev">
+              <Link href="https://chat.whatsapp.com/DLGP02iY1veKQqjc5Y6pOy">
                 <Button
                   className="rounded-full border-purple-500/50 bg-transparent px-8 py-6 text-purple-300 backdrop-blur-xl transition-all duration-300 hover:bg-purple-500/20"
                   size="lg"

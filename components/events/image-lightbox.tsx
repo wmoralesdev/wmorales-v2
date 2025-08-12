@@ -1,7 +1,6 @@
 'use client';
 
 import type { EventImage } from '@prisma/client';
-import { X } from 'lucide-react';
 import Image from 'next/image';
 import { useTranslations } from 'next-intl';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
@@ -30,13 +29,6 @@ export function ImageLightbox({
     <Dialog open={!!selectedImage} onOpenChange={() => onClose()}>
       <DialogTitle>{selectedImage?.caption}</DialogTitle>
       <DialogContent className="max-w-4xl sm:max-w-screen-lg border-gray-800 bg-gray-900/95 backdrop-blur-xl p-0 h-screen sm:h-auto">
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-2 sm:top-4 sm:right-4 z-50 text-white/70 hover:text-white bg-black/50 rounded-full p-2"
-        >
-          <X className="h-5 w-5 sm:h-6 sm:w-6" />
-        </button>
-
         {selectedImage && (
           <div className="relative h-full flex items-center justify-center">
             <Image

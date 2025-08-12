@@ -208,6 +208,21 @@ export async function votePoll(
       return { data: null, error: 'Invalid poll or question' };
     }
 
+    // Check if user has already voted for this question
+    const existingVotes = await db.query(() =>
+      db.client.pollVote.findMany({
+        where: {
+          sessionId: sessionResult.data.id,
+          questionId,
+        },
+      })
+    );
+
+    // If user has already voted and poll doesn't allow multiple votes, prevent duplicate voting
+    if (existingVotes.length > 0 && !question.poll.allowMultiple) {
+      return { data: null, error: 'You have already voted for this question' };
+    }
+
     // Check vote limits
     if (question.type === 'single' && optionIdArray.length > 1) {
       return { data: null, error: 'Only one option allowed' };
@@ -223,8 +238,8 @@ export async function votePoll(
       };
     }
 
-    // Remove existing votes for this question if not allowing multiple
-    if (!question.poll.allowMultiple) {
+    // Remove existing votes for this question when updating (only if allowMultiple is true)
+    if (question.poll.allowMultiple && existingVotes.length > 0) {
       await db.query(() =>
         db.client.pollVote.deleteMany({
           where: {

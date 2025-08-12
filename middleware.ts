@@ -7,15 +7,21 @@ import { routing } from './i18n/routing';
 const intlMiddleware = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
-  // Step 1: Handle internationalization first
-  // Process the request through the i18n middleware to handle locale routing
-  const intlResponse = intlMiddleware(request);
+  // Step 1: Skip i18n for auth callback route
+  // Auth callback should be handled directly without locale routing
+  const isAuthCallback = request.nextUrl.pathname.startsWith('/auth/callback');
 
-  // Step 2: Check if internationalization middleware requires a redirect
-  // If intl middleware returns a redirect (307 or 302), return it immediately
-  // This ensures proper locale handling before any authentication logic
-  if (intlResponse.status === 307 || intlResponse.status === 302) {
-    return intlResponse;
+  // Step 2: Handle internationalization for non-auth routes
+  // Process the request through the i18n middleware to handle locale routing
+  if (!isAuthCallback) {
+    const intlResponse = intlMiddleware(request);
+
+    // Check if internationalization middleware requires a redirect
+    // If intl middleware returns a redirect (307 or 302), return it immediately
+    // This ensures proper locale handling before any authentication logic
+    if (intlResponse.status === 307 || intlResponse.status === 302) {
+      return intlResponse;
+    }
   }
 
   // Step 3: Initialize Supabase response object
@@ -84,13 +90,13 @@ export const config = {
   matcher: [
     /*
      * Match all request paths except for the ones starting with:
-     * - api (API routes)
+     * - api (API routes) except for auth/callback
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - manifest.json (PWA manifest)
      * - public folder files
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|manifest.json|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!_next/static|_next/image|favicon.ico|manifest.json|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };

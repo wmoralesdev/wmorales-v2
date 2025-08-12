@@ -5,11 +5,13 @@ export const runtime = 'edge';
 const hexColorRegex = /^#[0-9A-F]{6}$/i;
 
 export async function GET(
-  _request: Request,
+  request: Request,
   context: { params: Promise<{ id: string }> }
 ) {
   try {
     const { id } = await context.params;
+    const url = new URL(request.url);
+    const locale = url.searchParams.get('locale') || 'en';
 
     // Fetch ticket data from a regular API endpoint
     const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
@@ -36,9 +38,23 @@ export async function GET(
       return new Response('Invalid color format', { status: 400 });
     }
 
+    // Translations based on locale
+    const translations = {
+      en: {
+        subtitle: 'Digital Guestbook',
+        ticketLabel: 'Ticket Number',
+      },
+      es: {
+        subtitle: 'Libro de visitas digital',
+        ticketLabel: 'Número de boleto',
+      },
+    };
+
+    const t = translations[locale as keyof typeof translations] || translations.en;
+
     // Prepare individual text strings for font loading
     const brandText = 'Walter Morales';
-    const subtitleText = 'Digital Guestbook';
+    const subtitleText = t.subtitle;
     const userName =
       ticket.userName.length > 20
         ? `${ticket.userName.substring(0, 20)}...`
@@ -48,7 +64,7 @@ export async function GET(
         ? `${ticket.userEmail.substring(0, 30)}...`
         : ticket.userEmail;
     const providerText = ticket.userProvider.toUpperCase();
-    const ticketLabelText = 'Ticket Number';
+    const ticketLabelText = t.ticketLabel;
     const ticketNumberText = `#${ticket.ticketNumber}`;
 
     return new ImageResponse(
