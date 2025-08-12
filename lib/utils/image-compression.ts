@@ -76,20 +76,6 @@ export async function compressImage(
   try {
     const compressedFile = await imageCompression(file, options);
 
-    // Log compression results for debugging
-    const originalSizeMB = file.size / (1024 * 1024);
-    const compressedSizeMB = compressedFile.size / (1024 * 1024);
-    const compressionRatio = (
-      (1 - compressedFile.size / file.size) *
-      100
-    ).toFixed(1);
-
-    console.log(`Image compression completed:
-      Original: ${originalSizeMB.toFixed(2)}MB
-      Compressed: ${compressedSizeMB.toFixed(2)}MB
-      Reduction: ${compressionRatio}%
-    `);
-
     return compressedFile;
   } catch (error) {
     console.error('Image compression failed:', error);
