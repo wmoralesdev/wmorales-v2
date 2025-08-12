@@ -1,16 +1,43 @@
+import type { Metadata } from 'next';
 import { Activity } from 'lucide-react';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { InnerHero } from '@/components/common/inner-hero';
 import { PollsList } from '@/components/polls/polls-list';
 import { Card, CardContent } from '@/components/ui/card';
+import { createMetadata, siteConfig } from '@/lib/metadata';
 import { prisma } from '@/lib/prisma';
 
-export { metadata } from './metadata';
 export const dynamic = 'force-dynamic';
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: 'polls' });
+
+  const title = t('title');
+  const description = t('description');
+
+  return createMetadata({
+    title,
+    description,
+    openGraph: {
+      title: `${title} | ${siteConfig.name}`,
+      description,
+      url: `${siteConfig.url}/polls`,
+      type: 'website',
+    },
+    twitter: {
+      title: `${title} | ${siteConfig.name}`,
+      description,
+    },
+    alternates: {
+      canonical: `${siteConfig.url}/polls`,
+    },
+  });
+}
 
 async function getPolls() {
   const polls = await prisma.poll.findMany({

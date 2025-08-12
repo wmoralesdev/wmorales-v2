@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { setRequestLocale } from 'next-intl/server';
+import { getTranslations, setRequestLocale } from 'next-intl/server';
 import {
   getPollByCode,
   getPollResults,
@@ -17,32 +17,34 @@ type Props = {
 export const dynamic = 'force-dynamic';
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { code } = await params;
+  const { locale, code } = await params;
   const { data: poll } = await getPollByCode(code);
+  const t = await getTranslations({ locale, namespace: 'polls' });
 
   if (!poll) {
     return createMetadata({
-      title: 'Poll Not Found',
-      description: 'The requested poll could not be found.',
+      title: t('pollNotFound'),
+      description: t('pollNotFoundDescription'),
     });
   }
 
   const title = poll.title;
   const description =
-    poll.description ||
-    `Live voting poll: ${poll.title}. Join and vote in real-time!`;
+    poll.description || t('liveVotingDescription', { title: poll.title });
+
+  const livePollSuffix = t('livePollSuffix');
 
   return createMetadata({
     title,
     description,
     openGraph: {
-      title: `${title} | Live Poll`,
+      title: `${title} | ${livePollSuffix}`,
       description,
       url: `${siteConfig.url}/polls/${code}`,
       type: 'website',
     },
     twitter: {
-      title: `${title} | Live Poll`,
+      title: `${title} | ${livePollSuffix}`,
       description,
     },
     alternates: {

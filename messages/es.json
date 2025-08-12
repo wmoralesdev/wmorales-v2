@@ -453,14 +453,18 @@
     "signInTitle": "Inicia sesión para votar",
     "signInDescription": "Se requiere autenticación para participar en \"{pollTitle}\"",
     "signInTerms": "Tu voto se registrará de forma segura y solo se permite un voto por usuario",
-    "viewPoll": "Ver Encuesta",
+    "viewPoll": "Ver encuesta",
     "active": "Activa",
     "closed": "Cerrada",
     "questions": "{count} preguntas",
     "totalVoters": "{count} total",
     "created": "Creada",
     "live": "en vivo",
-    "defaultDescription": "¡Ayúdanos a decidir nuestra próxima función votando por tu opción favorita!"
+    "defaultDescription": "¡Ayúdanos a decidir nuestra próxima función votando por tu opción favorita!",
+    "pollNotFound": "Encuesta no encontrada",
+    "pollNotFoundDescription": "No se pudo encontrar la encuesta solicitada.",
+    "liveVotingDescription": "Encuesta de votación en vivo: {title}. ¡Únete y vota en tiempo real!",
+    "livePollSuffix": "Encuesta en vivo"
   },
   "surveys": {
     "title": "Formularios activos",

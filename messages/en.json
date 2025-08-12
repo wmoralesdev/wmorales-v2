@@ -479,7 +479,11 @@
     "totalVoters": "{count} total",
     "created": "Created",
     "live": "live",
-    "defaultDescription": "Help us decide our next feature by voting on your favorite option!"
+    "defaultDescription": "Help us decide our next feature by voting on your favorite option!",
+    "pollNotFound": "Poll not found",
+    "pollNotFoundDescription": "The requested poll could not be found.",
+    "liveVotingDescription": "Live voting poll: {title}. Join and vote in real-time!",
+    "livePollSuffix": "Live poll"
   },
   "surveys": {
     "title": "Active Surveys",
