@@ -16,6 +16,8 @@ type Props = {
   params: Promise<{ locale: string; code: string }>;
 };
 
+export const dynamic = 'force-dynamic';
+
 export async function generateStaticParams() {
   try {
     const polls = await getAllPolls();

@@ -14,7 +14,7 @@
     "prisma:migrate:deploy": "prisma migrate deploy",
     "prisma:reset": "prisma migrate reset",
     "prisma:seed": "prisma db seed",
-    "prisma:seed-poll": "tsx prisma/seed-poll.ts",
+    "prisma:seed-polls": "tsx prisma/seed-poll.ts",
     "prisma:seed-events": "tsx prisma/seed-events.ts",
     "db:health": "tsx -e \"import { db } from './lib/db-utils'; db.healthCheck().then(console.log).catch(console.error)\"",
     "db:info": "tsx -e \"import { db } from './lib/db-utils'; db.getConnectionInfo().then(console.log).catch(console.error)\""

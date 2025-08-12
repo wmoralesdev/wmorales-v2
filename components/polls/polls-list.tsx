@@ -118,88 +118,90 @@ export function PollsList({ polls }: PollsListProps) {
 
         return (
           <motion.div key={poll.id} variants={cardVariants} whileHover="hover">
-            <Card className="h-full cursor-pointer border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all hover:border-purple-500/50">
-              <CardHeader>
-                <div className="flex items-start justify-between">
-                  <div className="flex-1 space-y-1">
-                    <CardTitle className="line-clamp-1 text-white">
-                      {poll.title}
-                    </CardTitle>
-                    <CardDescription className="line-clamp-2 text-gray-400">
-                      {poll.description || t('defaultDescription')}
-                    </CardDescription>
-                  </div>
-                  <div className="ml-4 flex flex-col items-end gap-2">
-                    <Badge
-                      className={
-                        poll.isActive
-                          ? 'border-green-500/30 bg-green-500/20 text-green-400'
-                          : 'border-gray-500/30 bg-gray-500/20 text-gray-400'
-                      }
-                      variant={poll.isActive ? 'default' : 'secondary'}
-                    >
-                      {poll.isActive ? t('active') : t('closed')}
-                    </Badge>
-                    {currentActiveUsers > 0 && poll.isActive && (
+            <Link href={`/polls/${poll.code}`}>
+              <Card className="h-full cursor-pointer border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all hover:border-purple-500/50">
+                <CardHeader>
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 space-y-1">
+                      <CardTitle className="line-clamp-1 text-white">
+                        {poll.title}
+                      </CardTitle>
+                      <CardDescription className="line-clamp-2 text-gray-400">
+                        {poll.description || t('defaultDescription')}
+                      </CardDescription>
+                    </div>
+                    <div className="ml-4 flex flex-col items-end gap-2">
                       <Badge
-                        className="gap-1 border-green-500/30 bg-green-500/10 text-green-400"
-                        variant="outline"
+                        className={
+                          poll.isActive
+                            ? 'border-green-500/30 bg-green-500/20 text-green-400'
+                            : 'border-gray-500/30 bg-gray-500/20 text-gray-400'
+                        }
+                        variant={poll.isActive ? 'default' : 'secondary'}
                       >
-                        <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
-                        {currentActiveUsers} {t('live')}
+                        {poll.isActive ? t('active') : t('closed')}
                       </Badge>
-                    )}
-                  </div>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex items-center gap-4 text-gray-500 text-sm">
-                  <div className="flex items-center gap-1">
-                    <BarChart3 className="h-4 w-4" />
-                    <span>{t('questions', { count: poll._count.questions })}</span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Users className="h-4 w-4" />
-                    <span>{t('totalVoters', { count: poll._count.sessions })}</span>
-                  </div>
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <code className="flex-1 rounded bg-gray-800/50 px-2 py-1 font-mono text-gray-300 text-xs backdrop-blur">
-                      {poll.code}
-                    </code>
-                    <Button
-                      className="h-8 w-8 p-0 text-gray-400 hover:bg-purple-500/20 hover:text-purple-400"
-                      onClick={() => copyToClipboard(poll.code)}
-                      variant="ghost"
-                    >
-                      {copiedCode === poll.code ? (
-                        <Check className="h-3 w-3 text-green-400" />
-                      ) : (
-                        <Copy className="h-3 w-3" />
+                      {currentActiveUsers > 0 && poll.isActive && (
+                        <Badge
+                          className="gap-1 border-green-500/30 bg-green-500/10 text-green-400"
+                          variant="outline"
+                        >
+                          <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
+                          {currentActiveUsers} {t('live')}
+                        </Badge>
                       )}
-                    </Button>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center gap-4 text-gray-500 text-sm">
+                    <div className="flex items-center gap-1">
+                      <BarChart3 className="h-4 w-4" />
+                      <span>
+                        {t('questions', { count: poll._count.questions })}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <Users className="h-4 w-4" />
+                      <span>
+                        {t('totalVoters', { count: poll._count.sessions })}
+                      </span>
+                    </div>
                   </div>
 
-                  <div className="flex gap-2">
-                    <Button
-                      asChild
-                      className="h-9 flex-1 bg-gradient-to-r from-purple-500 to-purple-600 text-white transition-all duration-300 hover:from-purple-600 hover:to-purple-700"
-                    >
-                      <Link href={`/polls/${poll.code}`}>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <code className="flex-1 rounded bg-gray-800/50 px-2 py-1 font-mono text-gray-300 text-xs backdrop-blur">
+                        {poll.code}
+                      </code>
+                      <Button
+                        className="h-8 w-8 p-0 text-gray-400 hover:bg-purple-500/20 hover:text-purple-400"
+                        onClick={() => copyToClipboard(poll.code)}
+                        variant="ghost"
+                      >
+                        {copiedCode === poll.code ? (
+                          <Check className="h-3 w-3 text-green-400" />
+                        ) : (
+                          <Copy className="h-3 w-3" />
+                        )}
+                      </Button>
+                    </div>
+
+                    <div className="flex gap-2">
+                      <Button className="h-9 flex-1 cursor-pointer bg-gradient-to-r from-purple-500 to-purple-600 text-white transition-all duration-300 hover:from-purple-600 hover:to-purple-700">
                         {t('viewPoll')}
                         <ExternalLink className="ml-2 h-3 w-3" />
-                      </Link>
-                    </Button>
+                      </Button>
+                    </div>
                   </div>
-                </div>
 
-                <div className="text-gray-500 text-xs">
-                  {t('created')} {new Date(poll.createdAt).toLocaleDateString(locale)}
-                </div>
-              </CardContent>
-            </Card>
+                  <div className="text-gray-500 text-xs">
+                    {t('created')}{' '}
+                    {new Date(poll.createdAt).toLocaleDateString(locale)}
+                  </div>
+                </CardContent>
+              </Card>
+            </Link>
           </motion.div>
         );
       })}
