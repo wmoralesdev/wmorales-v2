@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
         (!existingShortUrl.expiresAt || existingShortUrl.expiresAt > new Date())
       ) {
         // Return existing non-expired short URL
-        const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || request.headers.get('host')}/api/r/${existingShortUrl.code}`;
+        const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || request.headers.get('host')}/r/${existingShortUrl.code}`;
 
         return NextResponse.json({
           shortUrl,
@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || request.headers.get('host')}/api/r/${shortUrlEntry.code}`;
+    const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || request.headers.get('host')}/r/${shortUrlEntry.code}`;
 
     return NextResponse.json({
       shortUrl,
@@ -202,7 +202,7 @@ export async function GET(request: NextRequest) {
 
       return NextResponse.json({
         urls: shortUrls.map((entry) => ({
-          shortUrl: `${baseUrl}/api/r/${entry.code}`,
+          shortUrl: `${baseUrl}/r/${entry.code}`,
           code: entry.code,
           originalUrl: entry.url,
           title: entry.title,
@@ -232,7 +232,7 @@ export async function GET(request: NextRequest) {
       process.env.NEXT_PUBLIC_APP_URL || request.headers.get('host');
 
     return NextResponse.json({
-      shortUrl: `${baseUrl}/api/r/${shortUrlEntry.code}`,
+      shortUrl: `${baseUrl}/r/${shortUrlEntry.code}`,
       code: shortUrlEntry.code,
       originalUrl: shortUrlEntry.url,
       title: shortUrlEntry.title,

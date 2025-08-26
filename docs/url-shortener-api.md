@@ -38,7 +38,7 @@ pnpm prisma migrate dev
 
 ```json
 {
-  "shortUrl": "https://wmorales.dev/api/r/team-standup",
+  "shortUrl": "https://wmorales.dev/r/team-standup",
   "code": "team-standup",
   "originalUrl": "https://meet.google.com/very-long-meeting-url",
   "title": "Team Standup Meeting",
@@ -59,7 +59,7 @@ pnpm prisma migrate dev
 
 ```json
 {
-  "shortUrl": "https://wmorales.dev/api/r/abc123",
+  "shortUrl": "https://wmorales.dev/r/abc123",
   "code": "abc123",
   "originalUrl": "https://example.com",
   "clicks": 42,
@@ -178,4 +178,3 @@ console.log(`Share this link: ${shortened.shortUrl}`);
 - Links are public once created (no authentication required to access)
 - Consider implementing rate limiting in production
 - Regularly rotate your API key
-

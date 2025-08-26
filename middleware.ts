@@ -7,14 +7,15 @@ import { routing } from './i18n/routing';
 const intlMiddleware = createMiddleware(routing);
 
 export async function middleware(request: NextRequest) {
-  // Step 1: Skip i18n for API routes and auth callback
-  // API routes should not have locale prefixes
+  // Step 1: Skip i18n for API routes, redirect routes, and auth callback
+  // These routes should not have locale prefixes
   const isApiRoute = request.nextUrl.pathname.startsWith('/api');
+  const isRedirectRoute = request.nextUrl.pathname.startsWith('/r/');
   const isAuthCallback = request.nextUrl.pathname.startsWith('/auth/callback');
 
-  // Step 2: Handle internationalization for non-API and non-auth routes
+  // Step 2: Handle internationalization for routes that need it
   // Process the request through the i18n middleware to handle locale routing
-  if (!isApiRoute && !isAuthCallback) {
+  if (!isApiRoute && !isRedirectRoute && !isAuthCallback) {
     const intlResponse = intlMiddleware(request);
 
     // Check if internationalization middleware requires a redirect
@@ -92,12 +93,13 @@ export const config = {
     /*
      * Match all request paths except for the ones starting with:
      * - api (API routes)
+     * - r (redirect routes)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - manifest.json (PWA manifest)
      * - public folder files
      */
-    '/((?!api|_next/static|_next/image|favicon.ico|manifest.json|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
+    '/((?!api|r/|_next/static|_next/image|favicon.ico|manifest.json|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)',
   ],
 };
