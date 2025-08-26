@@ -427,3 +427,21 @@ model Notification {
   @@index([createdAt])
   @@map("notifications")
 }
+
+// URL Shortener Model
+model ShortUrl {
+  id          String    @id @default(uuid())
+  code        String    @unique // Short code for the URL (no default, will be generated in app)
+  url         String    @db.Text // Original URL
+  title       String?   // OG title
+  description String?   @db.Text // OG description
+  image       String?   @db.Text // OG image URL
+  clicks      Int       @default(0) // Click counter
+  expiresAt   DateTime? // Optional expiration date
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([code])
+  @@index([createdAt])
+  @@map("short_urls")
+}
