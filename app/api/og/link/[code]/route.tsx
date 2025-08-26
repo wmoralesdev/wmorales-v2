@@ -3,6 +3,26 @@ import { prisma } from '@/lib/prisma';
 
 // Cannot use Edge Runtime with Prisma - using Node.js runtime instead
 
+async function loadGoogleFont(
+  font: string,
+  text: string
+): Promise<ArrayBuffer> {
+  const url = `https://fonts.googleapis.com/css2?family=${font}&text=${encodeURIComponent(text)}`;
+  const css = await (await fetch(url)).text();
+  const resource = css.match(
+    /src: url\((.+)\) format\('(opentype|truetype)'\)/
+  );
+
+  if (resource) {
+    const response = await fetch(resource[1]);
+    if (response.status === 200) {
+      return response.arrayBuffer();
+    }
+  }
+
+  throw new Error('failed to load font data');
+}
+
 export async function GET(
   request: Request,
   context: { params: Promise<{ code: string }> }
@@ -33,9 +53,18 @@ export async function GET(
 
     // Truncate description if too long
     const truncatedDescription =
-      description.length > 150
-        ? `${description.substring(0, 147)}...`
+      description.length > 140
+        ? `${description.substring(0, 137)}...`
         : description;
+
+    // Prepare text for font loading - include all text that will be displayed
+    const allText = `${title} ${truncatedDescription} wmorales.dev/r/${code}`;
+
+    // Load Space Grotesk font
+    const fontData = await loadGoogleFont(
+      'Space+Grotesk:wght@400;700',
+      allText
+    );
 
     return new ImageResponse(
       (
@@ -44,78 +73,61 @@ export async function GET(
             display: 'flex',
             width: '100%',
             height: '100%',
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            padding: '60px',
-            alignItems: 'center',
-            justifyContent: 'center',
+            backgroundColor: '#0a0a0a',
+            backgroundImage:
+              'radial-gradient(circle at 20% 50%, rgba(139, 92, 246, 0.05) 0%, transparent 50%)',
+            padding: '80px',
           }}
         >
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
-              backgroundColor: 'rgba(15, 15, 15, 0.95)',
-              boxShadow: '0 50px 100px rgba(0, 0, 0, 0.5)',
-              borderRadius: '32px',
-              padding: '48px 56px',
               width: '100%',
               height: '100%',
-              maxHeight: '510px',
-              backdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              justifyContent: 'space-between',
             }}
           >
-            {/* Header with branding */}
+            {/* Header with logo and short code */}
             <div
               style={{
                 display: 'flex',
                 justifyContent: 'space-between',
                 alignItems: 'center',
-                marginBottom: '40px',
+                marginBottom: '48px',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+              {/* Logo and brand */}
+              <div
+                style={{ display: 'flex', alignItems: 'center', gap: '16px' }}
+              >
                 <div
                   style={{
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    width: '56px',
-                    height: '56px',
-                    borderRadius: '14px',
-                    background: 'linear-gradient(135deg, #667eea, #764ba2)',
-                    marginRight: '20px',
-                    fontSize: '28px',
-                    flexShrink: 0,
+                    width: '48px',
+                    height: '48px',
+                    background: 'linear-gradient(135deg, #8b5cf6, #a78bfa)',
+                    borderRadius: '12px',
+                    fontSize: '24px',
+                    fontWeight: 700,
+                    color: '#fafafa',
+                    fontFamily: 'Space Grotesk',
                   }}
                 >
-                  🔗
+                  W
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column' }}>
-                  <span
-                    style={{
-                      color: '#e5e7eb',
-                      fontWeight: '800',
-                      fontSize: '22px',
-                      letterSpacing: '-0.02em',
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                    }}
-                  >
-                    wmorales.dev
-                  </span>
-                  <span
-                    style={{
-                      color: '#9ca3af',
-                      fontSize: '16px',
-                      fontWeight: '500',
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                    }}
-                  >
-                    URL Shortener
-                  </span>
-                </div>
+                <span
+                  style={{
+                    color: '#94a3b8',
+                    fontSize: '20px',
+                    fontWeight: 400,
+                    fontFamily: 'Space Grotesk',
+                  }}
+                >
+                  wmorales.dev
+                </span>
               </div>
 
               {/* Short code badge */}
@@ -123,51 +135,50 @@ export async function GET(
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                  padding: '10px 20px',
+                  backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                  padding: '12px 24px',
                   borderRadius: '9999px',
-                  border: '1px solid rgba(102, 126, 234, 0.2)',
+                  border: '1px solid rgba(139, 92, 246, 0.2)',
+                  backdropFilter: 'blur(10px)',
                 }}
               >
                 <span
                   style={{
-                    fontSize: '18px',
-                    fontWeight: '700',
-                    fontFamily:
-                      'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
-                    background: 'linear-gradient(to right, #667eea, #764ba2)',
-                    backgroundClip: 'text',
-                    color: 'transparent',
-                    letterSpacing: '0.05em',
+                    fontSize: '20px',
+                    fontWeight: 700,
+                    fontFamily: 'Space Grotesk',
+                    color: '#a78bfa',
+                    letterSpacing: '-0.02em',
                   }}
                 >
-                  {code}
+                  /{code}
                 </span>
               </div>
             </div>
 
-            {/* Main content with better spacing */}
+            {/* Main content - centered */}
             <div
               style={{
                 display: 'flex',
                 flexDirection: 'column',
                 flex: 1,
                 justifyContent: 'center',
+                gap: '32px',
               }}
             >
               <h1
                 style={{
-                  color: 'white',
-                  fontSize: '48px',
-                  fontWeight: '900',
-                  margin: '0 0 20px 0',
-                  lineHeight: '1.2',
+                  color: '#fafafa',
+                  fontSize: '72px',
+                  fontWeight: 700,
+                  margin: '0',
+                  lineHeight: '1.1',
                   letterSpacing: '-0.03em',
-                  fontFamily:
-                    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  fontFamily: 'Space Grotesk',
                   display: 'flex',
                   flexWrap: 'wrap',
                   wordBreak: 'break-word',
+                  textShadow: '0 4px 20px rgba(139, 92, 246, 0.1)',
                 }}
               >
                 {title}
@@ -175,62 +186,87 @@ export async function GET(
 
               <p
                 style={{
-                  color: '#9ca3af',
-                  fontSize: '22px',
-                  fontWeight: '400',
+                  color: '#94a3b8',
+                  fontSize: '28px',
+                  fontWeight: 400,
                   margin: '0',
                   lineHeight: '1.5',
-                  fontFamily:
-                    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  fontFamily: 'Space Grotesk',
                   display: 'flex',
                   flexWrap: 'wrap',
                   wordBreak: 'break-word',
+                  maxWidth: '95%',
                 }}
               >
                 {truncatedDescription}
               </p>
             </div>
 
-            {/* Footer with simplified design */}
+            {/* Footer with URL and visual elements */}
             <div
               style={{
                 display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingTop: '32px',
-                marginTop: '32px',
-                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+                flexDirection: 'column',
+                gap: '20px',
+                marginTop: '48px',
               }}
             >
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span
+              {/* URL with icon */}
+              <div
+                style={{ display: 'flex', alignItems: 'center', gap: '12px' }}
+              >
+                <div
                   style={{
-                    color: '#6b7280',
-                    fontSize: '16px',
-                    fontWeight: '600',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.1em',
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    width: '8px',
+                    height: '8px',
+                    borderRadius: '50%',
+                    backgroundColor: '#22c55e',
+                    boxShadow: '0 0 8px rgba(34, 197, 94, 0.5)',
                   }}
-                >
-                  SHORT URL
-                </span>
-              </div>
-
-              {/* Domain display */}
-              <div style={{ display: 'flex', alignItems: 'center' }}>
+                />
                 <span
                   style={{
-                    color: '#a5b4fc',
-                    fontSize: '16px',
-                    fontWeight: '500',
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    color: '#64748b',
+                    fontSize: '20px',
+                    fontWeight: 400,
+                    fontFamily: 'Space Grotesk',
                   }}
                 >
                   wmorales.dev/r/{code}
                 </span>
+              </div>
+
+              {/* Visual elements */}
+              <div
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                }}
+              >
+                {/* Purple dots */}
+                {[...Array(3)].map((_, i) => (
+                  <div
+                    key={i}
+                    style={{
+                      width: '4px',
+                      height: '4px',
+                      borderRadius: '50%',
+                      backgroundColor: '#8b5cf6',
+                      opacity: 0.3 + i * 0.2,
+                    }}
+                  />
+                ))}
+                {/* Gradient line */}
+                <div
+                  style={{
+                    flex: 1,
+                    height: '1px',
+                    background:
+                      'linear-gradient(to right, rgba(139, 92, 246, 0.3), transparent)',
+                    maxWidth: '200px',
+                  }}
+                />
               </div>
             </div>
           </div>
@@ -239,6 +275,13 @@ export async function GET(
       {
         width: 1200,
         height: 630,
+        fonts: [
+          {
+            name: 'Space Grotesk',
+            data: fontData,
+            style: 'normal',
+          },
+        ],
         headers: {
           'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
         },
