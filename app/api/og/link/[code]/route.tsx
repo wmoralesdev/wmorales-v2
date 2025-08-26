@@ -33,8 +33,8 @@ export async function GET(
 
     // Truncate description if too long
     const truncatedDescription =
-      description.length > 120
-        ? `${description.substring(0, 117)}...`
+      description.length > 150
+        ? `${description.substring(0, 147)}...`
         : description;
 
     return new ImageResponse(
@@ -45,7 +45,7 @@ export async function GET(
             width: '100%',
             height: '100%',
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            padding: '80px',
+            padding: '60px',
             alignItems: 'center',
             justifyContent: 'center',
           }}
@@ -57,9 +57,10 @@ export async function GET(
               backgroundColor: 'rgba(15, 15, 15, 0.95)',
               boxShadow: '0 50px 100px rgba(0, 0, 0, 0.5)',
               borderRadius: '32px',
-              padding: '64px',
+              padding: '48px 56px',
               width: '100%',
-              maxWidth: '1040px',
+              height: '100%',
+              maxHeight: '510px',
               backdropFilter: 'blur(10px)',
               border: '1px solid rgba(255, 255, 255, 0.1)',
             }}
@@ -68,119 +69,70 @@ export async function GET(
             <div
               style={{
                 display: 'flex',
+                justifyContent: 'space-between',
                 alignItems: 'center',
-                marginBottom: '48px',
+                marginBottom: '40px',
               }}
             >
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <div
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    width: '56px',
+                    height: '56px',
+                    borderRadius: '14px',
+                    background: 'linear-gradient(135deg, #667eea, #764ba2)',
+                    marginRight: '20px',
+                    fontSize: '28px',
+                    flexShrink: 0,
+                  }}
+                >
+                  🔗
+                </div>
+                <div style={{ display: 'flex', flexDirection: 'column' }}>
+                  <span
+                    style={{
+                      color: '#e5e7eb',
+                      fontWeight: '800',
+                      fontSize: '22px',
+                      letterSpacing: '-0.02em',
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    }}
+                  >
+                    wmorales.dev
+                  </span>
+                  <span
+                    style={{
+                      color: '#9ca3af',
+                      fontSize: '16px',
+                      fontWeight: '500',
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    }}
+                  >
+                    URL Shortener
+                  </span>
+                </div>
+              </div>
+
+              {/* Short code badge */}
               <div
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '64px',
-                  height: '64px',
-                  borderRadius: '16px',
-                  background: 'linear-gradient(135deg, #667eea, #764ba2)',
-                  marginRight: '24px',
-                  fontSize: '32px',
+                  backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                  padding: '10px 20px',
+                  borderRadius: '9999px',
+                  border: '1px solid rgba(102, 126, 234, 0.2)',
                 }}
               >
-                🔗
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column' }}>
                 <span
                   style={{
-                    color: '#e5e7eb',
-                    fontWeight: '800',
-                    fontSize: '24px',
-                    letterSpacing: '-0.02em',
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                  }}
-                >
-                  wmorales.dev
-                </span>
-                <span
-                  style={{
-                    color: '#9ca3af',
                     fontSize: '18px',
-                    fontWeight: '500',
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                  }}
-                >
-                  URL Shortener
-                </span>
-              </div>
-            </div>
-
-            {/* Main content */}
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: 'column',
-                flex: 1,
-              }}
-            >
-              <h1
-                style={{
-                  color: 'white',
-                  fontSize: '56px',
-                  fontWeight: '900',
-                  margin: '0 0 24px 0',
-                  lineHeight: '1.1',
-                  letterSpacing: '-0.03em',
-                  fontFamily:
-                    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                }}
-              >
-                {title}
-              </h1>
-
-              <p
-                style={{
-                  color: '#9ca3af',
-                  fontSize: '24px',
-                  fontWeight: '400',
-                  margin: '0 0 48px 0',
-                  lineHeight: '1.4',
-                  fontFamily:
-                    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                }}
-              >
-                {truncatedDescription}
-              </p>
-            </div>
-
-            {/* Footer with code */}
-            <div
-              style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                paddingTop: '32px',
-                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
-              }}
-            >
-              <div style={{ display: 'flex', alignItems: 'center' }}>
-                <span
-                  style={{
-                    color: '#6b7280',
-                    fontSize: '20px',
-                    fontWeight: '600',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.05em',
-                    marginRight: '16px',
-                    fontFamily:
-                      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                  }}
-                >
-                  Short Code:
-                </span>
-                <span
-                  style={{
-                    fontSize: '32px',
-                    fontWeight: '900',
+                    fontWeight: '700',
                     fontFamily:
                       'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
                     background: 'linear-gradient(to right, #667eea, #764ba2)',
@@ -192,36 +144,93 @@ export async function GET(
                   {code}
                 </span>
               </div>
+            </div>
 
-              {/* Visual indicator */}
+            {/* Main content with better spacing */}
+            <div
+              style={{
+                display: 'flex',
+                flexDirection: 'column',
+                flex: 1,
+                justifyContent: 'center',
+              }}
+            >
+              <h1
+                style={{
+                  color: 'white',
+                  fontSize: '48px',
+                  fontWeight: '900',
+                  margin: '0 0 20px 0',
+                  lineHeight: '1.2',
+                  letterSpacing: '-0.03em',
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  wordBreak: 'break-word',
+                }}
+              >
+                {title}
+              </h1>
+
+              <p
+                style={{
+                  color: '#9ca3af',
+                  fontSize: '22px',
+                  fontWeight: '400',
+                  margin: '0',
+                  lineHeight: '1.5',
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  display: 'flex',
+                  flexWrap: 'wrap',
+                  wordBreak: 'break-word',
+                }}
+              >
+                {truncatedDescription}
+              </p>
+            </div>
+
+            {/* Footer with simplified design */}
+            <div
+              style={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                paddingTop: '32px',
+                marginTop: '32px',
+                borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+              }}
+            >
               <div style={{ display: 'flex', alignItems: 'center' }}>
-                <div
+                <span
                   style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    backgroundColor: 'rgba(102, 126, 234, 0.1)',
-                    padding: '12px 24px',
-                    borderRadius: '9999px',
-                    border: '1px solid rgba(102, 126, 234, 0.2)',
+                    color: '#6b7280',
+                    fontSize: '16px',
+                    fontWeight: '600',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.1em',
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
                   }}
                 >
-                  <span style={{ fontSize: '20px', marginRight: '8px' }}>
-                    👆
-                  </span>
-                  <span
-                    style={{
-                      color: '#a5b4fc',
-                      fontWeight: '700',
-                      fontSize: '16px',
-                      textTransform: 'uppercase',
-                      letterSpacing: '0.05em',
-                      fontFamily:
-                        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
-                    }}
-                  >
-                    Click to Visit
-                  </span>
-                </div>
+                  SHORT URL
+                </span>
+              </div>
+
+              {/* Domain display */}
+              <div style={{ display: 'flex', alignItems: 'center' }}>
+                <span
+                  style={{
+                    color: '#a5b4fc',
+                    fontSize: '16px',
+                    fontWeight: '500',
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  }}
+                >
+                  wmorales.dev/r/{code}
+                </span>
               </div>
             </div>
           </div>
