@@ -12,8 +12,9 @@ export class AuthService {
     const { data, error } = await this.supabase.auth.signInWithOAuth({
       provider,
       options: {
-        redirectTo: `${window.location.origin}/auth/callback${redirectTo ? `?next=${encodeURIComponent(redirectTo)}` : ''
-          }`,
+        redirectTo: `${window.location.origin}/auth/callback${
+          redirectTo ? `?next=${encodeURIComponent(redirectTo)}` : ''
+        }`,
       },
     });
 

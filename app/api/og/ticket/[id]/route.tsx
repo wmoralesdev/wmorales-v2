@@ -50,7 +50,8 @@ export async function GET(
       },
     };
 
-    const t = translations[locale as keyof typeof translations] || translations.en;
+    const t =
+      translations[locale as keyof typeof translations] || translations.en;
 
     // Prepare individual text strings for font loading
     const brandText = 'Walter Morales';

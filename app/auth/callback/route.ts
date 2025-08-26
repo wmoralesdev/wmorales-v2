@@ -16,7 +16,9 @@ export async function GET(request: Request) {
 
       // Ensure the next path is properly decoded and starts with /
       const decodedNext = decodeURIComponent(next);
-      const redirectPath = decodedNext.startsWith('/') ? decodedNext : `/${decodedNext}`;
+      const redirectPath = decodedNext.startsWith('/')
+        ? decodedNext
+        : `/${decodedNext}`;
 
       if (isLocalEnv) {
         // we can be sure that there is no load balancer in between, so no need to watch for X-Forwarded-Host

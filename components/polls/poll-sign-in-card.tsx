@@ -32,7 +32,9 @@ export function PollSignInCard({
             <Vote className="h-8 w-8 text-purple-400" />
           </div>
         </div>
-        <CardTitle className="text-2xl text-white">{t('signInTitle')}</CardTitle>
+        <CardTitle className="text-2xl text-white">
+          {t('signInTitle')}
+        </CardTitle>
         <p className="text-muted-foreground">
           {t('signInDescription', { pollTitle })}
         </p>

@@ -1,7 +1,7 @@
 import { ImageResponse } from '@vercel/og';
 import { prisma } from '@/lib/prisma';
 
-export const runtime = 'edge';
+// Cannot use Edge Runtime with Prisma - using Node.js runtime instead
 
 export async function GET(
   request: Request,
@@ -12,7 +12,7 @@ export async function GET(
 
     // Fetch shortened URL data
     const shortUrl = await prisma.shortUrl.findUnique({
-      where: { code }
+      where: { code },
     });
 
     if (!shortUrl) {
@@ -32,9 +32,10 @@ export async function GET(
     const description = shortUrl.description || shortUrl.url;
 
     // Truncate description if too long
-    const truncatedDescription = description.length > 120
-      ? `${description.substring(0, 117)}...`
-      : description;
+    const truncatedDescription =
+      description.length > 120
+        ? `${description.substring(0, 117)}...`
+        : description;
 
     return new ImageResponse(
       (
@@ -93,7 +94,8 @@ export async function GET(
                     fontWeight: '800',
                     fontSize: '24px',
                     letterSpacing: '-0.02em',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
                   }}
                 >
                   wmorales.dev
@@ -103,7 +105,8 @@ export async function GET(
                     color: '#9ca3af',
                     fontSize: '18px',
                     fontWeight: '500',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
                   }}
                 >
                   URL Shortener
@@ -127,7 +130,8 @@ export async function GET(
                   margin: '0 0 24px 0',
                   lineHeight: '1.1',
                   letterSpacing: '-0.03em',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
                 }}
               >
                 {title}
@@ -140,7 +144,8 @@ export async function GET(
                   fontWeight: '400',
                   margin: '0 0 48px 0',
                   lineHeight: '1.4',
-                  fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                  fontFamily:
+                    '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
                 }}
               >
                 {truncatedDescription}
@@ -166,7 +171,8 @@ export async function GET(
                     textTransform: 'uppercase',
                     letterSpacing: '0.05em',
                     marginRight: '16px',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                    fontFamily:
+                      '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
                   }}
                 >
                   Short Code:
@@ -175,7 +181,8 @@ export async function GET(
                   style={{
                     fontSize: '32px',
                     fontWeight: '900',
-                    fontFamily: 'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
+                    fontFamily:
+                      'ui-monospace, SFMono-Regular, "SF Mono", Consolas, "Liberation Mono", Menlo, monospace',
                     background: 'linear-gradient(to right, #667eea, #764ba2)',
                     backgroundClip: 'text',
                     color: 'transparent',
@@ -208,7 +215,8 @@ export async function GET(
                       fontSize: '16px',
                       textTransform: 'uppercase',
                       letterSpacing: '0.05em',
-                      fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+                      fontFamily:
+                        '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
                     }}
                   >
                     Click to Visit
@@ -232,4 +240,3 @@ export async function GET(
     return new Response('Failed to generate image', { status: 500 });
   }
 }
-

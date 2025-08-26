@@ -33,21 +33,11 @@ export async function POST(request: NextRequest) {
 
     // Parse request body
     const body = await request.json();
-    const {
-      url,
-      expiresInDays,
-      customCode,
-      title,
-      description,
-      image
-    } = body;
+    const { url, expiresInDays, customCode, title, description, image } = body;
 
     // Validate URL
     if (!url) {
-      return NextResponse.json(
-        { error: 'URL is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'URL is required' }, { status: 400 });
     }
 
     // Validate URL format
@@ -66,14 +56,17 @@ export async function POST(request: NextRequest) {
       // Ensure custom code is alphanumeric and not too long
       if (!/^[a-zA-Z0-9_-]{3,20}$/.test(customCode)) {
         return NextResponse.json(
-          { error: 'Custom code must be 3-20 characters and contain only letters, numbers, underscores, and hyphens' },
+          {
+            error:
+              'Custom code must be 3-20 characters and contain only letters, numbers, underscores, and hyphens',
+          },
           { status: 400 }
         );
       }
 
       // Check if custom code already exists
       const existingCode = await prisma.shortUrl.findUnique({
-        where: { code: customCode }
+        where: { code: customCode },
       });
 
       if (existingCode) {
@@ -88,7 +81,7 @@ export async function POST(request: NextRequest) {
       do {
         code = generateShortCode();
         const existing = await prisma.shortUrl.findUnique({
-          where: { code }
+          where: { code },
         });
         if (!existing) break;
         attempts++;
@@ -109,12 +102,15 @@ export async function POST(request: NextRequest) {
           url,
           title: title || null,
           description: description || null,
-          image: image || null
+          image: image || null,
         },
-        orderBy: { createdAt: 'desc' }
+        orderBy: { createdAt: 'desc' },
       });
 
-      if (existingShortUrl && (!existingShortUrl.expiresAt || existingShortUrl.expiresAt > new Date())) {
+      if (
+        existingShortUrl &&
+        (!existingShortUrl.expiresAt || existingShortUrl.expiresAt > new Date())
+      ) {
         // Return existing non-expired short URL
         const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || request.headers.get('host')}/api/r/${existingShortUrl.code}`;
 
@@ -146,7 +142,7 @@ export async function POST(request: NextRequest) {
         description: description || null,
         image: image || null,
         expiresAt,
-      }
+      },
     });
 
     const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || request.headers.get('host')}/api/r/${shortUrlEntry.code}`;
@@ -201,10 +197,11 @@ export async function GET(request: NextRequest) {
         take: 100, // Limit to last 100 URLs
       });
 
-      const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.headers.get('host');
+      const baseUrl =
+        process.env.NEXT_PUBLIC_APP_URL || request.headers.get('host');
 
       return NextResponse.json({
-        urls: shortUrls.map(entry => ({
+        urls: shortUrls.map((entry) => ({
           shortUrl: `${baseUrl}/api/r/${entry.code}`,
           code: entry.code,
           originalUrl: entry.url,
@@ -215,13 +212,13 @@ export async function GET(request: NextRequest) {
           createdAt: entry.createdAt,
           expiresAt: entry.expiresAt,
           isExpired: entry.expiresAt ? entry.expiresAt < new Date() : false,
-        }))
+        })),
       });
     }
 
     // Get specific short URL by code
     const shortUrlEntry = await prisma.shortUrl.findUnique({
-      where: { code }
+      where: { code },
     });
 
     if (!shortUrlEntry) {
@@ -231,7 +228,8 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || request.headers.get('host');
+    const baseUrl =
+      process.env.NEXT_PUBLIC_APP_URL || request.headers.get('host');
 
     return NextResponse.json({
       shortUrl: `${baseUrl}/api/r/${shortUrlEntry.code}`,
@@ -243,7 +241,9 @@ export async function GET(request: NextRequest) {
       clicks: shortUrlEntry.clicks,
       createdAt: shortUrlEntry.createdAt,
       expiresAt: shortUrlEntry.expiresAt,
-      isExpired: shortUrlEntry.expiresAt ? shortUrlEntry.expiresAt < new Date() : false,
+      isExpired: shortUrlEntry.expiresAt
+        ? shortUrlEntry.expiresAt < new Date()
+        : false,
     });
   } catch (error) {
     console.error('Error fetching short URLs:', error);
@@ -278,15 +278,12 @@ export async function DELETE(request: NextRequest) {
     const code = searchParams.get('code');
 
     if (!code) {
-      return NextResponse.json(
-        { error: 'Code is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Code is required' }, { status: 400 });
     }
 
     // Delete the short URL
     const deletedUrl = await prisma.shortUrl.delete({
-      where: { code }
+      where: { code },
     });
 
     return NextResponse.json({
@@ -294,6 +291,7 @@ export async function DELETE(request: NextRequest) {
       code: deletedUrl.code,
       originalUrl: deletedUrl.url,
     });
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   } catch (error: any) {
     if (error?.code === 'P2025') {
       return NextResponse.json(

@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
 // Generate HTML page with OG metadata
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function generateOGPage(shortUrl: any, baseUrl: string): string {
   const title = shortUrl.title || 'Shared Link';
-  const description = shortUrl.description || 'Click to view the shared content';
+  const description =
+    shortUrl.description || 'Click to view the shared content';
   const image = shortUrl.image || `${baseUrl}/api/og/link/${shortUrl.code}`;
 
   return `<!DOCTYPE html>
@@ -97,21 +99,18 @@ function generateOGPage(shortUrl: any, baseUrl: string): string {
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { code: string } }
+  { params }: { params: Promise<{ code: string }> }
 ) {
   try {
-    const { code } = params;
+    const { code } = await params;
 
     if (!code) {
-      return NextResponse.json(
-        { error: 'Code is required' },
-        { status: 400 }
-      );
+      return NextResponse.json({ error: 'Code is required' }, { status: 400 });
     }
 
     // Find the short URL
     const shortUrlEntry = await prisma.shortUrl.findUnique({
-      where: { code }
+      where: { code },
     });
 
     if (!shortUrlEntry) {
@@ -163,7 +162,7 @@ export async function GET(
 </html>`,
         {
           status: 404,
-          headers: { 'Content-Type': 'text/html' }
+          headers: { 'Content-Type': 'text/html' },
         }
       );
     }
@@ -217,36 +216,45 @@ export async function GET(
 </html>`,
         {
           status: 410, // Gone
-          headers: { 'Content-Type': 'text/html' }
+          headers: { 'Content-Type': 'text/html' },
         }
       );
     }
 
     // Increment click counter (fire and forget, don't wait)
-    prisma.shortUrl.update({
-      where: { code },
-      data: { clicks: { increment: 1 } }
-    }).catch(error => {
-      console.error('Failed to increment click counter:', error);
-    });
+    prisma.shortUrl
+      .update({
+        where: { code },
+        data: { clicks: { increment: 1 } },
+      })
+      .catch((error) => {
+        console.error('Failed to increment click counter:', error);
+      });
 
     // Check if the request is from a bot/crawler that needs OG metadata
     const userAgent = request.headers.get('user-agent') || '';
-    const isBot = /bot|crawler|spider|slack|telegram|whatsapp|facebook|twitter|linkedin|discord/i.test(userAgent);
-
-    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || `https://${request.headers.get('host')}`;
-
-    if (isBot || shortUrlEntry.title || shortUrlEntry.description || shortUrlEntry.image) {
-      // Return HTML with OG metadata for bots or if custom metadata is set
-      return new NextResponse(
-        generateOGPage(shortUrlEntry, baseUrl),
-        {
-          headers: {
-            'Content-Type': 'text/html',
-            'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
-          }
-        }
+    const isBot =
+      /bot|crawler|spider|slack|telegram|whatsapp|facebook|twitter|linkedin|discord/i.test(
+        userAgent
       );
+
+    const baseUrl =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      `https://${request.headers.get('host')}`;
+
+    if (
+      isBot ||
+      shortUrlEntry.title ||
+      shortUrlEntry.description ||
+      shortUrlEntry.image
+    ) {
+      // Return HTML with OG metadata for bots or if custom metadata is set
+      return new NextResponse(generateOGPage(shortUrlEntry, baseUrl), {
+        headers: {
+          'Content-Type': 'text/html',
+          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+        },
+      });
     }
 
     // For regular browsers without custom metadata, do a direct redirect
@@ -303,7 +311,7 @@ export async function GET(
 </html>`,
       {
         status: 500,
-        headers: { 'Content-Type': 'text/html' }
+        headers: { 'Content-Type': 'text/html' },
       }
     );
   }

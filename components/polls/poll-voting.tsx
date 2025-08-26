@@ -57,9 +57,9 @@ type PollVotingState = {
 type PollVotingAction =
   | { type: 'SET_SELECTED_OPTIONS'; payload: Record<string, string | string[]> }
   | {
-    type: 'UPDATE_SELECTED_OPTION';
-    payload: { questionId: string; value: string | string[] };
-  }
+      type: 'UPDATE_SELECTED_OPTION';
+      payload: { questionId: string; value: string | string[] };
+    }
   | { type: 'SET_USER_VOTES'; payload: Record<string, string[]> }
   | { type: 'SET_RESULTS'; payload: PollResults }
   | { type: 'SET_VOTING'; payload: boolean }
@@ -158,7 +158,7 @@ export function PollVoting({
     return () => {
       authListener?.subscription.unsubscribe();
     };
-  }, []);
+  }, [isAuthenticated]);
 
   useEffect(() => {
     const initial: Record<string, string | string[]> = {};
@@ -353,10 +353,16 @@ export function PollVoting({
       );
     } catch (error) {
       // Handle authentication errors
-      if (error instanceof Error && error.message === 'Authentication required') {
+      if (
+        error instanceof Error &&
+        error.message === 'Authentication required'
+      ) {
         setIsAuthenticated(false);
       } else {
-        dispatch({ type: 'SET_VALIDATION_ERRORS', payload: ['Failed to submit votes. Please try again.'] });
+        dispatch({
+          type: 'SET_VALIDATION_ERRORS',
+          payload: ['Failed to submit votes. Please try again.'],
+        });
       }
     } finally {
       dispatch({ type: 'SET_VOTING', payload: false });
@@ -662,7 +668,7 @@ export function PollVoting({
                                   className={cn(
                                     'h-full',
                                     option.color ||
-                                    'bg-gradient-to-r from-purple-500/20 to-purple-600/20'
+                                      'bg-gradient-to-r from-purple-500/20 to-purple-600/20'
                                   )}
                                   initial={{ width: 0 }}
                                   transition={{
@@ -732,7 +738,7 @@ export function PollVoting({
                                   className={cn(
                                     'h-full',
                                     option.color ||
-                                    'bg-gradient-to-r from-purple-500/20 to-purple-600/20'
+                                      'bg-gradient-to-r from-purple-500/20 to-purple-600/20'
                                   )}
                                   initial={{ width: 0 }}
                                   transition={{
