@@ -472,5 +472,145 @@
     "noSurveys": "No hay formularios activos disponibles.",
     "participate": "Participar",
     "complete": "Completar formulario"
+  },
+  "sites": {
+    "hackathon-01": {
+      "title": "Hackatón 01",
+      "description": "Construye productos innovadores con tecnologías emergentes y comparte tus momentos con el equipo.",
+      "eventInfo": {
+        "title": "Detalles del evento",
+        "date": "Sábado, 4 de octubre, 2025",
+        "time": "10:45 AM - 2:30 PM",
+        "location": "Cafe Luz Negra, Millenium Plaza",
+        "locationShort": "El Salvador 🇸🇻",
+        "duration": "2 horas sprint + brunch y networking"
+      },
+      "theme": {
+        "title": "El reto: ahorrar tiempo",
+        "subtitle": "Construye soluciones que ayuden a las personas a optimizar su recurso más valioso",
+        "description": "El tiempo es lo más valioso que tenemos y lo que más debemos aprender a optimizar. Tu reto hoy es desarrollar una solución que ahorre tiempo en cualquier ámbito de la vida diaria.",
+        "clarification": "Piensa ampliamente sobre el ahorro de tiempo: puede ser productividad personal, eficiencia laboral, rutinas diarias, tareas administrativas o cualquier proceso repetitivo que consume tiempo. La solución no necesita estar completa, enfócate en la idea central y en cómo la IA/Cursor te ayudó a desarrollarla rápidamente.",
+        "examplesTitle": "Ideas y enfoques de soluciones",
+        "examples": {
+          "automation": {
+            "title": "Automatización de flujos de trabajo",
+            "description": "Herramientas que automaticen tareas repetitivas en el trabajo o estudios: entrada de datos, organización de archivos, gestión de correos o generación de reportes"
+          },
+          "optimization": {
+            "title": "Optimizador de rutinas",
+            "description": "Apps que optimicen rutinas diarias: preparación matutina, planificación de comidas, coordinación de traslados o programación de tareas"
+          },
+          "assistant": {
+            "title": "Asistentes inteligentes",
+            "description": "Asistentes que agilicen procesos: llenado de formularios, reserva de citas, ayudantes de decisiones o agregadores de información"
+          }
+        },
+        "keyPoint": "Recuerda: el objetivo no es construir un producto completo, sino demostrar un enfoque creativo para resolver un problema de ahorro de tiempo usando Cursor efectivamente."
+      },
+      "format": {
+        "title": "Agenda de hoy",
+        "subtitle": "Construcción, aprendizaje y presentación",
+        "timelineTitle": "Agenda",
+        "timeline": {
+          "reception": {
+            "time": "10:45 AM",
+            "title": "Recepción",
+            "description": "Bienvenida y preparación"
+          },
+          "keynote": {
+            "time": "11:15 AM",
+            "title": "Keynotes y brunch",
+            "description": "Introducción a Cursor y networking durante el brunch"
+          },
+          "start": {
+            "time": "12:00 PM",
+            "title": "Inicia tiempo de construcción",
+            "description": "Comienza a trabajar en tu solución para ahorrar tiempo"
+          },
+          "end": {
+            "time": "2:00 PM",
+            "title": "Fin de construcción y presentaciones",
+            "description": "Pitches de 2 minutos por cada equipo"
+          },
+          "closing": {
+            "time": "2:30 PM",
+            "title": "Cierre y ganadores",
+            "description": "Resultados de votación y cierre del evento"
+          }
+        },
+        "toolsTitle": "Lo que necesitas",
+        "toolsDescription": "Asegúrate de tener:",
+        "tools": {
+          "laptop": "Laptop (cargada) + cargador",
+          "hotspot": "Hotspot móvil listo",
+          "cursor": "Cursor instalado",
+          "attitude": "¡Mentalidad creativa!"
+        }
+      },
+      "evaluation": {
+        "title": "Premios y reconocimiento",
+        "subtitle": "Los 3 mejores equipos ganan créditos de Cursor",
+        "description": "Al final del evento, todos los participantes votarán por sus soluciones favoritas. ¡Los 3 proyectos con más votos ganan créditos de Cursor!",
+        "prize": "Créditos de Cursor para los 3 equipos ganadores"
+      },
+      "guidelines": {
+        "title": "Cómo funciona la votación",
+        "subtitle": "Los participantes deciden los ganadores mediante aprobación grupal",
+        "votingProcess": {
+          "title": "Proceso de votación",
+          "description": "Después de la fase de construcción, cada equipo presentará su solución. Todos los participantes votarán por sus proyectos favoritos para determinar los ganadores.",
+          "steps": {
+            "presentations": {
+              "title": "Pitches de 2 minutos",
+              "description": "Cada equipo tiene exactamente 2 minutos para presentar su solución y demostrar lo que construyeron"
+            },
+            "voting": {
+              "title": "Votación de participantes",
+              "description": "Todos los participantes votan por sus soluciones favoritas (no puedes votar por tu propio equipo)"
+            },
+            "winners": {
+              "title": "Los 3 mejores equipos ganan",
+              "description": "Los 3 equipos con más votos reciben créditos de Cursor"
+            }
+          }
+        },
+        "criteriaTitle": "¿En qué deberías enfocarte?",
+        "criteriaImportant": "Importante: la completitud de la solución NO es la prioridad. ¡Valoramos el enfoque creativo y el uso efectivo de Cursor sobre tener un producto terminado!",
+        "criteria": {
+          "creativity": {
+            "title": "Enfoque creativo e innovación",
+            "description": "¿Qué tan creativa e innovadora es tu solución? ¿Pensaste fuera de la caja?",
+            "priority": "Alta prioridad"
+          },
+          "cursorUsage": {
+            "title": "Uso efectivo de Cursor e IA",
+            "description": "¿Qué tan bien aprovechaste Cursor y herramientas IA para acelerar tu desarrollo?",
+            "priority": "Alta prioridad"
+          },
+          "impact": {
+            "title": "Potencial de ahorro de tiempo",
+            "description": "¿Qué tan efectivamente podría ahorrar tiempo esta solución si se desarrollara completamente?",
+            "priority": "Prioridad media"
+          },
+          "presentation": {
+            "title": "Comunicación clara",
+            "description": "¿Qué tan bien explicaste tu idea y demostraste tu progreso?",
+            "priority": "Prioridad media"
+          }
+        }
+      },
+      "cta": {
+        "title": "Comunidad",
+        "description": "Conéctate con otros participantes en nuestra comunidad de WhatsApp para preguntas, formación de equipos y colaboración continua.",
+        "button": "Unirse a la comunidad de WhatsApp",
+        "updates": "Actualizaciones del evento en tiempo real",
+        "context": "Haz preguntas sobre el reto",
+        "community": "Comparte ideas y conéctate con otros"
+      },
+      "meta": {
+        "title": "Hackatón 01 - 4 de octubre, 2025",
+        "description": "Únete a nosotros para una hackatón experimental de 2 horas impulsada por IA en El Salvador. Construye soluciones que ahorren tiempo usando Cursor y tecnologías emergentes."
+      }
+    }
   }
 }

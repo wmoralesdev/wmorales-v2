@@ -118,10 +118,10 @@ export const pageMetadata = {
   cursor: {
     title: 'Cursor Ambassador',
     description:
-      'First Cursor Ambassador from El Salvador. Pioneering AI-powered development in Central America, building communities, and helping teams accelerate with Cursor IDE.',
+      'First Cursor Ambassador from El Salvador. Pioneering AI-powered development in Central America, building communities, and helping teams accelerate with Cursor.',
     keywords: [
       'Cursor Ambassador',
-      'Cursor IDE',
+      'Cursor',
       'AI Development',
       'El Salvador Tech',
       'LATAM Developer Community',

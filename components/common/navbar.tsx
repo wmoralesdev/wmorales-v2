@@ -437,51 +437,6 @@ export function Navbar() {
               <MotionMenuItem
                 animate="visible"
                 initial="hidden"
-                key="polls"
-                variants={menuItemVariants}
-              >
-                <NavigationMenuLink
-                  className="relative"
-                  href="/polls"
-                  key="polls"
-                >
-                  <Button
-                    className={cn(
-                      'relative cursor-pointer font-medium text-sm transition-colors',
-                      pathname === '/polls'
-                        ? 'text-purple-400'
-                        : 'hover:text-purple-400'
-                    )}
-                    variant="ghost"
-                  >
-                    <motion.span
-                      transition={{ duration: 0.2 }}
-                      whileHover={{ y: -2 }}
-                    >
-                      {t('polls')}
-                    </motion.span>
-
-                    <AnimatePresence>
-                      {pathname === '/polls' && (
-                        <motion.div
-                          animate={{ scaleX: 1 }}
-                          className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
-                          exit={{ scaleX: 0 }}
-                          initial={{ scaleX: 0 }}
-                          transition={{
-                            duration: 0.3,
-                            ease: [0.25, 0.46, 0.45, 0.94],
-                          }}
-                        />
-                      )}
-                    </AnimatePresence>
-                  </Button>
-                </NavigationMenuLink>
-              </MotionMenuItem>
-
-              <MotionMenuItem
-                animate="visible"
-                initial="hidden"
                 key="cursor"
                 variants={menuItemVariants}
               >
@@ -626,19 +581,6 @@ export function Navbar() {
                             variant="ghost"
                           >
                             {t('events')}
-                          </Button>
-                        </Link>
-
-                        <Link href="/polls" onClick={() => setIsOpen(false)}>
-                          <Button
-                            className={cn(
-                              'w-full justify-start',
-                              pathname === '/polls' &&
-                                'bg-purple-400/10 text-purple-400'
-                            )}
-                            variant="ghost"
-                          >
-                            {t('polls')}
                           </Button>
                         </Link>
 

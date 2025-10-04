@@ -13,7 +13,6 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
 import { formatDistanceToNowLocalized } from '@/lib/utils';
 import Link from 'next/link';
 
@@ -50,24 +49,17 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
 
   if (events.length === 0) {
     return (
-      <div className="space-y-4">
-        {Array.from({ length: 3 }).map((_, i) => (
-          // biome-ignore lint/suspicious/noArrayIndexKey: use as skeleton, irrelevant
-          <Card
-            className="border-gray-800 bg-gray-900/60 backdrop-blur-xl"
-            key={i}
-          >
-            <CardHeader>
-              <Skeleton className="h-6 w-48 bg-gray-800" />
-              <Skeleton className="h-4 w-32 bg-gray-800" />
-            </CardHeader>
-            <CardContent>
-              <Skeleton className="mb-2 h-4 w-full bg-gray-800" />
-              <Skeleton className="h-4 w-3/4 bg-gray-800" />
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+      <Card className="border-gray-800 bg-gray-900/60 backdrop-blur-xl">
+        <CardContent className="pt-6">
+          <div className="text-center">
+            <Users className="mx-auto mb-4 h-12 w-12 text-purple-400 opacity-50" />
+            <p className="font-medium text-lg text-white">
+              {t('noActiveEvents')}
+            </p>
+            <p className="mt-2 text-gray-400">{t('checkBackLater')}</p>
+          </div>
+        </CardContent>
+      </Card>
     );
   }
 

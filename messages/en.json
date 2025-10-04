@@ -491,5 +491,145 @@
     "noSurveys": "No active surveys available.",
     "participate": "Participate",
     "complete": "Complete Survey"
+  },
+  "sites": {
+    "hackathon-01": {
+      "title": "Hackathon 01",
+      "description": "Build innovative products with emerging technologies and share your moments with the team.",
+      "eventInfo": {
+        "title": "Event Details",
+        "date": "Saturday, October 4, 2025",
+        "time": "10:45 AM - 2:30 PM",
+        "location": "Cafe Luz Negra, Millenium Plaza",
+        "locationShort": "El Salvador 🇸🇻",
+        "duration": "2 hours sprint + brunch & networking"
+      },
+      "theme": {
+        "title": "The Challenge: Save Time",
+        "subtitle": "Build solutions that help people optimize their most valuable resource",
+        "description": "Time is the most valuable thing we have and what we must learn to optimize the most. Your challenge today is to develop a solution that saves time in any area of daily life.",
+        "clarification": "Think broadly about time-saving: it could be personal productivity, work efficiency, daily routines, administrative tasks, or any repetitive process that consumes time. The solution doesn't need to be complete—focus on the core idea and how AI/Cursor helped you develop it quickly.",
+        "examplesTitle": "Solution Ideas & Approaches",
+        "examples": {
+          "automation": {
+            "title": "Workflow Automation",
+            "description": "Tools that automate repetitive tasks in work or studies—think data entry, file organization, email management, or report generation"
+          },
+          "optimization": {
+            "title": "Routine Optimizer",
+            "description": "Apps that optimize daily routines—morning preparation, meal planning, commute coordination, or task scheduling"
+          },
+          "assistant": {
+            "title": "Smart Assistants",
+            "description": "Intelligent assistants that streamline processes—form filling, appointment booking, decision-making helpers, or information aggregators"
+          }
+        },
+        "keyPoint": "Remember: The goal is not to build a complete product, but to demonstrate a creative approach to solving a time-saving problem using Cursor effectively."
+      },
+      "format": {
+        "title": "Today's Schedule",
+        "subtitle": "Building, learning, and presenting",
+        "timelineTitle": "Agenda",
+        "timeline": {
+          "reception": {
+            "time": "10:45 AM",
+            "title": "Reception",
+            "description": "Welcome and setup"
+          },
+          "keynote": {
+            "time": "11:15 AM",
+            "title": "Keynotes & Brunch",
+            "description": "Cursor overview and networking over brunch"
+          },
+          "start": {
+            "time": "12:00 PM",
+            "title": "Building Time Starts",
+            "description": "Begin working on your time-saving solution"
+          },
+          "end": {
+            "time": "2:00 PM",
+            "title": "Building Ends & Presentations",
+            "description": "2-minute pitches from each team"
+          },
+          "closing": {
+            "time": "2:30 PM",
+            "title": "Closing & Winners",
+            "description": "Voting results and event wrap-up"
+          }
+        },
+        "toolsTitle": "What you need",
+        "toolsDescription": "Make sure you have:",
+        "tools": {
+          "laptop": "Laptop (charged) + charger",
+          "hotspot": "Mobile hotspot ready",
+          "cursor": "Cursor installed",
+          "attitude": "Creative mindset!"
+        }
+      },
+      "evaluation": {
+        "title": "Prizes & Recognition",
+        "subtitle": "Top 3 teams win Cursor credits",
+        "description": "At the end of the event, all participants will vote for their favorite solutions. The top 3 projects with the most votes win Cursor credits!",
+        "prize": "Cursor credits for the top 3 winning teams"
+      },
+      "guidelines": {
+        "title": "How Voting Works",
+        "subtitle": "Participants decide the winners through group approval",
+        "votingProcess": {
+          "title": "Voting Process",
+          "description": "After the building phase ends, each team will present their solution. All participants will then vote for their favorite projects to determine the winners.",
+          "steps": {
+            "presentations": {
+              "title": "2-Minute Pitches",
+              "description": "Each team has exactly 2 minutes to pitch their solution and demo what they built"
+            },
+            "voting": {
+              "title": "Participant Voting",
+              "description": "All participants vote for their favorite solutions (you can't vote for your own team)"
+            },
+            "winners": {
+              "title": "Top 3 Teams Win",
+              "description": "The 3 teams with the most votes receive Cursor credits"
+            }
+          }
+        },
+        "criteriaTitle": "What Should You Focus On?",
+        "criteriaImportant": "Important: Solution completeness is NOT the priority. We value creative approach and effective use of Cursor over having a finished product!",
+        "criteria": {
+          "creativity": {
+            "title": "Creative Approach & Innovation",
+            "description": "How creative and innovative is your solution? Did you think outside the box?",
+            "priority": "High Priority"
+          },
+          "cursorUsage": {
+            "title": "Effective Use of Cursor & AI",
+            "description": "How well did you leverage Cursor and AI tools to accelerate your development?",
+            "priority": "High Priority"
+          },
+          "impact": {
+            "title": "Time-Saving Potential",
+            "description": "How effectively could this solution save time if fully developed?",
+            "priority": "Medium Priority"
+          },
+          "presentation": {
+            "title": "Clear Communication",
+            "description": "How well did you explain your idea and demonstrate your progress?",
+            "priority": "Medium Priority"
+          }
+        }
+      },
+      "cta": {
+        "title": "Community",
+        "description": "Connect with other participants in our WhatsApp community for questions, team formation, and ongoing collaboration.",
+        "button": "Join WhatsApp Community",
+        "updates": "Real-time event updates",
+        "context": "Ask questions about the challenge",
+        "community": "Share ideas and connect with others"
+      },
+      "meta": {
+        "title": "Hackathon 01 - October 4, 2025",
+        "description": "Join us for an experimental 2-hour AI-powered hackathon in El Salvador. Build solutions that save time using Cursor and emerging technologies."
+      }
+    }
   }
 }

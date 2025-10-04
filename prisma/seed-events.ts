@@ -7,23 +7,23 @@ async function seedEvents() {
   // Create a single event with localized content
   const event = await prisma.event.create({
     data: {
-      slug: 'cursor-meetup-01',
+      slug: 'hackathon-sv-01',
       isActive: true,
-      maxImages: 20,
-      endsAt: new Date('2025-08-13T23:59:59.999Z'), // August 13th, 2025
+      maxImages: 50,
+      endsAt: new Date('2025-10-31T23:59:59.999Z'), // October 31st, 2025
       content: {
         create: [
           {
             language: 'en',
-            title: 'Cursor Meetup - 01',
+            title: 'Hackathon SV - 01',
             description:
-              'Welcome to the first Cursor meetup in El Salvador. Capture and share your moments from the event!',
+              'Welcome to the first Hackathon in El Salvador! Capture and share your innovative projects and team moments.',
           },
           {
             language: 'es',
-            title: 'Cursor Meetup - 01',
+            title: 'Hackathon SV - 01',
             description:
-              '¡Bienvenido al primer meetup de Cursor en El Salvador. ¡Comparte tus momentos con la comunidad!',
+              '¡Bienvenido al primer Hackathon en El Salvador! Captura y comparte tus proyectos innovadores y momentos con tu equipo.',
           },
         ],
       },
