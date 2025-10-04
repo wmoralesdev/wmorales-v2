@@ -2,7 +2,7 @@ import { ImageResponse } from '@vercel/og';
 import { prisma } from '@/lib/prisma';
 
 export async function GET(
-  request: Request,
+  _request: Request,
   context: { params: Promise<{ code: string }> }
 ) {
   try {

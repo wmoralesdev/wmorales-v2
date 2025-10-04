@@ -72,10 +72,7 @@ export async function middleware(request: NextRequest) {
 
   // Step 7: Refresh user session
   // Retrieve current user to refresh the session and update cookies
-  const {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    data: { user },
-  } = await supabase.auth.getUser();
+  await supabase.auth.getUser();
 
   // Step 8: Handle authentication callback route
   // Allow auth callback to proceed without additional processing

@@ -4,7 +4,7 @@ const prisma = new PrismaClient();
 
 async function main() {
   // Create a contact info survey
-  const _survey = await prisma.survey.create({
+  await prisma.survey.create({
     data: {
       title: 'Contact Information Survey',
       description: 'Please share your contact details so we can get in touch.',

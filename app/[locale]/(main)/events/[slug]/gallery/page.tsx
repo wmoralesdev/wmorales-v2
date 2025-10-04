@@ -1,3 +1,4 @@
+import type { EventContent } from '@prisma/client';
 import { setRequestLocale } from 'next-intl/server';
 import { notFound } from 'next/navigation';
 import { getEventBySlug } from '@/app/actions/events.actions';
@@ -15,7 +16,8 @@ export async function generateMetadata({ params }: Props) {
   try {
     const event = await getEventBySlug(slug);
     const eventContent =
-      event.content.find((c) => c.language === locale) || event.content[0];
+      event.content.find((c: EventContent) => c.language === locale) ||
+      event.content[0];
 
     return {
       title: `${eventContent.title} - Gallery`,
@@ -41,7 +43,8 @@ export default async function EventGalleryPage({ params }: Props) {
 
     // Get the localized content
     const eventContent =
-      event.content.find((c) => c.language === locale) || event.content[0];
+      event.content.find((c: EventContent) => c.language === locale) ||
+      event.content[0];
 
     return (
       <>
