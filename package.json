@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "vercel-build": "next build && pnpm prisma generate",
+    "postbuild": "pnpm prisma generate",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
