@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 
+// Force dynamic rendering and disable all caching for this route
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 // Generate HTML page with OG metadata
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 function generateOGPage(shortUrl: any, baseUrl: string): string {
@@ -231,22 +235,6 @@ export async function GET(
         console.error('Failed to increment click counter:', error);
       });
 
-    // Generate ETag based on updatedAt timestamp + destination URL
-    // This ensures cache is invalidated when the redirect target changes
-    const etag = `"${shortUrlEntry.updatedAt.getTime()}-${Buffer.from(shortUrlEntry.url).toString('base64').substring(0, 16)}"`;
-
-    // Check if client has the current version cached
-    const ifNoneMatch = request.headers.get('if-none-match');
-    if (ifNoneMatch === etag) {
-      return new NextResponse(null, {
-        status: 304,
-        headers: {
-          'ETag': etag,
-          'Cache-Control': 'public, max-age=300, must-revalidate',
-        },
-      });
-    }
-
     // Check if the request is from a bot/crawler that needs OG metadata
     const userAgent = request.headers.get('user-agent') || '';
     const isBot =
@@ -265,27 +253,30 @@ export async function GET(
       shortUrlEntry.image
     ) {
       // Return HTML with OG metadata for bots or if custom metadata is set
-      // Reduced cache time to 5 minutes for faster invalidation
+      // Use s-maxage=0 to bypass Vercel Edge Cache, but allow browser cache for 60s
       return new NextResponse(generateOGPage(shortUrlEntry, baseUrl), {
         headers: {
           'Content-Type': 'text/html',
-          'Cache-Control': 'public, max-age=300, must-revalidate',
-          'ETag': etag,
-          'Last-Modified': shortUrlEntry.updatedAt.toUTCString(),
+          'Cache-Control': 'public, max-age=60, s-maxage=0, must-revalidate',
+          'CDN-Cache-Control': 'no-store',
+          'Vercel-CDN-Cache-Control': 'no-store',
         },
       });
     }
 
     // For regular browsers without custom metadata, do a direct redirect
-    // Use 307 (Temporary Redirect) to prevent indefinite browser caching
+    // Use 302 (Found) to prevent any caching by Vercel's edge or browsers
     const response = NextResponse.redirect(shortUrlEntry.url, {
-      status: 307,
+      status: 302,
     });
 
-    // Add cache headers that allow caching but require revalidation
-    response.headers.set('Cache-Control', 'public, max-age=300, must-revalidate');
-    response.headers.set('ETag', etag);
-    response.headers.set('Last-Modified', shortUrlEntry.updatedAt.toUTCString());
+    // Aggressive cache control to bypass Vercel Edge Cache completely
+    // s-maxage=0: Don't cache at Vercel edge
+    // max-age=0: Don't cache in browser (always revalidate)
+    // must-revalidate: Force revalidation
+    response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=0, must-revalidate');
+    response.headers.set('CDN-Cache-Control', 'no-store');
+    response.headers.set('Vercel-CDN-Cache-Control', 'no-store');
 
     return response;
   } catch (error) {
