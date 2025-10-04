@@ -1,8 +1,6 @@
 import { ImageResponse } from '@vercel/og';
 import { prisma } from '@/lib/prisma';
 
-// Cannot use Edge Runtime with Prisma - using Node.js runtime instead
-
 export async function GET(
   request: Request,
   context: { params: Promise<{ code: string }> }

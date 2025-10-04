@@ -5,10 +5,10 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
+    "vercel-build": "next build && pnpm prisma generate",
     "start": "next start",
     "lint": "next lint",
     "format": "prettier --write .",
-    "postinstall": "pnpm dlx prisma generate",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:migrate:deploy": "prisma migrate deploy",

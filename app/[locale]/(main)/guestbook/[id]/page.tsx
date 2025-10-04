@@ -3,8 +3,7 @@ import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import { getTranslations, setRequestLocale } from 'next-intl/server';
 import { Sparkles } from 'lucide-react';
-import { getAllTickets, getTicketById } from '@/app/actions/guestbook.actions';
-import { routing } from '@/i18n/routing';
+import { getTicketById } from '@/app/actions/guestbook.actions';
 import { UserTicket } from '@/components/guestbook/user-ticket';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
@@ -13,23 +12,6 @@ import { createMetadata, siteConfig } from '@/lib/metadata';
 type Props = {
   params: Promise<{ locale: string; id: string }>;
 };
-
-export async function generateStaticParams() {
-  try {
-    const tickets = await getAllTickets();
-
-    // Generate params for all locales and all tickets
-    return routing.locales.flatMap((locale) =>
-      tickets.map((ticket) => ({
-        locale,
-        id: ticket.id,
-      }))
-    );
-  } catch (error) {
-    // Error generating static params for guestbook tickets
-    return [];
-  }
-}
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, id } = await params;

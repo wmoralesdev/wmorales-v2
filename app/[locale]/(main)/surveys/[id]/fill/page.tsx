@@ -1,12 +1,8 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { setRequestLocale } from 'next-intl/server';
-import {
-  getActiveSurveys,
-  getSurveyWithSections,
-} from '@/app/actions/survey.actions';
+import { getSurveyWithSections } from '@/app/actions/survey.actions';
 import { SurveyRenderer } from '@/components/surveys/survey-renderer';
-import { routing } from '@/i18n/routing';
 import { createMetadata, siteConfig } from '@/lib/metadata';
 import type { SurveyWithSections } from '@/lib/types/survey.types';
 
@@ -16,28 +12,6 @@ type PageProps = {
     id: string;
   }>;
 };
-
-export async function generateStaticParams() {
-  try {
-    const result = await getActiveSurveys();
-    if (result.error || !result.data) {
-      return [];
-    }
-
-    const surveys = result.data;
-
-    // Generate params for all locales and all surveys
-    return routing.locales.flatMap((locale) =>
-      surveys.map((survey) => ({
-        locale,
-        id: survey.id,
-      }))
-    );
-  } catch (error) {
-    // Error generating static params for surveys
-    return [];
-  }
-}
 
 export async function generateMetadata({
   params,
