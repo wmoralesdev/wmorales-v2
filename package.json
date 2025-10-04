@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "postbuild": "pnpm prisma generate",
+    "postinstall": "pnpm prisma generate",
     "start": "next start",
     "typecheck": "tsc --noEmit",
     "lint": "next lint",
