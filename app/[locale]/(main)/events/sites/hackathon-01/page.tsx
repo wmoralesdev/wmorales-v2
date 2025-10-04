@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import {
   Calendar,
+  Camera,
   Clock,
   Lightbulb,
   MapPin,
@@ -20,12 +22,15 @@ import {
 } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Link } from '@/i18n/navigation';
 
 type Props = {
   params: Promise<{ locale: string }>;
 };
 
 export default async function Hackathon01({ params }: Props) {
+  const slug: string = 'hackathon-sv-01';
+
   const { locale } = await params;
   setRequestLocale(locale);
 
@@ -175,81 +180,61 @@ export default async function Hackathon01({ params }: Props) {
                 <h3 className="text-xl font-semibold text-white">
                   {t('format.timelineTitle')}
                 </h3>
-                <div className="space-y-4">
-                  <div className="flex gap-4">
-                    <div className="flex-shrink-0 w-24">
-                      <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30">
-                        {t('format.timeline.reception.time')}
-                      </Badge>
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-white mb-1">
-                        {t('format.timeline.reception.title')}
-                      </h4>
-                      <p className="text-sm text-gray-400">
-                        {t('format.timeline.reception.description')}
-                      </p>
-                    </div>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
+                  <div className="p-4 rounded-lg bg-purple-500/10 border border-purple-500/20">
+                    <Badge className="bg-purple-500/20 text-purple-300 border-purple-500/30 mb-3">
+                      {t('format.timeline.reception.time')}
+                    </Badge>
+                    <h4 className="font-semibold text-white mb-2">
+                      {t('format.timeline.reception.title')}
+                    </h4>
+                    <p className="text-sm text-gray-400">
+                      {t('format.timeline.reception.description')}
+                    </p>
                   </div>
-                  <div className="flex gap-4">
-                    <div className="flex-shrink-0 w-24">
-                      <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30">
-                        {t('format.timeline.keynote.time')}
-                      </Badge>
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-white mb-1">
-                        {t('format.timeline.keynote.title')}
-                      </h4>
-                      <p className="text-sm text-gray-400">
-                        {t('format.timeline.keynote.description')}
-                      </p>
-                    </div>
+                  <div className="p-4 rounded-lg bg-blue-500/10 border border-blue-500/20">
+                    <Badge className="bg-blue-500/20 text-blue-300 border-blue-500/30 mb-3">
+                      {t('format.timeline.keynote.time')}
+                    </Badge>
+                    <h4 className="font-semibold text-white mb-2">
+                      {t('format.timeline.keynote.title')}
+                    </h4>
+                    <p className="text-sm text-gray-400">
+                      {t('format.timeline.keynote.description')}
+                    </p>
                   </div>
-                  <div className="flex gap-4">
-                    <div className="flex-shrink-0 w-24">
-                      <Badge className="bg-green-500/20 text-green-300 border-green-500/30">
-                        {t('format.timeline.start.time')}
-                      </Badge>
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-white mb-1">
-                        {t('format.timeline.start.title')}
-                      </h4>
-                      <p className="text-sm text-gray-400">
-                        {t('format.timeline.start.description')}
-                      </p>
-                    </div>
+                  <div className="p-4 rounded-lg bg-green-500/10 border border-green-500/20">
+                    <Badge className="bg-green-500/20 text-green-300 border-green-500/30 mb-3">
+                      {t('format.timeline.start.time')}
+                    </Badge>
+                    <h4 className="font-semibold text-white mb-2">
+                      {t('format.timeline.start.title')}
+                    </h4>
+                    <p className="text-sm text-gray-400">
+                      {t('format.timeline.start.description')}
+                    </p>
                   </div>
-                  <div className="flex gap-4">
-                    <div className="flex-shrink-0 w-24">
-                      <Badge className="bg-orange-500/20 text-orange-300 border-orange-500/30">
-                        {t('format.timeline.end.time')}
-                      </Badge>
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-white mb-1">
-                        {t('format.timeline.end.title')}
-                      </h4>
-                      <p className="text-sm text-gray-400">
-                        {t('format.timeline.end.description')}
-                      </p>
-                    </div>
+                  <div className="p-4 rounded-lg bg-orange-500/10 border border-orange-500/20">
+                    <Badge className="bg-orange-500/20 text-orange-300 border-orange-500/30 mb-3">
+                      {t('format.timeline.end.time')}
+                    </Badge>
+                    <h4 className="font-semibold text-white mb-2">
+                      {t('format.timeline.end.title')}
+                    </h4>
+                    <p className="text-sm text-gray-400">
+                      {t('format.timeline.end.description')}
+                    </p>
                   </div>
-                  <div className="flex gap-4">
-                    <div className="flex-shrink-0 w-24">
-                      <Badge className="bg-pink-500/20 text-pink-300 border-pink-500/30">
-                        {t('format.timeline.closing.time')}
-                      </Badge>
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-white mb-1">
-                        {t('format.timeline.closing.title')}
-                      </h4>
-                      <p className="text-sm text-gray-400">
-                        {t('format.timeline.closing.description')}
-                      </p>
-                    </div>
+                  <div className="p-4 rounded-lg bg-pink-500/10 border border-pink-500/20">
+                    <Badge className="bg-pink-500/20 text-pink-300 border-pink-500/30 mb-3">
+                      {t('format.timeline.closing.time')}
+                    </Badge>
+                    <h4 className="font-semibold text-white mb-2">
+                      {t('format.timeline.closing.title')}
+                    </h4>
+                    <p className="text-sm text-gray-400">
+                      {t('format.timeline.closing.description')}
+                    </p>
                   </div>
                 </div>
               </div>
@@ -459,44 +444,90 @@ export default async function Hackathon01({ params }: Props) {
           </Card>
         </div>
 
-        {/* WhatsApp CTA */}
-        <Card className="border-green-500/20 bg-gradient-to-br from-green-500/5 to-emerald-500/5">
-          <CardHeader>
-            <CardTitle className="text-2xl flex items-center gap-2">
-              <MessageCircle className="h-6 w-6 text-green-400" />
-              {t('cta.title')}
-            </CardTitle>
-            <CardDescription className="text-base">
-              {t('cta.description')}
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-3">
-              <div className="flex items-start gap-3">
-                <div className="h-2 w-2 rounded-full bg-green-400 mt-2" />
-                <p className="text-gray-300 text-sm">{t('cta.updates')}</p>
+        {/* Community CTAs */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* WhatsApp Community */}
+          <Card className="border-green-500/20 bg-gradient-to-br from-green-500/5 to-emerald-500/5">
+            <CardHeader>
+              <CardTitle className="text-2xl flex items-center gap-2">
+                <MessageCircle className="h-6 w-6 text-green-400" />
+                {t('cta.title')}
+              </CardTitle>
+              <CardDescription className="text-base">
+                {t('cta.description')}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="h-2 w-2 rounded-full bg-green-400 mt-2 flex-shrink-0" />
+                  <p className="text-gray-300 text-sm">{t('cta.updates')}</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="h-2 w-2 rounded-full bg-green-400 mt-2 flex-shrink-0" />
+                  <p className="text-gray-300 text-sm">{t('cta.context')}</p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="h-2 w-2 rounded-full bg-green-400 mt-2 flex-shrink-0" />
+                  <p className="text-gray-300 text-sm">{t('cta.community')}</p>
+                </div>
               </div>
-              <div className="flex items-start gap-3">
-                <div className="h-2 w-2 rounded-full bg-green-400 mt-2" />
-                <p className="text-gray-300 text-sm">{t('cta.context')}</p>
-              </div>
-              <div className="flex items-start gap-3">
-                <div className="h-2 w-2 rounded-full bg-green-400 mt-2" />
-                <p className="text-gray-300 text-sm">{t('cta.community')}</p>
-              </div>
-            </div>
 
-            <a
-              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-green-500 hover:bg-green-600 text-white font-medium transition-colors"
-              href="https://wmorales.dev/r/whatsapp-community"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              <MessageCircle className="h-5 w-5" />
-              {t('cta.button')}
-            </a>
-          </CardContent>
-        </Card>
+              <a
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-green-500 hover:bg-green-600 text-white font-medium transition-colors w-full sm:w-auto"
+                href="https://wmorales.dev/r/whatsapp-community"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                <MessageCircle className="h-5 w-5" />
+                {t('cta.button')}
+              </a>
+            </CardContent>
+          </Card>
+
+          {/* Additional Platform - TBD */}
+          <Card className="border-purple-500/20 bg-gradient-to-br from-purple-500/5 to-pink-500/5">
+            <CardHeader>
+              <CardTitle className="text-2xl flex items-center gap-2">
+                <Camera className="h-6 w-6 text-purple-400" />
+                {t('camera.title')}
+              </CardTitle>
+              <CardDescription className="text-base">
+                {t('camera.description')}
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-3">
+                <div className="flex items-start gap-3">
+                  <div className="h-2 w-2 rounded-full bg-purple-400 mt-2 flex-shrink-0" />
+                  <p className="text-gray-300 text-sm">
+                    {t('camera.updates01')}
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="h-2 w-2 rounded-full bg-purple-400 mt-2 flex-shrink-0" />
+                  <p className="text-gray-300 text-sm">
+                    {t('camera.updates02')}
+                  </p>
+                </div>
+                <div className="flex items-start gap-3">
+                  <div className="h-2 w-2 rounded-full bg-purple-400 mt-2 flex-shrink-0" />
+                  <p className="text-gray-300 text-sm">
+                    {t('camera.updates03')}
+                  </p>
+                </div>
+              </div>
+
+              <Link
+                className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-lg bg-purple-500 hover:bg-purple-600 text-white font-medium transition-colors w-full sm:w-auto"
+                href={`/events/${slug}` as any}
+              >
+                <Camera className="h-5 w-5" />
+                {t('camera.button')}
+              </Link>
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </div>
   );

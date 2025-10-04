@@ -626,6 +626,15 @@
         "context": "Ask questions about the challenge",
         "community": "Share ideas and connect with others"
       },
+      "camera": {
+        "title": "Capture the Moment",
+        "description": "Share your moments with the community, your style is unique and valuable. You can share:",
+        "updates01": "Updates of your progress",
+        "updates02": "How you enjoyed the event",
+        "updates03": "Food and the location",
+        "community": "Share ideas and connect with others",
+        "button": "Upload photos"
+      },
       "meta": {
         "title": "Hackathon 01 - October 4, 2025",
         "description": "Join us for an experimental 2-hour AI-powered hackathon in El Salvador. Build solutions that save time using Cursor and emerging technologies."

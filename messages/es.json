@@ -607,6 +607,15 @@
         "context": "Haz preguntas sobre el reto",
         "community": "Comparte ideas y conéctate con otros"
       },
+      "camera": {
+        "title": "Captura el momento",
+        "description": "Comparte tus momentos con la comunidad, tu estilo es único y valioso. Puedes compartir:",
+        "updates01": "Actualizaciones de tu progreso",
+        "updates02": "Como disfrutaste el evento",
+        "updates03": "Comida y la ubicación",
+        "community": "Comparte ideas y conéctate con otros",
+        "button": "Subir fotos"
+      },
       "meta": {
         "title": "Hackatón 01 - 4 de octubre, 2025",
         "description": "Únete a nosotros para una hackatón experimental de 2 horas impulsada por IA en El Salvador. Construye soluciones que ahorren tiempo usando Cursor y tecnologías emergentes."
