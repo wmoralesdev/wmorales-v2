@@ -231,6 +231,22 @@ export async function GET(
         console.error('Failed to increment click counter:', error);
       });
 
+    // Generate ETag based on updatedAt timestamp + destination URL
+    // This ensures cache is invalidated when the redirect target changes
+    const etag = `"${shortUrlEntry.updatedAt.getTime()}-${Buffer.from(shortUrlEntry.url).toString('base64').substring(0, 16)}"`;
+
+    // Check if client has the current version cached
+    const ifNoneMatch = request.headers.get('if-none-match');
+    if (ifNoneMatch === etag) {
+      return new NextResponse(null, {
+        status: 304,
+        headers: {
+          'ETag': etag,
+          'Cache-Control': 'public, max-age=300, must-revalidate',
+        },
+      });
+    }
+
     // Check if the request is from a bot/crawler that needs OG metadata
     const userAgent = request.headers.get('user-agent') || '';
     const isBot =
@@ -249,18 +265,29 @@ export async function GET(
       shortUrlEntry.image
     ) {
       // Return HTML with OG metadata for bots or if custom metadata is set
+      // Reduced cache time to 5 minutes for faster invalidation
       return new NextResponse(generateOGPage(shortUrlEntry, baseUrl), {
         headers: {
           'Content-Type': 'text/html',
-          'Cache-Control': 'public, max-age=3600, stale-while-revalidate=86400',
+          'Cache-Control': 'public, max-age=300, must-revalidate',
+          'ETag': etag,
+          'Last-Modified': shortUrlEntry.updatedAt.toUTCString(),
         },
       });
     }
 
     // For regular browsers without custom metadata, do a direct redirect
-    return NextResponse.redirect(shortUrlEntry.url, {
-      status: 301, // Permanent redirect for better performance
+    // Use 307 (Temporary Redirect) to prevent indefinite browser caching
+    const response = NextResponse.redirect(shortUrlEntry.url, {
+      status: 307,
     });
+
+    // Add cache headers that allow caching but require revalidation
+    response.headers.set('Cache-Control', 'public, max-age=300, must-revalidate');
+    response.headers.set('ETag', etag);
+    response.headers.set('Last-Modified', shortUrlEntry.updatedAt.toUTCString());
+
+    return response;
   } catch (error) {
     console.error('Error processing redirect:', error);
 
