@@ -29,7 +29,7 @@ const EASE_CUBIC_BEZIER = [
   EASE_CUBIC_BEZIER_Y1,
   EASE_CUBIC_BEZIER_X2,
   EASE_CUBIC_BEZIER_Y2,
-];
+] as const;
 const UNDERLINE_DURATION = 0.3;
 const MENU_DURATION = 0.6;
 const MENU_ITEM_DURATION = 0.5;
@@ -62,7 +62,7 @@ function DesktopNavItem({ href, label, pathname, t }: DesktopNavItemProps) {
       key={href}
       variants={menuItemVariants}
     >
-      <NavigationMenuLink className="relative" href={href} key={href}>
+      <NavigationMenuLink className="relative" href={href as any} key={href}>
         <Button
           className={cn(
             "relative cursor-pointer font-medium text-sm transition-colors",
@@ -110,7 +110,7 @@ function MobileNavItem({
   t,
 }: MobileNavItemProps) {
   return (
-    <Link href={href} onClick={onClose}>
+    <Link href={href as any} onClick={onClose}>
       <Button
         className={cn(
           "w-full justify-start",
