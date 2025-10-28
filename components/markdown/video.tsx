@@ -8,6 +8,7 @@ type VideoProps = {
 export function Video({ src, title, poster, captions }: VideoProps) {
   return (
     <div className="my-8">
+      {/* biome-ignore lint/a11y/useMediaCaption: Track element provided conditionally */}
       <video
         className="w-full rounded-lg shadow-lg"
         controls
