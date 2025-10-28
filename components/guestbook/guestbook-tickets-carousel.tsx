@@ -16,6 +16,10 @@ import {
 import { useGuestbookRealtime } from "@/hooks/use-guestbook-realtime";
 import type { TicketData } from "@/lib/types/guestbook.types";
 
+// Constants
+const ANIMATION_DELAY_INCREMENT_MS = 50;
+const MAX_ANIMATION_DELAY_MS = 300;
+
 type GuestbookTicketsCarouselProps = {
   initialTickets?: TicketData[];
   maxTickets?: number;
@@ -109,7 +113,12 @@ export function GuestbookTicketsCarousel({
                 >
                   <div
                     className="animate-fade-in-up"
-                    style={{ animationDelay: `${Math.min(index * 50, 300)}ms` }}
+                    style={{
+                      animationDelay: `${Math.min(
+                        index * ANIMATION_DELAY_INCREMENT_MS,
+                        MAX_ANIMATION_DELAY_MS
+                      )}ms`,
+                    }}
                   >
                     <UserTicket
                       colors={{

@@ -2,6 +2,9 @@ import { Github, Mail, Sparkles, User } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 
+// Constants
+const TIMESTAMP_SLICE_LENGTH = 6;
+
 type UserTicketProps = {
   user: {
     id: string;
@@ -192,7 +195,8 @@ export function UserTicket({
                         WebkitTextFillColor: "transparent",
                       }}
                     >
-                      #{ticketNumber || `${Date.now().toString().slice(-6)}`}
+                      #{ticketNumber ||
+                        `${Date.now().toString().slice(-TIMESTAMP_SLICE_LENGTH)}`}
                     </span>
                   </div>
                 </div>
