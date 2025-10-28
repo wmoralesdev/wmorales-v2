@@ -251,12 +251,15 @@ export function getReadingTime(content: string): {
   minutes: number;
   words: number;
 } {
+  // Constants
+  const WORDS_PER_MINUTE = 200;
+
   const plainText = content
     .replace(/[#*`_~[\]()]/g, "")
     .replace(/\s+/g, " ")
     .trim();
   const words = plainText.split(" ").filter((word) => word.length > 0).length;
-  const minutes = Math.ceil(words / 200); // Average reading speed
+  const minutes = Math.ceil(words / WORDS_PER_MINUTE); // Average reading speed
 
   return {
     text: `${minutes} min read`,

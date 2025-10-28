@@ -1,6 +1,9 @@
 import { useEffect, useRef } from "react";
 import { broadcastActiveUsers } from "@/lib/supabase/realtime";
 
+// Constants
+const BROADCAST_INTERVAL_MS = 10_000;
+
 export function usePollPresence(pollCode: string, activeUsersCount: number) {
   const broadcastIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const lastCountRef = useRef<number>(0);
@@ -15,7 +18,7 @@ export function usePollPresence(pollCode: string, activeUsersCount: number) {
     // Set up interval to broadcast periodically
     broadcastIntervalRef.current = setInterval(() => {
       broadcastActiveUsers(pollCode, activeUsersCount);
-    }, 10_000); // Broadcast every 10 seconds
+    }, BROADCAST_INTERVAL_MS); // Broadcast every 10 seconds
 
     return () => {
       if (broadcastIntervalRef.current) {

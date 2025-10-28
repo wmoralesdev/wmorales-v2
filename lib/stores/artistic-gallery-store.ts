@@ -1,6 +1,9 @@
 import { create } from "zustand";
 import type { ExtendedEventImage } from "@/lib/types/event.types";
 
+// Constants
+const TRANSITION_DURATION_MS = 1000;
+
 type ArtisticGalleryState = {
   // UI States
   images: ExtendedEventImage[];
@@ -52,7 +55,7 @@ export const useArtisticGalleryStore = create<ArtisticGalleryState>(
       set({ isTransitioning: true, showGallery: true });
       setTimeout(() => {
         set({ isTransitioning: false });
-      }, 1000);
+      }, TRANSITION_DURATION_MS);
     },
 
     resetState: () => set(initialState),
