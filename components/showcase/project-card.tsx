@@ -14,6 +14,10 @@ import {
 import { type Project, ProjectStatus } from "@/lib/types/showcase.types";
 import { cn } from "@/lib/utils";
 
+// Constants
+const MAX_TECH_DISPLAY = 5;
+const ANIMATION_DURATION = 300;
+
 type ProjectCardProps = {
   project: Project;
 };
@@ -67,14 +71,14 @@ export function ProjectCard({ project }: ProjectCardProps) {
       <CardContent className="flex flex-1 flex-col gap-4">
         {/* Technologies */}
         <div className="flex flex-wrap gap-1.5">
-          {project.technologies.slice(0, 5).map((tech) => (
+          {project.technologies.slice(0, MAX_TECH_DISPLAY).map((tech) => (
             <Badge className="text-xs" key={tech.name} variant="secondary">
               {tech.name}
             </Badge>
           ))}
-          {project.technologies.length > 5 && (
+          {project.technologies.length > MAX_TECH_DISPLAY && (
             <Badge className="text-xs" variant="secondary">
-              +{project.technologies.length - 5}
+              +{project.technologies.length - MAX_TECH_DISPLAY}
             </Badge>
           )}
         </div>
