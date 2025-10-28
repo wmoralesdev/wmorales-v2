@@ -104,6 +104,81 @@ async function generateUniqueCode(): Promise<string | null> {
   return null;
 }
 
+async function getOrCreateShortUrl(
+  url: string,
+  customCode: string | undefined,
+  title: string | undefined,
+  description: string | undefined,
+  image: string | undefined,
+  expiresInDays: number | undefined,
+  code: string,
+  request: NextRequest
+): Promise<NextResponse> {
+  // Check if URL already exists with same metadata
+  if (!customCode) {
+    const existingShortUrl = await prisma.shortUrl.findFirst({
+      where: {
+        url,
+        title: title || null,
+        description: description || null,
+        image: image || null,
+      },
+      orderBy: { createdAt: "desc" },
+    });
+
+    if (
+      existingShortUrl &&
+      (!existingShortUrl.expiresAt || existingShortUrl.expiresAt > new Date())
+    ) {
+      // Return existing non-expired short URL
+      const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || request.headers.get("host")}/r/${existingShortUrl.code}`;
+
+      return NextResponse.json({
+        shortUrl,
+        code: existingShortUrl.code,
+        originalUrl: existingShortUrl.url,
+        title: existingShortUrl.title,
+        description: existingShortUrl.description,
+        image: existingShortUrl.image,
+        clicks: existingShortUrl.clicks,
+        createdAt: existingShortUrl.createdAt,
+        expiresAt: existingShortUrl.expiresAt,
+      });
+    }
+  }
+
+  // Calculate expiration date if provided
+  const expiresAt = expiresInDays
+    ? new Date(Date.now() + expiresInDays * MILLISECONDS_PER_DAY)
+    : undefined;
+
+  // Create new short URL with OG metadata
+  const shortUrlEntry = await prisma.shortUrl.create({
+    data: {
+      code,
+      url,
+      title: title || null,
+      description: description || null,
+      image: image || null,
+      expiresAt,
+    },
+  });
+
+  const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || request.headers.get("host")}/r/${shortUrlEntry.code}`;
+
+  return NextResponse.json({
+    shortUrl,
+    code: shortUrlEntry.code,
+    originalUrl: shortUrlEntry.url,
+    title: shortUrlEntry.title,
+    description: shortUrlEntry.description,
+    image: shortUrlEntry.image,
+    clicks: 0,
+    createdAt: shortUrlEntry.createdAt,
+    expiresAt: shortUrlEntry.expiresAt,
+  });
+}
+
 export async function POST(request: NextRequest) {
   try {
     // Check API key
@@ -141,69 +216,17 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    // Check if URL already exists with same metadata
-    if (!customCode) {
-      const existingShortUrl = await prisma.shortUrl.findFirst({
-        where: {
-          url,
-          title: title || null,
-          description: description || null,
-          image: image || null,
-        },
-        orderBy: { createdAt: "desc" },
-      });
-
-      if (
-        existingShortUrl &&
-        (!existingShortUrl.expiresAt || existingShortUrl.expiresAt > new Date())
-      ) {
-        // Return existing non-expired short URL
-        const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || request.headers.get("host")}/r/${existingShortUrl.code}`;
-
-        return NextResponse.json({
-          shortUrl,
-          code: existingShortUrl.code,
-          originalUrl: existingShortUrl.url,
-          title: existingShortUrl.title,
-          description: existingShortUrl.description,
-          image: existingShortUrl.image,
-          clicks: existingShortUrl.clicks,
-          createdAt: existingShortUrl.createdAt,
-          expiresAt: existingShortUrl.expiresAt,
-        });
-      }
-    }
-
-    // Calculate expiration date if provided
-    const expiresAt = expiresInDays
-      ? new Date(Date.now() + expiresInDays * MILLISECONDS_PER_DAY)
-      : undefined;
-
-    // Create new short URL with OG metadata
-    const shortUrlEntry = await prisma.shortUrl.create({
-      data: {
-        code,
-        url,
-        title: title || null,
-        description: description || null,
-        image: image || null,
-        expiresAt,
-      },
-    });
-
-    const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || request.headers.get("host")}/r/${shortUrlEntry.code}`;
-
-    return NextResponse.json({
-      shortUrl,
-      code: shortUrlEntry.code,
-      originalUrl: shortUrlEntry.url,
-      title: shortUrlEntry.title,
-      description: shortUrlEntry.description,
-      image: shortUrlEntry.image,
-      clicks: 0,
-      createdAt: shortUrlEntry.createdAt,
-      expiresAt: shortUrlEntry.expiresAt,
-    });
+    // Get or create short URL
+    return await getOrCreateShortUrl(
+      url,
+      customCode,
+      title,
+      description,
+      image,
+      expiresInDays,
+      code,
+      request
+    );
   } catch (error) {
     console.error("Error creating short URL:", error);
     return NextResponse.json(
