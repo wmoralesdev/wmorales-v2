@@ -8,9 +8,11 @@ import { Button } from "@/components/ui/button";
 export function BackToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
+  const SCROLL_THRESHOLD = 100;
+
   useEffect(() => {
     const handleScroll = () => {
-      setIsVisible(window.scrollY > 100);
+      setIsVisible(window.scrollY > SCROLL_THRESHOLD);
     };
 
     window.addEventListener("scroll", handleScroll);

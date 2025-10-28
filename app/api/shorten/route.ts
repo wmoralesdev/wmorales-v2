@@ -7,12 +7,14 @@ const API_KEY = process.env.URL_SHORTENER_API_KEY;
 
 // Constants
 const CUSTOM_CODE_REGEX = /^[a-zA-Z0-9_-]{3,20}$/;
+const SHORT_CODE_LENGTH = 7;
+const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
 
 // Generate a short, readable code
 // Use a custom alphabet without ambiguous characters (no 0, O, l, I)
 const generateShortCode = customAlphabet(
   "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz",
-  7
+  SHORT_CODE_LENGTH
 );
 
 export async function POST(request: NextRequest) {
@@ -135,7 +137,7 @@ export async function POST(request: NextRequest) {
 
     // Calculate expiration date if provided
     const expiresAt = expiresInDays
-      ? new Date(Date.now() + expiresInDays * 24 * 60 * 60 * 1000)
+      ? new Date(Date.now() + expiresInDays * MILLISECONDS_PER_DAY)
       : undefined;
 
     // Create new short URL with OG metadata

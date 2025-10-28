@@ -9,6 +9,10 @@ import { broadcastEventUpdate } from "@/lib/supabase/realtime-server";
 import { createClient } from "@/lib/supabase/server";
 import type { ExtendedEventImage } from "@/lib/types/event.types";
 
+// Constants
+const MAX_EVENT_IMAGES = 50;
+const DEFAULT_EVENT_IMAGES = 15;
+
 // Validation schemas
 const createEventSchema = z.object({
   slug: z.string().min(1, "Slug is required"),
@@ -21,7 +25,7 @@ const createEventSchema = z.object({
       })
     )
     .min(1, "At least one language content is required"),
-  maxImages: z.number().min(1).max(50).default(15),
+  maxImages: z.number().min(1).max(MAX_EVENT_IMAGES).default(DEFAULT_EVENT_IMAGES),
   endsAt: z.string().datetime().optional(),
 });
 

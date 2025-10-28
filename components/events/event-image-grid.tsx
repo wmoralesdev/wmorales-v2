@@ -6,6 +6,11 @@ import Image from "next/image";
 import { useState } from "react";
 import { ImageLightbox } from "./image-lightbox";
 
+// Constants
+const ANIMATION_DELAY_INCREMENT = 0.02;
+const MAX_ANIMATION_DELAY = 0.3;
+const ANIMATION_DURATION = 0.3;
+
 type EventImageGridProps = {
   images: EventImage[];
   locale: string;
@@ -30,8 +35,11 @@ export function EventImageGrid({ images, locale }: EventImageGridProps) {
             key={image.id}
             onClick={() => handleImageClick(image)}
             transition={{
-              delay: Math.min(index * 0.02, 0.3),
-              duration: 0.3,
+              delay: Math.min(
+                index * ANIMATION_DELAY_INCREMENT,
+                MAX_ANIMATION_DELAY
+              ),
+              duration: ANIMATION_DURATION,
             }}
           >
             <Image

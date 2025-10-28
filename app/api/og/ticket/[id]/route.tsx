@@ -7,6 +7,17 @@ const hexColorRegex = /^#[0-9A-F]{6}$/i;
 // Constants
 const MAX_USER_NAME_LENGTH = 20;
 const MAX_USER_EMAIL_LENGTH = 30;
+const VISUAL_PATTERN_COUNT = 6;
+const MIN_OPACITY = 10;
+const OPACITY_BASE = 100;
+const OPACITY_INCREMENT = 15;
+const OPACITY_MULTIPLIER = 2.55;
+const HEX_PADDING_LENGTH = 2;
+const PATTERN_WIDTH = 4;
+const PATTERN_HEIGHT_BASE = 40;
+const PATTERN_HEIGHT_DECREMENT = 5;
+const PATTERN_BORDER_RADIUS = 2;
+const PATTERN_MARGIN_RIGHT = 4;
 
 export async function GET(
   request: Request,
@@ -350,22 +361,25 @@ export async function GET(
 
             {/* Visual Pattern */}
             <div style={{ display: "flex" }}>
-              {[...new Array(6)].map((_, i) => {
-                const opacity = Math.max(10, 100 - i * 15); // Prevent negative values
-                const opacityHex = Math.floor(opacity * 2.55)
+              {[...new Array(VISUAL_PATTERN_COUNT)].map((_, i) => {
+                const opacity = Math.max(
+                  MIN_OPACITY,
+                  OPACITY_BASE - i * OPACITY_INCREMENT
+                ); // Prevent negative values
+                const opacityHex = Math.floor(opacity * OPACITY_MULTIPLIER)
                   .toString(16)
-                  .padStart(2, "0");
+                  .padStart(HEX_PADDING_LENGTH, "0");
                 return (
                   // biome-ignore lint/suspicious/noArrayIndexKey: Static visual pattern, order never changes
                   <div
                     key={`pattern-${i}`}
                     style={{
                       display: "flex",
-                      width: "4px",
-                      height: `${40 - i * 5}px`,
+                      width: `${PATTERN_WIDTH}px`,
+                      height: `${PATTERN_HEIGHT_BASE - i * PATTERN_HEIGHT_DECREMENT}px`,
                       background: `linear-gradient(to bottom, ${ticket.primaryColor}${opacityHex}, transparent)`,
-                      borderRadius: "2px",
-                      marginRight: "4px",
+                      borderRadius: `${PATTERN_BORDER_RADIUS}px`,
+                      marginRight: `${PATTERN_MARGIN_RIGHT}px`,
                     }}
                   />
                 );
