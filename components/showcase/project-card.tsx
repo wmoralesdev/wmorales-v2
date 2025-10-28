@@ -14,9 +14,9 @@ import {
 import { type Project, ProjectStatus } from "@/lib/types/showcase.types";
 import { cn } from "@/lib/utils";
 
-interface ProjectCardProps {
+type ProjectCardProps = {
   project: Project;
-}
+};
 
 const statusColors: Record<ProjectStatus, string> = {
   [ProjectStatus.IN_PROGRESS]: "bg-yellow-500/10 text-yellow-500",

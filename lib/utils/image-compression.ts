@@ -1,12 +1,12 @@
 import imageCompression from "browser-image-compression";
 
-export interface CompressionOptions {
+export type CompressionOptions = {
   maxSizeMB: number;
   maxWidthOrHeight: number;
   useWebWorker: boolean;
   fileType?: string;
   quality?: number;
-}
+};
 
 /**
  * Determines compression settings based on image file size and dimensions
@@ -136,11 +136,13 @@ export function isValidImageFile(file: File): boolean {
  * @returns string - Formatted file size
  */
 export function formatFileSize(bytes: number): string {
-  if (bytes === 0) return "0 Bytes";
+  if (bytes === 0) {
+    return "0 Bytes";
+  }
 
   const k = 1024;
   const sizes = ["Bytes", "KB", "MB", "GB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-  return Number.parseFloat((bytes / k ** i).toFixed(2)) + " " + sizes[i];
+  return `${Number.parseFloat((bytes / k ** i).toFixed(2))} ${sizes[i]}`;
 }

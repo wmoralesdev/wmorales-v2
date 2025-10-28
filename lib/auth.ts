@@ -6,7 +6,7 @@ export type AuthProvider = "github" | "google";
 export type AuthUser = User;
 
 export class AuthService {
-  private supabase = createClient();
+  private readonly supabase = createClient();
 
   async signInWithProvider(provider: AuthProvider, redirectTo?: string) {
     const { data, error } = await this.supabase.auth.signInWithOAuth({

@@ -26,14 +26,14 @@ import {
   ProjectStatus,
 } from "@/lib/types/showcase.types";
 
-interface ProjectFiltersProps {
+type ProjectFiltersProps = {
   filter: ProjectFilter;
   onFilterChange: (filter: ProjectFilter) => void;
   sort: ProjectSort;
   onSortChange: (sort: ProjectSort) => void;
   totalProjects: number;
   filteredCount: number;
-}
+};
 
 const categoryLabels: Record<ProjectCategory, string> = {
   [ProjectCategory.WEB_APP]: "Web Application",

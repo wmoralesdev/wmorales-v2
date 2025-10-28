@@ -1,6 +1,10 @@
 import { toast } from "sonner";
 import type { ExtendedEventImage } from "@/lib/types/event.types";
 
+// Constants
+const BYTES_PER_KILOBYTE = 1024;
+const KILOBYTES_PER_MEGABYTE = 1024;
+
 // Sort images by creation date (newest first)
 export function sortImagesByDate(
   images: ExtendedEventImage[]
@@ -18,7 +22,9 @@ export function groupImagesByDate(
   return images.reduce(
     (acc, image) => {
       const date = new Date(image.createdAt).toLocaleDateString(locale);
-      if (!acc[date]) acc[date] = [];
+      if (!acc[date]) {
+        acc[date] = [];
+      }
       acc[date].push(image);
       return acc;
     },
@@ -49,7 +55,7 @@ export async function handleShareEvent(
         text: eventDescription || sharePrompt,
         url: eventUrl,
       });
-    } catch (err) {
+    } catch (_err) {
       // User cancelled share, do nothing
     }
   } else {
@@ -82,7 +88,7 @@ export function validateImageFile(
   }
 
   // Check file size
-  const maxSizeBytes = maxSizeMB * 1024 * 1024;
+  const maxSizeBytes = maxSizeMB * KILOBYTES_PER_MEGABYTE * BYTES_PER_KILOBYTE;
   if (file.size > maxSizeBytes) {
     return {
       valid: false,

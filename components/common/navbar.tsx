@@ -34,6 +34,7 @@ const UNDERLINE_DURATION = 0.3;
 const MENU_DURATION = 0.6;
 const MENU_ITEM_DURATION = 0.5;
 const MENU_ITEM_DELAY_INCREMENT = 0.1;
+
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -625,6 +626,7 @@ export function Navbar() {
                           </p>
                           <div className="flex rounded-lg bg-gray-800/50 p-1">
                             <button
+                              type="button"
                               className={cn(
                                 "flex-1 rounded-md px-3 py-1.5 font-medium text-sm transition-all",
                                 locale === "en"
@@ -666,6 +668,7 @@ export function Navbar() {
                               EN
                             </button>
                             <button
+                              type="button"
                               className={cn(
                                 "flex-1 rounded-md px-3 py-1.5 font-medium text-sm transition-all",
                                 locale === "es"

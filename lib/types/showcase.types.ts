@@ -1,4 +1,4 @@
-export interface Project {
+export type Project = {
   id: string;
   title: string;
   description: string;
@@ -23,21 +23,21 @@ export interface Project {
   role?: string;
   team?: TeamMember[];
   achievements?: string[];
-}
+};
 
-export interface Technology {
+export type Technology = {
   name: string;
   icon?: string;
   category: TechCategory;
-}
+};
 
-export interface TeamMember {
+export type TeamMember = {
   name: string;
   role: string;
   avatar?: string;
   linkedin?: string;
   github?: string;
-}
+};
 
 export enum ProjectCategory {
   WEB_APP = "web_app",
@@ -70,16 +70,16 @@ export enum ProjectStatus {
   ARCHIVED = "archived",
 }
 
-export interface ProjectFilter {
+export type ProjectFilter = {
   categories?: ProjectCategory[];
   technologies?: string[];
   statuses?: ProjectStatus[];
   years?: number[];
   featured?: boolean;
   searchQuery?: string;
-}
+};
 
-export interface ProjectSort {
+export type ProjectSort = {
   field: "date" | "title" | "category";
   direction: "asc" | "desc";
-}
+};

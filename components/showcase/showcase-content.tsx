@@ -26,7 +26,9 @@ export function ShowcaseContent() {
         project.title.toLowerCase().includes(query) ||
         project.description.toLowerCase().includes(query) ||
         project.tags.some((tag) => tag.toLowerCase().includes(query));
-      if (!matchesSearch) return false;
+      if (!matchesSearch) {
+        return false;
+      }
     }
 
     if (
@@ -45,7 +47,9 @@ export function ShowcaseContent() {
       const hasMatchingTech = filter.technologies.some((tech) =>
         projectTechNames.includes(tech)
       );
-      if (!hasMatchingTech) return false;
+      if (!hasMatchingTech) {
+        return false;
+      }
     }
 
     if (filter.years?.length && !filter.years.includes(project.year)) {

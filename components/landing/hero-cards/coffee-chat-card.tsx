@@ -9,7 +9,7 @@ import { BaseCard, type BaseCardProps } from "./base-card";
 
 // Type definitions for Google Calendar API
 declare global {
-  interface Window {
+  type Window = {
     calendar?: {
       schedulingButton: {
         load: (options: {
@@ -20,7 +20,7 @@ declare global {
         }) => void;
       };
     };
-  }
+  };
 }
 
 type CoffeeChatCardProps = Omit<BaseCardProps, "children" | "id"> & {

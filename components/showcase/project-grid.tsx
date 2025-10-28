@@ -4,9 +4,9 @@ import { motion, type Variants } from "framer-motion";
 import type { Project } from "@/lib/types/showcase.types";
 import { ProjectCard } from "./project-card";
 
-interface ProjectGridProps {
+type ProjectGridProps = {
   projects: Project[];
-}
+};
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },

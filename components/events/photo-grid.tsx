@@ -60,7 +60,10 @@ export function PhotoGrid({
           key={image.id}
           onClick={() => onImageClick(image, index)}
           transition={{
-            delay: Math.min(index * ANIMATION_DELAY_INCREMENT, MAX_ANIMATION_DELAY),
+            delay: Math.min(
+              index * ANIMATION_DELAY_INCREMENT,
+              MAX_ANIMATION_DELAY
+            ),
           }}
         >
           <Image

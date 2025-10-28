@@ -13,7 +13,10 @@ const MINUTES_PER_HOUR = 60;
 const SECONDS_PER_MINUTE = 60;
 const MILLISECONDS_PER_SECOND = 1000;
 const MILLISECONDS_PER_DAY =
-  HOURS_PER_DAY * MINUTES_PER_HOUR * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND;
+  HOURS_PER_DAY *
+  MINUTES_PER_HOUR *
+  SECONDS_PER_MINUTE *
+  MILLISECONDS_PER_SECOND;
 
 // Generate a short, readable code
 // Use a custom alphabet without ambiguous characters (no 0, O, l, I)

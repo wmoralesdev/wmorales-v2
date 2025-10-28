@@ -17,7 +17,10 @@ const getTime = (): string => {
   hours = hours % MODULO_HOURS || NOON_HOUR;
   return `${hours.toString().padStart(PADDING_LENGTH, PADDING_CHAR)}:${minutes
     .toString()
-    .padStart(PADDING_LENGTH, PADDING_CHAR)}:${seconds.toString().padStart(PADDING_LENGTH, PADDING_CHAR)} ${ampm}`;
+    .padStart(
+      PADDING_LENGTH,
+      PADDING_CHAR
+    )}:${seconds.toString().padStart(PADDING_LENGTH, PADDING_CHAR)} ${ampm}`;
 };
 
 type ClockProps = {

@@ -29,7 +29,9 @@ async function fetchPolls(): Promise<Poll[]> {
   // you'd want to create a server action that can be called from client
   try {
     const response = await fetch("/api/polls");
-    if (!response.ok) throw new Error("Failed to fetch polls");
+    if (!response.ok) {
+      throw new Error("Failed to fetch polls");
+    }
     return await response.json();
   } catch {
     console.error("Error fetching polls");

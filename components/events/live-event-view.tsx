@@ -18,6 +18,9 @@ import { LiveEventHeader } from "./live-event-header";
 import { PhotoCarousel } from "./photo-carousel";
 import { PhotoGrid } from "./photo-grid";
 import { QRCodeDialog } from "./qr-code-dialog";
+
+// Constants
+const PHOTO_SLIDESHOW_INTERVAL_MS = 5000;
 import { getEventUrl, sortImagesByDate } from "./utils";
 
 type LiveEventViewProps = {
@@ -75,15 +78,15 @@ export function LiveEventView({
         if (update.type === "image_uploaded" && update.image) {
           // Add new image to the list
           addEventImage({
-            id: update.image!.id,
+            id: update.image?.id,
             eventId: event.id,
-            profileId: update.image!.profileId,
-            imageUrl: update.image!.imageUrl,
-            caption: update.image!.caption || null,
-            createdAt: new Date(update.image!.createdAt),
+            profileId: update.image?.profileId,
+            imageUrl: update.image?.imageUrl,
+            caption: update.image?.caption || null,
+            createdAt: new Date(update.image?.createdAt),
             profile: {
-              name: update.image!.profile.name,
-              avatar: update.image!.profile.avatar || undefined,
+              name: update.image?.profile.name,
+              avatar: update.image?.profile.avatar || undefined,
             },
           });
         } else if (update.type === "image_deleted" && update.imageId) {
@@ -103,12 +106,14 @@ export function LiveEventView({
 
   // Auto-cycle through photos for live slideshow
   useEffect(() => {
-    if (eventImages.length === 0) return;
+    if (eventImages.length === 0) {
+      return;
+    }
 
     const interval = setInterval(() => {
       const nextIndex = (currentPhotoIndex + 1) % eventImages.length;
       setCurrentPhotoIndex(nextIndex);
-    }, 5000); // Change photo every 5 seconds
+    }, PHOTO_SLIDESHOW_INTERVAL_MS); // Change photo every 5 seconds
 
     return () => clearInterval(interval);
   }, [eventImages.length, currentPhotoIndex, setCurrentPhotoIndex]);
@@ -117,7 +122,7 @@ export function LiveEventView({
     setUploading(true);
     try {
       await onImageUpload(imageUrl, caption);
-    } catch (error) {
+    } catch (_error) {
       toast.error(t("uploadError"));
     } finally {
       setUploading(false);

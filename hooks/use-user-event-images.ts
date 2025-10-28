@@ -104,7 +104,7 @@ export function useUserEventImages(
             // Avoid duplicates
             if (
               update.image &&
-              current.some((img) => img.id === update.image!.id)
+              current.some((img) => img.id === update.image?.id)
             ) {
               return current;
             }

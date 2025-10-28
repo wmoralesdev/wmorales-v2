@@ -25,7 +25,11 @@ const createEventSchema = z.object({
       })
     )
     .min(1, "At least one language content is required"),
-  maxImages: z.number().min(1).max(MAX_EVENT_IMAGES).default(DEFAULT_EVENT_IMAGES),
+  maxImages: z
+    .number()
+    .min(1)
+    .max(MAX_EVENT_IMAGES)
+    .default(DEFAULT_EVENT_IMAGES),
   endsAt: z.string().datetime().optional(),
 });
 

@@ -126,14 +126,21 @@ type ImageItemProps = {
 
 function ImageItem({ image, index, scrollYProgress }: ImageItemProps) {
   const layout = generateImageLayout(index);
-  const delay = Math.min(index * ANIMATION_DELAY_INCREMENT, MAX_ANIMATION_DELAY);
+  const delay = Math.min(
+    index * ANIMATION_DELAY_INCREMENT,
+    MAX_ANIMATION_DELAY
+  );
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [isInView, setIsInView] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
 
   // Parallax effect based on scroll
-  const y = useTransform(scrollYProgress, [0, 1], [0, random(PARALLAX_MIN, PARALLAX_MAX)]);
+  const y = useTransform(
+    scrollYProgress,
+    [0, 1],
+    [0, random(PARALLAX_MIN, PARALLAX_MAX)]
+  );
 
   // Intersection observer for lazy loading
   useEffect(() => {
@@ -311,7 +318,9 @@ export function ArtisticGallery({
 
   // Subscribe to realtime updates if event is active
   useEffect(() => {
-    if (!event.isActive) return;
+    if (!event.isActive) {
+      return;
+    }
 
     const channel = subscribeToEventUpdates(event.id, (eventUpdate) => {
       if (eventUpdate.type === "image_uploaded" && eventUpdate.image) {
@@ -354,10 +363,11 @@ export function ArtisticGallery({
                   window.innerWidth >= DESKTOP_BREAKPOINT
                     ? DESKTOP_RIGHT_POSITION
                     : 0,
-                bottom:
-                  window.innerWidth >= DESKTOP_BREAKPOINT ? 0 : "auto",
+                bottom: window.innerWidth >= DESKTOP_BREAKPOINT ? 0 : "auto",
                 height:
-                  window.innerWidth >= DESKTOP_BREAKPOINT ? DESKTOP_HEIGHT : "auto",
+                  window.innerWidth >= DESKTOP_BREAKPOINT
+                    ? DESKTOP_HEIGHT
+                    : "auto",
               }
             : {
                 top: 0,

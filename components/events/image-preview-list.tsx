@@ -27,7 +27,9 @@ export function ImagePreviewList({
 }: ImagePreviewListProps) {
   const t = useTranslations("events");
 
-  if (previews.length === 0) return null;
+  if (previews.length === 0) {
+    return null;
+  }
 
   return (
     <div className="mt-6 space-y-4">

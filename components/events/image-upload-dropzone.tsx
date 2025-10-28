@@ -35,7 +35,9 @@ export function ImageUploadDropzone({
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    if (!files || files.length === 0) return;
+    if (!files || files.length === 0) {
+      return;
+    }
     onFilesSelected(Array.from(files));
   };
 

@@ -17,7 +17,7 @@ import { EMAIL } from "@/lib/consts";
 
 // Type definitions for Google Calendar API
 declare global {
-  interface Window {
+  type Window = {
     calendar?: {
       schedulingButton: {
         load: (options: {
@@ -28,7 +28,7 @@ declare global {
         }) => void;
       };
     };
-  }
+  };
 }
 
 // Animation variants
