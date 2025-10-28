@@ -60,23 +60,28 @@ export type PollWithQuestions = Poll & {
   })[];
 };
 
+export type PollResultOption = {
+  optionId: string;
+  label: string;
+  value: string;
+  color: string | null;
+  voteCount: number;
+  percentage: number;
+  emoji?: string;
+};
+
+export type PollResultQuestion = {
+  questionId: string;
+  question: string;
+  type: string;
+  totalQuestionVotes: number;
+  options: PollResultOption[];
+};
+
 export type PollResults = {
   pollId: string;
   totalVotes: number;
-  questions: {
-    questionId: string;
-    question: string;
-    type: string;
-    totalQuestionVotes: number;
-    options: {
-      optionId: string;
-      label: string;
-      value: string;
-      color: string | null;
-      voteCount: number;
-      percentage: number;
-    }[];
-  }[];
+  questions: PollResultQuestion[];
 };
 
 export type RealtimeVoteUpdate = {

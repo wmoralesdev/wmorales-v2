@@ -230,13 +230,13 @@ export function PollResultsDashboard({
               </TabsList>
 
               <TabsContent className="mt-6 space-y-6" value="overview">
-                {results?.questions.map((question: any, index: number) => (
+                {results?.questions.map((question, index: number) => (
                   <div className="space-y-4" key={question.questionId}>
                     <h3 className="font-semibold text-lg text-white">
                       {index + 1}. {question.question}
                     </h3>
                     <div className="space-y-3">
-                      {question.options.map((option: any) => (
+                      {question.options.map((option) => (
                         <motion.div
                           animate={{ opacity: 1, x: 0 }}
                           className="space-y-2"
@@ -280,7 +280,7 @@ export function PollResultsDashboard({
               </TabsContent>
 
               <TabsContent className="mt-6 space-y-6" value="details">
-                {results?.questions.map((question: any, index: number) => (
+                {results?.questions.map((question, index: number) => (
                   <Card
                     className="border-gray-700 bg-gray-800/50 backdrop-blur"
                     key={question.questionId}
@@ -297,8 +297,8 @@ export function PollResultsDashboard({
                     <CardContent>
                       <div className="space-y-2">
                         {question.options
-                          .sort((a: any, b: any) => b.voteCount - a.voteCount)
-                          .map((option: any, optionIndex: number) => (
+                          .sort((a, b) => b.voteCount - a.voteCount)
+                          .map((option, optionIndex: number) => (
                             <div
                               className={cn(
                                 "flex items-center justify-between rounded-lg border border-transparent p-3",
