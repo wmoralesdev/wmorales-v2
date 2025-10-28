@@ -30,6 +30,105 @@ const MAX_PHOTOS_ALLOWED = 20;
 const ANIMATION_DELAY_INCREMENT = 0.05;
 const ANIMATION_DURATION_SHORT = 0.2;
 
+// Helper functions for className generation
+const getCardClassName = (
+  isDragReject: boolean,
+  isDragActive: boolean,
+  selectedFilesLength: number,
+  maxImages: number
+) => {
+  const baseClasses = "rounded-none shadow-none backdrop-blur-xl transition-all duration-300 sm:rounded-lg sm:shadow-md";
+  
+  if (isDragReject) {
+    return `${baseClasses} border-0 border-red-500/50 bg-red-500/10 sm:border-2`;
+  }
+  if (isDragActive) {
+    return `${baseClasses} border-0 border-purple-500/80 bg-purple-500/10 sm:border-2 sm:shadow-lg sm:shadow-purple-500/20`;
+  }
+  if (selectedFilesLength > 0) {
+    return `${baseClasses} border-0 border-gray-800 bg-gray-900/80 hover:border-purple-500/30 sm:border-2 sm:border-dashed`;
+  }
+  return `${baseClasses} border-0 border-gray-700 bg-gray-900/60 hover:border-purple-500/50 hover:bg-gray-900/80 sm:border-2 sm:border-dashed`;
+};
+
+const getBottomBorderClassName = (maxImages: number) => {
+  return maxImages > 0 ? "border-t sm:border-t-2" : "";
+};
+
+const getInnerDivClassName = (isDragReject: boolean, isDragActive: boolean) => {
+  if (isDragReject) {
+    return "bg-red-500/5";
+  }
+  if (isDragActive) {
+    return "bg-purple-500/5";
+  }
+  return "hover:bg-gray-800/30";
+};
+
+const getIconClassName = (isDragReject: boolean, isDragActive: boolean) => {
+  if (isDragReject) {
+    return "text-red-400";
+  }
+  if (isDragActive) {
+    return "text-purple-400";
+  }
+  return "text-gray-400";
+};
+
+const getTitleClassName = (isDragReject: boolean, isDragActive: boolean) => {
+  if (isDragReject) {
+    return "text-red-300";
+  }
+  if (isDragActive) {
+    return "text-purple-300";
+  }
+  return "text-white";
+};
+
+const getDropZoneText = (isDragReject: boolean, isDragActive: boolean, t: any) => {
+  if (isDragReject) {
+    return t("invalidFileType");
+  }
+  if (isDragActive) {
+    return t("dropImageHere");
+  }
+  return t("dragDropOrClick");
+};
+
+const getButtonContent = (
+  compressionProgress: { current: number; total: number } | null,
+  isUploading: boolean,
+  selectedFilesLength: number,
+  t: any
+) => {
+  if (compressionProgress) {
+    return (
+      <>
+        <ImageIcon className="relative z-10 mr-2 h-5 w-5 animate-pulse" />
+        <span className="relative z-10 text-lg">
+          Compressing... ({compressionProgress.current}/{compressionProgress.total})
+        </span>
+      </>
+    );
+  }
+  if (isUploading) {
+    return (
+      <>
+        <Upload className="relative z-10 mr-2 h-5 w-5 animate-spin" />
+        <span className="relative z-10 text-lg">{t("uploading")}</span>
+      </>
+    );
+  }
+  return (
+    <>
+      <Sparkles className="relative z-10 mr-2 h-5 w-5" />
+      <span className="relative z-10 text-lg">
+        {selectedFilesLength === 1 ? t("sharePhoto") : t("sharePhotos", { count: selectedFilesLength })}
+      </span>
+    </>
+  );
+};
+
 type ImageUploadProps = {
   onUpload: (imageUrl: string, caption?: string) => Promise<void>;
   uploading: boolean;
@@ -344,27 +443,13 @@ export function ImageUpload({
 
       {/* Drag & Drop Zone */}
       <Card
-        className={`rounded-none shadow-none backdrop-blur-xl transition-all duration-300 sm:rounded-lg sm:shadow-md ${
-          isDragReject
-            ? "border-0 border-red-500/50 bg-red-500/10 sm:border-2"
-            : isDragActive
-              ? "border-0 border-purple-500/80 bg-purple-500/10 sm:border-2 sm:shadow-lg sm:shadow-purple-500/20"
-              : selectedFiles.length > 0
-                ? "border-0 border-gray-800 bg-gray-900/80 hover:border-purple-500/30 sm:border-2 sm:border-dashed"
-                : "border-0 border-gray-700 bg-gray-900/60 hover:border-purple-500/50 hover:bg-gray-900/80 sm:border-2 sm:border-dashed"
-        } ${maxImages > 0 ? "border-t sm:border-t-2" : ""}`}
+        className={`${getCardClassName(isDragReject, isDragActive, selectedFiles.length, maxImages)} ${getBottomBorderClassName(maxImages)}`}
       >
         <CardContent className="p-4 sm:p-8">
           {selectedFiles.length === 0 ? (
             <motion.div
               animate={isDragActive ? { scale: 1.02 } : { scale: 1 }}
-              className={`cursor-pointer space-y-6 rounded-xl transition-all duration-300 ${
-                isDragReject
-                  ? "bg-red-500/5"
-                  : isDragActive
-                    ? "bg-purple-500/5"
-                    : "hover:bg-gray-800/30"
-              }`}
+              className={`cursor-pointer space-y-6 rounded-xl transition-all duration-300 ${getInnerDivClassName(isDragReject, isDragActive)}`}
               onClick={handleDropZoneClick}
               onDragEnter={handleDragEnter}
               onDragLeave={handleDragLeave}
@@ -382,31 +467,15 @@ export function ImageUpload({
                   transition={{ duration: 0.3 }}
                 >
                   <CloudUpload
-                    className={`mb-6 h-16 w-16 sm:h-20 sm:w-20 ${
-                      isDragReject
-                        ? "text-red-400"
-                        : isDragActive
-                          ? "text-purple-400"
-                          : "text-gray-400"
-                    }`}
+                    className={`mb-6 h-16 w-16 sm:h-20 sm:w-20 ${getIconClassName(isDragReject, isDragActive)}`}
                   />
                 </motion.div>
 
                 <div className="space-y-2">
                   <p
-                    className={`font-bold text-xl ${
-                      isDragReject
-                        ? "text-red-300"
-                        : isDragActive
-                          ? "text-purple-300"
-                          : "text-white"
-                    }`}
+                    className={`font-bold text-xl ${getTitleClassName(isDragReject, isDragActive)}`}
                   >
-                    {isDragReject
-                      ? t("invalidFileType")
-                      : isDragActive
-                        ? t("dropImageHere")
-                        : t("dragDropOrClick")}
+                    {getDropZoneText(isDragReject, isDragActive, t)}
                   </p>
 
                   {!(isDragActive || isDragReject) && (
@@ -544,29 +613,7 @@ export function ImageUpload({
             size="lg"
           >
             <div className="absolute inset-0 translate-y-full bg-gradient-to-r from-purple-400/20 to-pink-400/20 transition-transform duration-300 group-hover:translate-y-0" />
-            {compressionProgress ? (
-              <>
-                <ImageIcon className="relative z-10 mr-2 h-5 w-5 animate-pulse" />
-                <span className="relative z-10 text-lg">
-                  Compressing... ({compressionProgress.current}/
-                  {compressionProgress.total})
-                </span>
-              </>
-            ) : isUploading ? (
-              <>
-                <Upload className="relative z-10 mr-2 h-5 w-5 animate-spin" />
-                <span className="relative z-10 text-lg">{t("uploading")}</span>
-              </>
-            ) : (
-              <>
-                <Sparkles className="relative z-10 mr-2 h-5 w-5" />
-                <span className="relative z-10 text-lg">
-                  {selectedFiles.length === 1
-                    ? t("sharePhoto")
-                    : t("sharePhotos", { count: selectedFiles.length })}
-                </span>
-              </>
-            )}
+            {getButtonContent(compressionProgress, isUploading, selectedFiles.length, t)}
           </Button>
 
           {compressionProgress && (

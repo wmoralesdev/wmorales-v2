@@ -398,8 +398,8 @@ export function ArtisticGallery({
           layout
         >
           <AnimatePresence mode="wait">
+            {/* biome-ignore lint/style/noNestedTernary: complex conditional rendering pattern */}
             {isTransitioning ? null : showGallery ? (
-              // Final sidebar/topbar content
               <motion.div
                 animate={{ opacity: 1, scale: 1 }}
                 className="w-full"
