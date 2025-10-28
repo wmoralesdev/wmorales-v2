@@ -57,6 +57,24 @@ const EASE_Y1 = 0.1;
 const EASE_X2 = 0.25;
 const EASE_Y2 = 1;
 const EASE_ARRAY = [EASE_X1, EASE_Y1, EASE_X2, EASE_Y2];
+const DESKTOP_BREAKPOINT = 1024;
+const DESKTOP_RIGHT_POSITION = "75%";
+const DESKTOP_HEIGHT = "100%";
+const HOVER_SCALE_MULTIPLIER = 1.05;
+const HOVER_ANIMATION_DURATION = 0.3;
+const ASPECT_RATIO_MULTIPLIER = 0.75;
+const IMAGE_HEIGHT_MULTIPLIER = 1.5;
+const MORPH_DURATION = 0.8;
+const MORPH_EASE_X1 = 0.43;
+const MORPH_EASE_Y1 = 0.13;
+const MORPH_EASE_X2 = 0.23;
+const MORPH_EASE_Y2 = 0.96;
+const MORPH_EASE_ARRAY = [
+  MORPH_EASE_X1,
+  MORPH_EASE_Y1,
+  MORPH_EASE_X2,
+  MORPH_EASE_Y2,
+];
 
 // Helper to generate random values within range
 const random = (min: number, max: number) => Math.random() * (max - min) + min;
@@ -161,15 +179,15 @@ function ImageItem({ image, index, scrollYProgress }: ImageItemProps) {
           margin: "0 auto",
         }}
         whileHover={{
-          scale: layout.scale * 1.05,
+          scale: layout.scale * HOVER_SCALE_MULTIPLIER,
           rotate: 0,
-          transition: { duration: 0.3 },
+          transition: { duration: HOVER_ANIMATION_DURATION },
         }}
       >
         {/* Image with natural aspect ratio */}
         <div
           className="relative overflow-hidden bg-gray-100"
-          style={{ minHeight: layout.maxWidth * 0.75 }}
+          style={{ minHeight: layout.maxWidth * ASPECT_RATIO_MULTIPLIER }}
         >
           {/* Loading skeleton - only show when image is in view but not loaded */}
           {isInView && !imageLoaded && !imageError && (
@@ -209,7 +227,7 @@ function ImageItem({ image, index, scrollYProgress }: ImageItemProps) {
                 "h-auto w-full object-contain transition-opacity duration-500",
                 imageLoaded ? "opacity-100" : "opacity-0"
               )}
-              height={layout.maxWidth * 1.5}
+              height={layout.maxWidth * IMAGE_HEIGHT_MULTIPLIER}
               loading="eager" // Default aspect ratio, will be overridden by actual image
               onError={() => setImageError(true)}
               onLoad={() => setImageLoaded(true)}
@@ -332,9 +350,14 @@ export function ArtisticGallery({
             ? {
                 top: 0,
                 left: 0,
-                right: window.innerWidth >= 1024 ? "75%" : 0,
-                bottom: window.innerWidth >= 1024 ? 0 : "auto",
-                height: window.innerWidth >= 1024 ? "100%" : "auto",
+                right:
+                  window.innerWidth >= DESKTOP_BREAKPOINT
+                    ? DESKTOP_RIGHT_POSITION
+                    : 0,
+                bottom:
+                  window.innerWidth >= DESKTOP_BREAKPOINT ? 0 : "auto",
+                height:
+                  window.innerWidth >= DESKTOP_BREAKPOINT ? DESKTOP_HEIGHT : "auto",
               }
             : {
                 top: 0,
@@ -351,8 +374,8 @@ export function ArtisticGallery({
         initial={false}
         layout
         transition={{
-          duration: 0.8,
-          ease: [0.43, 0.13, 0.23, 0.96],
+          duration: MORPH_DURATION,
+          ease: MORPH_EASE_ARRAY,
         }}
       >
         <motion.div

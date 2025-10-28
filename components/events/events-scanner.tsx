@@ -24,6 +24,9 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 
+// Constants
+const MIN_QR_CODE_LENGTH = 3;
+
 export function EventsScanner() {
   const t = useTranslations("events");
   const [isScanning, setIsScanning] = useState(false);
@@ -45,7 +48,7 @@ export function EventsScanner() {
 
       try {
         // Validate QR code format (should be a short code)
-        if (!decodedText || decodedText.length < 3) {
+        if (!decodedText || decodedText.length < MIN_QR_CODE_LENGTH) {
           throw new Error(t("invalidQRCode"));
         }
 

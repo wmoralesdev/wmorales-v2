@@ -18,6 +18,10 @@ import {
 } from "../ui/alert-dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
+// Constants
+const ANIMATION_DELAY_INCREMENT = 0.05;
+const MAX_ANIMATION_DELAY = 0.5;
+
 type PhotoGridProps = {
   images: ExtendedEventImage[];
   onImageClick: (image: ExtendedEventImage, index: number) => void;
@@ -55,7 +59,9 @@ export function PhotoGrid({
           initial={{ opacity: 0, scale: 0.8 }}
           key={image.id}
           onClick={() => onImageClick(image, index)}
-          transition={{ delay: Math.min(index * 0.05, 0.5) }}
+          transition={{
+            delay: Math.min(index * ANIMATION_DELAY_INCREMENT, MAX_ANIMATION_DELAY),
+          }}
         >
           <Image
             alt={image.caption || "Event photo"}

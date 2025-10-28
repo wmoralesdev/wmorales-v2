@@ -12,6 +12,11 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 
+// Constants
+const MOBILE_BREAKPOINT = 640;
+const QR_CODE_SIZE_MOBILE = 200;
+const QR_CODE_SIZE_DESKTOP = 256;
+
 type QRCodeDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -48,9 +53,10 @@ export function QRCodeDialog({
               fgColor="#000000"
               level="H"
               size={
-                typeof window !== "undefined" && window.innerWidth < 640
-                  ? 200
-                  : 256
+                typeof window !== "undefined" &&
+                window.innerWidth < MOBILE_BREAKPOINT
+                  ? QR_CODE_SIZE_MOBILE
+                  : QR_CODE_SIZE_DESKTOP
               }
               value={eventUrl}
             />
