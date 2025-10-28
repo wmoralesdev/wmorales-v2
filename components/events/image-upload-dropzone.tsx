@@ -52,25 +52,18 @@ export function ImageUploadDropzone({
   };
 
   return (
-    <div
+    <button
       className={cn(
         "relative cursor-pointer rounded-lg border-2 border-dashed p-6 transition-all sm:p-8",
         getBorderClassName(),
         className
       )}
       onClick={() => fileInputRef.current?.click()}
-      onKeyDown={(e) => {
-        if (e.key === "Enter" || e.key === " ") {
-          e.preventDefault();
-          fileInputRef.current?.click();
-        }
-      }}
       onDragEnter={onDragEnter}
       onDragLeave={onDragLeave}
       onDragOver={onDragOver}
       onDrop={onDrop}
-      role="button"
-      tabIndex={0}
+      type="button"
     >
       <input
         accept="image/*"
@@ -107,6 +100,6 @@ export function ImageUploadDropzone({
           </>
         )}
       </div>
-    </div>
+    </button>
   );
 }

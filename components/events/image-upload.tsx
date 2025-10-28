@@ -35,7 +35,7 @@ const getCardClassName = (
   isDragReject: boolean,
   isDragActive: boolean,
   selectedFilesLength: number,
-  maxImages: number
+  _maxImages: number
 ) => {
   const baseClasses = "rounded-none shadow-none backdrop-blur-xl transition-all duration-300 sm:rounded-lg sm:shadow-md";
   
@@ -51,9 +51,8 @@ const getCardClassName = (
   return `${baseClasses} border-0 border-gray-700 bg-gray-900/60 hover:border-purple-500/50 hover:bg-gray-900/80 sm:border-2 sm:border-dashed`;
 };
 
-const getBottomBorderClassName = (maxImages: number) => {
-  return maxImages > 0 ? "border-t sm:border-t-2" : "";
-};
+const getBottomBorderClassName = (maxImages: number) => 
+  maxImages > 0 ? "border-t sm:border-t-2" : "";
 
 const getInnerDivClassName = (isDragReject: boolean, isDragActive: boolean) => {
   if (isDragReject) {
