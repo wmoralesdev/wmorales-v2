@@ -331,25 +331,27 @@ export function ArtisticGallery({
     };
   }, []);
 
+  // Handle realtime event updates
+  const handleEventUpdate = useCallback((eventUpdate: any) => {
+    if (eventUpdate.type === "image_uploaded" && eventUpdate.image) {
+      const newImage = transformImageData(eventUpdate.image, event.id);
+      addImage(newImage);
+    } else if (eventUpdate.type === "image_deleted" && eventUpdate.imageId) {
+      removeImage(eventUpdate.imageId);
+    }
+  }, [event.id, addImage, removeImage, transformImageData]);
+
   // Subscribe to realtime updates if event is active
   useEffect(() => {
     if (!event.isActive) {
       return;
     }
 
-    const channel = subscribeToEventUpdates(event.id, (eventUpdate) => {
-      if (eventUpdate.type === "image_uploaded" && eventUpdate.image) {
-        const newImage = transformImageData(eventUpdate.image, event.id);
-        addImage(newImage);
-      } else if (eventUpdate.type === "image_deleted" && eventUpdate.imageId) {
-        removeImage(eventUpdate.imageId);
-      }
-    });
-
+    const channel = subscribeToEventUpdates(event.id, handleEventUpdate);
     return () => {
       channel.unsubscribe();
     };
-  }, [event.id, event.isActive, addImage, removeImage, transformImageData]);
+  }, [event.id, event.isActive, handleEventUpdate]);
 
   return (
     <div className="relative min-h-screen overflow-hidden" ref={containerRef}>
