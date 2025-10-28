@@ -11,7 +11,7 @@ import {
 import { ImageIcon } from "lucide-react";
 import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useArtisticGalleryStore } from "@/lib/stores/artistic-gallery-store";
 import { subscribeToEventUpdates } from "@/lib/supabase/realtime";
 import type { ExtendedEventImage } from "@/lib/types/event.types";
@@ -56,7 +56,7 @@ const EASE_X1 = 0.25;
 const EASE_Y1 = 0.1;
 const EASE_X2 = 0.25;
 const EASE_Y2 = 1;
-const EASE_ARRAY = [EASE_X1, EASE_Y1, EASE_X2, EASE_Y2];
+const EASE_ARRAY = [EASE_X1, EASE_Y1, EASE_X2, EASE_Y2] as const;
 const DESKTOP_BREAKPOINT = 1024;
 const DESKTOP_RIGHT_POSITION = "75%";
 const DESKTOP_HEIGHT = "100%";
@@ -74,7 +74,7 @@ const MORPH_EASE_ARRAY = [
   MORPH_EASE_Y1,
   MORPH_EASE_X2,
   MORPH_EASE_Y2,
-];
+] as const;
 
 // Helper to generate random values within range
 const random = (min: number, max: number) => Math.random() * (max - min) + min;
@@ -295,7 +295,6 @@ export function ArtisticGallery({
   }, [event.images, setImages]);
 
   // Helper to manage body scroll lock
-  // biome-ignore lint/correctness/noUndeclaredVariables: useCallback creates function scope
   const manageScrollLock = useCallback((shouldLock: boolean) => {
     if (shouldLock) {
       document.body.style.overflow = "hidden";
@@ -317,7 +316,6 @@ export function ArtisticGallery({
   }, [showGallery, manageScrollLock]);
 
   // Helper function to transform event image data
-  // biome-ignore lint/correctness/noUndeclaredVariables: useCallback creates function scope
   const transformImageData = useCallback(
     (imageData: { id: string; profileId: string; imageUrl: string; caption: string | null; createdAt: string; profile: { name: string; avatar: string | null } }, eventId: string): ExtendedEventImage => ({
       id: imageData.id,
@@ -335,7 +333,6 @@ export function ArtisticGallery({
   );
 
   // Handle realtime event updates
-  // biome-ignore lint/correctness/noUndeclaredVariables: useCallback creates function scope
   const handleEventUpdate = useCallback(
     (eventUpdate: { type: string; image?: { id: string; profileId: string; imageUrl: string; caption: string | null; createdAt: string; profile: { name: string; avatar: string | null } }; imageId?: string }) => {
       if (eventUpdate.type === "image_uploaded" && eventUpdate.image) {
