@@ -28,7 +28,8 @@ type ArtisticGalleryProps = {
   locale: string;
 };
 
-const ImageMotion = motion.create(Image);
+// ImageMotion is unused after extraction
+// const ImageMotion = motion.create(Image);
 
 // Image layout constants
 const SMALL_IMAGE_WIDTH = 280;
@@ -316,7 +317,7 @@ export function ArtisticGallery({
 
   // Helper function to transform event image data
   const transformImageData = useCallback(
-    (imageData: any, eventId: string): ExtendedEventImage => ({
+    (imageData: { id: string; profileId: string; imageUrl: string; caption: string | null; createdAt: string; profile: { name: string; avatar: string | null } }, eventId: string): ExtendedEventImage => ({
       id: imageData.id,
       eventId,
       profileId: imageData.profileId,
@@ -333,7 +334,7 @@ export function ArtisticGallery({
 
   // Handle realtime event updates
   const handleEventUpdate = useCallback(
-    (eventUpdate: any) => {
+    (eventUpdate: { type: string; image?: { id: string; profileId: string; imageUrl: string; caption: string | null; createdAt: string; profile: { name: string; avatar: string | null } }; imageId?: string }) => {
       if (eventUpdate.type === "image_uploaded" && eventUpdate.image) {
         const newImage = transformImageData(eventUpdate.image, event.id);
         addImage(newImage);
