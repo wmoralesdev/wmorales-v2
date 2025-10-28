@@ -10,6 +10,9 @@ import { ImageLightbox } from "./image-lightbox";
 const ANIMATION_DELAY_INCREMENT = 0.02;
 const MAX_ANIMATION_DELAY = 0.3;
 const ANIMATION_DURATION = 0.3;
+const EAGER_LOAD_LIMIT = 12;
+const TRANSITION_DURATION_MS = 300;
+const HOVER_SCALE = 1.1;
 
 type EventImageGridProps = {
   images: EventImage[];
@@ -46,7 +49,7 @@ export function EventImageGrid({ images, locale }: EventImageGridProps) {
               alt={image.caption || `Event photo ${index + 1}`}
               className="object-cover transition-transform duration-300 group-hover:scale-110"
               fill
-              loading={index < 12 ? "eager" : "lazy"}
+              loading={index < EAGER_LOAD_LIMIT ? "eager" : "lazy"}
               sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
               src={image.imageUrl}
             />

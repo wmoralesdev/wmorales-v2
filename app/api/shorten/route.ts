@@ -8,7 +8,12 @@ const API_KEY = process.env.URL_SHORTENER_API_KEY;
 // Constants
 const CUSTOM_CODE_REGEX = /^[a-zA-Z0-9_-]{3,20}$/;
 const SHORT_CODE_LENGTH = 7;
-const MILLISECONDS_PER_DAY = 24 * 60 * 60 * 1000;
+const HOURS_PER_DAY = 24;
+const MINUTES_PER_HOUR = 60;
+const SECONDS_PER_MINUTE = 60;
+const MILLISECONDS_PER_SECOND = 1000;
+const MILLISECONDS_PER_DAY =
+  HOURS_PER_DAY * MINUTES_PER_HOUR * SECONDS_PER_MINUTE * MILLISECONDS_PER_SECOND;
 
 // Generate a short, readable code
 // Use a custom alphabet without ambiguous characters (no 0, O, l, I)

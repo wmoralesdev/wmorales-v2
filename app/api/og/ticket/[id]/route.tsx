@@ -18,6 +18,8 @@ const PATTERN_HEIGHT_BASE = 40;
 const PATTERN_HEIGHT_DECREMENT = 5;
 const PATTERN_BORDER_RADIUS = 2;
 const PATTERN_MARGIN_RIGHT = 4;
+const HEX_BASE = 16;
+const PAD_START_VALUE = "0";
 
 export async function GET(
   request: Request,
@@ -367,8 +369,8 @@ export async function GET(
                   OPACITY_BASE - i * OPACITY_INCREMENT
                 ); // Prevent negative values
                 const opacityHex = Math.floor(opacity * OPACITY_MULTIPLIER)
-                  .toString(16)
-                  .padStart(HEX_PADDING_LENGTH, "0");
+                  .toString(HEX_BASE)
+                  .padStart(HEX_PADDING_LENGTH, PAD_START_VALUE);
                 return (
                   // biome-ignore lint/suspicious/noArrayIndexKey: Static visual pattern, order never changes
                   <div

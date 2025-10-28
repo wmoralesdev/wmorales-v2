@@ -18,6 +18,13 @@ import {
 } from "@/components/ui/sheet";
 import { Link, usePathname } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
+
+// Animation constants
+const EASE_CUBIC_BEZIER = [0.25, 0.46, 0.45, 0.94];
+const UNDERLINE_DURATION = 0.3;
+const MENU_DURATION = 0.6;
+const MENU_ITEM_DURATION = 0.5;
+const MENU_ITEM_DELAY_INCREMENT = 0.1;
 import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
@@ -88,8 +95,8 @@ const navVariants: Variants = {
     y: 0,
     opacity: 1,
     transition: {
-      duration: 0.6,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      duration: MENU_DURATION,
+      ease: EASE_CUBIC_BEZIER,
     },
   },
 };
@@ -100,9 +107,9 @@ const menuItemVariants: Variants = {
     opacity: 1,
     x: 0,
     transition: {
-      delay: i * 0.1,
-      duration: 0.5,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      delay: i * MENU_ITEM_DELAY_INCREMENT,
+      duration: MENU_ITEM_DURATION,
+      ease: EASE_CUBIC_BEZIER,
     },
   }),
 };
@@ -122,8 +129,8 @@ const mobileMenuVariants: Variants = {
     x: "100%",
     opacity: 0,
     transition: {
-      duration: 0.3,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      duration: UNDERLINE_DURATION,
+      ease: EASE_CUBIC_BEZIER,
     },
   },
 };
@@ -332,8 +339,8 @@ export function Navbar() {
                           exit={{ scaleX: 0 }}
                           initial={{ scaleX: 0 }}
                           transition={{
-                            duration: 0.3,
-                            ease: [0.25, 0.46, 0.45, 0.94],
+                            duration: UNDERLINE_DURATION,
+                            ease: EASE_CUBIC_BEZIER,
                           }}
                         />
                       )}
@@ -378,8 +385,8 @@ export function Navbar() {
                           exit={{ scaleX: 0 }}
                           initial={{ scaleX: 0 }}
                           transition={{
-                            duration: 0.3,
-                            ease: [0.25, 0.46, 0.45, 0.94],
+                            duration: UNDERLINE_DURATION,
+                            ease: EASE_CUBIC_BEZIER,
                           }}
                         />
                       )}
@@ -423,8 +430,8 @@ export function Navbar() {
                           exit={{ scaleX: 0 }}
                           initial={{ scaleX: 0 }}
                           transition={{
-                            duration: 0.3,
-                            ease: [0.25, 0.46, 0.45, 0.94],
+                            duration: UNDERLINE_DURATION,
+                            ease: EASE_CUBIC_BEZIER,
                           }}
                         />
                       )}
@@ -468,8 +475,8 @@ export function Navbar() {
                           exit={{ scaleX: 0 }}
                           initial={{ scaleX: 0 }}
                           transition={{
-                            duration: 0.3,
-                            ease: [0.25, 0.46, 0.45, 0.94],
+                            duration: UNDERLINE_DURATION,
+                            ease: EASE_CUBIC_BEZIER,
                           }}
                         />
                       )}
