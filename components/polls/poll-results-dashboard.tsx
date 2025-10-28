@@ -22,6 +22,14 @@ import {
 import type { PollResults } from "@/lib/types/poll.types";
 import { cn } from "@/lib/utils";
 
+// Constants
+const DEBOUNCE_DELAY_MS = 500;
+const UPDATE_TIMEOUT_MS = 500;
+const ANIMATION_DELAY_INCREMENT = 0.1;
+const ANIMATION_BASE_DELAY = 0.2;
+const MAX_VISIBLE_USERS = 20;
+const ANIMATION_DURATION_SHORT = 0.2;
+
 type PollResultsDashboardProps = {
   pollId: string;
   pollCode: string;
@@ -67,7 +75,7 @@ export function PollResultsDashboard({
   const refreshRef = useRef(refresh);
 
   // Debounce active users updates to prevent excessive re-renders with many users
-  const debouncedActiveUsers = useDebounce(activeUsers, 500);
+  const debouncedActiveUsers = useDebounce(activeUsers, DEBOUNCE_DELAY_MS);
 
   // Keep refresh ref current
   refreshRef.current = refresh;
@@ -86,7 +94,7 @@ export function PollResultsDashboard({
         if (event.type === "results_updated" || event.type === "vote_added") {
           setIsUpdating(true);
           await refreshRef.current();
-          setTimeout(() => setIsUpdating(false), 500);
+          setTimeout(() => setIsUpdating(false), UPDATE_TIMEOUT_MS);
         }
       },
       (users) => {
@@ -234,7 +242,9 @@ export function PollResultsDashboard({
                           className="space-y-2"
                           initial={{ opacity: 0, x: -20 }}
                           key={option.optionId}
-                          transition={{ delay: index * 0.1 + 0.2 }}
+                          transition={{
+                            delay: index * ANIMATION_DELAY_INCREMENT + ANIMATION_BASE_DELAY,
+                          }}
                         >
                           <div className="flex items-center justify-between">
                             <div className="flex items-center gap-2">
@@ -372,13 +382,13 @@ export function PollResultsDashboard({
             <CardContent>
               <div className="flex flex-wrap gap-2">
                 <AnimatePresence>
-                  {debouncedActiveUsers.slice(0, 20).map((user) => (
+                  {debouncedActiveUsers.slice(0, MAX_VISIBLE_USERS).map((user) => (
                     <motion.div
                       animate={{ opacity: 1, scale: 1 }}
                       exit={{ opacity: 0, scale: 0.8 }}
                       initial={{ opacity: 0, scale: 0.8 }}
                       key={user.sessionId}
-                      transition={{ duration: 0.2 }}
+                      transition={{ duration: ANIMATION_DURATION_SHORT }}
                     >
                       <Avatar className="h-8 w-8 border border-gray-700">
                         <AvatarImage
@@ -392,9 +402,9 @@ export function PollResultsDashboard({
                     </motion.div>
                   ))}
                 </AnimatePresence>
-                {activeUsersCount > 20 && (
+                {activeUsersCount > MAX_VISIBLE_USERS && (
                   <div className="flex h-8 items-center rounded-full bg-gray-800/50 px-3 text-gray-400 text-xs">
-                    +{activeUsersCount - 20} more
+                    +{activeUsersCount - MAX_VISIBLE_USERS} more
                   </div>
                 )}
               </div>
