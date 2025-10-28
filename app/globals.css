@@ -345,7 +345,6 @@
     display: inline-flex !important;
     align-items: center !important;
     justify-content: center !important;
-    min-width: unset !important;
     margin: 0 !important;
     position: relative !important;
     top: auto !important;
