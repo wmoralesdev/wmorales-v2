@@ -295,6 +295,7 @@ export function ArtisticGallery({
   }, [event.images, setImages]);
 
   // Helper to manage body scroll lock
+  // biome-ignore lint/correctness/noUndeclaredVariables: useCallback creates function scope
   const manageScrollLock = useCallback((shouldLock: boolean) => {
     if (shouldLock) {
       document.body.style.overflow = "hidden";
@@ -316,6 +317,7 @@ export function ArtisticGallery({
   }, [showGallery, manageScrollLock]);
 
   // Helper function to transform event image data
+  // biome-ignore lint/correctness/noUndeclaredVariables: useCallback creates function scope
   const transformImageData = useCallback(
     (imageData: { id: string; profileId: string; imageUrl: string; caption: string | null; createdAt: string; profile: { name: string; avatar: string | null } }, eventId: string): ExtendedEventImage => ({
       id: imageData.id,
@@ -333,6 +335,7 @@ export function ArtisticGallery({
   );
 
   // Handle realtime event updates
+  // biome-ignore lint/correctness/noUndeclaredVariables: useCallback creates function scope
   const handleEventUpdate = useCallback(
     (eventUpdate: { type: string; image?: { id: string; profileId: string; imageUrl: string; caption: string | null; createdAt: string; profile: { name: string; avatar: string | null } }; imageId?: string }) => {
       if (eventUpdate.type === "image_uploaded" && eventUpdate.image) {

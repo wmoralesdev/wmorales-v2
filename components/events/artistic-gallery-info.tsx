@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ArrowLeft, ImageIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { useTranslations } from "next-intl";
+import type { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 
 type ArtisticGalleryInfoProps = {
