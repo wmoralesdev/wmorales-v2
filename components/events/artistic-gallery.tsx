@@ -316,6 +316,22 @@ export function ArtisticGallery({
     };
   }, [showGallery]);
 
+  // Helper function to transform event image data
+  const transformImageData = useCallback((imageData: any, eventId: string): ExtendedEventImage => {
+    return {
+      id: imageData.id,
+      eventId,
+      profileId: imageData.profileId,
+      imageUrl: imageData.imageUrl,
+      caption: imageData.caption || null,
+      createdAt: new Date(imageData.createdAt),
+      profile: {
+        name: imageData.profile.name,
+        avatar: imageData.profile.avatar || undefined,
+      },
+    };
+  }, []);
+
   // Subscribe to realtime updates if event is active
   useEffect(() => {
     if (!event.isActive) {
@@ -324,19 +340,7 @@ export function ArtisticGallery({
 
     const channel = subscribeToEventUpdates(event.id, (eventUpdate) => {
       if (eventUpdate.type === "image_uploaded" && eventUpdate.image) {
-        const imageData = eventUpdate.image;
-        const newImage: ExtendedEventImage = {
-          id: imageData.id,
-          eventId: event.id,
-          profileId: imageData.profileId,
-          imageUrl: imageData.imageUrl,
-          caption: imageData.caption || null,
-          createdAt: new Date(imageData.createdAt),
-          profile: {
-            name: imageData.profile.name,
-            avatar: imageData.profile.avatar || undefined,
-          },
-        };
+        const newImage = transformImageData(eventUpdate.image, event.id);
         addImage(newImage);
       } else if (eventUpdate.type === "image_deleted" && eventUpdate.imageId) {
         removeImage(eventUpdate.imageId);
@@ -346,7 +350,7 @@ export function ArtisticGallery({
     return () => {
       channel.unsubscribe();
     };
-  }, [event.id, event.isActive, addImage, removeImage]);
+  }, [event.id, event.isActive, addImage, removeImage, transformImageData]);
 
   return (
     <div className="relative min-h-screen overflow-hidden" ref={containerRef}>
