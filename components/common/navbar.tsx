@@ -46,6 +46,78 @@ import { Clock } from "./clock";
 
 const MotionMenuItem = motion.create(NavigationMenuItem);
 
+// Desktop Navigation Item Component
+type DesktopNavItemProps = {
+  href: string;
+  label: string;
+  pathname: string;
+  t: ReturnType<typeof useTranslations>;
+};
+
+function DesktopNavItem({ href, label, pathname, t }: DesktopNavItemProps) {
+  return (
+    <MotionMenuItem
+      animate="visible"
+      initial="hidden"
+      key={href}
+      variants={menuItemVariants}
+    >
+      <NavigationMenuLink className="relative" href={href} key={href}>
+        <Button
+          className={cn(
+            "relative cursor-pointer font-medium text-sm transition-colors",
+            pathname === href ? "text-purple-400" : "hover:text-purple-400"
+          )}
+          variant="ghost"
+        >
+          <motion.span transition={{ duration: 0.2 }} whileHover={{ y: -2 }}>
+            {t(label)}
+          </motion.span>
+          <AnimatePresence>
+            {pathname === href && (
+              <motion.div
+                animate={{ scaleX: 1 }}
+                className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
+                exit={{ scaleX: 0 }}
+                initial={{ scaleX: 0 }}
+                transition={{
+                  duration: UNDERLINE_DURATION,
+                  ease: EASE_CUBIC_BEZIER,
+                }}
+              />
+            )}
+          </AnimatePresence>
+        </Button>
+      </NavigationMenuLink>
+    </MotionMenuItem>
+  );
+}
+
+// Mobile Navigation Item Component
+type MobileNavItemProps = {
+  href: string;
+  label: string;
+  pathname: string;
+  onClose: () => void;
+  t: ReturnType<typeof useTranslations>;
+};
+
+function MobileNavItem({ href, label, pathname, onClose, t }: MobileNavItemProps) {
+  return (
+    <Link href={href} onClick={onClose}>
+      <Button
+        className={cn(
+          "w-full justify-start",
+          pathname === href && "bg-purple-400/10 text-purple-400"
+        )}
+        variant="ghost"
+      >
+        {t(label)}
+      </Button>
+    </Link>
+  );
+}
+
 // Locale Toggle Component
 type LocaleToggleProps = {
   showLabel?: boolean;
@@ -317,183 +389,11 @@ export function Navbar() {
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden items-center space-x-8 md:flex">
             <NavigationMenuList>
-              <MotionMenuItem
-                animate="visible"
-                initial="hidden"
-                key="home"
-                variants={menuItemVariants}
-              >
-                <NavigationMenuLink className="relative" href="/" key="home">
-                  <Button
-                    className={cn(
-                      "relative cursor-pointer font-medium text-sm transition-colors",
-                      pathname === "/"
-                        ? "text-purple-400"
-                        : "hover:text-purple-400"
-                    )}
-                    variant="ghost"
-                  >
-                    <motion.span
-                      transition={{ duration: 0.2 }}
-                      whileHover={{ y: -2 }}
-                    >
-                      {t("home")}
-                    </motion.span>
+              <DesktopNavItem href="/" label="home" pathname={pathname} t={t} />
 
-                    {/* Active indicator */}
-                    <AnimatePresence>
-                      {pathname === "/" && (
-                        <motion.div
-                          animate={{ scaleX: 1 }}
-                          className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
-                          exit={{ scaleX: 0 }}
-                          initial={{ scaleX: 0 }}
-                          transition={{
-                            duration: UNDERLINE_DURATION,
-                            ease: EASE_CUBIC_BEZIER,
-                          }}
-                        />
-                      )}
-                    </AnimatePresence>
-                  </Button>
-                </NavigationMenuLink>
-              </MotionMenuItem>
-
-              <MotionMenuItem
-                animate="visible"
-                initial="hidden"
-                key="guestbook"
-                variants={menuItemVariants}
-              >
-                <NavigationMenuLink
-                  className="relative"
-                  href="/guestbook"
-                  key="guestbook"
-                >
-                  <Button
-                    className={cn(
-                      "relative cursor-pointer font-medium text-sm transition-colors",
-                      pathname === "/guestbook"
-                        ? "text-purple-400"
-                        : "hover:text-purple-400"
-                    )}
-                    variant="ghost"
-                  >
-                    <motion.span
-                      transition={{ duration: 0.2 }}
-                      whileHover={{ y: -2 }}
-                    >
-                      {t("guestbook")}
-                    </motion.span>
-
-                    {/* Active indicator */}
-                    <AnimatePresence>
-                      {pathname === "/guestbook" && (
-                        <motion.div
-                          animate={{ scaleX: 1 }}
-                          className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
-                          exit={{ scaleX: 0 }}
-                          initial={{ scaleX: 0 }}
-                          transition={{
-                            duration: UNDERLINE_DURATION,
-                            ease: EASE_CUBIC_BEZIER,
-                          }}
-                        />
-                      )}
-                    </AnimatePresence>
-                  </Button>
-                </NavigationMenuLink>
-              </MotionMenuItem>
-
-              <MotionMenuItem
-                animate="visible"
-                initial="hidden"
-                key="events"
-                variants={menuItemVariants}
-              >
-                <NavigationMenuLink
-                  className="relative"
-                  href="/events"
-                  key="events"
-                >
-                  <Button
-                    className={cn(
-                      "relative cursor-pointer font-medium text-sm transition-colors",
-                      pathname === "/events"
-                        ? "text-purple-400"
-                        : "hover:text-purple-400"
-                    )}
-                    variant="ghost"
-                  >
-                    <motion.span
-                      transition={{ duration: 0.2 }}
-                      whileHover={{ y: -2 }}
-                    >
-                      {t("events")}
-                    </motion.span>
-
-                    <AnimatePresence>
-                      {pathname === "/events" && (
-                        <motion.div
-                          animate={{ scaleX: 1 }}
-                          className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
-                          exit={{ scaleX: 0 }}
-                          initial={{ scaleX: 0 }}
-                          transition={{
-                            duration: UNDERLINE_DURATION,
-                            ease: EASE_CUBIC_BEZIER,
-                          }}
-                        />
-                      )}
-                    </AnimatePresence>
-                  </Button>
-                </NavigationMenuLink>
-              </MotionMenuItem>
-
-              <MotionMenuItem
-                animate="visible"
-                initial="hidden"
-                key="cursor"
-                variants={menuItemVariants}
-              >
-                <NavigationMenuLink
-                  className="relative"
-                  href="/cursor"
-                  key="cursor"
-                >
-                  <Button
-                    className={cn(
-                      "relative cursor-pointer font-medium text-sm transition-colors",
-                      pathname === "/cursor"
-                        ? "text-purple-400"
-                        : "hover:text-purple-400"
-                    )}
-                    variant="ghost"
-                  >
-                    <motion.span
-                      transition={{ duration: 0.2 }}
-                      whileHover={{ y: -2 }}
-                    >
-                      {t("cursor")}
-                    </motion.span>
-
-                    <AnimatePresence>
-                      {pathname === "/cursor" && (
-                        <motion.div
-                          animate={{ scaleX: 1 }}
-                          className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
-                          exit={{ scaleX: 0 }}
-                          initial={{ scaleX: 0 }}
-                          transition={{
-                            duration: UNDERLINE_DURATION,
-                            ease: EASE_CUBIC_BEZIER,
-                          }}
-                        />
-                      )}
-                    </AnimatePresence>
-                  </Button>
-                </NavigationMenuLink>
-              </MotionMenuItem>
+              <DesktopNavItem href="/guestbook" label="guestbook" pathname={pathname} t={t} />
+              <DesktopNavItem href="/events" label="events" pathname={pathname} t={t} />
+              <DesktopNavItem href="/cursor" label="cursor" pathname={pathname} t={t} />
             </NavigationMenuList>
           </NavigationMenu>
 
@@ -558,60 +458,10 @@ export function Navbar() {
 
                       {/* Navigation Links */}
                       <div className="space-y-1">
-                        <Link href="/" onClick={() => setIsOpen(false)}>
-                          <Button
-                            className={cn(
-                              "w-full justify-start",
-                              pathname === "/" &&
-                                "bg-purple-400/10 text-purple-400"
-                            )}
-                            variant="ghost"
-                          >
-                            {t("home")}
-                          </Button>
-                        </Link>
-
-                        <Link
-                          href="/guestbook"
-                          onClick={() => setIsOpen(false)}
-                        >
-                          <Button
-                            className={cn(
-                              "w-full justify-start",
-                              pathname === "/guestbook" &&
-                                "bg-purple-400/10 text-purple-400"
-                            )}
-                            variant="ghost"
-                          >
-                            {t("guestbook")}
-                          </Button>
-                        </Link>
-
-                        <Link href="/events" onClick={() => setIsOpen(false)}>
-                          <Button
-                            className={cn(
-                              "w-full justify-start",
-                              pathname === "/events" &&
-                                "bg-purple-400/10 text-purple-400"
-                            )}
-                            variant="ghost"
-                          >
-                            {t("events")}
-                          </Button>
-                        </Link>
-
-                        <Link href="/cursor" onClick={() => setIsOpen(false)}>
-                          <Button
-                            className={cn(
-                              "w-full justify-start",
-                              pathname === "/cursor" &&
-                                "bg-purple-400/10 text-purple-400"
-                            )}
-                            variant="ghost"
-                          >
-                            {t("cursor")}
-                          </Button>
-                        </Link>
+                        <MobileNavItem href="/" label="home" pathname={pathname} onClose={() => setIsOpen(false)} t={t} />
+                        <MobileNavItem href="/guestbook" label="guestbook" pathname={pathname} onClose={() => setIsOpen(false)} t={t} />
+                        <MobileNavItem href="/events" label="events" pathname={pathname} onClose={() => setIsOpen(false)} t={t} />
+                        <MobileNavItem href="/cursor" label="cursor" pathname={pathname} onClose={() => setIsOpen(false)} t={t} />
                       </div>
 
                       {/* Divider */}
