@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+// biome-ignore lint/performance/noNamespaceImport: Zod namespace import is standard pattern
 import * as z from "zod";
 
 import {

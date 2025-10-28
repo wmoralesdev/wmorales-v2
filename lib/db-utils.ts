@@ -73,29 +73,30 @@ function sleep(ms: number): Promise<void> {
 /**
  * Internal recursive retry function to avoid await-in-loop
  */
+type RetryConfig = {
+  attempt: number;
+  maxRetries: number;
+  baseDelay: number;
+  maxDelay: number;
+};
+
 async function attemptOperation<T>(
   operation: () => Promise<T>,
-  attempt: number,
-  maxRetries: number,
-  baseDelay: number,
-  maxDelay: number
+  config: RetryConfig
 ): Promise<T> {
   try {
     return await operation();
   } catch (error) {
-    const shouldRetry = isRetryableError(error) && attempt < maxRetries;
+    const shouldRetry = isRetryableError(error) && config.attempt < config.maxRetries;
 
     if (shouldRetry) {
-      const delay = calculateDelay(attempt, baseDelay, maxDelay);
-      logRetryAttempt(attempt, maxRetries, delay, error);
+      const delay = calculateDelay(config.attempt, config.baseDelay, config.maxDelay);
+      logRetryAttempt(config.attempt, config.maxRetries, delay, error);
       await sleep(delay);
-      return attemptOperation(
-        operation,
-        attempt + 1,
-        maxRetries,
-        baseDelay,
-        maxDelay
-      );
+      return attemptOperation(operation, {
+        ...config,
+        attempt: config.attempt + 1,
+      });
     }
 
     throw error;
@@ -114,7 +115,12 @@ export function withRetry<T>(
     ...options,
   };
 
-  return attemptOperation(operation, 0, maxRetries, baseDelay, maxDelay);
+  return attemptOperation(operation, {
+    attempt: 0,
+    maxRetries,
+    baseDelay,
+    maxDelay,
+  });
 }
 
 /**

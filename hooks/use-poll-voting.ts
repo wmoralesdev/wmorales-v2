@@ -218,7 +218,7 @@ export function usePollVoting(
         mutate(
           (current = {}) => ({
             ...current,
-            [update.questionId]: update.optionIds!,
+            [update.questionId]: update.optionIds ?? [],
           }),
           {
             revalidate: false,

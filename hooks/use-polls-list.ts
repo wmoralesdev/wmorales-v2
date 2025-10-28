@@ -134,6 +134,8 @@ export function usePollsList(options: UsePollsListOptions = {}) {
         case "poll_session_removed":
           updatePollSessionCount(update.pollId, -1);
           break;
+        default:
+          break;
       }
     },
     [updatePollStatus, updatePollSessionCount]
