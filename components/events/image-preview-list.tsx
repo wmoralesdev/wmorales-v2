@@ -43,6 +43,7 @@ export function ImagePreviewList({
             className="flex gap-4 rounded-lg bg-gray-800/50 p-4"
             exit={{ opacity: 0, x: -100 }}
             initial={{ opacity: 0, y: 20 }}
+            // biome-ignore lint/suspicious/noArrayIndexKey: Index is combined with filename for unique key
             key={preview.file.name + index}
             transition={{ duration: 0.2 }}
           >

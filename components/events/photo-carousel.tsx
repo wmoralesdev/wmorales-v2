@@ -64,6 +64,7 @@ export function PhotoCarousel({
                 ? "w-6 bg-white"
                 : "bg-white/50 hover:bg-white/70"
             )}
+            // biome-ignore lint/suspicious/noArrayIndexKey: Visual indicators only, order never changes
             key={index}
             onClick={() => onIndexChange(index)}
           />

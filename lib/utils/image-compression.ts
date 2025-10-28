@@ -1,5 +1,12 @@
 import imageCompression from "browser-image-compression";
 
+// Constants
+const BYTES_PER_KILOBYTE = 1024;
+const KILOBYTES_PER_MEGABYTE = 1024;
+const BYTES_PER_MEGABYTE = BYTES_PER_KILOBYTE * KILOBYTES_PER_MEGABYTE;
+const MEDIUM_IMAGE_THRESHOLD_MB = 2;
+const LARGE_IMAGE_THRESHOLD_MB = 5;
+
 export type CompressionOptions = {
   maxSizeMB: number;
   maxWidthOrHeight: number;
@@ -13,10 +20,10 @@ export type CompressionOptions = {
  * Returns appropriate compression options for different image qualities
  */
 export function getCompressionOptions(file: File): CompressionOptions {
-  const fileSizeMB = file.size / (1024 * 1024);
+  const fileSizeMB = file.size / BYTES_PER_MEGABYTE;
 
   // For smaller images (< 2MB), apply minimal compression
-  if (fileSizeMB < 2) {
+  if (fileSizeMB < MEDIUM_IMAGE_THRESHOLD_MB) {
     return {
       maxSizeMB: 1.5,
       maxWidthOrHeight: 2048, // Near original for most phone cameras
@@ -26,7 +33,7 @@ export function getCompressionOptions(file: File): CompressionOptions {
   }
 
   // For medium images (2-5MB), apply moderate compression
-  if (fileSizeMB < 5) {
+  if (fileSizeMB < LARGE_IMAGE_THRESHOLD_MB) {
     return {
       maxSizeMB: 2,
       maxWidthOrHeight: 1920, // Full HD resolution

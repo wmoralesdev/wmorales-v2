@@ -14,7 +14,7 @@ import { useTranslations } from "next-intl";
 import { useCallback, useRef, useState } from "react";
 import { toast } from "sonner";
 import { generateUploadURL } from "@/app/actions/events.actions";
-import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Alert, AlertDescription } from "@/components/ui/celebrt";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Label } from "@/components/ui/label";
@@ -22,6 +22,9 @@ import { createClient } from "@/lib/supabase/client";
 import { compressImage, formatFileSize } from "@/lib/utils/image-compression";
 import { Input } from "../ui/input";
 import { createFilePreview, validateImageFile } from "./utils";
+
+// Constants
+const MAX_IMAGES_DIVISOR = 20;
 
 type ImageUploadProps = {
   onUpload: (imageUrl: string, caption?: string) => Promise<void>;
@@ -314,7 +317,7 @@ export function ImageUpload({
                 <div className="h-full w-full animate-pulse bg-gray-700/50" />
               ) : (
                 <motion.div
-                  animate={{ width: `${(maxImages / 20) * 100}%` }}
+                  animate={{ width: `${(maxImages / MAX_IMAGES_DIVISOR) * 100}%` }}
                   className="h-full bg-gradient-to-r from-purple-500 to-pink-500"
                   initial={{ width: "100%" }}
                   transition={{ duration: 0.5, ease: "easeOut" }}
