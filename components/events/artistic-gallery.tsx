@@ -31,6 +31,33 @@ type ArtisticGalleryProps = {
 
 const ImageMotion = motion.create(Image);
 
+// Image layout constants
+const SMALL_IMAGE_WIDTH = 280;
+const MEDIUM_IMAGE_WIDTH = 360;
+const LARGE_IMAGE_WIDTH = 440;
+const EXTRA_LARGE_IMAGE_WIDTH = 520;
+const REGULAR_IMAGE_WIDTH = 320;
+const SMALL_ROTATION_RANGE = 8;
+const MEDIUM_ROTATION_RANGE = 6;
+const LARGE_ROTATION_RANGE = 4;
+const EXTRA_LARGE_ROTATION_RANGE = 5;
+const REGULAR_ROTATION_RANGE = 7;
+const SMALL_SCALE = 0.9;
+const NORMAL_SCALE = 1;
+const LARGE_SCALE = 1.1;
+const EXTRA_LARGE_SCALE = 1.05;
+const REGULAR_SCALE = 0.95;
+const ANIMATION_DELAY_INCREMENT = 0.1;
+const MAX_ANIMATION_DELAY = 2;
+const PARALLAX_MIN = -50;
+const PARALLAX_MAX = 50;
+const ANIMATION_DURATION = 0.8;
+const EASE_X1 = 0.25;
+const EASE_Y1 = 0.1;
+const EASE_X2 = 0.25;
+const EASE_Y2 = 1;
+const EASE_ARRAY = [EASE_X1, EASE_Y1, EASE_X2, EASE_Y2];
+
 // Helper to generate random values within range
 const random = (min: number, max: number) => Math.random() * (max - min) + min;
 
@@ -38,15 +65,35 @@ const random = (min: number, max: number) => Math.random() * (max - min) + min;
 const generateImageLayout = (index: number) => {
   const patterns = [
     // Small
-    { maxWidth: 280, rotate: random(-8, 8), scale: 0.9 },
+    {
+      maxWidth: SMALL_IMAGE_WIDTH,
+      rotate: random(-SMALL_ROTATION_RANGE, SMALL_ROTATION_RANGE),
+      scale: SMALL_SCALE,
+    },
     // Medium
-    { maxWidth: 360, rotate: random(-6, 6), scale: 1 },
+    {
+      maxWidth: MEDIUM_IMAGE_WIDTH,
+      rotate: random(-MEDIUM_ROTATION_RANGE, MEDIUM_ROTATION_RANGE),
+      scale: NORMAL_SCALE,
+    },
     // Large
-    { maxWidth: 440, rotate: random(-4, 4), scale: 1.1 },
+    {
+      maxWidth: LARGE_IMAGE_WIDTH,
+      rotate: random(-LARGE_ROTATION_RANGE, LARGE_ROTATION_RANGE),
+      scale: LARGE_SCALE,
+    },
     // Extra large
-    { maxWidth: 520, rotate: random(-5, 5), scale: 1.05 },
+    {
+      maxWidth: EXTRA_LARGE_IMAGE_WIDTH,
+      rotate: random(-EXTRA_LARGE_ROTATION_RANGE, EXTRA_LARGE_ROTATION_RANGE),
+      scale: EXTRA_LARGE_SCALE,
+    },
     // Regular
-    { maxWidth: 320, rotate: random(-7, 7), scale: 0.95 },
+    {
+      maxWidth: REGULAR_IMAGE_WIDTH,
+      rotate: random(-REGULAR_ROTATION_RANGE, REGULAR_ROTATION_RANGE),
+      scale: REGULAR_SCALE,
+    },
   ];
 
   return patterns[index % patterns.length];
@@ -61,14 +108,14 @@ type ImageItemProps = {
 
 function ImageItem({ image, index, scrollYProgress }: ImageItemProps) {
   const layout = generateImageLayout(index);
-  const delay = Math.min(index * 0.1, 2);
+  const delay = Math.min(index * ANIMATION_DELAY_INCREMENT, MAX_ANIMATION_DELAY);
   const [imageLoaded, setImageLoaded] = useState(false);
   const [imageError, setImageError] = useState(false);
   const [isInView, setIsInView] = useState(false);
   const imageRef = useRef<HTMLDivElement>(null);
 
   // Parallax effect based on scroll
-  const y = useTransform(scrollYProgress, [0, 1], [0, random(-50, 50)]);
+  const y = useTransform(scrollYProgress, [0, 1], [0, random(PARALLAX_MIN, PARALLAX_MAX)]);
 
   // Intersection observer for lazy loading
   useEffect(() => {
@@ -99,9 +146,9 @@ function ImageItem({ image, index, scrollYProgress }: ImageItemProps) {
       ref={imageRef}
       style={{ y }}
       transition={{
-        duration: 0.8,
+        duration: ANIMATION_DURATION,
         delay,
-        ease: [0.25, 0.1, 0.25, 1],
+        ease: EASE_ARRAY,
       }}
     >
       {/* Polaroid-style wrapper */}

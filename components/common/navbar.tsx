@@ -20,7 +20,16 @@ import { Link, usePathname } from "@/i18n/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 // Animation constants
-const EASE_CUBIC_BEZIER = [0.25, 0.46, 0.45, 0.94];
+const EASE_CUBIC_BEZIER_X1 = 0.25;
+const EASE_CUBIC_BEZIER_Y1 = 0.46;
+const EASE_CUBIC_BEZIER_X2 = 0.45;
+const EASE_CUBIC_BEZIER_Y2 = 0.94;
+const EASE_CUBIC_BEZIER = [
+  EASE_CUBIC_BEZIER_X1,
+  EASE_CUBIC_BEZIER_Y1,
+  EASE_CUBIC_BEZIER_X2,
+  EASE_CUBIC_BEZIER_Y2,
+];
 const UNDERLINE_DURATION = 0.3;
 const MENU_DURATION = 0.6;
 const MENU_ITEM_DURATION = 0.5;

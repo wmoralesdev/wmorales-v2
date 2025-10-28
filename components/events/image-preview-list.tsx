@@ -54,6 +54,7 @@ export function ImagePreviewList({
               <button
                 className="-top-2 -right-2 absolute flex h-6 w-6 items-center justify-center rounded-full bg-red-500 transition-colors hover:bg-red-600"
                 onClick={() => onRemove(preview.file)}
+                type="button"
               >
                 <X className="h-4 w-4 text-white" />
               </button>

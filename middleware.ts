@@ -3,6 +3,10 @@ import { type NextRequest, NextResponse } from "next/server";
 import createMiddleware from "next-intl/middleware";
 import { routing } from "./i18n/routing";
 
+// HTTP status codes
+const HTTP_STATUS_TEMPORARY_REDIRECT = 307;
+const HTTP_STATUS_FOUND = 302;
+
 // Create the internationalization middleware
 const intlMiddleware = createMiddleware(routing);
 
@@ -21,7 +25,10 @@ export async function middleware(request: NextRequest) {
     // Check if internationalization middleware requires a redirect
     // If intl middleware returns a redirect (307 or 302), return it immediately
     // This ensures proper locale handling before any authentication logic
-    if (intlResponse.status === 307 || intlResponse.status === 302) {
+    if (
+      intlResponse.status === HTTP_STATUS_TEMPORARY_REDIRECT ||
+      intlResponse.status === HTTP_STATUS_FOUND
+    ) {
       return intlResponse;
     }
   }
