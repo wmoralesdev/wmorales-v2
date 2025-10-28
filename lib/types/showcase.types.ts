@@ -39,36 +39,42 @@ export type TeamMember = {
   github?: string;
 };
 
-export enum ProjectCategory {
-  WEB_APP = "web_app",
-  MOBILE_APP = "mobile_app",
-  API = "api",
-  LIBRARY = "library",
-  TOOL = "tool",
-  GAME = "game",
-  AI_ML = "ai_ml",
-  BLOCKCHAIN = "blockchain",
-  OTHER = "other",
-}
+export const ProjectCategory = {
+  WEB_APP: "web_app",
+  MOBILE_APP: "mobile_app",
+  API: "api",
+  LIBRARY: "library",
+  TOOL: "tool",
+  GAME: "game",
+  AI_ML: "ai_ml",
+  BLOCKCHAIN: "blockchain",
+  OTHER: "other",
+} as const;
 
-export enum TechCategory {
-  FRONTEND = "frontend",
-  BACKEND = "backend",
-  DATABASE = "database",
-  DEVOPS = "devops",
-  CLOUD = "cloud",
-  MOBILE = "mobile",
-  AI_ML = "ai_ml",
-  BLOCKCHAIN = "blockchain",
-  OTHER = "other",
-}
+export type ProjectCategory = (typeof ProjectCategory)[keyof typeof ProjectCategory];
 
-export enum ProjectStatus {
-  IN_PROGRESS = "in_progress",
-  COMPLETED = "completed",
-  MAINTAINED = "maintained",
-  ARCHIVED = "archived",
-}
+export const TechCategory = {
+  FRONTEND: "frontend",
+  BACKEND: "backend",
+  DATABASE: "database",
+  DEVOPS: "devops",
+  CLOUD: "cloud",
+  MOBILE: "mobile",
+  AI_ML: "ai_ml",
+  BLOCKCHAIN: "blockchain",
+  OTHER: "other",
+} as const;
+
+export type TechCategory = (typeof TechCategory)[keyof typeof TechCategory];
+
+export const ProjectStatus = {
+  IN_PROGRESS: "in_progress",
+  COMPLETED: "completed",
+  MAINTAINED: "maintained",
+  ARCHIVED: "archived",
+} as const;
+
+export type ProjectStatus = (typeof ProjectStatus)[keyof typeof ProjectStatus];
 
 export type ProjectFilter = {
   categories?: ProjectCategory[];

@@ -16,7 +16,6 @@ import { cn } from "@/lib/utils";
 
 // Constants
 const MAX_TECH_DISPLAY = 5;
-const ANIMATION_DURATION = 300;
 
 type ProjectCardProps = {
   project: Project;
