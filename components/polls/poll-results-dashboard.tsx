@@ -243,7 +243,9 @@ export function PollResultsDashboard({
                           initial={{ opacity: 0, x: -20 }}
                           key={option.optionId}
                           transition={{
-                            delay: index * ANIMATION_DELAY_INCREMENT + ANIMATION_BASE_DELAY,
+                            delay:
+                              index * ANIMATION_DELAY_INCREMENT +
+                              ANIMATION_BASE_DELAY,
                           }}
                         >
                           <div className="flex items-center justify-between">
@@ -382,25 +384,27 @@ export function PollResultsDashboard({
             <CardContent>
               <div className="flex flex-wrap gap-2">
                 <AnimatePresence>
-                  {debouncedActiveUsers.slice(0, MAX_VISIBLE_USERS).map((user) => (
-                    <motion.div
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      key={user.sessionId}
-                      transition={{ duration: ANIMATION_DURATION_SHORT }}
-                    >
-                      <Avatar className="h-8 w-8 border border-gray-700">
-                        <AvatarImage
-                          alt={user.userName || "User"}
-                          src={user.userAvatar}
-                        />
-                        <AvatarFallback className="bg-purple-500/20 text-purple-300 text-xs">
-                          {getInitials(user.userName)}
-                        </AvatarFallback>
-                      </Avatar>
-                    </motion.div>
-                  ))}
+                  {debouncedActiveUsers
+                    .slice(0, MAX_VISIBLE_USERS)
+                    .map((user) => (
+                      <motion.div
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        key={user.sessionId}
+                        transition={{ duration: ANIMATION_DURATION_SHORT }}
+                      >
+                        <Avatar className="h-8 w-8 border border-gray-700">
+                          <AvatarImage
+                            alt={user.userName || "User"}
+                            src={user.userAvatar}
+                          />
+                          <AvatarFallback className="bg-purple-500/20 text-purple-300 text-xs">
+                            {getInitials(user.userName)}
+                          </AvatarFallback>
+                        </Avatar>
+                      </motion.div>
+                    ))}
                 </AnimatePresence>
                 {activeUsersCount > MAX_VISIBLE_USERS && (
                   <div className="flex h-8 items-center rounded-full bg-gray-800/50 px-3 text-gray-400 text-xs">

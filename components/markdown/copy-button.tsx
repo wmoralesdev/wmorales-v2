@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 
 // Constants
 const COPY_SUCCESS_TIMEOUT_MS = 2000;
-const FALLBACK_TEXTAREA_OFFSET = -999999;
+const FALLBACK_TEXTAREA_OFFSET = -999_999;
 
 type CopyButtonProps = {
   code: string;

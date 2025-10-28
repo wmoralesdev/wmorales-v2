@@ -14,9 +14,9 @@ import { useTranslations } from "next-intl";
 import { useCallback, useRef, useState } from "react";
 import { toast } from "sonner";
 import { generateUploadURL } from "@/app/actions/events.actions";
-import { Alert, AlertDescription } from "@/components/ui/celebrt";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/celebrt";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/lib/supabase/client";
 import { compressImage, formatFileSize } from "@/lib/utils/image-compression";
@@ -334,8 +334,8 @@ export function ImageUpload({
               <div className="mt-2 h-3 w-32 animate-pulse rounded bg-gray-700/50" />
             ) : (
               <p className="mt-2 text-gray-500 text-xs">
-                {MAX_PHOTOS_ALLOWED - maxImages} {t("of")}{" "}
-                {MAX_PHOTOS_ALLOWED} {t("photosShared")}
+                {MAX_PHOTOS_ALLOWED - maxImages} {t("of")} {MAX_PHOTOS_ALLOWED}{" "}
+                {t("photosShared")}
               </p>
             )}
           </div>
@@ -576,7 +576,8 @@ export function ImageUpload({
                   className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300"
                   style={{
                     width: `${
-                      (compressionProgress.current / compressionProgress.total) *
+                      (compressionProgress.current /
+                        compressionProgress.total) *
                       PERCENTAGE_MULTIPLIER
                     }%`,
                   }}

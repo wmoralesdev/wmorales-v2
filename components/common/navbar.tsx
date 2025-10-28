@@ -626,7 +626,6 @@ export function Navbar() {
                           </p>
                           <div className="flex rounded-lg bg-gray-800/50 p-1">
                             <button
-                              type="button"
                               className={cn(
                                 "flex-1 rounded-md px-3 py-1.5 font-medium text-sm transition-all",
                                 locale === "en"
@@ -664,11 +663,11 @@ export function Navbar() {
                                   window.location.href = fullUrl;
                                 }
                               }}
+                              type="button"
                             >
                               EN
                             </button>
                             <button
-                              type="button"
                               className={cn(
                                 "flex-1 rounded-md px-3 py-1.5 font-medium text-sm transition-all",
                                 locale === "es"
@@ -706,6 +705,7 @@ export function Navbar() {
                                   window.location.href = fullUrl;
                                 }
                               }}
+                              type="button"
                             >
                               ES
                             </button>

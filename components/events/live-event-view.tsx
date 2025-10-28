@@ -21,6 +21,7 @@ import { QRCodeDialog } from "./qr-code-dialog";
 
 // Constants
 const PHOTO_SLIDESHOW_INTERVAL_MS = 5000;
+
 import { getEventUrl, sortImagesByDate } from "./utils";
 
 type LiveEventViewProps = {

@@ -201,7 +201,8 @@ export function UserTicket({
                         WebkitTextFillColor: "transparent",
                       }}
                     >
-                      #{ticketNumber ||
+                      #
+                      {ticketNumber ||
                         `${Date.now().toString().slice(-TIMESTAMP_SLICE_LENGTH)}`}
                     </span>
                   </div>
