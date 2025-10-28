@@ -17,7 +17,9 @@ export type BaseCardProps = {
   isDraggable?: boolean;
   variants?: Variants;
   whileHover?: string;
+  // biome-ignore lint/suspicious/noExplicitAny: Framer motion types are complex and change frequently
   animate?: any;
+  // biome-ignore lint/suspicious/noExplicitAny: Framer motion types are complex and change frequently
   transition?: any;
   animateFloat?: boolean;
 };
@@ -116,6 +118,7 @@ export function BaseCard({
     localStorage.setItem(STORAGE_KEY, JSON.stringify(positions));
   };
 
+  // biome-ignore lint/suspicious/noExplicitAny: PanInfo type from framer-motion is overly restrictive
   const handleDragEnd = (_: any, info: any) => {
     const newPosition = {
       x: position.x + info.offset.x,

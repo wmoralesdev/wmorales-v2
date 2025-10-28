@@ -225,11 +225,13 @@ export function extractHeadings(
   const ast = Markdoc.parse(content);
   const headings: Array<{ id: string; title: string; level: number }> = [];
 
+  // biome-ignore lint/suspicious/noExplicitAny: Markdoc AST node types are complex
   function visit(node: any) {
     if (node.type === "heading" && node.attributes?.id) {
       headings.push({
         id: node.attributes.id,
         title:
+          // biome-ignore lint/suspicious/noExplicitAny: Markdoc AST child types are complex
           node.children?.map((child: any) => child.content || "").join("") ||
           "",
         level: node.attributes.level,

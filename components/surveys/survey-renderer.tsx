@@ -155,6 +155,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
     }
   };
 
+  // biome-ignore lint/suspicious/noExplicitAny: Dynamic form data from react-hook-form
   const handleNext = async (data: any) => {
     // Save answers locally
     const updatedAnswers = { ...answers, ...data };

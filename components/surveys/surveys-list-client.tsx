@@ -43,6 +43,7 @@ const cardVariants: Variants = {
 };
 
 type SurveysListClientProps = {
+  // biome-ignore lint/suspicious/noExplicitAny: Survey type from server action
   surveys: any[];
   error?: string | null;
 };
@@ -91,7 +92,7 @@ export function SurveysListClient({ surveys, error }: SurveysListClientProps) {
       initial="hidden"
       variants={containerVariants}
     >
-      {surveys.map((survey: any) => (
+      {surveys.map((survey: unknown) => (
         <motion.div key={survey.id} variants={cardVariants} whileHover="hover">
           <Card className="h-full border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10">
             <CardHeader>
