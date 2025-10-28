@@ -8,7 +8,11 @@ import { BaseCard, type BaseCardProps } from "./base-card";
 const PULSE_SCALE_START = 1;
 const PULSE_SCALE_MID = 1.2;
 const PULSE_SCALE_END = 1;
-const PULSE_SCALE_VALUES = [PULSE_SCALE_START, PULSE_SCALE_MID, PULSE_SCALE_END];
+const PULSE_SCALE_VALUES = [
+  PULSE_SCALE_START,
+  PULSE_SCALE_MID,
+  PULSE_SCALE_END,
+];
 const PULSE_DURATION = 2;
 
 type CursorAmbassadorCardProps = Omit<BaseCardProps, "children" | "id">;

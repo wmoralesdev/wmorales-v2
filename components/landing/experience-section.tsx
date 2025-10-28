@@ -16,7 +16,11 @@ import {
 const PULSE_SCALE_START = 1;
 const PULSE_SCALE_MID = 1.2;
 const PULSE_SCALE_END = 1;
-const PULSE_SCALE_VALUES = [PULSE_SCALE_START, PULSE_SCALE_MID, PULSE_SCALE_END];
+const PULSE_SCALE_VALUES = [
+  PULSE_SCALE_START,
+  PULSE_SCALE_MID,
+  PULSE_SCALE_END,
+];
 const PULSE_DURATION = 2;
 const ACHIEVEMENT_OFFSET = 10;
 const ANIMATION_DELAY_INCREMENT = 0.1;
@@ -318,11 +322,14 @@ export function ExperienceSection() {
                               className="flex items-start gap-2 text-gray-400 text-sm"
                               initial={{
                                 opacity: 0,
-                                x: isEven ? -ACHIEVEMENT_OFFSET : ACHIEVEMENT_OFFSET,
+                                x: isEven
+                                  ? -ACHIEVEMENT_OFFSET
+                                  : ACHIEVEMENT_OFFSET,
                               }}
                               key={achievement}
                               transition={{
-                                delay: achievementIndex * ANIMATION_DELAY_INCREMENT,
+                                delay:
+                                  achievementIndex * ANIMATION_DELAY_INCREMENT,
                                 duration: ANIMATION_DURATION_SHORT,
                               }}
                               viewport={{ once: true }}

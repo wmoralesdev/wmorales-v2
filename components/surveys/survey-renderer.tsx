@@ -14,11 +14,12 @@ import {
   createSurveyResponse,
   saveSurveyAnswer,
 } from "@/app/actions/survey.actions";
+import { Button } from "@/components/ui/button";
 
 // Constants
 const PERCENTAGE_MULTIPLIER = 100;
 const ANIMATION_DELAY_INCREMENT = 0.1;
-import { Button } from "@/components/ui/button";
+
 import {
   Card,
   CardContent,
@@ -270,7 +271,9 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
                   animate={{ opacity: 1, y: 0 }}
                   initial={{ opacity: 0, y: 20 }}
                   key={question.id}
-                  transition={{ delay: ANIMATION_DELAY_INCREMENT * (index + 1) }}
+                  transition={{
+                    delay: ANIMATION_DELAY_INCREMENT * (index + 1),
+                  }}
                 >
                   <Card className="border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all duration-300 hover:border-purple-500/30">
                     <CardContent>
