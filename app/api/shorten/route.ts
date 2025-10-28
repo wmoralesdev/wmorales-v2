@@ -25,23 +25,92 @@ const generateShortCode = customAlphabet(
   SHORT_CODE_LENGTH
 );
 
+// Helper functions to reduce cognitive complexity
+async function validateApiKey(apiKey: string | null): Promise<NextResponse | null> {
+  if (!API_KEY) {
+    return NextResponse.json(
+      { error: "URL shortener API is not configured" },
+      { status: 503 }
+    );
+  }
+
+  if (!apiKey || apiKey !== API_KEY) {
+    return NextResponse.json(
+      { error: "Invalid or missing API key" },
+      { status: 401 }
+    );
+  }
+
+  return null;
+}
+
+function validateUrl(url: string): NextResponse | null {
+  if (!url) {
+    return NextResponse.json({ error: "URL is required" }, { status: 400 });
+  }
+
+  try {
+    new URL(url);
+  } catch {
+    return NextResponse.json(
+      { error: "Invalid URL format" },
+      { status: 400 }
+    );
+  }
+
+  return null;
+}
+
+async function validateCustomCode(customCode: string): Promise<NextResponse | null> {
+  if (!CUSTOM_CODE_REGEX.test(customCode)) {
+    return NextResponse.json(
+      {
+        error:
+          "Custom code must be 3-20 characters and contain only letters, numbers, underscores, and hyphens",
+      },
+      { status: 400 }
+    );
+  }
+
+  const existingCode = await prisma.shortUrl.findUnique({
+    where: { code: customCode },
+  });
+
+  if (existingCode) {
+    return NextResponse.json(
+      { error: "Custom code already exists" },
+      { status: 409 }
+    );
+  }
+
+  return null;
+}
+
+async function generateUniqueCode(): Promise<string | null> {
+  const MAX_ATTEMPTS = 10;
+  let attempts = 0;
+  
+  do {
+    const code = generateShortCode();
+    const existing = await prisma.shortUrl.findUnique({
+      where: { code },
+    });
+    if (!existing) {
+      return code;
+    }
+    attempts++;
+  } while (attempts < MAX_ATTEMPTS);
+
+  return null;
+}
+
 export async function POST(request: NextRequest) {
   try {
     // Check API key
     const apiKey = request.headers.get("x-api-key");
-
-    if (!API_KEY) {
-      return NextResponse.json(
-        { error: "URL shortener API is not configured" },
-        { status: 503 }
-      );
-    }
-
-    if (!apiKey || apiKey !== API_KEY) {
-      return NextResponse.json(
-        { error: "Invalid or missing API key" },
-        { status: 401 }
-      );
+    const apiKeyError = await validateApiKey(apiKey);
+    if (apiKeyError) {
+      return apiKeyError;
     }
 
     // Parse request body
@@ -49,59 +118,21 @@ export async function POST(request: NextRequest) {
     const { url, expiresInDays, customCode, title, description, image } = body;
 
     // Validate URL
-    if (!url) {
-      return NextResponse.json({ error: "URL is required" }, { status: 400 });
-    }
-
-    // Validate URL format
-    try {
-      new URL(url);
-    } catch {
-      return NextResponse.json(
-        { error: "Invalid URL format" },
-        { status: 400 }
-      );
+    const urlError = validateUrl(url);
+    if (urlError) {
+      return urlError;
     }
 
     // Validate custom code if provided
     let code = customCode;
     if (customCode) {
-      // Ensure custom code is alphanumeric and not too long
-      if (!CUSTOM_CODE_REGEX.test(customCode)) {
-        return NextResponse.json(
-          {
-            error:
-              "Custom code must be 3-20 characters and contain only letters, numbers, underscores, and hyphens",
-          },
-          { status: 400 }
-        );
-      }
-
-      // Check if custom code already exists
-      const existingCode = await prisma.shortUrl.findUnique({
-        where: { code: customCode },
-      });
-
-      if (existingCode) {
-        return NextResponse.json(
-          { error: "Custom code already exists" },
-          { status: 409 }
-        );
+      const customCodeError = await validateCustomCode(customCode);
+      if (customCodeError) {
+        return customCodeError;
       }
     } else {
       // Generate a unique short code
-      let attempts = 0;
-      do {
-        code = generateShortCode();
-        const existing = await prisma.shortUrl.findUnique({
-          where: { code },
-        });
-        if (!existing) {
-          break;
-        }
-        attempts++;
-      } while (attempts < 10);
-
+      code = await generateUniqueCode();
       if (!code) {
         return NextResponse.json(
           { error: "Failed to generate unique code" },
