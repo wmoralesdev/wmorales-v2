@@ -27,6 +27,8 @@ import { createFilePreview, validateImageFile } from "./utils";
 const MAX_IMAGES_DIVISOR = 20;
 const PERCENTAGE_MULTIPLIER = 100;
 const MAX_PHOTOS_ALLOWED = 20;
+const ANIMATION_DELAY_INCREMENT = 0.05;
+const ANIMATION_DURATION_SHORT = 0.2;
 
 type ImageUploadProps = {
   onUpload: (imageUrl: string, caption?: string) => Promise<void>;
@@ -464,7 +466,10 @@ export function ImageUpload({
                       exit={{ opacity: 0, scale: 0.8 }}
                       initial={{ opacity: 0, scale: 0.8 }}
                       key={preview.file.name}
-                      transition={{ duration: 0.2, delay: index * 0.05 }}
+                      transition={{
+                        duration: ANIMATION_DURATION_SHORT,
+                        delay: index * ANIMATION_DELAY_INCREMENT,
+                      }}
                     >
                       <Image
                         alt={preview.file.name}
@@ -570,7 +575,10 @@ export function ImageUpload({
                 <div
                   className="h-full bg-gradient-to-r from-purple-500 to-pink-500 transition-all duration-300"
                   style={{
-                    width: `${(compressionProgress.current / compressionProgress.total) * 100}%`,
+                    width: `${
+                      (compressionProgress.current / compressionProgress.total) *
+                      PERCENTAGE_MULTIPLIER
+                    }%`,
                   }}
                 />
               </div>
