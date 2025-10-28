@@ -294,27 +294,26 @@ export function ArtisticGallery({
     setImages(event.images);
   }, [event.images, setImages]);
 
-  // Block scroll when gallery is not shown
-  useEffect(() => {
-    if (showGallery) {
-      // Restore scrolling
-      document.body.style.overflow = "";
-      document.body.style.position = "";
-      document.body.style.width = "";
-    } else {
-      // Block scrolling
+  // Helper to manage body scroll lock
+  const manageScrollLock = useCallback((shouldLock: boolean) => {
+    if (shouldLock) {
       document.body.style.overflow = "hidden";
       document.body.style.position = "fixed";
       document.body.style.width = "100%";
-    }
-
-    // Cleanup on unmount
-    return () => {
+    } else {
       document.body.style.overflow = "";
       document.body.style.position = "";
       document.body.style.width = "";
+    }
+  }, []);
+
+  // Block scroll when gallery is not shown
+  useEffect(() => {
+    manageScrollLock(!showGallery);
+    return () => {
+      manageScrollLock(false);
     };
-  }, [showGallery]);
+  }, [showGallery, manageScrollLock]);
 
   // Helper function to transform event image data
   const transformImageData = useCallback((imageData: any, eventId: string): ExtendedEventImage => {
