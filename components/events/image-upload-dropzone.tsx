@@ -41,15 +41,21 @@ export function ImageUploadDropzone({
     onFilesSelected(Array.from(files));
   };
 
+  const getBorderClassName = () => {
+    if (isDragActive && !isDragReject) {
+      return "border-purple-500 bg-purple-500/10";
+    }
+    if (isDragReject) {
+      return "border-red-500 bg-red-500/10";
+    }
+    return "border-gray-700 bg-gray-800/50 hover:border-gray-600";
+  };
+
   return (
     <div
       className={cn(
         "relative cursor-pointer rounded-lg border-2 border-dashed p-6 transition-all sm:p-8",
-        isDragActive && !isDragReject
-          ? "border-purple-500 bg-purple-500/10"
-          : isDragReject
-            ? "border-red-500 bg-red-500/10"
-            : "border-gray-700 bg-gray-800/50 hover:border-gray-600",
+        getBorderClassName(),
         className
       )}
       onClick={() => fileInputRef.current?.click()}
