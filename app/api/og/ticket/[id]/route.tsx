@@ -372,9 +372,8 @@ export async function GET(
                   .toString(HEX_BASE)
                   .padStart(HEX_PADDING_LENGTH, PAD_START_VALUE);
                 return (
-                  // biome-ignore lint/suspicious/noArrayIndexKey: Static visual pattern, order never changes
                   <div
-                    key={`pattern-${i}`}
+                    key={`pattern-${ticket.id}-${i}`}
                     style={{
                       display: "flex",
                       width: `${PATTERN_WIDTH}px`,

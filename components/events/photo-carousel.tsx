@@ -54,7 +54,7 @@ export function PhotoCarousel({
 
       {/* Photo indicators */}
       <div className="-translate-x-1/2 absolute bottom-4 left-1/2 flex gap-1">
-        {images.slice(0, 10).map((_, index) => (
+        {images.slice(0, 10).map((image, index) => (
           <button
             aria-label={`Go to photo ${index + 1}`}
             className={cn(
@@ -63,8 +63,7 @@ export function PhotoCarousel({
                 ? "w-6 bg-white"
                 : "bg-white/50 hover:bg-white/70"
             )}
-            key={index}
-            // biome-ignore lint/suspicious/noArrayIndexKey: Visual indicators only, order never changes
+            key={image.id}
             onClick={() => onIndexChange(index)}
             type="button"
           />
