@@ -4,6 +4,10 @@ import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import { BaseCard, type BaseCardProps } from "./base-card";
 
+// Constants
+const PULSE_SCALE_VALUES = [1, 1.2, 1];
+const PULSE_DURATION = 2;
+
 type CursorAmbassadorCardProps = Omit<BaseCardProps, "children" | "id">;
 
 export function CursorAmbassadorCard(props: CursorAmbassadorCardProps) {
@@ -20,10 +24,10 @@ export function CursorAmbassadorCard(props: CursorAmbassadorCardProps) {
           <div className="relative">
             <Award className="h-6 w-6 text-purple-400 lg:h-8 lg:w-8" />
             <motion.div
-              animate={{ scale: [1, 1.2, 1] }}
+              animate={{ scale: PULSE_SCALE_VALUES }}
               className="absolute inset-0 rounded-full bg-purple-400/20 blur-xl"
               transition={{
-                duration: 2,
+                duration: PULSE_DURATION,
                 repeat: Number.POSITIVE_INFINITY,
                 ease: "easeInOut",
               }}

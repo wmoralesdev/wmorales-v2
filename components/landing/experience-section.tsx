@@ -11,6 +11,11 @@ import {
   Sparkles,
   Users,
 } from "lucide-react";
+
+// Constants
+const PULSE_SCALE_VALUES = [1, 1.2, 1];
+const PULSE_DURATION = 2;
+
 import { useLocale, useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 
@@ -243,10 +248,10 @@ export function ExperienceSection() {
                       </div>
                       {exp.current && (
                         <motion.div
-                          animate={{ scale: [1, 1.2, 1] }}
+                          animate={{ scale: PULSE_SCALE_VALUES }}
                           className="-right-1 -top-1 absolute h-4 w-4 rounded-full bg-green-500"
                           transition={{
-                            duration: 2,
+                            duration: PULSE_DURATION,
                             repeat: Number.POSITIVE_INFINITY,
                             ease: "easeInOut",
                           }}

@@ -16,6 +16,10 @@ import {
 } from "@/components/ui/card";
 import { subscribeToPollsList } from "@/lib/supabase/realtime";
 
+// Constants
+const COPY_SUCCESS_TIMEOUT_MS = 2000;
+const FALLBACK_TEXTAREA_OFFSET = -999_999;
+
 type Poll = {
   id: string;
   title: string;
@@ -86,19 +90,19 @@ export function PollsList({ polls }: PollsListProps) {
         `${window.location.origin}/polls/${code}`
       );
       setCopiedCode(code);
-      setTimeout(() => setCopiedCode(null), 2000);
+      setTimeout(() => setCopiedCode(null), COPY_SUCCESS_TIMEOUT_MS);
     } catch (_err) {
       // Fallback for older browsers
       const textArea = document.createElement("textarea");
       textArea.value = `${window.location.origin}/polls/${code}`;
       textArea.style.position = "absolute";
-      textArea.style.left = "-999999px";
+      textArea.style.left = `${FALLBACK_TEXTAREA_OFFSET}px`;
       document.body.appendChild(textArea);
       textArea.select();
       try {
         document.execCommand("copy");
         setCopiedCode(code);
-        setTimeout(() => setCopiedCode(null), 2000);
+        setTimeout(() => setCopiedCode(null), COPY_SUCCESS_TIMEOUT_MS);
       } catch (_copyErr) {
         // Copy failed
       }

@@ -3,6 +3,11 @@ import { Zap } from "lucide-react";
 import { useTranslations } from "next-intl";
 import { BaseCard, type BaseCardProps } from "./base-card";
 
+// Constants
+const ANIMATION_DURATION_LONG = 1;
+const ANIMATION_BASE_DELAY = 0.5;
+const ANIMATION_DELAY_INCREMENT = 0.1;
+
 type ProficiencyCardProps = Omit<BaseCardProps, "children" | "id">;
 
 const proficiencyData = [
@@ -45,7 +50,11 @@ export function ProficiencyCard(props: ProficiencyCardProps) {
                   animate={{ width: `${skill.level}%` }}
                   className="h-full rounded-full bg-gradient-to-r from-purple-500 to-purple-400"
                   initial={{ width: 0 }}
-                  transition={{ duration: 1, delay: 0.5 + index * 0.1 }}
+                  transition={{
+                    duration: ANIMATION_DURATION_LONG,
+                    delay:
+                      ANIMATION_BASE_DELAY + index * ANIMATION_DELAY_INCREMENT,
+                  }}
                 />
               </div>
             </div>

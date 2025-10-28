@@ -2,6 +2,9 @@
 
 import { useEffect, useState } from "react";
 
+// Constants
+const PERCENTAGE_MULTIPLIER = 100;
+
 export function ReadingProgress() {
   const [progress, setProgress] = useState(0);
 
@@ -10,7 +13,7 @@ export function ReadingProgress() {
       const scrollTop = window.scrollY;
       const docHeight =
         document.documentElement.scrollHeight - window.innerHeight;
-      const scrollPercent = (scrollTop / docHeight) * 100;
+      const scrollPercent = (scrollTop / docHeight) * PERCENTAGE_MULTIPLIER;
       setProgress(scrollPercent);
     };
 

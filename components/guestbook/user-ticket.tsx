@@ -10,6 +10,7 @@ const PATTERN_HEIGHT_MIN = 20;
 const PATTERN_HEIGHT_DECREMENT = 25;
 const PATTERN_BAR_WIDTH_PX = 8;
 const RADIAL_GRADIENT_STOP = 70;
+const HEX_RADIX = 16;
 
 type UserTicketProps = {
   user: {
@@ -220,7 +221,7 @@ export function UserTicket({
                         className="h-8 w-1"
                         key={`pattern-bar-height-${height}`}
                         style={{
-                          background: `linear-gradient(to bottom, ${ticketColors.primary}${height.toString(16)}, transparent)`,
+                          background: `linear-gradient(to bottom, ${ticketColors.primary}${height.toString(HEX_RADIX)}, transparent)`,
                         }}
                       />
                     );
