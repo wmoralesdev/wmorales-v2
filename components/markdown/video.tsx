@@ -15,12 +15,19 @@ export function Video({ src, title, poster, captions }: VideoProps) {
         preload="metadata"
       >
         <source src={src} type="video/mp4" />
-        {captions && (
+        {captions ? (
           <track
             default
             kind="captions"
             label="English"
             src={captions}
+            srcLang="en"
+          />
+        ) : (
+          <track
+            kind="captions"
+            label="No captions available"
+            src=""
             srcLang="en"
           />
         )}
