@@ -26,7 +26,7 @@ const generateShortCode = customAlphabet(
 );
 
 // Helper functions to reduce cognitive complexity
-async function validateApiKey(apiKey: string | null): Promise<NextResponse | null> {
+function validateApiKey(apiKey: string | null): NextResponse | null {
   if (!API_KEY) {
     return NextResponse.json(
       { error: "URL shortener API is not configured" },
@@ -104,16 +104,18 @@ async function generateUniqueCode(): Promise<string | null> {
   return null;
 }
 
-async function getOrCreateShortUrl(
-  url: string,
-  customCode: string | undefined,
-  title: string | undefined,
-  description: string | undefined,
-  image: string | undefined,
-  expiresInDays: number | undefined,
-  code: string,
-  request: NextRequest
-): Promise<NextResponse> {
+async function getOrCreateShortUrl(params: {
+  url: string;
+  customCode: string | undefined;
+  title: string | undefined;
+  description: string | undefined;
+  image: string | undefined;
+  expiresInDays: number | undefined;
+  code: string;
+  request: NextRequest;
+}): Promise<NextResponse> {
+  const { url, customCode, title, description, image, expiresInDays, code, request } = params;
+
   // Check if URL already exists with same metadata
   if (!customCode) {
     const existingShortUrl = await prisma.shortUrl.findFirst({
@@ -218,14 +220,16 @@ export async function POST(request: NextRequest) {
 
     // Get or create short URL
     return await getOrCreateShortUrl(
-      url,
-      customCode,
-      title,
-      description,
-      image,
-      expiresInDays,
-      code,
-      request
+      {
+        url,
+        customCode,
+        title,
+        description,
+        image,
+        expiresInDays,
+        code,
+        request,
+      }
     );
   } catch (error) {
     console.error("Error creating short URL:", error);
