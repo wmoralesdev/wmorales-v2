@@ -1,6 +1,10 @@
 import { ImageResponse } from "@vercel/og";
 import { prisma } from "@/lib/prisma";
 
+// Constants
+const MAX_DESCRIPTION_LENGTH = 150;
+const DESCRIPTION_TRUNCATE_POSITION = 147;
+
 export async function GET(
   _request: Request,
   context: { params: Promise<{ code: string }> }
@@ -31,8 +35,8 @@ export async function GET(
 
     // Truncate description if too long
     const truncatedDescription =
-      description.length > 150
-        ? `${description.substring(0, 147)}...`
+      description.length > MAX_DESCRIPTION_LENGTH
+        ? `${description.substring(0, DESCRIPTION_TRUNCATE_POSITION)}...`
         : description;
 
     return new ImageResponse(

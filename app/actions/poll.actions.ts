@@ -7,6 +7,12 @@ import { db } from "@/lib/db-utils";
 import { broadcastPollUpdate } from "@/lib/supabase/realtime-server";
 import { createClient } from "@/lib/supabase/server";
 
+// Constants
+const POLL_SESSION_MAX_AGE_DAYS = 30;
+const POLL_SESSION_MAX_AGE_SECONDS = 60 * 60 * 24 * POLL_SESSION_MAX_AGE_DAYS;
+const PRESENCE_CHECK_INTERVAL_MINUTES = 5;
+const PERCENTAGE_MULTIPLIER = 100;
+
 // Helper to get or create session ID
 async function getSessionId() {
   const cookieStore = await cookies();
@@ -18,7 +24,7 @@ async function getSessionId() {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 60 * 60 * 24 * 30, // 30 days
+      maxAge: POLL_SESSION_MAX_AGE_SECONDS,
     });
   }
 
@@ -328,7 +334,10 @@ export async function getPollResults(pollId: string) {
           voteCount: option._count.votes,
           percentage:
             question._count.votes > 0
-              ? Math.round((option._count.votes / question._count.votes) * 100)
+              ? Math.round(
+                  (option._count.votes / question._count.votes) *
+                    PERCENTAGE_MULTIPLIER
+                )
               : 0,
         })),
       })),
@@ -426,7 +435,9 @@ export async function getPollActiveUsers(pollCode: string) {
     // This is a placeholder - in a real implementation, you'd track active websocket connections
     // For now, we'll count recent sessions (last 5 minutes)
     const fiveMinutesAgo = new Date();
-    fiveMinutesAgo.setMinutes(fiveMinutesAgo.getMinutes() - 5);
+    fiveMinutesAgo.setMinutes(
+      fiveMinutesAgo.getMinutes() - PRESENCE_CHECK_INTERVAL_MINUTES
+    );
 
     const poll = await db.query(() =>
       db.client.poll.findUnique({

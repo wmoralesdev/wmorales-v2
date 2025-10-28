@@ -14,6 +14,7 @@ export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
 }
 
+// biome-ignore lint/suspicious/useAwait: Next.js generateMetadata signature requires async
 export async function generateMetadata(): Promise<Metadata> {
   return baseMetadata;
 }

@@ -1,6 +1,10 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 
+// Bot user agent regex pattern
+const BOT_USER_AGENT_REGEX =
+  /bot|crawler|spider|slack|telegram|whatsapp|facebook|twitter|linkedin|discord/i;
+
 // Generate HTML page with OG metadata
 // biome-ignore lint/suspicious/noExplicitAny: Prisma query result types
 function generateOGPage(shortUrl: any, baseUrl: string): string {
@@ -233,10 +237,7 @@ export async function GET(
 
     // Check if the request is from a bot/crawler that needs OG metadata
     const userAgent = request.headers.get("user-agent") || "";
-    const isBot =
-      /bot|crawler|spider|slack|telegram|whatsapp|facebook|twitter|linkedin|discord/i.test(
-        userAgent
-      );
+    const isBot = BOT_USER_AGENT_REGEX.test(userAgent);
 
     const baseUrl =
       process.env.NEXT_PUBLIC_APP_URL ||

@@ -4,6 +4,10 @@ export const runtime = "edge";
 
 const hexColorRegex = /^#[0-9A-F]{6}$/i;
 
+// Constants
+const MAX_USER_NAME_LENGTH = 20;
+const MAX_USER_EMAIL_LENGTH = 30;
+
 export async function GET(
   request: Request,
   context: { params: Promise<{ id: string }> }
@@ -57,12 +61,12 @@ export async function GET(
     const brandText = "Walter Morales";
     const subtitleText = t.subtitle;
     const userName =
-      ticket.userName.length > 20
-        ? `${ticket.userName.substring(0, 20)}...`
+      ticket.userName.length > MAX_USER_NAME_LENGTH
+        ? `${ticket.userName.substring(0, MAX_USER_NAME_LENGTH)}...`
         : ticket.userName;
     const userEmail =
-      ticket.userEmail.length > 30
-        ? `${ticket.userEmail.substring(0, 30)}...`
+      ticket.userEmail.length > MAX_USER_EMAIL_LENGTH
+        ? `${ticket.userEmail.substring(0, MAX_USER_EMAIL_LENGTH)}...`
         : ticket.userEmail;
     const providerText = ticket.userProvider.toUpperCase();
     const ticketLabelText = t.ticketLabel;
@@ -352,6 +356,7 @@ export async function GET(
                   .toString(16)
                   .padStart(2, "0");
                 return (
+                  // biome-ignore lint/suspicious/noArrayIndexKey: Static visual pattern, order never changes
                   <div
                     key={`pattern-${i}`}
                     style={{

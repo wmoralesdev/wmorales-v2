@@ -6,7 +6,11 @@
         "noEmptySource": "off"
       },
       "performance": {
-        "noBarrelFile": "off"
+        "noBarrelFile": "off",
+        "noImgElement": "off"
+      },
+      "correctness": {
+        "useImageSize": "off"
       },
       "suspicious": {
         "noConsole": "off"

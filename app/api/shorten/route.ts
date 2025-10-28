@@ -5,6 +5,9 @@ import { prisma } from "@/lib/prisma";
 // Get API key from environment variable
 const API_KEY = process.env.URL_SHORTENER_API_KEY;
 
+// Constants
+const CUSTOM_CODE_REGEX = /^[a-zA-Z0-9_-]{3,20}$/;
+
 // Generate a short, readable code
 // Use a custom alphabet without ambiguous characters (no 0, O, l, I)
 const generateShortCode = customAlphabet(
@@ -54,7 +57,7 @@ export async function POST(request: NextRequest) {
     let code = customCode;
     if (customCode) {
       // Ensure custom code is alphanumeric and not too long
-      if (!/^[a-zA-Z0-9_-]{3,20}$/.test(customCode)) {
+      if (!CUSTOM_CODE_REGEX.test(customCode)) {
         return NextResponse.json(
           {
             error:
@@ -83,7 +86,9 @@ export async function POST(request: NextRequest) {
         const existing = await prisma.shortUrl.findUnique({
           where: { code },
         });
-        if (!existing) break;
+        if (!existing) {
+          break;
+        }
         attempts++;
       } while (attempts < 10);
 
