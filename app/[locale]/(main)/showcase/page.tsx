@@ -1,8 +1,8 @@
-import { Code2 } from 'lucide-react';
-import { InnerHero } from '@/components/common/inner-hero';
-import { ShowcaseContent } from '@/components/showcase/showcase-content';
+import { Code2 } from "lucide-react";
+import { InnerHero } from "@/components/common/inner-hero";
+import { ShowcaseContent } from "@/components/showcase/showcase-content";
 
-export { metadata } from './metadata';
+export { metadata } from "./metadata";
 
 export default function ShowcasePage() {
   return (

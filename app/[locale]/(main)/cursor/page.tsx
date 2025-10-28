@@ -1,7 +1,7 @@
-import { setRequestLocale } from 'next-intl/server';
-import { CursorPageContent } from '@/components/cursor/cursor-page-content';
+import { setRequestLocale } from "next-intl/server";
+import { CursorPageContent } from "@/components/cursor/cursor-page-content";
 
-export { metadata } from './metadata';
+export { metadata } from "./metadata";
 
 type Props = {
   params: Promise<{ locale: string }>;

@@ -1,4 +1,4 @@
-import type { Event, EventContent, EventImage } from '@prisma/client';
+import type { Event, EventContent, EventImage } from "@prisma/client";
 
 export type ExtendedEvent = EventImage & {
   profile: {
@@ -52,7 +52,7 @@ export type ExtendedEventImage = EventImage & {
 };
 
 // View modes for post-event view
-export type ViewMode = 'grid' | 'slideshow' | 'timeline';
+export type ViewMode = "grid" | "slideshow" | "timeline";
 
 // Stats display types
 export type EventStatsData = {

@@ -1,11 +1,11 @@
-import { Terminal } from 'lucide-react';
-import { BaseCard, type BaseCardProps } from './base-card';
-import { useTranslations } from 'next-intl';
+import { Terminal } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { BaseCard, type BaseCardProps } from "./base-card";
 
-type TerminalCardProps = Omit<BaseCardProps, 'children' | 'id'>;
+type TerminalCardProps = Omit<BaseCardProps, "children" | "id">;
 
 export function TerminalCard(props: TerminalCardProps) {
-  const t = useTranslations('homepage.cards');
+  const t = useTranslations("homepage.cards");
 
   return (
     <BaseCard
@@ -23,9 +23,9 @@ export function TerminalCard(props: TerminalCardProps) {
       </div>
       <div className="space-y-1 text-[10px] lg:text-xs">
         <div className="text-green-400">
-          $ git commit -m &quot;{t('commitMessage')}&quot;
+          $ git commit -m &quot;{t("commitMessage")}&quot;
         </div>
-        <div className="text-gray-400">[main 7a3b9c1] {t('commitMessage')}</div>
+        <div className="text-gray-400">[main 7a3b9c1] {t("commitMessage")}</div>
         <div className="text-gray-400">∞ files changed, ∞ value created</div>
       </div>
     </BaseCard>

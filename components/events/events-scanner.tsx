@@ -1,31 +1,31 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { Html5QrcodeScanner } from 'html5-qrcode';
+import { motion } from "framer-motion";
+import { Html5QrcodeScanner } from "html5-qrcode";
 import {
   AlertCircle,
   Camera,
   CameraOff,
   CheckCircle,
   Sparkles,
-} from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { useRouter } from 'next/navigation';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { toast } from 'sonner';
-import { getEventByQRCode } from '@/app/actions/events.actions';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
+} from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useTranslations } from "next-intl";
+import { useCallback, useEffect, useRef, useState } from "react";
+import { toast } from "sonner";
+import { getEventByQRCode } from "@/app/actions/events.actions";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from "@/components/ui/card";
 
 export function EventsScanner() {
-  const t = useTranslations('events');
+  const t = useTranslations("events");
   const [isScanning, setIsScanning] = useState(false);
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [error, setError] = useState<string | null>(null);
@@ -46,7 +46,7 @@ export function EventsScanner() {
       try {
         // Validate QR code format (should be a short code)
         if (!decodedText || decodedText.length < 3) {
-          throw new Error(t('invalidQRCode'));
+          throw new Error(t("invalidQRCode"));
         }
 
         // Get event details
@@ -55,10 +55,10 @@ export function EventsScanner() {
         // Navigate to event gallery
         router.push(`/events/${event.id}`);
 
-        toast.success(t('welcomeToEvent', { title: event.content[0].title }));
+        toast.success(t("welcomeToEvent", { title: event.content[0].title }));
       } catch (err) {
         const message =
-          err instanceof Error ? err.message : t('qrProcessError');
+          err instanceof Error ? err.message : t("qrProcessError");
         setError(message);
         toast.error(message);
       } finally {
@@ -83,7 +83,7 @@ export function EventsScanner() {
       // Initialize scanner
       if (containerRef.current && !scannerRef.current) {
         scannerRef.current = new Html5QrcodeScanner(
-          'qr-reader',
+          "qr-reader",
           {
             fps: 10,
             qrbox: { width: 250, height: 250 },
@@ -98,7 +98,7 @@ export function EventsScanner() {
       }
     } catch {
       setHasPermission(false);
-      setError(t('cameraPermissionDenied'));
+      setError(t("cameraPermissionDenied"));
     }
   }, [handleScan, t]);
 
@@ -110,13 +110,14 @@ export function EventsScanner() {
     setIsScanning(false);
   }, []);
 
-  useEffect(() => {
-    return () => {
+  useEffect(
+    () => () => {
       if (scannerRef.current) {
         scannerRef.current.clear();
       }
-    };
-  }, []);
+    },
+    []
+  );
 
   if (hasPermission === false) {
     return (
@@ -181,7 +182,7 @@ export function EventsScanner() {
               size="lg"
             >
               <Camera className="mr-2 h-4 w-4" />
-              {t('startScanner')}
+              {t("startScanner")}
             </Button>
           </CardContent>
         </Card>
@@ -212,7 +213,7 @@ export function EventsScanner() {
               transition={{ duration: 0.3 }}
             >
               <CheckCircle className="h-6 w-6 animate-pulse text-green-400" />
-              <span className="font-medium text-white">{t('processing')}</span>
+              <span className="font-medium text-white">{t("processing")}</span>
             </motion.div>
           </div>
         )}
@@ -239,19 +240,19 @@ export function EventsScanner() {
           onClick={stopScanning}
           variant="outline"
         >
-          {t('stopScanner')}
+          {t("stopScanner")}
         </Button>
         <Button
           className="flex-1 bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25"
           onClick={startScanning}
         >
-          {t('restart')}
+          {t("restart")}
         </Button>
       </div>
 
       <div className="text-center text-sm">
-        <p className="text-gray-400">{t('scanDescription')}</p>
-        <p className="mt-1 text-gray-500">{t('automaticDetection')}</p>
+        <p className="text-gray-400">{t("scanDescription")}</p>
+        <p className="mt-1 text-gray-500">{t("automaticDetection")}</p>
       </div>
     </motion.div>
   );

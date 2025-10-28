@@ -37,7 +37,6 @@
 //   return notification;
 // }
 
-// // eslint-disable-next-line @typescript-eslint/no-explicit-any
 // function applySorting(posts: any[], sortBy: string) {
 //   const sortedPosts = [...posts];
 
@@ -84,7 +83,6 @@
 //   }
 // }
 
-// // eslint-disable-next-line @typescript-eslint/no-explicit-any
 // function calculateTagCounts(posts: any[]) {
 //   const tagCounts: Record<string, number> = {};
 

@@ -1,23 +1,23 @@
-'use server';
+"use server";
 
-import crypto from 'node:crypto';
-import { revalidatePath } from 'next/cache';
-import { cookies, headers } from 'next/headers';
-import { db } from '@/lib/db-utils';
-import { broadcastPollUpdate } from '@/lib/supabase/realtime-server';
-import { createClient } from '@/lib/supabase/server';
+import crypto from "node:crypto";
+import { revalidatePath } from "next/cache";
+import { cookies, headers } from "next/headers";
+import { db } from "@/lib/db-utils";
+import { broadcastPollUpdate } from "@/lib/supabase/realtime-server";
+import { createClient } from "@/lib/supabase/server";
 
 // Helper to get or create session ID
 async function getSessionId() {
   const cookieStore = await cookies();
-  let sessionId = cookieStore.get('poll_session_id')?.value;
+  let sessionId = cookieStore.get("poll_session_id")?.value;
 
   if (!sessionId) {
     sessionId = crypto.randomUUID();
-    cookieStore.set('poll_session_id', sessionId, {
+    cookieStore.set("poll_session_id", sessionId, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
       maxAge: 60 * 60 * 24 * 30, // 30 days
     });
   }
@@ -32,12 +32,12 @@ export async function getAllPolls() {
       db.client.poll.findMany({
         where: { isActive: true },
         select: { code: true },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
       })
     );
     return polls;
   } catch (error) {
-    console.error('Error fetching all polls:', error);
+    console.error("Error fetching all polls:", error);
     return [];
   }
 }
@@ -45,9 +45,9 @@ export async function getAllPolls() {
 // Helper to get hashed IP
 async function getHashedIp() {
   const headersList = await headers();
-  const forwardedFor = headersList.get('x-forwarded-for');
-  const ip = forwardedFor ? forwardedFor.split(',')[0] : 'unknown';
-  return crypto.createHash('sha256').update(ip).digest('hex');
+  const forwardedFor = headersList.get("x-forwarded-for");
+  const ip = forwardedFor ? forwardedFor.split(",")[0] : "unknown";
+  return crypto.createHash("sha256").update(ip).digest("hex");
 }
 
 export async function createPoll(data: {
@@ -55,7 +55,7 @@ export async function createPoll(data: {
   description?: string;
   questions: {
     question: string;
-    type: 'single' | 'multiple';
+    type: "single" | "multiple";
     maxSelections?: number;
     options: {
       label: string;
@@ -100,7 +100,7 @@ export async function createPoll(data: {
 
     return { data: poll, error: null };
   } catch (_error) {
-    return { data: null, error: 'Failed to create poll' };
+    return { data: null, error: "Failed to create poll" };
   }
 }
 
@@ -111,10 +111,10 @@ export async function getPollByCode(code: string) {
         where: { code },
         include: {
           questions: {
-            orderBy: { questionOrder: 'asc' },
+            orderBy: { questionOrder: "asc" },
             include: {
               options: {
-                orderBy: { optionOrder: 'asc' },
+                orderBy: { optionOrder: "asc" },
               },
             },
           },
@@ -123,12 +123,12 @@ export async function getPollByCode(code: string) {
     );
 
     if (!poll?.isActive) {
-      return { data: null, error: 'Poll not found or inactive' };
+      return { data: null, error: "Poll not found or inactive" };
     }
 
     return { data: poll, error: null };
   } catch (_error) {
-    return { data: null, error: 'Failed to fetch poll' };
+    return { data: null, error: "Failed to fetch poll" };
   }
 }
 
@@ -142,7 +142,7 @@ export async function createPollSession(pollId: string) {
 
     // Require authentication
     if (!user) {
-      return { data: null, error: 'Authentication required' };
+      return { data: null, error: "Authentication required" };
     }
 
     const headersList = await headers();
@@ -170,7 +170,7 @@ export async function createPollSession(pollId: string) {
           pollId,
           sessionId,
           profileId: user.id, // Always use authenticated user ID
-          userAgent: headersList.get('user-agent'),
+          userAgent: headersList.get("user-agent"),
           ipHash: await getHashedIp(),
         },
       })
@@ -178,7 +178,7 @@ export async function createPollSession(pollId: string) {
 
     return { data: session, error: null };
   } catch (_error) {
-    return { data: null, error: 'Failed to create session' };
+    return { data: null, error: "Failed to create session" };
   }
 }
 
@@ -205,7 +205,7 @@ export async function votePoll(
     );
 
     if (!question?.poll.isActive) {
-      return { data: null, error: 'Invalid poll or question' };
+      return { data: null, error: "Invalid poll or question" };
     }
 
     // Check if user has already voted for this question
@@ -220,12 +220,12 @@ export async function votePoll(
 
     // If user has already voted and poll doesn't allow multiple votes, prevent duplicate voting
     if (existingVotes.length > 0 && !question.poll.allowMultiple) {
-      return { data: null, error: 'You have already voted for this question' };
+      return { data: null, error: "You have already voted for this question" };
     }
 
     // Check vote limits
-    if (question.type === 'single' && optionIdArray.length > 1) {
-      return { data: null, error: 'Only one option allowed' };
+    if (question.type === "single" && optionIdArray.length > 1) {
+      return { data: null, error: "Only one option allowed" };
     }
 
     if (
@@ -264,7 +264,7 @@ export async function votePoll(
 
     // Broadcast update via Supabase
     await broadcastPollUpdate(question.poll.code, {
-      type: 'vote_added',
+      type: "vote_added",
       pollId,
       questionId,
       timestamp: new Date().toISOString(),
@@ -274,7 +274,7 @@ export async function votePoll(
 
     return { data: votes, error: null };
   } catch (_error) {
-    return { data: null, error: 'Failed to submit vote' };
+    return { data: null, error: "Failed to submit vote" };
   }
 }
 
@@ -283,10 +283,10 @@ export async function getPollResults(pollId: string) {
     const results = await db.query(() =>
       db.client.pollQuestion.findMany({
         where: { pollId },
-        orderBy: { questionOrder: 'asc' },
+        orderBy: { questionOrder: "asc" },
         include: {
           options: {
-            orderBy: { optionOrder: 'asc' },
+            orderBy: { optionOrder: "asc" },
             include: {
               _count: {
                 select: { votes: true },
@@ -336,7 +336,7 @@ export async function getPollResults(pollId: string) {
 
     return { data: formattedResults, error: null };
   } catch (_error) {
-    return { data: null, error: 'Failed to fetch results' };
+    return { data: null, error: "Failed to fetch results" };
   }
 }
 
@@ -389,7 +389,7 @@ export async function getUserVotes(pollId: string) {
 
     return { data: votesByQuestion, error: null };
   } catch (_error) {
-    return { data: null, error: 'Failed to fetch votes' };
+    return { data: null, error: "Failed to fetch votes" };
   }
 }
 
@@ -407,7 +407,7 @@ export async function closePoll(pollId: string) {
 
     // Broadcast poll closed event
     await broadcastPollUpdate(poll.code, {
-      type: 'poll_closed',
+      type: "poll_closed",
       pollId,
       timestamp: new Date().toISOString(),
     });
@@ -416,7 +416,7 @@ export async function closePoll(pollId: string) {
 
     return { data: poll, error: null };
   } catch (_error) {
-    return { data: null, error: 'Failed to close poll' };
+    return { data: null, error: "Failed to close poll" };
   }
 }
 
@@ -452,6 +452,6 @@ export async function getPollActiveUsers(pollCode: string) {
 
     return { data: activeSessions, error: null };
   } catch (_error) {
-    return { data: 0, error: 'Failed to get active users' };
+    return { data: 0, error: "Failed to get active users" };
   }
 }

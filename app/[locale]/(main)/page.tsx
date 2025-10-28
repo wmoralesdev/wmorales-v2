@@ -1,8 +1,8 @@
-import { setRequestLocale } from 'next-intl/server';
+import { setRequestLocale } from "next-intl/server";
 // import { ExperienceSection } from '@/components/landing/experience-section';
-import { HeroSection } from '@/components/landing/hero-section';
+import { HeroSection } from "@/components/landing/hero-section";
 
-export { metadata } from './metadata';
+export { metadata } from "./metadata";
 
 type Props = {
   params: Promise<{ locale: string }>;

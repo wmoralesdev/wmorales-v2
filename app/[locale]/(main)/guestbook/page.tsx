@@ -1,9 +1,9 @@
-import { Sparkles } from 'lucide-react';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
-import { InnerHero } from '@/components/common/inner-hero';
-import { GuestbookContent } from '@/components/guestbook/guestbook-content';
+import { Sparkles } from "lucide-react";
+import { getTranslations, setRequestLocale } from "next-intl/server";
+import { InnerHero } from "@/components/common/inner-hero";
+import { GuestbookContent } from "@/components/guestbook/guestbook-content";
 
-export { metadata } from './metadata';
+export { metadata } from "./metadata";
 
 type Props = {
   params: Promise<{ locale: string }>;
@@ -16,14 +16,14 @@ export default async function GuestbookPage({ params }: Props) {
   setRequestLocale(locale);
 
   // Get translations
-  const t = await getTranslations('guestbook');
+  const t = await getTranslations("guestbook");
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
       <InnerHero
-        description={t('description')}
+        description={t("description")}
         icon={Sparkles}
-        title={t('title')}
+        title={t("title")}
       />
 
       {/* Main Content */}

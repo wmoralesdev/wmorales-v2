@@ -1,32 +1,32 @@
-'use server';
+"use server";
 
-import type { Event, EventContent, EventImage } from '@prisma/client';
-import { getLocale } from 'next-intl/server';
-import { z } from 'zod';
-import { EVENT_IMAGES_BUCKET } from '@/lib/consts';
-import { db } from '@/lib/db-utils';
-import { broadcastEventUpdate } from '@/lib/supabase/realtime-server';
-import { createClient } from '@/lib/supabase/server';
-import { ExtendedEventImage } from '@/lib/types/event.types';
+import type { Event, EventContent, EventImage } from "@prisma/client";
+import { getLocale } from "next-intl/server";
+import { z } from "zod";
+import { EVENT_IMAGES_BUCKET } from "@/lib/consts";
+import { db } from "@/lib/db-utils";
+import { broadcastEventUpdate } from "@/lib/supabase/realtime-server";
+import { createClient } from "@/lib/supabase/server";
+import type { ExtendedEventImage } from "@/lib/types/event.types";
 
 // Validation schemas
 const createEventSchema = z.object({
-  slug: z.string().min(1, 'Slug is required'),
+  slug: z.string().min(1, "Slug is required"),
   content: z
     .array(
       z.object({
-        language: z.string().min(1, 'Language is required'),
-        title: z.string().min(1, 'Title is required'),
+        language: z.string().min(1, "Language is required"),
+        title: z.string().min(1, "Title is required"),
         description: z.string().optional(),
       })
     )
-    .min(1, 'At least one language content is required'),
+    .min(1, "At least one language content is required"),
   maxImages: z.number().min(1).max(50).default(15),
   endsAt: z.string().datetime().optional(),
 });
 
 const uploadImageSchema = z.object({
-  slug: z.string().min(1, 'Slug is required'),
+  slug: z.string().min(1, "Slug is required"),
   imageUrl: z.string().url(),
   caption: z.string().optional(),
 });
@@ -41,7 +41,7 @@ export async function createEvent(
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error('User not authenticated');
+    throw new Error("User not authenticated");
   }
 
   const validatedData = createEventSchema.parse(data);
@@ -79,7 +79,7 @@ export async function getEventByQRCode(
       include: {
         content: true,
         images: {
-          orderBy: { createdAt: 'desc' },
+          orderBy: { createdAt: "desc" },
           take: 50,
         },
       },
@@ -87,15 +87,15 @@ export async function getEventByQRCode(
   );
 
   if (!event) {
-    throw new Error('Event not found');
+    throw new Error("Event not found");
   }
 
   if (!event.isActive) {
-    throw new Error('Event is not active');
+    throw new Error("Event is not active");
   }
 
   if (event.endsAt && new Date() > event.endsAt) {
-    throw new Error('Event has ended');
+    throw new Error("Event has ended");
   }
 
   return event;
@@ -111,7 +111,7 @@ export async function getEventById(
       include: {
         content: true,
         images: {
-          orderBy: { createdAt: 'desc' },
+          orderBy: { createdAt: "desc" },
           take: 50,
         },
       },
@@ -119,7 +119,7 @@ export async function getEventById(
   );
 
   if (!event) {
-    throw new Error('Event not found');
+    throw new Error("Event not found");
   }
 
   return event;
@@ -145,7 +145,7 @@ export async function getEventBySlug(slug: string): Promise<
           },
         },
         images: {
-          orderBy: { createdAt: 'desc' },
+          orderBy: { createdAt: "desc" },
           take: 50,
           include: {
             profile: {
@@ -161,7 +161,7 @@ export async function getEventBySlug(slug: string): Promise<
   );
 
   if (!event) {
-    throw new Error('Event not found');
+    throw new Error("Event not found");
   }
 
   // Count distinct users who have uploaded images
@@ -173,7 +173,7 @@ export async function getEventBySlug(slug: string): Promise<
       ...img,
       caption: img.caption || null,
       profile: {
-        name: img.profile.name || 'Unknown',
+        name: img.profile.name || "Unknown",
         avatar: img.profile.avatar || undefined,
       },
     })),
@@ -191,7 +191,7 @@ export async function uploadEventImage(
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error('User not authenticated');
+    throw new Error("User not authenticated");
   }
 
   const validatedData = uploadImageSchema.parse(data);
@@ -204,15 +204,15 @@ export async function uploadEventImage(
   );
 
   if (!event) {
-    throw new Error('Event not found');
+    throw new Error("Event not found");
   }
 
   if (!event.isActive) {
-    throw new Error('Event is not active');
+    throw new Error("Event is not active");
   }
 
   if (event.endsAt && new Date() > event.endsAt) {
-    throw new Error('Event has ended');
+    throw new Error("Event has ended");
   }
 
   // Check if user has reached the maximum number of images
@@ -254,7 +254,7 @@ export async function uploadEventImage(
   // Broadcast the new image upload (don't fail the upload if broadcast fails)
   try {
     await broadcastEventUpdate({
-      type: 'image_uploaded',
+      type: "image_uploaded",
       eventId: event.id,
       image: {
         id: image.id,
@@ -263,7 +263,7 @@ export async function uploadEventImage(
         createdAt: image.createdAt.toISOString(),
         profileId: image.profileId,
         profile: {
-          name: image.profile.name || 'Unknown',
+          name: image.profile.name || "Unknown",
           avatar: image.profile.avatar || undefined,
         },
       },
@@ -271,7 +271,7 @@ export async function uploadEventImage(
     });
   } catch (broadcastError) {
     // Log the error but don't fail the upload
-    console.error('Failed to broadcast image upload:', broadcastError);
+    console.error("Failed to broadcast image upload:", broadcastError);
   }
 
   return image;
@@ -287,7 +287,7 @@ export async function getUserEventImages(
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error('User not authenticated');
+    throw new Error("User not authenticated");
   }
 
   const images = await db.query(() =>
@@ -296,7 +296,7 @@ export async function getUserEventImages(
         eventId,
         profileId: user.id,
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
     })
   );
 
@@ -311,7 +311,7 @@ export async function deleteEventImage(imageId: string) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error('User not authenticated');
+    throw new Error("User not authenticated");
   }
 
   // Check if image belongs to user
@@ -325,11 +325,11 @@ export async function deleteEventImage(imageId: string) {
   );
 
   if (!image) {
-    throw new Error('Image not found or not authorized');
+    throw new Error("Image not found or not authorized");
   }
 
   // Delete from Supabase storage
-  await supabase.storage.from('event-images').remove([image.imageUrl]);
+  await supabase.storage.from("event-images").remove([image.imageUrl]);
 
   // Delete from database
   await db.query(() =>
@@ -341,21 +341,21 @@ export async function deleteEventImage(imageId: string) {
   // Broadcast the image deletion (don't fail the deletion if broadcast fails)
   try {
     await broadcastEventUpdate({
-      type: 'image_deleted',
+      type: "image_deleted",
       eventId: image.eventId,
       imageId,
       timestamp: new Date().toISOString(),
     });
   } catch (broadcastError) {
     // Log the error but don't fail the deletion
-    console.error('Failed to broadcast image deletion:', broadcastError);
+    console.error("Failed to broadcast image deletion:", broadcastError);
   }
 
   return { success: true };
 }
 
 export async function downloadEventPhotos(eventSlug: string) {
-  'use server';
+  "use server";
 
   try {
     // Get the event with all images
@@ -369,7 +369,7 @@ export async function downloadEventPhotos(eventSlug: string) {
     );
 
     if (!event) {
-      throw new Error('Event not found');
+      throw new Error("Event not found");
     }
 
     // In a real implementation, you would:
@@ -384,8 +384,8 @@ export async function downloadEventPhotos(eventSlug: string) {
       count: event.images.length,
     };
   } catch (error) {
-    console.error('Failed to prepare download:', error);
-    throw new Error('Failed to prepare photos for download');
+    console.error("Failed to prepare download:", error);
+    throw new Error("Failed to prepare photos for download");
   }
 }
 
@@ -401,7 +401,7 @@ export async function getActiveEvents(): Promise<
         isActive: true,
         OR: [{ endsAt: null }, { endsAt: { gt: new Date() } }],
       },
-      orderBy: { createdAt: 'desc' },
+      orderBy: { createdAt: "desc" },
       include: {
         content: {
           where: {
@@ -424,11 +424,11 @@ export async function generateUploadURL(slug: string, fileName: string) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error('User not authenticated');
+    throw new Error("User not authenticated");
   }
 
   if (!slug) {
-    throw new Error('Slug is required');
+    throw new Error("Slug is required");
   }
 
   // Validate event exists and is active
@@ -439,7 +439,7 @@ export async function generateUploadURL(slug: string, fileName: string) {
   );
 
   if (!event?.isActive) {
-    throw new Error('Event not found or not active');
+    throw new Error("Event not found or not active");
   }
 
   const filePath = `${slug}/${user.id}/${Date.now()}-${fileName}`;
@@ -449,7 +449,7 @@ export async function generateUploadURL(slug: string, fileName: string) {
     .createSignedUploadUrl(filePath);
 
   if (error) {
-    throw new Error('Failed to generate upload URL');
+    throw new Error("Failed to generate upload URL");
   }
 
   return {

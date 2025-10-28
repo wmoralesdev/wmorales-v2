@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { motion, Variants } from 'framer-motion';
-import { Project } from '@/lib/types/showcase.types';
-import { ProjectCard } from './project-card';
+import { motion, type Variants } from "framer-motion";
+import type { Project } from "@/lib/types/showcase.types";
+import { ProjectCard } from "./project-card";
 
 interface ProjectGridProps {
   projects: Project[];
@@ -33,10 +33,10 @@ const itemVariants: Variants = {
 export function ProjectGrid({ projects }: ProjectGridProps) {
   return (
     <motion.div
-      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-      variants={containerVariants}
-      initial="hidden"
       animate="visible"
+      className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3"
+      initial="hidden"
+      variants={containerVariants}
     >
       {projects.map((project) => (
         <motion.div key={project.id} variants={itemVariants}>

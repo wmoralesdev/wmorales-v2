@@ -1,9 +1,9 @@
-import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
-import { notFound } from 'next/navigation';
-import { routing } from '@/i18n/routing';
-import { baseMetadata } from '@/lib/metadata';
-import type { Metadata } from 'next';
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { NextIntlClientProvider } from "next-intl";
+import { getMessages } from "next-intl/server";
+import { routing } from "@/i18n/routing";
+import { baseMetadata } from "@/lib/metadata";
 
 type Props = {
   children: React.ReactNode;
@@ -21,7 +21,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function LocaleLayout({ children, params }: Props) {
   const { locale } = await params;
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  // biome-ignore lint/suspicious/noExplicitAny: next-intl types require this cast
   if (!routing.locales.includes(locale as any)) {
     notFound();
   }

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { Facebook, Link2, Linkedin, Twitter } from 'lucide-react';
-import { toast } from 'sonner';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
+import { Facebook, Link2, Linkedin, Twitter } from "lucide-react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 type ShareButtonsProps = {
   title: string;
@@ -16,7 +16,7 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
   const [shareUrl, setShareUrl] = useState<string>(url);
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       setShareUrl(`${window.location.origin}${url}`);
     }
   }, [url]);
@@ -33,9 +33,9 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
   const copyToClipboard = async () => {
     try {
       await navigator.clipboard.writeText(shareUrl);
-      toast.success('Link copied to clipboard!');
+      toast.success("Link copied to clipboard!");
     } catch {
-      toast.error('Failed to copy link');
+      toast.error("Failed to copy link");
     }
   };
 

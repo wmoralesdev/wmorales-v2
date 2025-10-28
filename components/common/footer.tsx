@@ -1,7 +1,6 @@
-'use client';
+"use client";
 
-import { EMAIL } from '@/lib/consts';
-import { motion, type Variants } from 'framer-motion';
+import { motion, type Variants } from "framer-motion";
 import {
   Github,
   Linkedin,
@@ -10,9 +9,10 @@ import {
   Send,
   Sparkles,
   Twitter,
-} from 'lucide-react';
-import Link from 'next/link';
-import { useTranslations } from 'next-intl';
+} from "lucide-react";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { EMAIL } from "@/lib/consts";
 
 // Animation variants
 const containerVariants: Variants = {
@@ -33,35 +33,35 @@ const itemVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   },
 };
 
 const socialLinks = [
-  { icon: Github, href: 'https://github.com/wmoralesdev', label: 'GitHub' },
+  { icon: Github, href: "https://github.com/wmoralesdev", label: "GitHub" },
   {
     icon: Linkedin,
-    href: 'https://linkedin.com/in/wmoralesdev',
-    label: 'LinkedIn',
+    href: "https://linkedin.com/in/wmoralesdev",
+    label: "LinkedIn",
   },
-  { icon: Twitter, href: 'https://twitter.com/wmoralesdev', label: 'Twitter' },
-  { icon: Mail, href: `mailto:${EMAIL}`, label: 'Email' },
+  { icon: Twitter, href: "https://twitter.com/wmoralesdev", label: "Twitter" },
+  { icon: Mail, href: `mailto:${EMAIL}`, label: "Email" },
 ];
 
 export function Footer() {
   const currentYear = new Date().getFullYear();
-  const t = useTranslations('footer');
+  const t = useTranslations("footer");
 
   const navigation = [
-    { name: t('home'), href: '/' },
-    { name: t('guestbook'), href: '/guestbook' },
-    { name: t('events'), href: '/events' },
-    { name: t('cursor'), href: '/cursor' },
+    { name: t("home"), href: "/" },
+    { name: t("guestbook"), href: "/guestbook" },
+    { name: t("events"), href: "/events" },
+    { name: t("cursor"), href: "/cursor" },
   ];
 
   return (
-    <footer className="relative overflow-hidden bg-black z-50">
+    <footer className="relative z-50 overflow-hidden bg-black">
       {/* Top gradient accent */}
       <div className="absolute top-0 right-0 left-0 h-px bg-gradient-to-r from-transparent via-purple-500/50 to-transparent" />
 
@@ -84,7 +84,7 @@ export function Footer() {
                   Walter Morales
                 </h3>
                 <p className="text-gray-400">
-                  {t('title')} & {t('cursorAmbassador')}
+                  {t("title")} & {t("cursorAmbassador")}
                 </p>
               </div>
 
@@ -95,21 +95,21 @@ export function Footer() {
                   <div className="absolute inset-0 h-3 w-3 animate-ping rounded-full bg-green-500" />
                 </div>
                 <span className="text-gray-300 text-sm">
-                  {t('availableForOpportunities')}
+                  {t("availableForOpportunities")}
                 </span>
               </div>
 
               {/* Location */}
               <div className="flex items-center gap-2 text-gray-400">
                 <MapPin className="h-4 w-4" />
-                <span className="text-sm">{t('location')}</span>
+                <span className="text-sm">{t("location")}</span>
               </div>
             </motion.div>
 
             {/* Quick Links */}
             <motion.div variants={itemVariants}>
               <h4 className="mb-4 font-semibold text-purple-400 text-sm">
-                {t('quickLinks')}
+                {t("quickLinks")}
               </h4>
               <ul className="space-y-2">
                 {navigation.map((link) => (
@@ -128,7 +128,7 @@ export function Footer() {
             {/* Connect */}
             <motion.div variants={itemVariants}>
               <h4 className="mb-4 font-semibold text-purple-400 text-sm">
-                {t('letsConnect')}
+                {t("letsConnect")}
               </h4>
 
               {/* Social links */}
@@ -162,7 +162,7 @@ export function Footer() {
                   whileTap={{ scale: 0.98 }}
                 >
                   <Send className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                  {t('getInTouch')}
+                  {t("getInTouch")}
                 </motion.button>
               </Link>
             </motion.div>
@@ -177,7 +177,7 @@ export function Footer() {
               <div className="flex items-center gap-2 text-gray-500 text-sm">
                 <Sparkles className="h-4 w-4 text-purple-500/50" />
                 <p>
-                  {t('copyright', { year: currentYear })}{' '}
+                  {t("copyright", { year: currentYear })}{" "}
                   <motion.span
                     animate={{ rotate: [0, 10, -10, 0] }}
                     className="inline-block text-purple-400"

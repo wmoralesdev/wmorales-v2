@@ -1,5 +1,5 @@
-import { useEffect, useRef } from 'react';
-import { broadcastActiveUsers } from '@/lib/supabase/realtime';
+import { useEffect, useRef } from "react";
+import { broadcastActiveUsers } from "@/lib/supabase/realtime";
 
 export function usePollPresence(pollCode: string, activeUsersCount: number) {
   const broadcastIntervalRef = useRef<NodeJS.Timeout | null>(null);

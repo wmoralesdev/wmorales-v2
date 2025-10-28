@@ -1,15 +1,15 @@
-import { CalendarDays } from 'lucide-react';
-import Image from 'next/image';
-import Link from 'next/link';
-import { Badge } from '@/components/ui/badge';
+import { CalendarDays } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { formatDate } from '@/lib/blog/utils';
+} from "@/components/ui/card";
+import { formatDate } from "@/lib/blog/utils";
 
 type BlogPost = {
   slug: string;
@@ -31,7 +31,7 @@ export function PostCard({ post, featured = false }: PostCardProps) {
   return (
     <Link href={`/blog/${post.slug}`}>
       <Card
-        className={`h-full transition-colors hover:border-purple-600 ${featured ? 'md:col-span-2' : ''}`}
+        className={`h-full transition-colors hover:border-purple-600 ${featured ? "md:col-span-2" : ""}`}
       >
         {post.entry.coverImage && (
           <div className="relative aspect-video overflow-hidden rounded-t-lg">
@@ -41,8 +41,8 @@ export function PostCard({ post, featured = false }: PostCardProps) {
               fill
               sizes={
                 featured
-                  ? '(max-width: 768px) 100vw, 50vw'
-                  : '(max-width: 768px) 100vw, 33vw'
+                  ? "(max-width: 768px) 100vw, 50vw"
+                  : "(max-width: 768px) 100vw, 33vw"
               }
               src={post.entry.coverImage}
             />
@@ -55,10 +55,10 @@ export function PostCard({ post, featured = false }: PostCardProps) {
               {formatDate(post.entry.publishedAt)}
             </time>
           </div>
-          <CardTitle className={featured ? 'text-2xl' : 'text-xl'}>
+          <CardTitle className={featured ? "text-2xl" : "text-xl"}>
             {post.entry.title}
           </CardTitle>
-          <CardDescription className={featured ? 'text-base' : ''}>
+          <CardDescription className={featured ? "text-base" : ""}>
             {post.entry.description}
           </CardDescription>
         </CardHeader>

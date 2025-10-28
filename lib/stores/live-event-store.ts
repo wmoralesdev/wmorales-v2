@@ -1,5 +1,5 @@
-import { ExtendedEventImage } from '@/lib/types/event.types';
-import { create } from 'zustand';
+import { create } from "zustand";
+import type { ExtendedEventImage } from "@/lib/types/event.types";
 
 type LiveEventState = {
   // UI States

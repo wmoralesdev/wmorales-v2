@@ -1,13 +1,13 @@
-import { motion } from 'framer-motion';
-import { Award } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { BaseCard, type BaseCardProps } from './base-card';
-import { useTranslations } from 'next-intl';
+import { motion } from "framer-motion";
+import { Award } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Badge } from "@/components/ui/badge";
+import { BaseCard, type BaseCardProps } from "./base-card";
 
-type CursorAmbassadorCardProps = Omit<BaseCardProps, 'children' | 'id'>;
+type CursorAmbassadorCardProps = Omit<BaseCardProps, "children" | "id">;
 
 export function CursorAmbassadorCard(props: CursorAmbassadorCardProps) {
-  const t = useTranslations('homepage.cards');
+  const t = useTranslations("homepage.cards");
 
   return (
     <BaseCard
@@ -25,20 +25,20 @@ export function CursorAmbassadorCard(props: CursorAmbassadorCardProps) {
               transition={{
                 duration: 2,
                 repeat: Number.POSITIVE_INFINITY,
-                ease: 'easeInOut',
+                ease: "easeInOut",
               }}
             />
           </div>
           <Badge className="border-green-500/30 bg-green-500/20 text-green-400 text-xs">
-            {t('active')}
+            {t("active")}
           </Badge>
         </div>
         <div>
           <h3 className="font-semibold text-sm text-white lg:text-base">
-            {t('cursorAmbassador')}
+            {t("cursorAmbassador")}
           </h3>
           <p className="mt-1 text-gray-400 text-xs lg:text-sm">
-            {t('empoweringDevelopersWithAI')}
+            {t("empoweringDevelopersWithAI")}
           </p>
         </div>
       </div>

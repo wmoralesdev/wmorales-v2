@@ -1,5 +1,5 @@
-import GithubSlugger from 'github-slugger';
-import readingTime from 'reading-time';
+import GithubSlugger from "github-slugger";
+import readingTime from "reading-time";
 
 export function calculateReadingTime(content: string) {
   return readingTime(content);
@@ -24,22 +24,22 @@ export function extractHeadings(content: string) {
 }
 
 export function formatDate(date: string | Date) {
-  const d = typeof date === 'string' ? new Date(date) : date;
-  return new Intl.DateTimeFormat('en-US', {
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
+  const d = typeof date === "string" ? new Date(date) : date;
+  return new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
   }).format(d);
 }
 
 export function generateExcerpt(content: string, maxLength = 160) {
   // Remove markdown syntax
   const plainText = content
-    .replace(/^#{1,6}\s+/gm, '') // Remove headers
-    .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1') // Remove links
-    .replace(/[*_`~]/g, '') // Remove emphasis
-    .replace(/!\[([^\]]*)\]\([^)]+\)/g, '') // Remove images
-    .replace(/\n+/g, ' ') // Replace newlines with spaces
+    .replace(/^#{1,6}\s+/gm, "") // Remove headers
+    .replace(/\[([^\]]+)\]\([^)]+\)/g, "$1") // Remove links
+    .replace(/[*_`~]/g, "") // Remove emphasis
+    .replace(/!\[([^\]]*)\]\([^)]+\)/g, "") // Remove images
+    .replace(/\n+/g, " ") // Replace newlines with spaces
     .trim();
 
   if (plainText.length <= maxLength) {
@@ -48,7 +48,7 @@ export function generateExcerpt(content: string, maxLength = 160) {
 
   // Cut at last complete word
   const trimmed = plainText.substring(0, maxLength);
-  const lastSpace = trimmed.lastIndexOf(' ');
+  const lastSpace = trimmed.lastIndexOf(" ");
 
   return `${trimmed.substring(0, lastSpace)}...`;
 }

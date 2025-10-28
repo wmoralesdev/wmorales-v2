@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { LogOut } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { toast } from 'sonner';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { LogOut } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { toast } from "sonner";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,12 +12,12 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useAuth } from './auth-provider';
+} from "@/components/ui/dropdown-menu";
+import { useAuth } from "./auth-provider";
 
 export function UserNav() {
   const { user, signOut } = useAuth();
-  const t = useTranslations('auth');
+  const t = useTranslations("auth");
 
   if (!user) {
     return null;
@@ -26,21 +26,20 @@ export function UserNav() {
   const handleSignOut = async () => {
     try {
       await signOut();
-      toast.success(t('signedOutSuccess'));
+      toast.success(t("signedOutSuccess"));
     } catch (_error) {
-      toast.error(t('signOutError'));
+      toast.error(t("signOutError"));
     }
   };
 
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
+  const getInitials = (name: string) =>
+    name
+      .split(" ")
       .map((n) => n[0])
-      .join('')
+      .join("")
       .toUpperCase();
-  };
 
-  const displayName = user.user_metadata?.full_name || user.email || t('user');
+  const displayName = user.user_metadata?.full_name || user.email || t("user");
   const initials = getInitials(displayName);
 
   return (
@@ -68,7 +67,7 @@ export function UserNav() {
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>{t('signOut')}</span>
+          <span>{t("signOut")}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

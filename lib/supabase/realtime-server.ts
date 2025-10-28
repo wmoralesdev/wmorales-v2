@@ -1,10 +1,10 @@
-import 'server-only';
+import "server-only";
 import type {
   EventRealtimeEvent,
   GuestbookRealtimeEvent,
   PollRealtimeEvent,
-} from './realtime';
-import { createClient } from './server';
+} from "./realtime";
+import { createClient } from "./server";
 
 // Server-side broadcast function for poll updates
 export async function broadcastPollUpdate(
@@ -18,18 +18,18 @@ export async function broadcastPollUpdate(
   // Subscribe first, then send when ready
   await new Promise<void>((resolve, reject) => {
     const timeout = setTimeout(() => {
-      reject(new Error('Channel subscription timeout'));
+      reject(new Error("Channel subscription timeout"));
     }, 5000);
 
     channel.subscribe((status) => {
-      if (status === 'SUBSCRIBED') {
+      if (status === "SUBSCRIBED") {
         clearTimeout(timeout);
 
         // Send the broadcast message
         channel
           .send({
-            type: 'broadcast',
-            event: 'poll_update',
+            type: "broadcast",
+            event: "poll_update",
             payload: event,
           })
           .then(() => {
@@ -41,9 +41,9 @@ export async function broadcastPollUpdate(
           })
           .catch(reject);
       } else if (
-        status === 'CHANNEL_ERROR' ||
-        status === 'TIMED_OUT' ||
-        status === 'CLOSED'
+        status === "CHANNEL_ERROR" ||
+        status === "TIMED_OUT" ||
+        status === "CLOSED"
       ) {
         clearTimeout(timeout);
         reject(new Error(`Channel subscription failed: ${status}`));
@@ -56,23 +56,23 @@ export async function broadcastPollUpdate(
 export async function broadcastGuestbookUpdate(event: GuestbookRealtimeEvent) {
   const supabase = await createClient();
 
-  const channel = supabase.channel('guestbook:tickets');
+  const channel = supabase.channel("guestbook:tickets");
 
   // Subscribe first, then send when ready
   await new Promise<void>((resolve, reject) => {
     const timeout = setTimeout(() => {
-      reject(new Error('Channel subscription timeout'));
+      reject(new Error("Channel subscription timeout"));
     }, 5000);
 
     channel.subscribe((status) => {
-      if (status === 'SUBSCRIBED') {
+      if (status === "SUBSCRIBED") {
         clearTimeout(timeout);
 
         // Send the broadcast message
         channel
           .send({
-            type: 'broadcast',
-            event: 'ticket_update',
+            type: "broadcast",
+            event: "ticket_update",
             payload: event,
           })
           .then(() => {
@@ -84,9 +84,9 @@ export async function broadcastGuestbookUpdate(event: GuestbookRealtimeEvent) {
           })
           .catch(reject);
       } else if (
-        status === 'CHANNEL_ERROR' ||
-        status === 'TIMED_OUT' ||
-        status === 'CLOSED'
+        status === "CHANNEL_ERROR" ||
+        status === "TIMED_OUT" ||
+        status === "CLOSED"
       ) {
         clearTimeout(timeout);
         reject(new Error(`Channel subscription failed: ${status}`));
@@ -104,18 +104,18 @@ export async function broadcastEventUpdate(event: EventRealtimeEvent) {
   // Subscribe first, then send when ready
   await new Promise<void>((resolve, reject) => {
     const timeout = setTimeout(() => {
-      reject(new Error('Channel subscription timeout'));
+      reject(new Error("Channel subscription timeout"));
     }, 5000);
 
     channel.subscribe((status) => {
-      if (status === 'SUBSCRIBED') {
+      if (status === "SUBSCRIBED") {
         clearTimeout(timeout);
 
         // Send the broadcast message
         channel
           .send({
-            type: 'broadcast',
-            event: 'event_update',
+            type: "broadcast",
+            event: "event_update",
             payload: event,
           })
           .then(() => {
@@ -127,9 +127,9 @@ export async function broadcastEventUpdate(event: EventRealtimeEvent) {
           })
           .catch(reject);
       } else if (
-        status === 'CHANNEL_ERROR' ||
-        status === 'TIMED_OUT' ||
-        status === 'CLOSED'
+        status === "CHANNEL_ERROR" ||
+        status === "TIMED_OUT" ||
+        status === "CLOSED"
       ) {
         clearTimeout(timeout);
         reject(new Error(`Channel subscription failed: ${status}`));

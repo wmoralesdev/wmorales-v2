@@ -1,8 +1,8 @@
-import type { RealtimeChannel } from '@supabase/supabase-js';
-import { createClient } from './client';
+import type { RealtimeChannel } from "@supabase/supabase-js";
+import { createClient } from "./client";
 
 export type PollRealtimeEvent = {
-  type: 'vote_added' | 'vote_removed' | 'poll_closed' | 'results_updated';
+  type: "vote_added" | "vote_removed" | "poll_closed" | "results_updated";
   pollId: string;
   questionId?: string;
   optionId?: string;
@@ -24,15 +24,15 @@ export type PollPresence = {
 // biome-ignore lint/suspicious/useAwait: async because server process needs to be async
 async function getSessionId() {
   // Check if we're on the client
-  if (typeof window !== 'undefined') {
-    let sessionId = localStorage.getItem('poll_session_id');
+  if (typeof window !== "undefined") {
+    let sessionId = localStorage.getItem("poll_session_id");
     if (!sessionId) {
       sessionId = crypto.randomUUID();
-      localStorage.setItem('poll_session_id', sessionId);
+      localStorage.setItem("poll_session_id", sessionId);
     }
     return sessionId;
   }
-  return 'server-side';
+  return "server-side";
 }
 
 export function subscribeToPollUpdates(
@@ -78,24 +78,24 @@ export function subscribeToPollUpdates(
 
   const channel = supabase
     .channel(channelName)
-    .on('broadcast', { event: 'poll_update' }, ({ payload }) => {
+    .on("broadcast", { event: "poll_update" }, ({ payload }) => {
       onUpdate(payload as PollRealtimeEvent);
     })
-    .on('presence', { event: 'sync' }, () => {
+    .on("presence", { event: "sync" }, () => {
       if (onPresenceUpdate) {
         const state = channel.presenceState();
         const users = Object.values(state).flat() as unknown as PollPresence[];
         onPresenceUpdate(users);
       }
     })
-    .on('presence', { event: 'join' }, () => {
+    .on("presence", { event: "join" }, () => {
       if (onPresenceUpdate) {
         const state = channel.presenceState();
         const users = Object.values(state).flat() as unknown as PollPresence[];
         onPresenceUpdate(users);
       }
     })
-    .on('presence', { event: 'leave' }, () => {
+    .on("presence", { event: "leave" }, () => {
       if (onPresenceUpdate) {
         const state = channel.presenceState();
         const users = Object.values(state).flat() as unknown as PollPresence[];
@@ -103,7 +103,7 @@ export function subscribeToPollUpdates(
       }
     })
     .subscribe(async (status) => {
-      if (status === 'SUBSCRIBED' && onPresenceUpdate) {
+      if (status === "SUBSCRIBED" && onPresenceUpdate) {
         const presenceData = await setupPresence();
         if (presenceData) {
           await channel.track(presenceData);
@@ -117,14 +117,12 @@ export function subscribeToPollUpdates(
 // Client-side only broadcast function
 // biome-ignore lint/suspicious/useAwait: async because server process needs to be async
 export async function broadcastPollUpdate(
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _pollCode: string,
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _event: PollRealtimeEvent
 ) {
   // This function should only be called from server actions
   // For client-side, updates happen through subscriptions
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     return;
   }
 }
@@ -136,8 +134,8 @@ export function subscribeToPollsList(
   const supabase = createClient();
 
   const channel = supabase
-    .channel('polls:active')
-    .on('broadcast', { event: 'active_users' }, ({ payload }) => {
+    .channel("polls:active")
+    .on("broadcast", { event: "active_users" }, ({ payload }) => {
       onPresenceUpdate(payload as Record<string, number>);
     })
     .subscribe();
@@ -149,16 +147,16 @@ export function subscribeToPollsList(
 export async function broadcastActiveUsers(pollCode: string, count: number) {
   const supabase = createClient();
 
-  await supabase.channel('polls:active').send({
-    type: 'broadcast',
-    event: 'active_users',
+  await supabase.channel("polls:active").send({
+    type: "broadcast",
+    event: "active_users",
     payload: { [pollCode]: count },
   });
 }
 
 // Guestbook Realtime Types
 export type GuestbookRealtimeEvent = {
-  type: 'ticket_created' | 'ticket_updated' | 'ticket_deleted';
+  type: "ticket_created" | "ticket_updated" | "ticket_deleted";
   ticket: {
     id: string;
     ticketNumber: string;
@@ -177,7 +175,7 @@ export type GuestbookRealtimeEvent = {
 
 // Events Realtime Types
 export type EventRealtimeEvent = {
-  type: 'image_uploaded' | 'image_deleted';
+  type: "image_uploaded" | "image_deleted";
   eventId: string;
   image?: {
     id: string;
@@ -202,11 +200,11 @@ export function subscribeToGuestbookUpdates(
   const supabase = createClient();
 
   const channel = supabase
-    .channel('guestbook:tickets')
-    .on('broadcast', { event: 'ticket_update' }, ({ payload }) => {
+    .channel("guestbook:tickets")
+    .on("broadcast", { event: "ticket_update" }, ({ payload }) => {
       onUpdate(payload as GuestbookRealtimeEvent);
     })
-    .on('presence', { event: 'sync' }, () => {
+    .on("presence", { event: "sync" }, () => {
       if (onPresenceUpdate) {
         const state = channel.presenceState();
         const viewersCount = Object.keys(state).length;
@@ -214,7 +212,7 @@ export function subscribeToGuestbookUpdates(
       }
     })
     .subscribe(async (status) => {
-      if (status === 'SUBSCRIBED' && onPresenceUpdate) {
+      if (status === "SUBSCRIBED" && onPresenceUpdate) {
         const sessionId = await getSessionId();
         await channel.track({ sessionId, joinedAt: new Date().toISOString() });
       }
@@ -233,24 +231,24 @@ export function subscribeToEventUpdates(
 
   const channel = supabase
     .channel(`event:${eventId}`)
-    .on('broadcast', { event: 'event_update' }, ({ payload }) => {
+    .on("broadcast", { event: "event_update" }, ({ payload }) => {
       onUpdate(payload as EventRealtimeEvent);
     })
-    .on('presence', { event: 'sync' }, () => {
+    .on("presence", { event: "sync" }, () => {
       if (onPresenceUpdate) {
         const state = channel.presenceState();
         const viewersCount = Object.keys(state).length;
         onPresenceUpdate(viewersCount);
       }
     })
-    .on('presence', { event: 'join' }, () => {
+    .on("presence", { event: "join" }, () => {
       if (onPresenceUpdate) {
         const state = channel.presenceState();
         const viewersCount = Object.keys(state).length;
         onPresenceUpdate(viewersCount);
       }
     })
-    .on('presence', { event: 'leave' }, () => {
+    .on("presence", { event: "leave" }, () => {
       if (onPresenceUpdate) {
         const state = channel.presenceState();
         const viewersCount = Object.keys(state).length;
@@ -258,7 +256,7 @@ export function subscribeToEventUpdates(
       }
     })
     .subscribe(async (status) => {
-      if (status === 'SUBSCRIBED') {
+      if (status === "SUBSCRIBED") {
         const sessionId = await getSessionId();
         const presenceData = { sessionId, joinedAt: new Date().toISOString() };
         await channel.track(presenceData);

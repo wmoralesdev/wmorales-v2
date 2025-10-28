@@ -13,8 +13,8 @@ export function InnerHero({ title, description, icon: Icon }: InnerHeroProps) {
           className="h-full w-full"
           style={{
             backgroundImage:
-              'linear-gradient(#8b5cf6 1px, transparent 1px), linear-gradient(90deg, #8b5cf6 1px, transparent 1px)',
-            backgroundSize: '50px 50px',
+              "linear-gradient(#8b5cf6 1px, transparent 1px), linear-gradient(90deg, #8b5cf6 1px, transparent 1px)",
+            backgroundSize: "50px 50px",
           }}
         />
       </div>

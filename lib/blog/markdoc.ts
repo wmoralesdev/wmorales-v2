@@ -1,111 +1,110 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import Markdoc, { nodes as baseNodes } from '@markdoc/markdoc';
+import Markdoc, { nodes as baseNodes } from "@markdoc/markdoc";
 
 // Define custom tags for enhanced components
 const tags = {
   callout: {
-    render: 'Callout',
-    description: 'Display a callout',
+    render: "Callout",
+    description: "Display a callout",
     attributes: {
       type: {
         type: String,
-        default: 'info',
-        matches: ['info', 'warning', 'error', 'success', 'tip'],
-        description: 'The type of callout',
+        default: "info",
+        matches: ["info", "warning", "error", "success", "tip"],
+        description: "The type of callout",
       },
       title: {
         type: String,
-        description: 'Optional title for the callout',
+        description: "Optional title for the callout",
       },
     },
   },
 
   card: {
-    render: 'CardComponent',
-    description: 'Display a card',
+    render: "CardComponent",
+    description: "Display a card",
     attributes: {
       title: {
         type: String,
-        description: 'Optional title for the card',
+        description: "Optional title for the card",
       },
       description: {
         type: String,
-        description: 'Optional description for the card',
+        description: "Optional description for the card",
       },
       variant: {
         type: String,
-        default: 'default',
-        matches: ['default', 'feature', 'warning', 'success'],
-        description: 'The variant of the card',
+        default: "default",
+        matches: ["default", "feature", "warning", "success"],
+        description: "The variant of the card",
       },
     },
   },
 
-  'code-block': {
-    render: 'CodeBlock',
-    description: 'Display a code block with syntax highlighting',
+  "code-block": {
+    render: "CodeBlock",
+    description: "Display a code block with syntax highlighting",
     attributes: {
       language: {
         type: String,
-        description: 'Programming language for syntax highlighting',
+        description: "Programming language for syntax highlighting",
       },
       filename: {
         type: String,
-        description: 'Optional filename to display',
+        description: "Optional filename to display",
       },
       showLineNumbers: {
         type: Boolean,
         default: false,
-        description: 'Whether to show line numbers',
+        description: "Whether to show line numbers",
       },
       highlight: {
         type: Array,
-        description: 'Line numbers to highlight',
+        description: "Line numbers to highlight",
       },
     },
   },
 
   video: {
-    render: 'Video',
-    description: 'Embed a video',
+    render: "Video",
+    description: "Embed a video",
     attributes: {
       src: {
         type: String,
         required: true,
-        description: 'Video source URL',
+        description: "Video source URL",
       },
       title: {
         type: String,
-        description: 'Optional video title',
+        description: "Optional video title",
       },
       poster: {
         type: String,
-        description: 'Optional poster image URL',
+        description: "Optional poster image URL",
       },
     },
   },
 
   separator: {
-    render: 'SeparatorComponent',
-    description: 'Display a separator line',
+    render: "SeparatorComponent",
+    description: "Display a separator line",
     attributes: {
       spacing: {
         type: String,
-        default: 'normal',
-        matches: ['small', 'normal', 'large'],
-        description: 'Spacing around the separator',
+        default: "normal",
+        matches: ["small", "normal", "large"],
+        description: "Spacing around the separator",
       },
     },
   },
 
-  'table-of-contents': {
-    render: 'TableOfContents',
-    description: 'Display a table of contents',
+  "table-of-contents": {
+    render: "TableOfContents",
+    description: "Display a table of contents",
     attributes: {
       headings: {
         type: Array,
         required: true,
-        description: 'Array of heading objects with id, title, and level',
+        description: "Array of heading objects with id, title, and level",
       },
     },
   },
@@ -117,78 +116,78 @@ const nodes = {
 
   image: {
     ...baseNodes.image,
-    render: 'ImageComponent',
+    render: "ImageComponent",
     attributes: {
       ...baseNodes.image.attributes,
       caption: {
         type: String,
-        description: 'Optional image caption',
+        description: "Optional image caption",
       },
       priority: {
         type: Boolean,
         default: false,
-        description: 'Whether to prioritize loading this image',
+        description: "Whether to prioritize loading this image",
       },
     },
   },
 
   link: {
     ...baseNodes.link,
-    render: 'LinkComponent',
+    render: "LinkComponent",
     attributes: {
       ...baseNodes.link.attributes,
       showIcon: {
         type: Boolean,
         default: true,
-        description: 'Whether to show external link icon',
+        description: "Whether to show external link icon",
       },
     },
   },
 
   heading: {
     ...baseNodes.heading,
-    render: 'Heading',
+    render: "Heading",
     attributes: {
       ...baseNodes.heading.attributes,
       id: {
         type: String,
-        description: 'Optional ID for heading links',
+        description: "Optional ID for heading links",
       },
     },
   },
 
   fence: {
     ...baseNodes.fence,
-    render: 'CodeBlock',
+    render: "CodeBlock",
     attributes: {
       language: {
         type: String,
-        description: 'Programming language for syntax highlighting',
+        description: "Programming language for syntax highlighting",
       },
       filename: {
         type: String,
-        description: 'Optional filename to display',
+        description: "Optional filename to display",
       },
     },
   },
 
   code: {
     ...baseNodes.code,
-    render: 'CodeBlock',
+    render: "CodeBlock",
     attributes: {
       language: {
         type: String,
-        description: 'Programming language for syntax highlighting',
+        description: "Programming language for syntax highlighting",
       },
       filename: {
         type: String,
-        description: 'Optional filename to display',
+        description: "Optional filename to display",
       },
     },
   },
 
   pre: {
-    render: 'CodeBlock',
+    render: "CodeBlock",
   },
 };
 
@@ -209,9 +208,9 @@ export function parseMarkdoc(content: string) {
   const errors = Markdoc.validate(ast, config);
 
   if (errors.length) {
-    console.error('Markdoc validation errors:', errors);
+    console.error("Markdoc validation errors:", errors);
     throw new Error(
-      `Invalid content: ${errors.map((e) => e.error?.message).join(', ')}`
+      `Invalid content: ${errors.map((e) => e.error?.message).join(", ")}`
     );
   }
 
@@ -227,12 +226,12 @@ export function extractHeadings(
   const headings: Array<{ id: string; title: string; level: number }> = [];
 
   function visit(node: any) {
-    if (node.type === 'heading' && node.attributes?.id) {
+    if (node.type === "heading" && node.attributes?.id) {
       headings.push({
         id: node.attributes.id,
         title:
-          node.children?.map((child: any) => child.content || '').join('') ||
-          '',
+          node.children?.map((child: any) => child.content || "").join("") ||
+          "",
         level: node.attributes.level,
       });
     }
@@ -253,10 +252,10 @@ export function getReadingTime(content: string): {
   words: number;
 } {
   const plainText = content
-    .replace(/[#*`_~[\]()]/g, '')
-    .replace(/\s+/g, ' ')
+    .replace(/[#*`_~[\]()]/g, "")
+    .replace(/\s+/g, " ")
     .trim();
-  const words = plainText.split(' ').filter((word) => word.length > 0).length;
+  const words = plainText.split(" ").filter((word) => word.length > 0).length;
   const minutes = Math.ceil(words / 200); // Average reading speed
 
   return {

@@ -1,38 +1,38 @@
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
   getPollByCode,
   getPollResults,
   getUserVotes,
-} from '@/app/actions/poll.actions';
-import { PollVoting } from '@/components/polls/poll-voting';
-import { createMetadata, siteConfig } from '@/lib/metadata';
-import type { PollWithQuestions } from '@/lib/types/poll.types';
+} from "@/app/actions/poll.actions";
+import { PollVoting } from "@/components/polls/poll-voting";
+import { createMetadata, siteConfig } from "@/lib/metadata";
+import type { PollWithQuestions } from "@/lib/types/poll.types";
 
 type Props = {
   params: Promise<{ locale: string; code: string }>;
 };
 
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { locale, code } = await params;
   const { data: poll } = await getPollByCode(code);
-  const t = await getTranslations({ locale, namespace: 'polls' });
+  const t = await getTranslations({ locale, namespace: "polls" });
 
   if (!poll) {
     return createMetadata({
-      title: t('pollNotFound'),
-      description: t('pollNotFoundDescription'),
+      title: t("pollNotFound"),
+      description: t("pollNotFoundDescription"),
     });
   }
 
   const title = poll.title;
   const description =
-    poll.description || t('liveVotingDescription', { title: poll.title });
+    poll.description || t("liveVotingDescription", { title: poll.title });
 
-  const livePollSuffix = t('livePollSuffix');
+  const livePollSuffix = t("livePollSuffix");
 
   return createMetadata({
     title,
@@ -41,7 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       title: `${title} | ${livePollSuffix}`,
       description,
       url: `${siteConfig.url}/polls/${code}`,
-      type: 'website',
+      type: "website",
     },
     twitter: {
       title: `${title} | ${livePollSuffix}`,

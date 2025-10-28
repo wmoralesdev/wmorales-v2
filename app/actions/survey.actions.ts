@@ -1,25 +1,25 @@
-'use server';
+"use server";
 
-import { revalidatePath } from 'next/cache';
-import { db } from '@/lib/db-utils';
-import { createClient } from '@/lib/supabase/server';
+import { revalidatePath } from "next/cache";
+import { db } from "@/lib/db-utils";
+import { createClient } from "@/lib/supabase/server";
 
 export async function getActiveSurveys() {
   try {
     const surveys = await db.query(() =>
       db.client.survey.findMany({
         where: {
-          status: 'active',
+          status: "active",
         },
         orderBy: {
-          createdAt: 'desc',
+          createdAt: "desc",
         },
       })
     );
 
     return { data: surveys, error: null };
   } catch (_error) {
-    return { data: null, error: 'Failed to fetch surveys' };
+    return { data: null, error: "Failed to fetch surveys" };
   }
 }
 
@@ -30,13 +30,13 @@ export async function getSurveyWithSections(surveyId: string) {
         where: { id: surveyId },
         include: {
           sections: {
-            orderBy: { sectionOrder: 'asc' },
+            orderBy: { sectionOrder: "asc" },
             include: {
               questions: {
-                orderBy: { questionOrder: 'asc' },
+                orderBy: { questionOrder: "asc" },
                 include: {
                   options: {
-                    orderBy: { optionOrder: 'asc' },
+                    orderBy: { optionOrder: "asc" },
                   },
                 },
               },
@@ -47,12 +47,12 @@ export async function getSurveyWithSections(surveyId: string) {
     );
 
     if (!survey) {
-      return { data: null, error: 'Survey not found' };
+      return { data: null, error: "Survey not found" };
     }
 
     return { data: survey, error: null };
   } catch (_error) {
-    return { data: null, error: 'Failed to fetch survey' };
+    return { data: null, error: "Failed to fetch survey" };
   }
 }
 
@@ -77,7 +77,7 @@ export async function createSurveyResponse(surveyId: string) {
 
     return { data: response, error: null };
   } catch (_error) {
-    return { data: null, error: 'Failed to create response' };
+    return { data: null, error: "Failed to create response" };
   }
 }
 
@@ -123,7 +123,7 @@ export async function saveSurveyAnswer(
 
     return { data: surveyAnswer, error: null };
   } catch (_error) {
-    return { data: null, error: 'Failed to save answer' };
+    return { data: null, error: "Failed to save answer" };
   }
 }
 
@@ -139,15 +139,15 @@ export async function completeSurveyResponse(responseId: string) {
     );
 
     // Revalidate the survey page to update results
-    revalidatePath('/surveys');
+    revalidatePath("/surveys");
 
     return { data: response, error: null };
   } catch (_error) {
-    return { data: null, error: 'Failed to complete response' };
+    return { data: null, error: "Failed to complete response" };
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: Dynamic survey data types
 function processAnswerResponses(answer: any, questionStats: Map<string, any>) {
   const questionId = answer.questionId;
 
@@ -172,7 +172,7 @@ function processAnswerResponses(answer: any, questionStats: Map<string, any>) {
   }
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: Dynamic survey response types
 function buildQuestionStats(responses: any[]) {
   const questionStats = new Map();
 
@@ -220,6 +220,6 @@ export async function getSurveyResults(surveyId: string) {
       error: null,
     };
   } catch (_error) {
-    return { data: null, error: 'Failed to fetch results' };
+    return { data: null, error: "Failed to fetch results" };
   }
 }

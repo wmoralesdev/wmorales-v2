@@ -1,12 +1,12 @@
-import { Brain } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { BaseCard, type BaseCardProps } from './base-card';
-import { useTranslations } from 'next-intl';
+import { Brain } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Badge } from "@/components/ui/badge";
+import { BaseCard, type BaseCardProps } from "./base-card";
 
-type CurrentlyLearningCardProps = Omit<BaseCardProps, 'children' | 'id'>;
+type CurrentlyLearningCardProps = Omit<BaseCardProps, "children" | "id">;
 
 export function CurrentlyLearningCard(props: CurrentlyLearningCardProps) {
-  const t = useTranslations('homepage.cards');
+  const t = useTranslations("homepage.cards");
 
   return (
     <BaseCard
@@ -18,7 +18,7 @@ export function CurrentlyLearningCard(props: CurrentlyLearningCardProps) {
         <div className="flex items-center gap-2">
           <Brain className="h-5 w-5 text-purple-400 lg:h-6 lg:w-6" />
           <span className="font-medium text-white text-xs lg:text-sm">
-            {t('currentlyLearning')}
+            {t("currentlyLearning")}
           </span>
         </div>
         <div className="flex flex-wrap gap-2">
@@ -42,7 +42,7 @@ export function CurrentlyLearningCard(props: CurrentlyLearningCardProps) {
           </Badge>
         </div>
         <p className="text-gray-500 text-xs">
-          {t('alwaysExploringNewTechnologies')}
+          {t("alwaysExploringNewTechnologies")}
         </p>
       </div>
     </BaseCard>

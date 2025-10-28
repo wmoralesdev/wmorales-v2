@@ -1,4 +1,4 @@
-import { motion, type Variants } from 'framer-motion';
+import { motion, type Variants } from "framer-motion";
 
 type AnimatedLogoProps = React.ComponentProps<typeof motion.svg> & {
   strokeWidth?: number;
@@ -8,8 +8,8 @@ type AnimatedLogoProps = React.ComponentProps<typeof motion.svg> & {
 
 export function AnimatedLogo({
   strokeWidth = 250,
-  topColor = 'white',
-  bottomColor = '#7C3AED',
+  topColor = "white",
+  bottomColor = "#7C3AED",
   ...props
 }: AnimatedLogoProps) {
   const svgVariants: Variants = {
@@ -32,7 +32,7 @@ export function AnimatedLogo({
       opacity: 1,
       transition: {
         duration: 2,
-        ease: 'easeInOut',
+        ease: "easeInOut",
       },
     },
   };

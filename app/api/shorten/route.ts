@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
-import { customAlphabet } from 'nanoid';
+import { customAlphabet } from "nanoid";
+import { type NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
 
 // Get API key from environment variable
 const API_KEY = process.env.URL_SHORTENER_API_KEY;
@@ -8,25 +8,25 @@ const API_KEY = process.env.URL_SHORTENER_API_KEY;
 // Generate a short, readable code
 // Use a custom alphabet without ambiguous characters (no 0, O, l, I)
 const generateShortCode = customAlphabet(
-  '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz',
+  "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz",
   7
 );
 
 export async function POST(request: NextRequest) {
   try {
     // Check API key
-    const apiKey = request.headers.get('x-api-key');
+    const apiKey = request.headers.get("x-api-key");
 
     if (!API_KEY) {
       return NextResponse.json(
-        { error: 'URL shortener API is not configured' },
+        { error: "URL shortener API is not configured" },
         { status: 503 }
       );
     }
 
     if (!apiKey || apiKey !== API_KEY) {
       return NextResponse.json(
-        { error: 'Invalid or missing API key' },
+        { error: "Invalid or missing API key" },
         { status: 401 }
       );
     }
@@ -37,7 +37,7 @@ export async function POST(request: NextRequest) {
 
     // Validate URL
     if (!url) {
-      return NextResponse.json({ error: 'URL is required' }, { status: 400 });
+      return NextResponse.json({ error: "URL is required" }, { status: 400 });
     }
 
     // Validate URL format
@@ -45,7 +45,7 @@ export async function POST(request: NextRequest) {
       new URL(url);
     } catch {
       return NextResponse.json(
-        { error: 'Invalid URL format' },
+        { error: "Invalid URL format" },
         { status: 400 }
       );
     }
@@ -58,7 +58,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
           {
             error:
-              'Custom code must be 3-20 characters and contain only letters, numbers, underscores, and hyphens',
+              "Custom code must be 3-20 characters and contain only letters, numbers, underscores, and hyphens",
           },
           { status: 400 }
         );
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
 
       if (existingCode) {
         return NextResponse.json(
-          { error: 'Custom code already exists' },
+          { error: "Custom code already exists" },
           { status: 409 }
         );
       }
@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
 
       if (!code) {
         return NextResponse.json(
-          { error: 'Failed to generate unique code' },
+          { error: "Failed to generate unique code" },
           { status: 500 }
         );
       }
@@ -104,7 +104,7 @@ export async function POST(request: NextRequest) {
           description: description || null,
           image: image || null,
         },
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
       });
 
       if (
@@ -112,7 +112,7 @@ export async function POST(request: NextRequest) {
         (!existingShortUrl.expiresAt || existingShortUrl.expiresAt > new Date())
       ) {
         // Return existing non-expired short URL
-        const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || request.headers.get('host')}/r/${existingShortUrl.code}`;
+        const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || request.headers.get("host")}/r/${existingShortUrl.code}`;
 
         return NextResponse.json({
           shortUrl,
@@ -145,7 +145,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || request.headers.get('host')}/r/${shortUrlEntry.code}`;
+    const shortUrl = `${process.env.NEXT_PUBLIC_APP_URL || request.headers.get("host")}/r/${shortUrlEntry.code}`;
 
     return NextResponse.json({
       shortUrl,
@@ -159,9 +159,9 @@ export async function POST(request: NextRequest) {
       expiresAt: shortUrlEntry.expiresAt,
     });
   } catch (error) {
-    console.error('Error creating short URL:', error);
+    console.error("Error creating short URL:", error);
     return NextResponse.json(
-      { error: 'Failed to create short URL' },
+      { error: "Failed to create short URL" },
       { status: 500 }
     );
   }
@@ -170,35 +170,35 @@ export async function POST(request: NextRequest) {
 export async function GET(request: NextRequest) {
   try {
     // Check API key
-    const apiKey = request.headers.get('x-api-key');
+    const apiKey = request.headers.get("x-api-key");
 
     if (!API_KEY) {
       return NextResponse.json(
-        { error: 'URL shortener API is not configured' },
+        { error: "URL shortener API is not configured" },
         { status: 503 }
       );
     }
 
     if (!apiKey || apiKey !== API_KEY) {
       return NextResponse.json(
-        { error: 'Invalid or missing API key' },
+        { error: "Invalid or missing API key" },
         { status: 401 }
       );
     }
 
     // Get query parameters
     const { searchParams } = new URL(request.url);
-    const code = searchParams.get('code');
+    const code = searchParams.get("code");
 
     if (!code) {
       // Return list of all short URLs
       const shortUrls = await prisma.shortUrl.findMany({
-        orderBy: { createdAt: 'desc' },
+        orderBy: { createdAt: "desc" },
         take: 100, // Limit to last 100 URLs
       });
 
       const baseUrl =
-        process.env.NEXT_PUBLIC_APP_URL || request.headers.get('host');
+        process.env.NEXT_PUBLIC_APP_URL || request.headers.get("host");
 
       return NextResponse.json({
         urls: shortUrls.map((entry) => ({
@@ -223,13 +223,13 @@ export async function GET(request: NextRequest) {
 
     if (!shortUrlEntry) {
       return NextResponse.json(
-        { error: 'Short URL not found' },
+        { error: "Short URL not found" },
         { status: 404 }
       );
     }
 
     const baseUrl =
-      process.env.NEXT_PUBLIC_APP_URL || request.headers.get('host');
+      process.env.NEXT_PUBLIC_APP_URL || request.headers.get("host");
 
     return NextResponse.json({
       shortUrl: `${baseUrl}/r/${shortUrlEntry.code}`,
@@ -246,9 +246,9 @@ export async function GET(request: NextRequest) {
         : false,
     });
   } catch (error) {
-    console.error('Error fetching short URLs:', error);
+    console.error("Error fetching short URLs:", error);
     return NextResponse.json(
-      { error: 'Failed to fetch short URLs' },
+      { error: "Failed to fetch short URLs" },
       { status: 500 }
     );
   }
@@ -257,28 +257,28 @@ export async function GET(request: NextRequest) {
 export async function DELETE(request: NextRequest) {
   try {
     // Check API key
-    const apiKey = request.headers.get('x-api-key');
+    const apiKey = request.headers.get("x-api-key");
 
     if (!API_KEY) {
       return NextResponse.json(
-        { error: 'URL shortener API is not configured' },
+        { error: "URL shortener API is not configured" },
         { status: 503 }
       );
     }
 
     if (!apiKey || apiKey !== API_KEY) {
       return NextResponse.json(
-        { error: 'Invalid or missing API key' },
+        { error: "Invalid or missing API key" },
         { status: 401 }
       );
     }
 
     // Get query parameters
     const { searchParams } = new URL(request.url);
-    const code = searchParams.get('code');
+    const code = searchParams.get("code");
 
     if (!code) {
-      return NextResponse.json({ error: 'Code is required' }, { status: 400 });
+      return NextResponse.json({ error: "Code is required" }, { status: 400 });
     }
 
     // Delete the short URL
@@ -287,22 +287,26 @@ export async function DELETE(request: NextRequest) {
     });
 
     return NextResponse.json({
-      message: 'Short URL deleted successfully',
+      message: "Short URL deleted successfully",
       code: deletedUrl.code,
       originalUrl: deletedUrl.url,
     });
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    if (error?.code === 'P2025') {
+  } catch (error: unknown) {
+    if (
+      typeof error === "object" &&
+      error !== null &&
+      "code" in error &&
+      error.code === "P2025"
+    ) {
       return NextResponse.json(
-        { error: 'Short URL not found' },
+        { error: "Short URL not found" },
         { status: 404 }
       );
     }
 
-    console.error('Error deleting short URL:', error);
+    console.error("Error deleting short URL:", error);
     return NextResponse.json(
-      { error: 'Failed to delete short URL' },
+      { error: "Failed to delete short URL" },
       { status: 500 }
     );
   }

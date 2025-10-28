@@ -1,10 +1,12 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { Eye, Loader2, Trash } from 'lucide-react';
-import Image from 'next/image';
-import { useState } from 'react';
-import { cn, formatDistanceToNowLocalized } from '@/lib/utils';
+import { motion } from "framer-motion";
+import { Eye, Loader2, Trash } from "lucide-react";
+import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+import type { ExtendedEventImage } from "@/lib/types/event.types";
+import { cn, formatDistanceToNowLocalized } from "@/lib/utils";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -13,10 +15,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '../ui/alert-dialog';
-import { useTranslations } from 'next-intl';
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
-import { ExtendedEventImage } from '@/lib/types/event.types';
+} from "../ui/alert-dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 
 type PhotoGridProps = {
   images: ExtendedEventImage[];
@@ -33,41 +33,41 @@ export function PhotoGrid({
   onImageDelete,
   currentProfileId,
   locale,
-  className = '',
+  className = "",
 }: PhotoGridProps) {
-  const t = useTranslations('events');
+  const t = useTranslations("events");
   const [deletingImageId, setDeletingImageId] = useState<string | null>(null);
 
   return (
     <div
       className={cn(
-        'grid grid-cols-2 sm:grid-cols-3 gap-1 sm:gap-2',
+        "grid grid-cols-2 gap-1 sm:grid-cols-3 sm:gap-2",
         className
       )}
     >
       {images.map((image, index) => (
         <motion.div
-          key={image.id}
-          initial={{ opacity: 0, scale: 0.8 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: Math.min(index * 0.05, 0.5) }}
           className={cn(
-            'relative aspect-square bg-gray-900 overflow-hidden cursor-pointer group',
-            'rounded-none sm:rounded-lg'
+            "group relative aspect-square cursor-pointer overflow-hidden bg-gray-900",
+            "rounded-none sm:rounded-lg"
           )}
+          initial={{ opacity: 0, scale: 0.8 }}
+          key={image.id}
           onClick={() => onImageClick(image, index)}
+          transition={{ delay: Math.min(index * 0.05, 0.5) }}
         >
           <Image
-            src={image.imageUrl}
-            alt={image.caption || 'Event photo'}
-            fill
+            alt={image.caption || "Event photo"}
             className={cn(
-              'object-cover transition-transform duration-300 group-hover:scale-110',
-              'bg-white/20'
+              "object-cover transition-transform duration-300 group-hover:scale-110",
+              "bg-white/20"
             )}
+            fill
             sizes="(max-width: 640px) 33vw, (max-width: 1024px) 25vw, 20vw"
+            src={image.imageUrl}
           />
-          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
+          <div className="absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/20" />
 
           {/* Corner overlay for better icon visibility */}
           <div className="absolute inset-0 z-[40]">
@@ -78,10 +78,10 @@ export function PhotoGrid({
           </div>
 
           {/* Hover overlay */}
-          <div className="absolute inset-0 flex items-center justify-center bg-black/70 opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="absolute inset-0 flex items-center justify-center bg-black/70 opacity-0 transition-opacity group-hover:opacity-100">
             <div className="text-center">
-              <Eye className="h-6 w-6 text-white mb-1 mx-auto" />
-              <p className="text-xs text-white">
+              <Eye className="mx-auto mb-1 h-6 w-6 text-white" />
+              <p className="text-white text-xs">
                 {formatDistanceToNowLocalized(
                   new Date(image.createdAt),
                   locale
@@ -89,10 +89,10 @@ export function PhotoGrid({
               </p>
             </div>
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
-            <div className="absolute bottom-0 left-0 right-0 p-2 sm:p-3">
+          <div className="absolute inset-0 rounded-lg bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 transition-opacity group-hover:opacity-100">
+            <div className="absolute right-0 bottom-0 left-0 p-2 sm:p-3">
               {image.caption && (
-                <p className="text-white text-xs sm:text-sm truncate">
+                <p className="truncate text-white text-xs sm:text-sm">
                   {image.caption}
                 </p>
               )}
@@ -102,23 +102,23 @@ export function PhotoGrid({
           {currentProfileId && currentProfileId === image.profileId && (
             <div
               className={cn(
-                'absolute top-2 right-2 size-8 rounded-full bg-red-500 flex items-center justify-center z-50',
+                "absolute top-2 right-2 z-50 flex size-8 items-center justify-center rounded-full bg-red-500",
                 deletingImageId === image.id
-                  ? 'cursor-not-allowed opacity-70'
-                  : 'cursor-pointer hover:bg-red-600 transition-all duration-300 hover:scale-110'
+                  ? "cursor-not-allowed opacity-70"
+                  : "cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-red-600"
               )}
               onClick={(e) => e.stopPropagation()}
             >
               <AlertDialog>
                 <AlertDialogTrigger asChild>
                   <button
-                    type="button"
-                    className="flex items-center justify-center size-8 rounded-full focus:outline-none"
-                    aria-label={t('delete')}
+                    aria-label={t("delete")}
+                    className="flex size-8 items-center justify-center rounded-full focus:outline-none"
                     disabled={deletingImageId === image.id}
+                    type="button"
                   >
                     {deletingImageId === image.id ? (
-                      <Loader2 className="size-4 text-white animate-spin" />
+                      <Loader2 className="size-4 animate-spin text-white" />
                     ) : (
                       <Trash className="size-4 text-white" />
                     )}
@@ -127,25 +127,24 @@ export function PhotoGrid({
                 <AlertDialogContent>
                   <AlertDialogHeader>
                     <AlertDialogTitle>
-                      {t('confirmDeleteImage')}
+                      {t("confirmDeleteImage")}
                     </AlertDialogTitle>
-                    <p className="text-sm text-gray-400 mt-2">
-                      {t('confirmDeleteImageDescription')}
+                    <p className="mt-2 text-gray-400 text-sm">
+                      {t("confirmDeleteImageDescription")}
                     </p>
                   </AlertDialogHeader>
-                  <div className="flex justify-end gap-2 mt-4">
+                  <div className="mt-4 flex justify-end gap-2">
                     <AlertDialogCancel asChild>
                       <button
+                        className="rounded bg-gray-700 px-3 py-1 text-sm text-white"
                         type="button"
-                        className="px-3 py-1 rounded bg-gray-700 text-white text-sm"
                       >
-                        {t('cancel')}
+                        {t("cancel")}
                       </button>
                     </AlertDialogCancel>
                     <AlertDialogAction asChild>
                       <button
-                        type="button"
-                        className="px-3 py-1 rounded bg-red-600 text-white text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="rounded bg-red-600 px-3 py-1 text-sm text-white disabled:cursor-not-allowed disabled:opacity-50"
                         disabled={deletingImageId === image.id}
                         onClick={async () => {
                           setDeletingImageId(image.id);
@@ -155,14 +154,15 @@ export function PhotoGrid({
                             setDeletingImageId(null);
                           }
                         }}
+                        type="button"
                       >
                         {deletingImageId === image.id ? (
                           <span className="flex items-center gap-2">
                             <Loader2 className="size-3 animate-spin" />
-                            {t('deleting')}
+                            {t("deleting")}
                           </span>
                         ) : (
-                          t('delete')
+                          t("delete")
                         )}
                       </button>
                     </AlertDialogAction>
@@ -171,7 +171,7 @@ export function PhotoGrid({
               </AlertDialog>
             </div>
           )}
-          <div className="absolute bottom-2 left-2 size-8 rounded-full bg-red-500 flex items-center justify-center z-50">
+          <div className="absolute bottom-2 left-2 z-50 flex size-8 items-center justify-center rounded-full bg-red-500">
             <Avatar>
               <AvatarImage src={image.profile?.avatar} />
               <AvatarFallback>{image.profile?.name.slice(0, 2)}</AvatarFallback>

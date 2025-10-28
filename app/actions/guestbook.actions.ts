@@ -1,29 +1,29 @@
-'use server';
+"use server";
 
-import { openai } from '@ai-sdk/openai';
-import type { GuestbookEntry, GuestbookTicket } from '@prisma/client';
-import { generateObject } from 'ai';
-import { z } from 'zod';
-import { prisma } from '@/lib/prisma';
-import { broadcastGuestbookUpdate } from '@/lib/supabase/realtime-server';
-import { createClient } from '@/lib/supabase/server';
+import { openai } from "@ai-sdk/openai";
+import type { GuestbookEntry, GuestbookTicket } from "@prisma/client";
+import { generateObject } from "ai";
+import { z } from "zod";
+import { prisma } from "@/lib/prisma";
+import { broadcastGuestbookUpdate } from "@/lib/supabase/realtime-server";
+import { createClient } from "@/lib/supabase/server";
 
 // Color palette schema for AI generation
 const colorPaletteSchema = z.object({
   primaryColor: z
     .string()
-    .describe('Hex color for gradient start, should match the mood'),
+    .describe("Hex color for gradient start, should match the mood"),
   secondaryColor: z
     .string()
-    .describe('Hex color for gradient end, should complement primary'),
-  accentColor: z.string().describe('Hex accent color for highlights'),
-  backgroundColor: z.string().describe('Hex background color for the card'),
+    .describe("Hex color for gradient end, should complement primary"),
+  accentColor: z.string().describe("Hex accent color for highlights"),
+  backgroundColor: z.string().describe("Hex background color for the card"),
 });
 
 type ColorPalette = z.infer<typeof colorPaletteSchema>;
 
 // Generate the next ticket number using PostgreSQL sequence
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: Prisma transaction type requires this
 async function generateTicketNumber(tx?: any): Promise<string> {
   const prismaClient = tx || prisma;
 
@@ -33,7 +33,8 @@ async function generateTicketNumber(tx?: any): Promise<string> {
   `;
 
   const nextNumber = Number(result[0].nextval);
-  return `C-${nextNumber.toString().padStart(6, '0')}`;
+  const TICKET_NUMBER_PADDING = 6;
+  return `C-${nextNumber.toString().padStart(TICKET_NUMBER_PADDING, "0")}`;
 }
 
 // Generate color palette using AI
@@ -42,7 +43,7 @@ export async function generateColorPalette(
 ): Promise<ColorPalette> {
   try {
     const { object } = await generateObject({
-      model: openai('o4-mini'),
+      model: openai("o4-mini"),
       schema: colorPaletteSchema,
       prompt: `Generate a color palette based on this mood/style description: "${mood}". 
       
@@ -60,10 +61,10 @@ export async function generateColorPalette(
   } catch (_error) {
     // Fallback colors
     return {
-      primaryColor: '#8b5cf6',
-      secondaryColor: '#ec4899',
-      accentColor: '#a78bfa',
-      backgroundColor: '#1f1f23',
+      primaryColor: "#8b5cf6",
+      secondaryColor: "#ec4899",
+      accentColor: "#a78bfa",
+      backgroundColor: "#1f1f23",
     };
   }
 }
@@ -76,7 +77,7 @@ export async function createGuestbookEntry(mood: string, message?: string) {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error('User not authenticated');
+    throw new Error("User not authenticated");
   }
 
   // Generate color palette
@@ -87,10 +88,10 @@ export async function createGuestbookEntry(mood: string, message?: string) {
   const userName =
     userMetadata.full_name ||
     userMetadata.name ||
-    user.email?.split('@')[0] ||
-    'Anonymous';
+    user.email?.split("@")[0] ||
+    "Anonymous";
   const userAvatar = userMetadata.avatar_url || userMetadata.picture || null;
-  const userProvider = user.app_metadata?.provider || 'email';
+  const userProvider = user.app_metadata?.provider || "email";
 
   // Create entry and ticket in transaction
   const result = await prisma.$transaction(async (tx) => {
@@ -113,7 +114,7 @@ export async function createGuestbookEntry(mood: string, message?: string) {
         entryId: entry.id,
         profileId: user.id,
         userName,
-        userEmail: user.email || '',
+        userEmail: user.email || "",
         userAvatar,
         userProvider,
         primaryColor: colors.primaryColor,
@@ -128,7 +129,7 @@ export async function createGuestbookEntry(mood: string, message?: string) {
 
   // Broadcast the new ticket creation
   await broadcastGuestbookUpdate({
-    type: 'ticket_created',
+    type: "ticket_created",
     ticket: {
       id: result.ticket.id,
       ticketNumber: result.ticket.ticketNumber,
@@ -170,7 +171,7 @@ export async function getUserTicket() {
 // Get all tickets for display
 export async function getAllTickets() {
   const tickets = await prisma.guestbookTicket.findMany({
-    orderBy: { createdAt: 'desc' },
+    orderBy: { createdAt: "desc" },
     include: {
       entry: {
         select: {
@@ -199,7 +200,7 @@ export async function updateGuestbookEntry(
   } = await supabase.auth.getUser();
 
   if (!user) {
-    throw new Error('User not authenticated');
+    throw new Error("User not authenticated");
   }
 
   // Find existing entry
@@ -209,7 +210,7 @@ export async function updateGuestbookEntry(
   });
 
   if (!existingEntry) {
-    throw new Error('No existing ticket found');
+    throw new Error("No existing ticket found");
   }
 
   // Generate new color palette based on new mood
@@ -242,7 +243,7 @@ export async function updateGuestbookEntry(
 
   // Broadcast the ticket update
   await broadcastGuestbookUpdate({
-    type: 'ticket_updated',
+    type: "ticket_updated",
     ticket: {
       id: result.ticket.id,
       ticketNumber: result.ticket.ticketNumber,

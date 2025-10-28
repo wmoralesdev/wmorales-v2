@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
-import { getAllTickets, getUserTicket } from '@/app/actions/guestbook.actions';
-import type { TicketData } from '@/lib/types/guestbook.types';
+import { useEffect, useState } from "react";
+import { toast } from "sonner";
+import { getAllTickets, getUserTicket } from "@/app/actions/guestbook.actions";
+import type { TicketData } from "@/lib/types/guestbook.types";
 
 export function useGuestbookTickets() {
   const [userTicket, setUserTicket] = useState<TicketData | null>(null);
@@ -21,7 +21,7 @@ export function useGuestbookTickets() {
         }
         setAllTickets(allTicketsData as unknown as TicketData[]);
       } catch {
-        toast.error('Failed to load tickets. Please try again.');
+        toast.error("Failed to load tickets. Please try again.");
       } finally {
         setIsLoadingTickets(false);
       }

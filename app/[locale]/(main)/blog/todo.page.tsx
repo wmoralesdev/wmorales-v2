@@ -1,4 +1,3 @@
-// /* eslint-disable @typescript-eslint/no-explicit-any */
 // import { Book } from 'lucide-react';
 // import { getTranslations, setRequestLocale } from 'next-intl/server';
 // import { searchBlogPosts } from '@/app/actions/blog.actions';

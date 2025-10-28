@@ -1,8 +1,8 @@
-import { motion } from 'framer-motion';
-import { Code2 } from 'lucide-react';
-import { BaseCard, type BaseCardProps } from './base-card';
+import { motion } from "framer-motion";
+import { Code2 } from "lucide-react";
+import { BaseCard, type BaseCardProps } from "./base-card";
 
-type TechStackCardProps = Omit<BaseCardProps, 'children' | 'id'>;
+type TechStackCardProps = Omit<BaseCardProps, "children" | "id">;
 
 export function TechStackCard(props: TechStackCardProps) {
   return (
@@ -52,7 +52,7 @@ export function TechStackCard(props: TechStackCardProps) {
               transition={{
                 duration: 20,
                 repeat: Number.POSITIVE_INFINITY,
-                ease: 'linear',
+                ease: "linear",
               }}
             />
           </div>

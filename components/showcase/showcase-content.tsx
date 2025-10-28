@@ -1,21 +1,21 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import {
+import { useState } from "react";
+import { projects as allProjects } from "@/lib/data/projects";
+import type {
   Project,
   ProjectFilter,
   ProjectSort,
-} from '@/lib/types/showcase.types';
-import { ProjectGrid } from './project-grid';
-import { ProjectFilters } from './project-filters';
-import { projects as allProjects } from '@/lib/data/projects';
+} from "@/lib/types/showcase.types";
+import { ProjectFilters } from "./project-filters";
+import { ProjectGrid } from "./project-grid";
 
 export function ShowcaseContent() {
   const [projects] = useState<Project[]>(allProjects);
   const [filter, setFilter] = useState<ProjectFilter>({});
   const [sort, setSort] = useState<ProjectSort>({
-    field: 'date',
-    direction: 'desc',
+    field: "date",
+    direction: "desc",
   });
 
   // Filter projects based on current filter
@@ -61,14 +61,14 @@ export function ShowcaseContent() {
 
   // Sort projects
   const sortedProjects = [...filteredProjects].sort((a, b) => {
-    const direction = sort.direction === 'asc' ? 1 : -1;
+    const direction = sort.direction === "asc" ? 1 : -1;
 
     switch (sort.field) {
-      case 'date':
+      case "date":
         return (b.year - a.year) * direction;
-      case 'title':
+      case "title":
         return a.title.localeCompare(b.title) * direction;
-      case 'category':
+      case "category":
         return a.category.localeCompare(b.category) * direction;
       default:
         return 0;
@@ -80,11 +80,11 @@ export function ShowcaseContent() {
       {/* Filters Section */}
       <ProjectFilters
         filter={filter}
-        onFilterChange={setFilter}
-        sort={sort}
-        onSortChange={setSort}
-        totalProjects={projects.length}
         filteredCount={sortedProjects.length}
+        onFilterChange={setFilter}
+        onSortChange={setSort}
+        sort={sort}
+        totalProjects={projects.length}
       />
 
       {/* Projects Grid */}
@@ -92,7 +92,7 @@ export function ShowcaseContent() {
 
       {/* Empty State */}
       {sortedProjects.length === 0 && (
-        <div className="text-center py-16">
+        <div className="py-16 text-center">
           <p className="text-muted-foreground">
             No projects found matching your criteria.
           </p>

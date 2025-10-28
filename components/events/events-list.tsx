@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import type { Event, EventContent, EventImage } from '@prisma/client';
-import { motion, type Variants } from 'framer-motion';
-import { ArrowRight, Calendar, Image, Sparkles, Users } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import type { Event, EventContent, EventImage } from "@prisma/client";
+import { motion, type Variants } from "framer-motion";
+import { ArrowRight, Calendar, Image, Sparkles, Users } from "lucide-react";
+import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { formatDistanceToNowLocalized } from '@/lib/utils';
-import Link from 'next/link';
+} from "@/components/ui/card";
+import { formatDistanceToNowLocalized } from "@/lib/utils";
 
 export type EventWithContent = Event & {
   content: EventContent[];
@@ -38,13 +38,13 @@ const itemVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.4,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   },
 };
 
 export function EventsList({ events }: { events: EventWithContent[] }) {
-  const t = useTranslations('events');
+  const t = useTranslations("events");
   const locale = useLocale();
 
   if (events.length === 0) {
@@ -54,9 +54,9 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
           <div className="text-center">
             <Users className="mx-auto mb-4 h-12 w-12 text-purple-400 opacity-50" />
             <p className="font-medium text-lg text-white">
-              {t('noActiveEvents')}
+              {t("noActiveEvents")}
             </p>
-            <p className="mt-2 text-gray-400">{t('checkBackLater')}</p>
+            <p className="mt-2 text-gray-400">{t("checkBackLater")}</p>
           </div>
         </CardContent>
       </Card>
@@ -70,9 +70,9 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
           <div className="text-center">
             <Users className="mx-auto mb-4 h-12 w-12 text-purple-400 opacity-50" />
             <p className="font-medium text-lg text-white">
-              {t('noActiveEvents')}
+              {t("noActiveEvents")}
             </p>
-            <p className="mt-2 text-gray-400">{t('checkBackLater')}</p>
+            <p className="mt-2 text-gray-400">{t("checkBackLater")}</p>
           </div>
         </CardContent>
       </Card>
@@ -89,31 +89,31 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
       {events.map((event) => (
         <motion.div key={event.id} variants={itemVariants}>
           <Link href={`/events/${event.slug}`}>
-            <Card className="group cursor-pointer border-0 sm:border border-gray-800 bg-gray-900/60 backdrop-blur-xl transition-all duration-300 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10 rounded-none sm:rounded-lg shadow-none sm:shadow-md border-b">
+            <Card className="group cursor-pointer rounded-none border-0 border-gray-800 border-b bg-gray-900/60 shadow-none backdrop-blur-xl transition-all duration-300 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10 sm:rounded-lg sm:border sm:shadow-md">
               <CardHeader className="p-4 sm:px-6 md:py-0">
-                <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-3">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="flex-1">
-                    <CardTitle className="text-base sm:text-lg text-white transition-colors group-hover:text-purple-300">
+                    <CardTitle className="text-base text-white transition-colors group-hover:text-purple-300 sm:text-lg">
                       {event.content[0].title}
                     </CardTitle>
-                    <CardDescription className="mt-1 text-sm text-gray-400">
-                      {event.content[0].description || t('sharePhotos')}
+                    <CardDescription className="mt-1 text-gray-400 text-sm">
+                      {event.content[0].description || t("sharePhotos")}
                     </CardDescription>
                   </div>
-                  <div className="flex items-center gap-2 flex-wrap">
+                  <div className="flex flex-wrap items-center gap-2">
                     {event.endsAt && new Date() > event.endsAt ? (
                       <Badge
                         className="border-gray-500/30 bg-gray-500/10 text-gray-300 text-xs"
                         variant="outline"
                       >
-                        {t('ended')}
+                        {t("ended")}
                       </Badge>
                     ) : (
                       <Badge
                         className="border-green-500/30 bg-green-500/10 text-green-300 text-xs"
                         variant="outline"
                       >
-                        <span className="h-1.5 w-1.5 bg-green-400 rounded-full animate-pulse mr-1" />
+                        <span className="mr-1 h-1.5 w-1.5 animate-pulse rounded-full bg-green-400" />
                         LIVE
                       </Badge>
                     )}
@@ -121,16 +121,16 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
                       className="border-purple-500/30 bg-purple-500/10 text-purple-300 text-xs"
                       variant="outline"
                     >
-                      {t('photosCount', { count: event.images?.length ?? 0 })}
+                      {t("photosCount", { count: event.images?.length ?? 0 })}
                     </Badge>
                   </div>
                 </div>
               </CardHeader>
-              <CardContent className="p-4 sm:px-6 pt-0 sm:pt-0">
-                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+              <CardContent className="p-4 pt-0 sm:px-6 sm:pt-0">
+                <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex flex-wrap items-center gap-3 text-gray-500 text-xs sm:text-sm">
                     <div className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3 sm:h-4 sm:w-4 text-purple-400" />
+                      <Calendar className="h-3 w-3 text-purple-400 sm:h-4 sm:w-4" />
                       <span>
                         {formatDistanceToNowLocalized(
                           new Date(event.createdAt),
@@ -142,15 +142,14 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
-                      {/* eslint-disable-next-line jsx-a11y/alt-text */}
-                      <Image className="h-3 w-3 sm:h-4 sm:w-4 text-purple-400" />
-                      <span>{t('maxPhotos', { count: event.maxImages })}</span>
+                      <Image className="h-3 w-3 text-purple-400 sm:h-4 sm:w-4" />
+                      <span>{t("maxPhotos", { count: event.maxImages })}</span>
                     </div>
                     {event.endsAt && new Date() < event.endsAt && (
                       <div className="flex items-center gap-1">
-                        <Sparkles className="h-3 w-3 sm:h-4 sm:w-4 text-purple-400" />
+                        <Sparkles className="h-3 w-3 text-purple-400 sm:h-4 sm:w-4" />
                         <span>
-                          {t('endsIn', {
+                          {t("endsIn", {
                             time: formatDistanceToNowLocalized(
                               new Date(event.endsAt),
                               locale,
@@ -164,11 +163,11 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
                     )}
                   </div>
                   <Button
-                    className="flex items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg shadow-purple-500/25 transition-all hover:from-purple-600 hover:to-purple-700 group-hover:shadow-purple-500/40 w-full sm:w-auto"
+                    className="flex w-full items-center justify-center gap-2 bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg shadow-purple-500/25 transition-all hover:from-purple-600 hover:to-purple-700 group-hover:shadow-purple-500/40 sm:w-auto"
                     size="sm"
                   >
-                    {t('viewGallery')}
-                    <ArrowRight className="h-3 w-3 sm:h-4 sm:w-4 transition-transform group-hover:translate-x-1" />
+                    {t("viewGallery")}
+                    <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-1 sm:h-4 sm:w-4" />
                   </Button>
                 </div>
               </CardContent>

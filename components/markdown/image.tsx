@@ -1,4 +1,4 @@
-import Image from 'next/image';
+import Image from "next/image";
 
 type ImageProps = {
   src: string;
@@ -20,7 +20,7 @@ export function ImageComponent({
   return (
     <figure className="my-8">
       <Image
-        alt={alt || ''}
+        alt={alt || ""}
         className="rounded-lg shadow-lg"
         height={height}
         priority={priority}

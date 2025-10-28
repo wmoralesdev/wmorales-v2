@@ -1,7 +1,7 @@
-import useSWR from 'swr';
-import { getAllTickets, getUserTicket } from '@/app/actions/guestbook.actions';
-import type { AuthUser } from '@/lib/auth';
-import type { TicketData } from '@/lib/types/guestbook.types';
+import useSWR from "swr";
+import { getAllTickets, getUserTicket } from "@/app/actions/guestbook.actions";
+import type { AuthUser } from "@/lib/auth";
+import type { TicketData } from "@/lib/types/guestbook.types";
 
 const fetchAllTickets = async () => {
   const tickets = await getAllTickets();
@@ -24,7 +24,7 @@ export function useGuestbookTicketsSWR(user: AuthUser | null) {
     error: allTicketsError,
     mutate: mutateAllTickets,
     isLoading: isLoadingAllTickets,
-  } = useSWR('guestbook-tickets-all', fetchAllTickets, {
+  } = useSWR("guestbook-tickets-all", fetchAllTickets, {
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
   });

@@ -1,31 +1,31 @@
-'use client';
+"use client";
 
-import { ArrowRight, Palette, Share2, Sparkles } from 'lucide-react';
-import { useState } from 'react';
-import { toast } from 'sonner';
+import { ArrowRight, Palette, Share2, Sparkles } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { toast } from "sonner";
 import {
   createGuestbookEntry,
   updateGuestbookEntry,
-} from '@/app/actions/guestbook.actions';
-import { useAuth } from '@/components/auth/auth-provider';
-import { GuestbookLoading } from '@/components/guestbook/guestbook-loading';
-import { GuestbookTicketsCarousel } from '@/components/guestbook/guestbook-tickets-carousel';
-import { SignInCard } from '@/components/guestbook/sign-in-card';
-import { UserTicket } from '@/components/guestbook/user-ticket';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
-import { Textarea } from '@/components/ui/textarea';
-import { useGuestbookTicketsSWR } from '@/hooks/use-guestbook-tickets-swr';
-import { authService } from '@/lib/auth';
-import type { TicketData } from '@/lib/types/guestbook.types';
-import { shareTicket } from '@/lib/utils/share';
-import { useTranslations } from 'next-intl';
+} from "@/app/actions/guestbook.actions";
+import { useAuth } from "@/components/auth/auth-provider";
+import { GuestbookLoading } from "@/components/guestbook/guestbook-loading";
+import { GuestbookTicketsCarousel } from "@/components/guestbook/guestbook-tickets-carousel";
+import { SignInCard } from "@/components/guestbook/sign-in-card";
+import { UserTicket } from "@/components/guestbook/user-ticket";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { useGuestbookTicketsSWR } from "@/hooks/use-guestbook-tickets-swr";
+import { authService } from "@/lib/auth";
+import type { TicketData } from "@/lib/types/guestbook.types";
+import { shareTicket } from "@/lib/utils/share";
 
 export function GuestbookContent() {
-  const t = useTranslations('guestbook');
+  const t = useTranslations("guestbook");
 
   const { user, loading } = useAuth();
-  const [customMessage, setCustomMessage] = useState('');
+  const [customMessage, setCustomMessage] = useState("");
   const [isGeneratingColors, setIsGeneratingColors] = useState(false);
   const {
     userTicket,
@@ -35,17 +35,17 @@ export function GuestbookContent() {
     refreshTickets,
   } = useGuestbookTicketsSWR(user);
 
-  const handleSignIn = async (provider: 'github' | 'google') => {
+  const handleSignIn = async (provider: "github" | "google") => {
     try {
-      await authService.signInWithProvider(provider, '/guestbook');
+      await authService.signInWithProvider(provider, "/guestbook");
     } catch {
-      toast.error(t('signInError'));
+      toast.error(t("signInError"));
     }
   };
 
   const handleGenerateColors = async () => {
     if (!customMessage.trim()) {
-      toast.error(t('moodRequired'));
+      toast.error(t("moodRequired"));
       return;
     }
 
@@ -55,7 +55,7 @@ export function GuestbookContent() {
         ? await updateGuestbookEntry(customMessage)
         : await createGuestbookEntry(customMessage);
 
-      toast.success(userTicket ? t('ticketUpdated') : t('ticketCreated'));
+      toast.success(userTicket ? t("ticketUpdated") : t("ticketCreated"));
 
       // Update tickets using SWR
       updateUserTicket(result.ticket as unknown as TicketData);
@@ -63,9 +63,9 @@ export function GuestbookContent() {
       // Refresh all tickets
       await refreshTickets();
 
-      setCustomMessage('');
+      setCustomMessage("");
     } catch {
-      toast.error(t('generateError'));
+      toast.error(t("generateError"));
     } finally {
       setIsGeneratingColors(false);
     }
@@ -125,7 +125,7 @@ export function GuestbookContent() {
                     variant="outline"
                   >
                     <Share2 className="h-4 w-4" />
-                    {t('shareTicket')}
+                    {t("shareTicket")}
                   </Button>
                 </div>
               </div>
@@ -136,9 +136,9 @@ export function GuestbookContent() {
                     <Sparkles className="h-8 w-8 text-purple-400" />
                   </div>
                   <h3 className="mb-2 font-semibold text-xl">
-                    {t('noTicketYet')}
+                    {t("noTicketYet")}
                   </h3>
-                  <p className="text-gray-400">{t('describeMood')}</p>
+                  <p className="text-gray-400">{t("describeMood")}</p>
                 </CardContent>
               </Card>
             )}
@@ -153,11 +153,11 @@ export function GuestbookContent() {
                     <Palette className="h-5 w-5 text-purple-400" />
                   </div>
                   <h2 className="font-semibold text-xl">
-                    {userTicket ? t('updateTicket') : t('createTicketForm')}
+                    {userTicket ? t("updateTicket") : t("createTicketForm")}
                   </h2>
                 </div>
                 <p className="text-gray-400 text-sm">
-                  {userTicket ? t('changeMood') : t('tellMood')}
+                  {userTicket ? t("changeMood") : t("tellMood")}
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
@@ -166,15 +166,15 @@ export function GuestbookContent() {
                     className="min-h-32 resize-none border-gray-700 bg-gray-800/50 placeholder:text-gray-500"
                     onChange={(e) => setCustomMessage(e.target.value)}
                     onKeyDown={(e) => {
-                      if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+                      if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
                         e.preventDefault();
                         handleGenerateColors();
                       }
                     }}
-                    placeholder={t('moodPlaceholder')}
+                    placeholder={t("moodPlaceholder")}
                     value={customMessage}
                   />
-                  <p className="text-gray-500 text-xs">{t('moodExamples')}</p>
+                  <p className="text-gray-500 text-xs">{t("moodExamples")}</p>
                 </div>
                 <Button
                   className="w-full gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"
@@ -185,12 +185,12 @@ export function GuestbookContent() {
                   {isGeneratingColors ? (
                     <>
                       <Sparkles className="h-4 w-4 animate-spin" />
-                      {userTicket ? t('updating') : t('generating')}
+                      {userTicket ? t("updating") : t("generating")}
                     </>
                   ) : (
                     <>
                       <Sparkles className="h-4 w-4" />
-                      {userTicket ? t('updateButton') : t('generateButton')}
+                      {userTicket ? t("updateButton") : t("generateButton")}
                       <ArrowRight className="h-4 w-4" />
                     </>
                   )}

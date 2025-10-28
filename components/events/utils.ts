@@ -1,5 +1,5 @@
-import { ExtendedEventImage } from '@/lib/types/event.types';
-import { toast } from 'sonner';
+import { toast } from "sonner";
+import type { ExtendedEventImage } from "@/lib/types/event.types";
 
 // Sort images by creation date (newest first)
 export function sortImagesByDate(
@@ -38,7 +38,7 @@ export async function handleShareEvent(
   eventSlug: string,
   eventTitle: string,
   eventDescription?: string | null,
-  sharePrompt: string = 'Check out event photos'
+  sharePrompt = "Check out event photos"
 ): Promise<void> {
   const eventUrl = `${window.location.origin}/events/${eventSlug}`;
 
@@ -54,16 +54,16 @@ export async function handleShareEvent(
     }
   } else {
     navigator.clipboard.writeText(eventUrl);
-    toast.success('Link copied');
+    toast.success("Link copied");
   }
 }
 
 // Get event URL for sharing/QR code
 export function getEventUrl(eventSlug: string): string {
-  if (typeof window !== 'undefined') {
+  if (typeof window !== "undefined") {
     return `${window.location.origin}/events/${eventSlug}`;
   }
-  return '';
+  return "";
 }
 
 // Check if event has ended
@@ -74,11 +74,11 @@ export function isEventEnded(endsAt: Date | null): boolean {
 // Validate image file
 export function validateImageFile(
   file: File,
-  maxSizeMB: number = 10
+  maxSizeMB = 10
 ): { valid: boolean; error?: string } {
   // Check file type
-  if (!file.type.startsWith('image/')) {
-    return { valid: false, error: 'File must be an image' };
+  if (!file.type.startsWith("image/")) {
+    return { valid: false, error: "File must be an image" };
   }
 
   // Check file size

@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import { Button } from '@/components/ui/button';
-import { ChevronUp } from 'lucide-react';
-import { AnimatePresence } from 'framer-motion';
-import { useEffect, useState } from 'react';
+import { AnimatePresence } from "framer-motion";
+import { ChevronUp } from "lucide-react";
+import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button";
 
 export function BackToTop() {
   const [isVisible, setIsVisible] = useState(false);
@@ -13,18 +13,18 @@ export function BackToTop() {
       setIsVisible(window.scrollY > 100);
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
   return (
     <AnimatePresence>
       {isVisible && (
         <Button
-          variant="outline"
+          className="fixed right-4 bottom-4 z-[9999] cursor-pointer hover:bg-purple-500/10 hover:text-purple-500"
+          onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           size="icon"
-          className="fixed bottom-4 right-4 z-[9999] cursor-pointer hover:bg-purple-500/10 hover:text-purple-500"
-          onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+          variant="outline"
         >
           <ChevronUp className="size-4" />
         </Button>

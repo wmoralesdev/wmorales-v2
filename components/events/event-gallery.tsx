@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import { useTranslations } from 'next-intl';
-import { useCallback, useTransition } from 'react';
-import { toast } from 'sonner';
-import dynamic from 'next/dynamic';
+import dynamic from "next/dynamic";
+import { useTranslations } from "next-intl";
+import { useCallback, useTransition } from "react";
+import { toast } from "sonner";
 import {
   deleteEventImage,
   uploadEventImage,
-} from '@/app/actions/events.actions';
-import { useUserEventImages } from '@/hooks/use-user-event-images';
+} from "@/app/actions/events.actions";
+import { useUserEventImages } from "@/hooks/use-user-event-images";
 import type {
   EventGalleryProps,
   UserEventImage,
-} from '../../lib/types/event.types';
-import { isEventEnded } from './utils';
+} from "../../lib/types/event.types";
+import { isEventEnded } from "./utils";
 
 // Import the new components dynamically
 const LiveEventView = dynamic(
-  () => import('./live-event-view').then((mod) => mod.LiveEventView),
+  () => import("./live-event-view").then((mod) => mod.LiveEventView),
   {
     ssr: false,
   }
@@ -27,7 +27,7 @@ export function EventGallery({
   event,
   initialUserImages = [],
 }: EventGalleryProps) {
-  const t = useTranslations('events');
+  const t = useTranslations("events");
   const [, startTransition] = useTransition();
 
   // Use SWR hook for better data fetching with server-provided fallback
@@ -43,7 +43,7 @@ export function EventGallery({
       const optimisticImage: UserEventImage = {
         id: tempId,
         eventId: event.id,
-        profileId: 'current-user', // This will be replaced by the server
+        profileId: "current-user", // This will be replaced by the server
         imageUrl,
         caption,
         createdAt: new Date(),
@@ -71,7 +71,7 @@ export function EventGallery({
         optimisticRemove(optimisticImage.id);
 
         const message =
-          error instanceof Error ? error.message : t('failedToUploadPhoto');
+          error instanceof Error ? error.message : t("failedToUploadPhoto");
         toast.error(message);
       }
     },
@@ -95,7 +95,7 @@ export function EventGallery({
         startTransition(() => {
           deleteEventImage(imageId)
             .then(() => {
-              toast.success(t('photoDeletedSuccessfully'));
+              toast.success(t("photoDeletedSuccessfully"));
             })
             .catch((error) => {
               // Rollback optimistic update on error
@@ -104,7 +104,7 @@ export function EventGallery({
               const message =
                 error instanceof Error
                   ? error.message
-                  : t('failedToDeletePhoto');
+                  : t("failedToDeletePhoto");
               toast.error(message);
             });
         });
@@ -113,7 +113,7 @@ export function EventGallery({
         optimisticAdd(imageToDelete);
 
         const message =
-          error instanceof Error ? error.message : t('failedToDeletePhoto');
+          error instanceof Error ? error.message : t("failedToDeletePhoto");
         toast.error(message);
       }
     },
@@ -125,7 +125,7 @@ export function EventGallery({
 
   // If event has ended, redirect to the gallery page
   if (hasEnded || !event.isActive) {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== "undefined") {
       window.location.href = `/events/${event.slug}/gallery`;
     }
     return null;
@@ -137,8 +137,8 @@ export function EventGallery({
       event={{
         ...event,
       }}
-      onImageUpload={handleImageUpload}
       onImageDelete={handleImageDelete}
+      onImageUpload={handleImageUpload}
     />
   );
 }

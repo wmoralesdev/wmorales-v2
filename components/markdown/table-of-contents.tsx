@@ -1,6 +1,6 @@
-import Link from 'next/link';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+import Link from "next/link";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 type TableOfContentsProps = {
   headings: Array<{
@@ -21,7 +21,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
           <ul className="space-y-2">
             {headings.map((heading) => (
               <li
-                className={cn('text-sm', heading.level > 2 && 'ml-4')}
+                className={cn("text-sm", heading.level > 2 && "ml-4")}
                 key={heading.id}
               >
                 <Link

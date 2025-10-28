@@ -1,16 +1,20 @@
-import { NextRequest, NextResponse } from 'next/server';
-import { prisma } from '@/lib/prisma';
+import { type NextRequest, NextResponse } from "next/server";
+import { prisma } from "@/lib/prisma";
+
+// Bot user agent regex pattern
+const BOT_USER_AGENT_REGEX =
+  /bot|crawler|spider|slack|telegram|whatsapp|facebook|twitter|linkedin|discord/i;
 
 // Force dynamic rendering and disable all caching for this route
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 // Generate HTML page with OG metadata
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+// biome-ignore lint/suspicious/noExplicitAny: Prisma query result types
 function generateOGPage(shortUrl: any, baseUrl: string): string {
-  const title = shortUrl.title || 'Shared Link';
+  const title = shortUrl.title || "Shared Link";
   const description =
-    shortUrl.description || 'Click to view the shared content';
+    shortUrl.description || "Click to view the shared content";
   const image = shortUrl.image || `${baseUrl}/api/og/link/${shortUrl.code}`;
 
   return `<!DOCTYPE html>
@@ -109,7 +113,7 @@ export async function GET(
     const { code } = await params;
 
     if (!code) {
-      return NextResponse.json({ error: 'Code is required' }, { status: 400 });
+      return NextResponse.json({ error: "Code is required" }, { status: 400 });
     }
 
     // Find the short URL
@@ -166,7 +170,7 @@ export async function GET(
 </html>`,
         {
           status: 404,
-          headers: { 'Content-Type': 'text/html' },
+          headers: { "Content-Type": "text/html" },
         }
       );
     }
@@ -220,7 +224,7 @@ export async function GET(
 </html>`,
         {
           status: 410, // Gone
-          headers: { 'Content-Type': 'text/html' },
+          headers: { "Content-Type": "text/html" },
         }
       );
     }
@@ -231,20 +235,17 @@ export async function GET(
         where: { code },
         data: { clicks: { increment: 1 } },
       })
-      .catch((error) => {
-        console.error('Failed to increment click counter:', error);
+      .catch(() => {
+        // Silently fail - click tracking is not critical
       });
 
     // Check if the request is from a bot/crawler that needs OG metadata
-    const userAgent = request.headers.get('user-agent') || '';
-    const isBot =
-      /bot|crawler|spider|slack|telegram|whatsapp|facebook|twitter|linkedin|discord/i.test(
-        userAgent
-      );
+    const userAgent = request.headers.get("user-agent") || "";
+    const isBot = BOT_USER_AGENT_REGEX.test(userAgent);
 
     const baseUrl =
       process.env.NEXT_PUBLIC_APP_URL ||
-      `https://${request.headers.get('host')}`;
+      `https://${request.headers.get("host")}`;
 
     if (
       isBot ||
@@ -256,10 +257,10 @@ export async function GET(
       // Use s-maxage=0 to bypass Vercel Edge Cache, but allow browser cache for 60s
       return new NextResponse(generateOGPage(shortUrlEntry, baseUrl), {
         headers: {
-          'Content-Type': 'text/html',
-          'Cache-Control': 'public, max-age=60, s-maxage=0, must-revalidate',
-          'CDN-Cache-Control': 'no-store',
-          'Vercel-CDN-Cache-Control': 'no-store',
+          "Content-Type": "text/html",
+          "Cache-Control": "public, max-age=60, s-maxage=0, must-revalidate",
+          "CDN-Cache-Control": "no-store",
+          "Vercel-CDN-Cache-Control": "no-store",
         },
       });
     }
@@ -274,14 +275,15 @@ export async function GET(
     // s-maxage=0: Don't cache at Vercel edge
     // max-age=0: Don't cache in browser (always revalidate)
     // must-revalidate: Force revalidation
-    response.headers.set('Cache-Control', 'public, max-age=0, s-maxage=0, must-revalidate');
-    response.headers.set('CDN-Cache-Control', 'no-store');
-    response.headers.set('Vercel-CDN-Cache-Control', 'no-store');
+    response.headers.set(
+      "Cache-Control",
+      "public, max-age=0, s-maxage=0, must-revalidate"
+    );
+    response.headers.set("CDN-Cache-Control", "no-store");
+    response.headers.set("Vercel-CDN-Cache-Control", "no-store");
 
     return response;
-  } catch (error) {
-    console.error('Error processing redirect:', error);
-
+  } catch {
     return new NextResponse(
       `<!DOCTYPE html>
 <html>
@@ -329,7 +331,7 @@ export async function GET(
 </html>`,
       {
         status: 500,
-        headers: { 'Content-Type': 'text/html' },
+        headers: { "Content-Type": "text/html" },
       }
     );
   }

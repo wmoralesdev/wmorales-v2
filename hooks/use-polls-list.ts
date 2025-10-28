@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import { useCallback, useRef } from 'react';
-import useSWR, { type KeyedMutator } from 'swr';
+import { useCallback, useRef } from "react";
+import useSWR, { type KeyedMutator } from "swr";
 
 type Poll = {
   id: string;
@@ -28,11 +28,11 @@ async function fetchPolls(): Promise<Poll[]> {
   // For now, using this as a placeholder - in real implementation,
   // you'd want to create a server action that can be called from client
   try {
-    const response = await fetch('/api/polls');
-    if (!response.ok) throw new Error('Failed to fetch polls');
+    const response = await fetch("/api/polls");
+    if (!response.ok) throw new Error("Failed to fetch polls");
     return await response.json();
   } catch {
-    console.error('Error fetching polls');
+    console.error("Error fetching polls");
     return [];
   }
 }
@@ -53,14 +53,14 @@ export function usePollsList(options: UsePollsListOptions = {}) {
     isLoading,
     isValidating,
     mutate,
-  } = useSWR<Poll[]>('polls-list', fetchPolls, {
+  } = useSWR<Poll[]>("polls-list", fetchPolls, {
     fallbackData,
     revalidateOnFocus,
     revalidateOnReconnect,
     // Revalidate every 30 seconds for active polls
-    refreshInterval: 30000,
+    refreshInterval: 30_000,
     // Don't revalidate if data is less than 10 seconds old
-    dedupingInterval: 10000,
+    dedupingInterval: 10_000,
     // Keep previous data while revalidating
     keepPreviousData: true,
   });
@@ -87,7 +87,7 @@ export function usePollsList(options: UsePollsListOptions = {}) {
 
   // Update poll session count optimistically
   const updatePollSessionCount = useCallback(
-    (pollId: string, increment: number = 1) => {
+    (pollId: string, increment = 1) => {
       mutate(
         (current = []) =>
           current.map((poll) =>
@@ -114,22 +114,22 @@ export function usePollsList(options: UsePollsListOptions = {}) {
   const syncUpdate = useCallback(
     (update: {
       type:
-        | 'poll_status_changed'
-        | 'poll_session_added'
-        | 'poll_session_removed';
+        | "poll_status_changed"
+        | "poll_session_added"
+        | "poll_session_removed";
       pollId: string;
       isActive?: boolean;
     }) => {
       switch (update.type) {
-        case 'poll_status_changed':
+        case "poll_status_changed":
           if (update.isActive !== undefined) {
             updatePollStatus(update.pollId, update.isActive);
           }
           break;
-        case 'poll_session_added':
+        case "poll_session_added":
           updatePollSessionCount(update.pollId, 1);
           break;
-        case 'poll_session_removed':
+        case "poll_session_removed":
           updatePollSessionCount(update.pollId, -1);
           break;
       }
@@ -139,16 +139,15 @@ export function usePollsList(options: UsePollsListOptions = {}) {
 
   // Get poll by code
   const getPollByCode = useCallback(
-    (code: string) => {
-      return polls?.find((poll) => poll.code === code) || null;
-    },
+    (code: string) => polls?.find((poll) => poll.code === code) || null,
     [polls]
   );
 
   // Get active polls only
-  const getActivePolls = useCallback(() => {
-    return polls?.filter((poll) => poll.isActive) || [];
-  }, [polls]);
+  const getActivePolls = useCallback(
+    () => polls?.filter((poll) => poll.isActive) || [],
+    [polls]
+  );
 
   // Refresh function for manual revalidation
   const refresh = useCallback(() => {

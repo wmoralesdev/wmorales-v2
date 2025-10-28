@@ -1,6 +1,6 @@
-import useSWR from 'swr';
-import { getPollResults } from '@/app/actions/poll.actions';
-import type { PollResults } from '@/lib/types/poll.types';
+import useSWR from "swr";
+import { getPollResults } from "@/app/actions/poll.actions";
+import type { PollResults } from "@/lib/types/poll.types";
 
 // Fetcher function for poll results
 const fetchPollResults = async (pollId: string) => {

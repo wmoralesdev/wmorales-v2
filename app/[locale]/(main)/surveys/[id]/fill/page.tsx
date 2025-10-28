@@ -1,10 +1,10 @@
-import type { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { setRequestLocale } from 'next-intl/server';
-import { getSurveyWithSections } from '@/app/actions/survey.actions';
-import { SurveyRenderer } from '@/components/surveys/survey-renderer';
-import { createMetadata, siteConfig } from '@/lib/metadata';
-import type { SurveyWithSections } from '@/lib/types/survey.types';
+import type { Metadata } from "next";
+import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
+import { getSurveyWithSections } from "@/app/actions/survey.actions";
+import { SurveyRenderer } from "@/components/surveys/survey-renderer";
+import { createMetadata, siteConfig } from "@/lib/metadata";
+import type { SurveyWithSections } from "@/lib/types/survey.types";
 
 type PageProps = {
   params: Promise<{
@@ -21,8 +21,8 @@ export async function generateMetadata({
 
   if (result.error || !result.data) {
     return createMetadata({
-      title: 'Survey Not Found',
-      description: 'The requested survey could not be found.',
+      title: "Survey Not Found",
+      description: "The requested survey could not be found.",
     });
   }
 
@@ -39,7 +39,7 @@ export async function generateMetadata({
       title: `${title} | Community Survey`,
       description,
       url: `${siteConfig.url}/surveys/${id}/fill`,
-      type: 'website',
+      type: "website",
     },
     twitter: {
       title: `${title} | Community Survey`,

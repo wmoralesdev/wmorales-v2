@@ -1,23 +1,23 @@
-'use client';
+"use client";
 
-import type { Event, EventContent } from '@prisma/client';
+import type { Event, EventContent } from "@prisma/client";
 import {
+  AnimatePresence,
+  type MotionValue,
   motion,
   useScroll,
   useTransform,
-  AnimatePresence,
-  MotionValue,
-} from 'framer-motion';
-import Image from 'next/image';
-import { useEffect, useRef, useState } from 'react';
-import { ArrowLeft, ImageIcon } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { subscribeToEventUpdates } from '@/lib/supabase/realtime';
-import { cn } from '@/lib/utils';
-import { useTranslations } from 'next-intl';
-import { ExtendedEventImage } from '@/lib/types/event.types';
-import { useArtisticGalleryStore } from '@/lib/stores/artistic-gallery-store';
+} from "framer-motion";
+import { ArrowLeft, ImageIcon } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import { useArtisticGalleryStore } from "@/lib/stores/artistic-gallery-store";
+import { subscribeToEventUpdates } from "@/lib/supabase/realtime";
+import type { ExtendedEventImage } from "@/lib/types/event.types";
+import { cn } from "@/lib/utils";
 
 type EventWithImages = Event & {
   images: ExtendedEventImage[];
@@ -80,7 +80,7 @@ function ImageItem({ image, index, scrollYProgress }: ImageItemProps) {
         }
       },
       {
-        rootMargin: '100px', // Start loading 100px before the image comes into view
+        rootMargin: "100px", // Start loading 100px before the image comes into view
       }
     );
 
@@ -93,25 +93,25 @@ function ImageItem({ image, index, scrollYProgress }: ImageItemProps) {
 
   return (
     <motion.div
-      ref={imageRef}
-      className="relative mb-4 sm:mb-6 lg:mb-8 break-inside-avoid"
-      initial={{ opacity: 0, y: 20, scale: 0.9 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
+      className="relative mb-4 break-inside-avoid sm:mb-6 lg:mb-8"
+      initial={{ opacity: 0, y: 20, scale: 0.9 }}
+      ref={imageRef}
+      style={{ y }}
       transition={{
         duration: 0.8,
         delay,
         ease: [0.25, 0.1, 0.25, 1],
       }}
-      style={{ y }}
     >
       {/* Polaroid-style wrapper */}
       <motion.div
-        className="relative bg-white p-2 sm:p-3 shadow-xl"
+        className="relative bg-white p-2 shadow-xl sm:p-3"
         style={{
           rotate: `${layout.rotate}deg`,
           scale: layout.scale,
           maxWidth: `${layout.maxWidth}px`,
-          margin: '0 auto',
+          margin: "0 auto",
         }}
         whileHover={{
           scale: layout.scale * 1.05,
@@ -126,11 +126,11 @@ function ImageItem({ image, index, scrollYProgress }: ImageItemProps) {
         >
           {/* Loading skeleton - only show when image is in view but not loaded */}
           {isInView && !imageLoaded && !imageError && (
-            <div className="absolute inset-0 bg-gray-200 animate-pulse">
+            <div className="absolute inset-0 animate-pulse bg-gray-200">
               <div className="absolute inset-0 flex items-center justify-center">
                 <div className="relative">
-                  <div className="h-12 w-12 rounded-full border-4 border-gray-300 border-t-gray-400 animate-spin" />
-                  <ImageIcon className="h-6 w-6 text-gray-400 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
+                  <div className="h-12 w-12 animate-spin rounded-full border-4 border-gray-300 border-t-gray-400" />
+                  <ImageIcon className="-translate-x-1/2 -translate-y-1/2 absolute top-1/2 left-1/2 h-6 w-6 text-gray-400" />
                 </div>
               </div>
             </div>
@@ -148,44 +148,44 @@ function ImageItem({ image, index, scrollYProgress }: ImageItemProps) {
           {/* Error state */}
           {imageError && (
             <div className="absolute inset-0 flex items-center justify-center bg-gray-100">
-              <div className="text-center p-4">
-                <ImageIcon className="h-8 w-8 text-gray-400 mx-auto mb-2" />
-                <p className="text-xs text-gray-500">Failed to load</p>
+              <div className="p-4 text-center">
+                <ImageIcon className="mx-auto mb-2 h-8 w-8 text-gray-400" />
+                <p className="text-gray-500 text-xs">Failed to load</p>
               </div>
             </div>
           )}
 
           {isInView && (
             <Image
-              src={image.imageUrl}
               alt={image.caption || `Photo ${index + 1}`}
-              width={layout.maxWidth}
-              height={layout.maxWidth * 1.5} // Default aspect ratio, will be overridden by actual image
               className={cn(
-                'w-full h-auto object-contain transition-opacity duration-500',
-                imageLoaded ? 'opacity-100' : 'opacity-0'
+                "h-auto w-full object-contain transition-opacity duration-500",
+                imageLoaded ? "opacity-100" : "opacity-0"
               )}
-              style={{
-                maxWidth: '100%',
-                height: 'auto',
-              }}
-              sizes={`(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, ${layout.maxWidth}px`}
-              loading="eager" // Since we're using intersection observer, we want to load immediately when in view
-              onLoad={() => setImageLoaded(true)}
+              height={layout.maxWidth * 1.5}
+              loading="eager" // Default aspect ratio, will be overridden by actual image
               onError={() => setImageError(true)}
+              onLoad={() => setImageLoaded(true)}
+              sizes={`(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, ${layout.maxWidth}px`}
+              src={image.imageUrl} // Since we're using intersection observer, we want to load immediately when in view
+              style={{
+                maxWidth: "100%",
+                height: "auto",
+              }}
+              width={layout.maxWidth}
             />
           )}
 
           {/* Subtle gradient overlay */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 hover:opacity-100 transition-opacity duration-300" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/5 to-transparent opacity-0 transition-opacity duration-300 hover:opacity-100" />
         </div>
 
         {/* Optional caption area (like polaroid bottom) */}
-        <div className="h-8 sm:h-10 lg:h-12 flex items-center justify-end">
-          <p className="text-xs text-gray-500 font-display font-bold md:text-sm lg:text-base select-none">
-            @{image.profile.name.replace(/\s+/g, '-').toLowerCase()}
+        <div className="flex h-8 items-center justify-end sm:h-10 lg:h-12">
+          <p className="select-none font-bold font-display text-gray-500 text-xs md:text-sm lg:text-base">
+            @{image.profile.name.replace(/\s+/g, "-").toLowerCase()}
           </p>
-          <p className="text-xs text-gray-500">{image.caption}</p>
+          <p className="text-gray-500 text-xs">{image.caption}</p>
         </div>
       </motion.div>
     </motion.div>
@@ -197,7 +197,7 @@ export function ArtisticGallery({
   eventContent,
   locale,
 }: ArtisticGalleryProps) {
-  const t = useTranslations('events');
+  const t = useTranslations("events");
 
   // Use zustand store for state management
   const {
@@ -214,7 +214,7 @@ export function ArtisticGallery({
   const galleryRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
     target: galleryRef,
-    offset: ['start start', 'end end'],
+    offset: ["start start", "end end"],
   });
 
   // Initialize images on mount
@@ -224,23 +224,23 @@ export function ArtisticGallery({
 
   // Block scroll when gallery is not shown
   useEffect(() => {
-    if (!showGallery) {
-      // Block scrolling
-      document.body.style.overflow = 'hidden';
-      document.body.style.position = 'fixed';
-      document.body.style.width = '100%';
-    } else {
+    if (showGallery) {
       // Restore scrolling
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
+    } else {
+      // Block scrolling
+      document.body.style.overflow = "hidden";
+      document.body.style.position = "fixed";
+      document.body.style.width = "100%";
     }
 
     // Cleanup on unmount
     return () => {
-      document.body.style.overflow = '';
-      document.body.style.position = '';
-      document.body.style.width = '';
+      document.body.style.overflow = "";
+      document.body.style.position = "";
+      document.body.style.width = "";
     };
   }, [showGallery]);
 
@@ -249,7 +249,7 @@ export function ArtisticGallery({
     if (!event.isActive) return;
 
     const channel = subscribeToEventUpdates(event.id, (eventUpdate) => {
-      if (eventUpdate.type === 'image_uploaded' && eventUpdate.image) {
+      if (eventUpdate.type === "image_uploaded" && eventUpdate.image) {
         const imageData = eventUpdate.image;
         const newImage: ExtendedEventImage = {
           id: imageData.id,
@@ -264,7 +264,7 @@ export function ArtisticGallery({
           },
         };
         addImage(newImage);
-      } else if (eventUpdate.type === 'image_deleted' && eventUpdate.imageId) {
+      } else if (eventUpdate.type === "image_deleted" && eventUpdate.imageId) {
         removeImage(eventUpdate.imageId);
       }
     });
@@ -275,16 +275,9 @@ export function ArtisticGallery({
   }, [event.id, event.isActive, addImage, removeImage]);
 
   return (
-    <div ref={containerRef} className="min-h-screen relative overflow-hidden">
+    <div className="relative min-h-screen overflow-hidden" ref={containerRef}>
       {/* Info Container that morphs */}
       <motion.div
-        layout
-        className={cn(
-          'fixed z-40 transition-colors duration-700',
-          showGallery &&
-            'lg:bg-gray-900 border-b lg:border-b-0 lg:border-r border-gray-800'
-        )}
-        initial={false}
         animate={{
           // Mobile: morphs from full screen to top bar
           // Desktop: morphs from full screen to left sidebar
@@ -292,9 +285,9 @@ export function ArtisticGallery({
             ? {
                 top: 0,
                 left: 0,
-                right: window.innerWidth >= 1024 ? '75%' : 0,
-                bottom: window.innerWidth >= 1024 ? 0 : 'auto',
-                height: window.innerWidth >= 1024 ? '100%' : 'auto',
+                right: window.innerWidth >= 1024 ? "75%" : 0,
+                bottom: window.innerWidth >= 1024 ? 0 : "auto",
+                height: window.innerWidth >= 1024 ? "100%" : "auto",
               }
             : {
                 top: 0,
@@ -303,119 +296,124 @@ export function ArtisticGallery({
                 bottom: 0,
               }),
         }}
+        className={cn(
+          "fixed z-40 transition-colors duration-700",
+          showGallery &&
+            "border-gray-800 border-b lg:border-r lg:border-b-0 lg:bg-gray-900"
+        )}
+        initial={false}
+        layout
         transition={{
           duration: 0.8,
           ease: [0.43, 0.13, 0.23, 0.96],
         }}
       >
         <motion.div
-          layout
           className={cn(
             showGallery
-              ? 'p-6 lg:p-8 h-full flex flex-col bg-gray-900'
-              : 'flex items-center justify-center h-full px-6',
-            'transition-all duration-700'
+              ? "flex h-full flex-col bg-gray-900 p-6 lg:p-8"
+              : "flex h-full items-center justify-center px-6",
+            "transition-all duration-700"
           )}
+          layout
         >
           <AnimatePresence mode="wait">
-            {!isTransitioning ? (
-              showGallery ? (
-                // Final sidebar/topbar content
-                <motion.div
-                  key="sidebar-content"
-                  className="w-full "
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.5 }}
+            {isTransitioning ? null : showGallery ? (
+              // Final sidebar/topbar content
+              <motion.div
+                animate={{ opacity: 1, scale: 1 }}
+                className="w-full"
+                exit={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                key="sidebar-content"
+                transition={{ duration: 0.5 }}
+              >
+                <Link
+                  className="mb-6 inline-flex items-center gap-2 text-gray-400 text-sm transition-colors hover:text-white"
+                  href={`/${locale}/events/${event.slug}`}
                 >
-                  <Link
-                    href={`/${locale}/events/${event.slug}`}
-                    className="inline-flex items-center gap-2 text-sm text-gray-400 hover:text-white transition-colors mb-6"
-                  >
-                    <ArrowLeft className="h-4 w-4" />
-                    {t('backToEvent')}
-                  </Link>
+                  <ArrowLeft className="h-4 w-4" />
+                  {t("backToEvent")}
+                </Link>
 
-                  <div className="lg:flex-1">
-                    <div className="flex items-center gap-4">
-                      <Image src="/wm.png" alt="Logo" width={24} height={24} />
-                      <h1 className="text-lg md:text-2xl lg:text-3xl font-light text-white mb-4">
-                        {eventContent.title}
-                      </h1>
-                    </div>
-
-                    {eventContent.description && (
-                      <p className="text-gray-400 leading-relaxed text-sm md:text-base">
-                        {eventContent.description}
-                      </p>
-                    )}
-                  </div>
-
-                  <div className="mt-2 sm:mt-4 md:mt-6">
-                    <p className="text-xs md:text-sm text-gray-500 text-center">
-                      {t('photosInGallery', { count: images.length })}
-                    </p>
-                  </div>
-                </motion.div>
-              ) : (
-                // Initial centered content
-                <motion.div
-                  key="intro-content"
-                  className="max-w-4xl mx-auto text-center"
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.95 }}
-                  transition={{ duration: 0.5 }}
-                >
-                  <div className="flex items-center justify-center gap-4 w-full">
-                    <ImageMotion
-                      src="/wm.png"
-                      alt="Logo"
-                      width={48}
-                      height={48}
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 1, delay: 0.2 }}
-                    />
-                    <motion.h1
-                      className="text-4xl sm:text-6xl lg:text-7xl font-light text-white mb-6"
-                      initial={{ opacity: 0, y: 30 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 1, delay: 0.2 }}
-                    >
+                <div className="lg:flex-1">
+                  <div className="flex items-center gap-4">
+                    <Image alt="Logo" height={24} src="/wm.png" width={24} />
+                    <h1 className="mb-4 font-light text-lg text-white md:text-2xl lg:text-3xl">
                       {eventContent.title}
-                    </motion.h1>
+                    </h1>
                   </div>
 
                   {eventContent.description && (
-                    <motion.p
-                      className="text-lg sm:text-xl lg:text-2xl text-gray-400 mb-12 leading-relaxed"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 1, delay: 0.5 }}
-                    >
+                    <p className="text-gray-400 text-sm leading-relaxed md:text-base">
                       {eventContent.description}
-                    </motion.p>
+                    </p>
                   )}
+                </div>
 
-                  <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.8, delay: 1 }}
+                <div className="mt-2 sm:mt-4 md:mt-6">
+                  <p className="text-center text-gray-500 text-xs md:text-sm">
+                    {t("photosInGallery", { count: images.length })}
+                  </p>
+                </div>
+              </motion.div>
+            ) : (
+              // Initial centered content
+              <motion.div
+                animate={{ opacity: 1, scale: 1 }}
+                className="mx-auto max-w-4xl text-center"
+                exit={{ opacity: 0, scale: 0.95 }}
+                initial={{ opacity: 0, scale: 0.95 }}
+                key="intro-content"
+                transition={{ duration: 0.5 }}
+              >
+                <div className="flex w-full items-center justify-center gap-4">
+                  <ImageMotion
+                    alt="Logo"
+                    animate={{ opacity: 1, y: 0 }}
+                    height={48}
+                    initial={{ opacity: 0, y: 30 }}
+                    src="/wm.png"
+                    transition={{ duration: 1, delay: 0.2 }}
+                    width={48}
+                  />
+                  <motion.h1
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mb-6 font-light text-4xl text-white sm:text-6xl lg:text-7xl"
+                    initial={{ opacity: 0, y: 30 }}
+                    transition={{ duration: 1, delay: 0.2 }}
                   >
-                    <Button
-                      onClick={handleShowGallery}
-                      size="lg"
-                      className="bg-white text-gray-950 hover:bg-gray-100"
-                    >
-                      <ImageIcon className="mr-2 h-5 w-5" />
-                      {t('viewGallery')} ({images.length} {t('photos')})
-                    </Button>
-                  </motion.div>
+                    {eventContent.title}
+                  </motion.h1>
+                </div>
+
+                {eventContent.description && (
+                  <motion.p
+                    animate={{ opacity: 1, y: 0 }}
+                    className="mb-12 text-gray-400 text-lg leading-relaxed sm:text-xl lg:text-2xl"
+                    initial={{ opacity: 0, y: 20 }}
+                    transition={{ duration: 1, delay: 0.5 }}
+                  >
+                    {eventContent.description}
+                  </motion.p>
+                )}
+
+                <motion.div
+                  animate={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  transition={{ duration: 0.8, delay: 1 }}
+                >
+                  <Button
+                    className="bg-white text-gray-950 hover:bg-gray-100"
+                    onClick={handleShowGallery}
+                    size="lg"
+                  >
+                    <ImageIcon className="mr-2 h-5 w-5" />
+                    {t("viewGallery")} ({images.length} {t("photos")})
+                  </Button>
                 </motion.div>
-              )
-            ) : null}
+              </motion.div>
+            )}
           </AnimatePresence>
         </motion.div>
       </motion.div>
@@ -424,20 +422,20 @@ export function ArtisticGallery({
       <AnimatePresence>
         {showGallery && (
           <motion.div
-            ref={galleryRef}
-            className="w-full lg:w-3/4 lg:ml-auto pt-32 lg:pt-0 px-4 sm:px-6 lg:px-8 pb-16 min-h-screen"
-            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
+            className="min-h-screen w-full px-4 pt-32 pb-16 sm:px-6 lg:ml-auto lg:w-3/4 lg:px-8 lg:pt-0"
+            initial={{ opacity: 0 }}
+            ref={galleryRef}
             transition={{ duration: 0.8, delay: 0.6 }}
           >
-            <div className="max-w-[1600px] mx-auto lg:py-8">
+            <div className="mx-auto max-w-[1600px] lg:py-8">
               {/* Masonry Grid Container */}
-              <div className="columns-1 sm:columns-2 lg:columns-2 xl:columns-3 gap-4 sm:gap-6 lg:gap-8">
+              <div className="columns-1 gap-4 sm:columns-2 sm:gap-6 lg:columns-2 lg:gap-8 xl:columns-3">
                 {images.map((image, index) => (
                   <ImageItem
-                    key={image.id}
                     image={image}
                     index={index}
+                    key={image.id}
                     scrollYProgress={scrollYProgress}
                   />
                 ))}
@@ -446,12 +444,12 @@ export function ArtisticGallery({
               {/* Empty state */}
               {images.length === 0 && (
                 <motion.div
-                  className="flex items-center justify-center min-h-[60vh]"
-                  initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
+                  className="flex min-h-[60vh] items-center justify-center"
+                  initial={{ opacity: 0 }}
                   transition={{ delay: 0.3 }}
                 >
-                  <p className="text-lg text-gray-400 dark:text-gray-600 font-light tracking-wide">
+                  <p className="font-light text-gray-400 text-lg tracking-wide dark:text-gray-600">
                     No memories yet
                   </p>
                 </motion.div>

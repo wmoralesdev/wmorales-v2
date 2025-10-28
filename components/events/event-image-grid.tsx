@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import type { EventImage } from '@prisma/client';
-import { motion } from 'framer-motion';
-import Image from 'next/image';
-import { useState } from 'react';
-import { ImageLightbox } from './image-lightbox';
+import type { EventImage } from "@prisma/client";
+import { motion } from "framer-motion";
+import Image from "next/image";
+import { useState } from "react";
+import { ImageLightbox } from "./image-lightbox";
 
 type EventImageGridProps = {
   images: EventImage[];
@@ -21,39 +21,39 @@ export function EventImageGrid({ images, locale }: EventImageGridProps) {
   return (
     <>
       {/* Mobile-first responsive grid */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-1 sm:gap-2">
+      <div className="grid grid-cols-2 gap-1 sm:grid-cols-3 sm:gap-2 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6">
         {images.map((image, index) => (
           <motion.div
-            key={image.id}
-            initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
+            className="group relative aspect-square cursor-pointer overflow-hidden bg-gray-900"
+            initial={{ opacity: 0, scale: 0.9 }}
+            key={image.id}
+            onClick={() => handleImageClick(image)}
             transition={{
               delay: Math.min(index * 0.02, 0.3),
               duration: 0.3,
             }}
-            className="relative aspect-square cursor-pointer group overflow-hidden bg-gray-900"
-            onClick={() => handleImageClick(image)}
           >
             <Image
-              src={image.imageUrl}
               alt={image.caption || `Event photo ${index + 1}`}
-              fill
-              sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
               className="object-cover transition-transform duration-300 group-hover:scale-110"
-              loading={index < 12 ? 'eager' : 'lazy'}
+              fill
+              loading={index < 12 ? "eager" : "lazy"}
+              sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, (max-width: 1024px) 25vw, (max-width: 1280px) 20vw, 16vw"
+              src={image.imageUrl}
             />
 
             {/* Subtle hover overlay */}
-            <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors duration-300" />
+            <div className="absolute inset-0 bg-black/0 transition-colors duration-300 group-hover:bg-black/20" />
           </motion.div>
         ))}
       </div>
 
       {/* Lightbox for full-size viewing */}
       <ImageLightbox
-        selectedImage={selectedImage}
-        onClose={() => setSelectedImage(null)}
         locale={locale}
+        onClose={() => setSelectedImage(null)}
+        selectedImage={selectedImage}
       />
     </>
   );

@@ -1,25 +1,24 @@
-'use client';
+"use client";
 
-import { Camera, Eye, Sparkles } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
-import { useEffect } from 'react';
-import { toast } from 'sonner';
-import { AuthenticatedImageUpload } from '@/components/events/authenticated-image-upload';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-
-import { useAuth } from '@/components/auth/auth-provider';
-import { useUserEventImages } from '@/hooks/use-user-event-images';
-import { subscribeToEventUpdates } from '@/lib/supabase/realtime';
-import { useLiveEventStore } from '@/lib/stores/live-event-store';
-import { LiveEventHeader } from './live-event-header';
-import { EventStats } from './event-stats';
-import { PhotoCarousel } from './photo-carousel';
-import { PhotoGrid } from './photo-grid';
-import { QRCodeDialog } from './qr-code-dialog';
-import { ImageLightbox } from './image-lightbox';
-import { sortImagesByDate, getEventUrl } from './utils';
-import { EventFullDetails } from '../../lib/types/event.types';
+import { Camera, Eye, Sparkles } from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { useEffect } from "react";
+import { toast } from "sonner";
+import { useAuth } from "@/components/auth/auth-provider";
+import { AuthenticatedImageUpload } from "@/components/events/authenticated-image-upload";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useUserEventImages } from "@/hooks/use-user-event-images";
+import { useLiveEventStore } from "@/lib/stores/live-event-store";
+import { subscribeToEventUpdates } from "@/lib/supabase/realtime";
+import type { EventFullDetails } from "../../lib/types/event.types";
+import { EventStats } from "./event-stats";
+import { ImageLightbox } from "./image-lightbox";
+import { LiveEventHeader } from "./live-event-header";
+import { PhotoCarousel } from "./photo-carousel";
+import { PhotoGrid } from "./photo-grid";
+import { QRCodeDialog } from "./qr-code-dialog";
+import { getEventUrl, sortImagesByDate } from "./utils";
 
 type LiveEventViewProps = {
   event: EventFullDetails;
@@ -32,7 +31,7 @@ export function LiveEventView({
   onImageUpload,
   onImageDelete,
 }: LiveEventViewProps) {
-  const t = useTranslations('events');
+  const t = useTranslations("events");
   const locale = useLocale();
   const { user } = useAuth();
 
@@ -73,7 +72,7 @@ export function LiveEventView({
     const channel = subscribeToEventUpdates(
       event.id,
       (update) => {
-        if (update.type === 'image_uploaded' && update.image) {
+        if (update.type === "image_uploaded" && update.image) {
           // Add new image to the list
           addEventImage({
             id: update.image!.id,
@@ -87,7 +86,7 @@ export function LiveEventView({
               avatar: update.image!.profile.avatar || undefined,
             },
           });
-        } else if (update.type === 'image_deleted' && update.imageId) {
+        } else if (update.type === "image_deleted" && update.imageId) {
           // Remove deleted image from the list
           removeEventImage(update.imageId);
         }
@@ -119,7 +118,7 @@ export function LiveEventView({
     try {
       await onImageUpload(imageUrl, caption);
     } catch (error) {
-      toast.error(t('uploadError'));
+      toast.error(t("uploadError"));
     } finally {
       setUploading(false);
     }
@@ -132,35 +131,35 @@ export function LiveEventView({
   const sortedImages = sortImagesByDate(eventImages);
 
   return (
-    <div className="sm:container mx-auto px-0 sm:px-6 lg:px-8 py-4 sm:py-8">
+    <div className="mx-auto px-0 py-4 sm:container sm:px-6 sm:py-8 lg:px-8">
       {/* Header Section */}
       <LiveEventHeader
         activeViewers={activeViewers}
-        onShowQRCode={() => setShowQRCode(true)}
         eventSlug={event.slug}
         locale={locale}
+        onShowQRCode={() => setShowQRCode(true)}
       />
 
       {/* Main Content Grid */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-0 sm:gap-6 lg:gap-8">
+      <div className="grid grid-cols-1 gap-0 sm:gap-6 lg:grid-cols-3 lg:gap-8">
         {/* Left Column - Upload & Stats */}
         <div className="space-y-0 sm:space-y-6">
           {/* Upload Section */}
-          <Card className="border-0 sm:border border-gray-800 bg-gray-900/80 backdrop-blur-xl rounded-none sm:rounded-lg shadow-none sm:shadow-md">
+          <Card className="rounded-none border-0 border-gray-800 bg-gray-900/80 shadow-none backdrop-blur-xl sm:rounded-lg sm:border sm:shadow-md">
             <CardContent className="px-0 lg:px-6">
               {canUpload ? (
                 <AuthenticatedImageUpload
+                  isLoadingUserImages={isLoadingUserImages}
                   maxImages={event.maxImages - userImageCount}
                   onUpload={handleImageUpload}
                   slug={event.slug}
                   uploading={uploading}
-                  isLoadingUserImages={isLoadingUserImages}
                 />
               ) : (
                 <Alert className="border-purple-500/30 bg-purple-500/10">
                   <Sparkles className="h-4 w-4" />
                   <AlertDescription className="text-purple-300">
-                    {t('maxPhotosReached', { maxImages: event.maxImages })}
+                    {t("maxPhotosReached", { maxImages: event.maxImages })}
                   </AlertDescription>
                 </Alert>
               )}
@@ -169,64 +168,64 @@ export function LiveEventView({
 
           {/* Event Stats */}
           <EventStats
+            locale={locale}
             stats={{
               totalPhotos: eventImages.length,
               contributors: event.contributors,
               createdAt: event.createdAt,
             }}
-            locale={locale}
             variant="live"
           />
         </div>
 
         {/* Middle Column - Live Photo Carousel */}
         <div className="lg:col-span-2">
-          <Card className="border-0 sm:border border-gray-800 bg-gray-900/80 backdrop-blur-xl h-full rounded-none sm:rounded-lg shadow-none sm:shadow-md border-t sm:border-t-0">
+          <Card className="h-full rounded-none border-0 border-gray-800 border-t bg-gray-900/80 shadow-none backdrop-blur-xl sm:rounded-lg sm:border sm:border-t-0 sm:shadow-md">
             <CardHeader className="px-4 sm:px-6">
-              <CardTitle className="text-xl text-white flex items-center gap-2">
+              <CardTitle className="flex items-center gap-2 text-white text-xl">
                 <Eye className="h-5 w-5 text-purple-400" />
-                {t('livePhotoWall')}
+                {t("livePhotoWall")}
               </CardTitle>
             </CardHeader>
-            <CardContent className="p-4 sm:p-6 pt-0 sm:pt-0">
+            <CardContent className="p-4 pt-0 sm:p-6 sm:pt-0">
               {eventImages.length > 0 ? (
                 <div className="space-y-4 sm:space-y-6">
                   {/* Main Carousel */}
                   <PhotoCarousel
-                    images={eventImages}
                     currentIndex={currentPhotoIndex}
+                    images={eventImages}
                     onIndexChange={setCurrentPhotoIndex}
                   />
 
                   {/* Instagram-style Photo Grid */}
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <h3 className="text-sm font-medium text-gray-400">
-                        {t('allPhotos')} ({eventImages.length})
+                      <h3 className="font-medium text-gray-400 text-sm">
+                        {t("allPhotos")} ({eventImages.length})
                       </h3>
-                      <div className="flex items-center gap-2 text-xs text-gray-500">
-                        <div className="h-2 w-2 rounded-full bg-green-400 animate-pulse" />
-                        {t('updatingLive')}
+                      <div className="flex items-center gap-2 text-gray-500 text-xs">
+                        <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
+                        {t("updatingLive")}
                       </div>
                     </div>
                     <PhotoGrid
+                      currentProfileId={user?.id}
                       images={sortedImages}
+                      locale={locale}
                       onImageClick={(image) => setSelectedImage(image)}
                       onImageDelete={(imageId) => handleImageDelete(imageId)}
-                      currentProfileId={user?.id}
-                      locale={locale}
                     />
                   </div>
                 </div>
               ) : (
-                <div className="aspect-[16/9] bg-gray-800/50 rounded-lg flex items-center justify-center mx-0 sm:mx-0">
-                  <div className="text-center p-8">
-                    <Camera className="h-16 w-16 text-gray-600 mx-auto mb-4" />
-                    <p className="text-gray-400 text-lg mb-2">
-                      {t('beFirstToShare')}
+                <div className="mx-0 flex aspect-[16/9] items-center justify-center rounded-lg bg-gray-800/50 sm:mx-0">
+                  <div className="p-8 text-center">
+                    <Camera className="mx-auto mb-4 h-16 w-16 text-gray-600" />
+                    <p className="mb-2 text-gray-400 text-lg">
+                      {t("beFirstToShare")}
                     </p>
                     <p className="text-gray-500 text-sm">
-                      {t('uploadPhotoPrompt')}
+                      {t("uploadPhotoPrompt")}
                     </p>
                   </div>
                 </div>
@@ -238,16 +237,16 @@ export function LiveEventView({
 
       {/* QR Code Dialog */}
       <QRCodeDialog
-        open={showQRCode}
-        onOpenChange={setShowQRCode}
         eventUrl={eventUrl}
+        onOpenChange={setShowQRCode}
+        open={showQRCode}
       />
 
       {/* Image Lightbox */}
       <ImageLightbox
-        selectedImage={selectedImage}
-        onClose={() => setSelectedImage(null)}
         locale={locale}
+        onClose={() => setSelectedImage(null)}
+        selectedImage={selectedImage}
       />
     </div>
   );

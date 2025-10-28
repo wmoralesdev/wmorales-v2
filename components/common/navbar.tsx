@@ -1,31 +1,31 @@
-'use client';
+"use client";
 
-import { AnimatePresence, motion, type Variants } from 'framer-motion';
-import { Globe, Menu, LogOut } from 'lucide-react';
-import Image from 'next/image';
-import { useLocale, useTranslations } from 'next-intl';
-import { useState } from 'react';
-import { toast } from 'sonner';
-import { SignInButton } from '@/components/auth/sign-in-button';
-import { useAuth } from '@/components/auth/auth-provider';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { AnimatePresence, motion, type Variants } from "framer-motion";
+import { Globe, LogOut, Menu } from "lucide-react";
+import Image from "next/image";
+import { useLocale, useTranslations } from "next-intl";
+import { useState } from "react";
+import { toast } from "sonner";
+import { useAuth } from "@/components/auth/auth-provider";
+import { SignInButton } from "@/components/auth/sign-in-button";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
   SheetTitle,
   SheetTrigger,
-} from '@/components/ui/sheet';
-import { Link, usePathname } from '@/i18n/navigation';
-import { cn } from '@/lib/utils';
-import { createClient } from '@/lib/supabase/client';
+} from "@/components/ui/sheet";
+import { Link, usePathname } from "@/i18n/navigation";
+import { createClient } from "@/lib/supabase/client";
+import { cn } from "@/lib/utils";
 import {
   NavigationMenu,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-} from '../ui/navigation-menu';
-import { Clock } from './clock';
+} from "../ui/navigation-menu";
+import { Clock } from "./clock";
 
 const MotionMenuItem = motion.create(NavigationMenuItem);
 
@@ -38,11 +38,11 @@ function LocaleToggle({ showLabel = true }: LocaleToggleProps) {
   const locale = useLocale();
 
   const toggleLocale = () => {
-    const newLocale = locale === 'en' ? 'es' : 'en';
+    const newLocale = locale === "en" ? "es" : "en";
 
     // Extract dynamic route parameters from the current URL
     const currentUrl = new URL(window.location.href);
-    const pathSegments = currentUrl.pathname.split('/').filter(Boolean);
+    const pathSegments = currentUrl.pathname.split("/").filter(Boolean);
 
     // Remove the locale from the path segments
     if (pathSegments[0] === locale) {
@@ -50,7 +50,7 @@ function LocaleToggle({ showLabel = true }: LocaleToggleProps) {
     }
 
     // Reconstruct the path for the new locale
-    const newPath = `/${newLocale}/${pathSegments.join('/')}`;
+    const newPath = `/${newLocale}/${pathSegments.join("/")}`;
 
     // Add search parameters if they exist
     const searchParams = currentUrl.searchParams.toString();
@@ -108,18 +108,18 @@ const menuItemVariants: Variants = {
 };
 
 const mobileMenuVariants: Variants = {
-  hidden: { x: '100%', opacity: 0 },
+  hidden: { x: "100%", opacity: 0 },
   visible: {
     x: 0,
     opacity: 1,
     transition: {
-      type: 'spring' as const,
+      type: "spring" as const,
       stiffness: 100,
       damping: 20,
     },
   },
   exit: {
-    x: '100%',
+    x: "100%",
     opacity: 0,
     transition: {
       duration: 0.3,
@@ -131,7 +131,7 @@ const mobileMenuVariants: Variants = {
 // Mobile User Section Component
 function MobileUserSection() {
   const { user, signOut } = useAuth();
-  const t = useTranslations('auth');
+  const t = useTranslations("auth");
   const [isLoading, setIsLoading] = useState(false);
   const supabase = createClient();
   const pathname = usePathname();
@@ -140,9 +140,9 @@ function MobileUserSection() {
     setIsLoading(true);
     try {
       await signOut();
-      toast.success(t('signedOutSuccess'));
+      toast.success(t("signedOutSuccess"));
     } catch (_error) {
-      toast.error(t('signOutError'));
+      toast.error(t("signOutError"));
     } finally {
       setIsLoading(false);
     }
@@ -150,7 +150,7 @@ function MobileUserSection() {
 
   const handleSignInWithGoogle = async () => {
     await supabase.auth.signInWithOAuth({
-      provider: 'google',
+      provider: "google",
       options: {
         redirectTo: `${window.location.origin}?redirectTo=${encodeURIComponent(pathname)}`,
       },
@@ -159,25 +159,24 @@ function MobileUserSection() {
 
   const handleSignInWithGitHub = async () => {
     await supabase.auth.signInWithOAuth({
-      provider: 'github',
+      provider: "github",
       options: {
         redirectTo: `${window.location.origin}?redirectTo=${encodeURIComponent(pathname)}`,
       },
     });
   };
 
-  const getInitials = (name: string) => {
-    return name
-      .split(' ')
+  const getInitials = (name: string) =>
+    name
+      .split(" ")
       .map((n) => n[0])
-      .join('')
+      .join("")
       .toUpperCase()
       .slice(0, 2);
-  };
 
   if (user) {
     const displayName =
-      user.user_metadata?.full_name || user.email || t('user');
+      user.user_metadata?.full_name || user.email || t("user");
     const initials = getInitials(displayName);
 
     return (
@@ -192,21 +191,21 @@ function MobileUserSection() {
               {initials}
             </AvatarFallback>
           </Avatar>
-          <div className="flex-1 min-w-0">
-            <p className="text-sm font-medium text-white truncate">
+          <div className="min-w-0 flex-1">
+            <p className="truncate font-medium text-sm text-white">
               {displayName}
             </p>
-            <p className="text-xs text-gray-400 truncate">{user.email}</p>
+            <p className="truncate text-gray-400 text-xs">{user.email}</p>
           </div>
         </div>
         <Button
-          onClick={handleSignOut}
-          disabled={isLoading}
-          variant="outline"
           className="w-full border-gray-700 hover:bg-gray-800"
+          disabled={isLoading}
+          onClick={handleSignOut}
+          variant="outline"
         >
-          <LogOut className="h-4 w-4 mr-2" />
-          {isLoading ? t('loading') : t('signOut')}
+          <LogOut className="mr-2 h-4 w-4" />
+          {isLoading ? t("loading") : t("signOut")}
         </Button>
       </div>
     );
@@ -214,37 +213,37 @@ function MobileUserSection() {
 
   return (
     <div className="space-y-3">
-      <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">
-        {t('account')}
+      <p className="font-medium text-gray-400 text-xs uppercase tracking-wider">
+        {t("account")}
       </p>
       <div className="space-y-2">
         <Button
+          className="w-full justify-start border-gray-700 hover:bg-gray-800"
           onClick={handleSignInWithGoogle}
           variant="outline"
-          className="w-full justify-start border-gray-700 hover:bg-gray-800"
         >
           <Image
             alt="Google"
+            className="mr-2"
             height={16}
             src="/google.svg"
             width={16}
-            className="mr-2"
           />
-          {t('continueWith', { provider: 'Google' })}
+          {t("continueWith", { provider: "Google" })}
         </Button>
         <Button
+          className="w-full justify-start border-gray-700 hover:bg-gray-800"
           onClick={handleSignInWithGitHub}
           variant="outline"
-          className="w-full justify-start border-gray-700 hover:bg-gray-800"
         >
           <Image
             alt="GitHub"
+            className="mr-2"
             height={16}
             src="/github.svg"
             width={16}
-            className="mr-2"
           />
-          {t('continueWith', { provider: 'GitHub' })}
+          {t("continueWith", { provider: "GitHub" })}
         </Button>
       </div>
     </div>
@@ -256,11 +255,11 @@ export function Navbar() {
   const locale = useLocale();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled] = useState(false);
-  const tCommon = useTranslations('common');
+  const tCommon = useTranslations("common");
 
-  const t = useTranslations('navigation');
+  const t = useTranslations("navigation");
 
-  if (pathname.endsWith('/gallery')) {
+  if (pathname.endsWith("/gallery")) {
     return null;
   }
 
@@ -268,10 +267,10 @@ export function Navbar() {
     <motion.nav
       animate="visible"
       className={cn(
-        'fixed top-0 right-0 left-0 z-50 border-b transition-all duration-300',
+        "fixed top-0 right-0 left-0 z-50 border-b transition-all duration-300",
         scrolled
-          ? 'bg-background/95 shadow-lg backdrop-blur-md'
-          : 'bg-background/80 backdrop-blur-md'
+          ? "bg-background/95 shadow-lg backdrop-blur-md"
+          : "bg-background/80 backdrop-blur-md"
       )}
       initial="hidden"
       variants={navVariants}
@@ -310,10 +309,10 @@ export function Navbar() {
                 <NavigationMenuLink className="relative" href="/" key="home">
                   <Button
                     className={cn(
-                      'relative cursor-pointer font-medium text-sm transition-colors',
-                      pathname === '/'
-                        ? 'text-purple-400'
-                        : 'hover:text-purple-400'
+                      "relative cursor-pointer font-medium text-sm transition-colors",
+                      pathname === "/"
+                        ? "text-purple-400"
+                        : "hover:text-purple-400"
                     )}
                     variant="ghost"
                   >
@@ -321,12 +320,12 @@ export function Navbar() {
                       transition={{ duration: 0.2 }}
                       whileHover={{ y: -2 }}
                     >
-                      {t('home')}
+                      {t("home")}
                     </motion.span>
 
                     {/* Active indicator */}
                     <AnimatePresence>
-                      {pathname === '/' && (
+                      {pathname === "/" && (
                         <motion.div
                           animate={{ scaleX: 1 }}
                           className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
@@ -356,10 +355,10 @@ export function Navbar() {
                 >
                   <Button
                     className={cn(
-                      'relative cursor-pointer font-medium text-sm transition-colors',
-                      pathname === '/guestbook'
-                        ? 'text-purple-400'
-                        : 'hover:text-purple-400'
+                      "relative cursor-pointer font-medium text-sm transition-colors",
+                      pathname === "/guestbook"
+                        ? "text-purple-400"
+                        : "hover:text-purple-400"
                     )}
                     variant="ghost"
                   >
@@ -367,12 +366,12 @@ export function Navbar() {
                       transition={{ duration: 0.2 }}
                       whileHover={{ y: -2 }}
                     >
-                      {t('guestbook')}
+                      {t("guestbook")}
                     </motion.span>
 
                     {/* Active indicator */}
                     <AnimatePresence>
-                      {pathname === '/guestbook' && (
+                      {pathname === "/guestbook" && (
                         <motion.div
                           animate={{ scaleX: 1 }}
                           className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
@@ -402,10 +401,10 @@ export function Navbar() {
                 >
                   <Button
                     className={cn(
-                      'relative cursor-pointer font-medium text-sm transition-colors',
-                      pathname === '/events'
-                        ? 'text-purple-400'
-                        : 'hover:text-purple-400'
+                      "relative cursor-pointer font-medium text-sm transition-colors",
+                      pathname === "/events"
+                        ? "text-purple-400"
+                        : "hover:text-purple-400"
                     )}
                     variant="ghost"
                   >
@@ -413,11 +412,11 @@ export function Navbar() {
                       transition={{ duration: 0.2 }}
                       whileHover={{ y: -2 }}
                     >
-                      {t('events')}
+                      {t("events")}
                     </motion.span>
 
                     <AnimatePresence>
-                      {pathname === '/events' && (
+                      {pathname === "/events" && (
                         <motion.div
                           animate={{ scaleX: 1 }}
                           className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
@@ -447,10 +446,10 @@ export function Navbar() {
                 >
                   <Button
                     className={cn(
-                      'relative cursor-pointer font-medium text-sm transition-colors',
-                      pathname === '/cursor'
-                        ? 'text-purple-400'
-                        : 'hover:text-purple-400'
+                      "relative cursor-pointer font-medium text-sm transition-colors",
+                      pathname === "/cursor"
+                        ? "text-purple-400"
+                        : "hover:text-purple-400"
                     )}
                     variant="ghost"
                   >
@@ -458,11 +457,11 @@ export function Navbar() {
                       transition={{ duration: 0.2 }}
                       whileHover={{ y: -2 }}
                     >
-                      {t('cursor')}
+                      {t("cursor")}
                     </motion.span>
 
                     <AnimatePresence>
-                      {pathname === '/cursor' && (
+                      {pathname === "/cursor" && (
                         <motion.div
                           animate={{ scaleX: 1 }}
                           className="absolute right-0 bottom-0 left-0 h-0.5 bg-gradient-to-r from-purple-400 to-pink-400"
@@ -482,7 +481,7 @@ export function Navbar() {
           </NavigationMenu>
 
           {/* Desktop Right Side Elements */}
-          <div className="hidden md:flex items-center gap-4">
+          <div className="hidden items-center gap-4 md:flex">
             <Clock />
             <LocaleToggle />
             <SignInButton />
@@ -492,7 +491,7 @@ export function Navbar() {
           <div className="flex items-center gap-2 md:hidden">
             <SignInButton size="sm" variant="ghost" />
             <Sheet onOpenChange={setIsOpen} open={isOpen}>
-              <SheetTitle className="sr-only">{t('menu')}</SheetTitle>
+              <SheetTitle className="sr-only">{t("menu")}</SheetTitle>
               <SheetTrigger asChild>
                 <motion.div
                   whileHover={{ scale: 1.1 }}
@@ -522,7 +521,7 @@ export function Navbar() {
                       variants={mobileMenuVariants}
                     >
                       {/* Logo and Close hint */}
-                      <div className="flex items-center justify-between mb-6 px-3">
+                      <div className="mb-6 flex items-center justify-between px-3">
                         <div className="flex items-center gap-2">
                           <Image
                             alt="Walter Morales"
@@ -535,8 +534,8 @@ export function Navbar() {
                             WM
                           </span>
                         </div>
-                        <p className="hidden lg:block text-xs text-gray-500">
-                          {tCommon('escToClose')}
+                        <p className="hidden text-gray-500 text-xs lg:block">
+                          {tCommon("escToClose")}
                         </p>
                       </div>
 
@@ -545,13 +544,13 @@ export function Navbar() {
                         <Link href="/" onClick={() => setIsOpen(false)}>
                           <Button
                             className={cn(
-                              'w-full justify-start',
-                              pathname === '/' &&
-                                'bg-purple-400/10 text-purple-400'
+                              "w-full justify-start",
+                              pathname === "/" &&
+                                "bg-purple-400/10 text-purple-400"
                             )}
                             variant="ghost"
                           >
-                            {t('home')}
+                            {t("home")}
                           </Button>
                         </Link>
 
@@ -561,65 +560,71 @@ export function Navbar() {
                         >
                           <Button
                             className={cn(
-                              'w-full justify-start',
-                              pathname === '/guestbook' &&
-                                'bg-purple-400/10 text-purple-400'
+                              "w-full justify-start",
+                              pathname === "/guestbook" &&
+                                "bg-purple-400/10 text-purple-400"
                             )}
                             variant="ghost"
                           >
-                            {t('guestbook')}
+                            {t("guestbook")}
                           </Button>
                         </Link>
 
                         <Link href="/events" onClick={() => setIsOpen(false)}>
                           <Button
                             className={cn(
-                              'w-full justify-start',
-                              pathname === '/events' &&
-                                'bg-purple-400/10 text-purple-400'
+                              "w-full justify-start",
+                              pathname === "/events" &&
+                                "bg-purple-400/10 text-purple-400"
                             )}
                             variant="ghost"
                           >
-                            {t('events')}
+                            {t("events")}
                           </Button>
                         </Link>
 
                         <Link href="/cursor" onClick={() => setIsOpen(false)}>
                           <Button
                             className={cn(
-                              'w-full justify-start',
-                              pathname === '/cursor' &&
-                                'bg-purple-400/10 text-purple-400'
+                              "w-full justify-start",
+                              pathname === "/cursor" &&
+                                "bg-purple-400/10 text-purple-400"
                             )}
                             variant="ghost"
                           >
-                            {t('cursor')}
+                            {t("cursor")}
                           </Button>
                         </Link>
                       </div>
 
                       {/* Divider */}
-                      <div className="my-4 border-t border-gray-800" />
+                      <div className="my-4 border-gray-800 border-t" />
 
                       {/* User Section & Actions */}
                       <div className="space-y-4 px-3">
                         {/* Language Toggle */}
                         <div className="space-y-2">
-                          <p className="text-xs font-medium text-gray-400 uppercase tracking-wider">
-                            {t('language')}
+                          <p className="font-medium text-gray-400 text-xs uppercase tracking-wider">
+                            {t("language")}
                           </p>
                           <div className="flex rounded-lg bg-gray-800/50 p-1">
                             <button
+                              className={cn(
+                                "flex-1 rounded-md px-3 py-1.5 font-medium text-sm transition-all",
+                                locale === "en"
+                                  ? "bg-purple-500 text-white shadow-sm"
+                                  : "text-gray-400 hover:text-white"
+                              )}
                               onClick={() => {
-                                if (locale !== 'en') {
-                                  const newLocale = 'en';
+                                if (locale !== "en") {
+                                  const newLocale = "en";
 
                                   // Extract dynamic route parameters from the current URL
                                   const currentUrl = new URL(
                                     window.location.href
                                   );
                                   const pathSegments = currentUrl.pathname
-                                    .split('/')
+                                    .split("/")
                                     .filter(Boolean);
 
                                   // Remove the locale from the path segments
@@ -628,7 +633,7 @@ export function Navbar() {
                                   }
 
                                   // Reconstruct the path for the new locale
-                                  const newPath = `/${newLocale}/${pathSegments.join('/')}`;
+                                  const newPath = `/${newLocale}/${pathSegments.join("/")}`;
 
                                   // Add search parameters if they exist
                                   const searchParams =
@@ -641,26 +646,26 @@ export function Navbar() {
                                   window.location.href = fullUrl;
                                 }
                               }}
-                              className={cn(
-                                'flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-all',
-                                locale === 'en'
-                                  ? 'bg-purple-500 text-white shadow-sm'
-                                  : 'text-gray-400 hover:text-white'
-                              )}
                             >
                               EN
                             </button>
                             <button
+                              className={cn(
+                                "flex-1 rounded-md px-3 py-1.5 font-medium text-sm transition-all",
+                                locale === "es"
+                                  ? "bg-purple-500 text-white shadow-sm"
+                                  : "text-gray-400 hover:text-white"
+                              )}
                               onClick={() => {
-                                if (locale !== 'es') {
-                                  const newLocale = 'es';
+                                if (locale !== "es") {
+                                  const newLocale = "es";
 
                                   // Extract dynamic route parameters from the current URL
                                   const currentUrl = new URL(
                                     window.location.href
                                   );
                                   const pathSegments = currentUrl.pathname
-                                    .split('/')
+                                    .split("/")
                                     .filter(Boolean);
 
                                   // Remove the locale from the path segments
@@ -669,7 +674,7 @@ export function Navbar() {
                                   }
 
                                   // Reconstruct the path for the new locale
-                                  const newPath = `/${newLocale}/${pathSegments.join('/')}`;
+                                  const newPath = `/${newLocale}/${pathSegments.join("/")}`;
 
                                   // Add search parameters if they exist
                                   const searchParams =
@@ -682,12 +687,6 @@ export function Navbar() {
                                   window.location.href = fullUrl;
                                 }
                               }}
-                              className={cn(
-                                'flex-1 rounded-md px-3 py-1.5 text-sm font-medium transition-all',
-                                locale === 'es'
-                                  ? 'bg-purple-500 text-white shadow-sm'
-                                  : 'text-gray-400 hover:text-white'
-                              )}
                             >
                               ES
                             </button>

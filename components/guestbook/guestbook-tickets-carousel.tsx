@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { Users } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { useEffect, useState } from 'react';
-import { UserTicket } from '@/components/guestbook/user-ticket';
-import { Card, CardContent } from '@/components/ui/card';
+import { Users } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+import { UserTicket } from "@/components/guestbook/user-ticket";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
   type CarouselApi,
@@ -12,9 +12,9 @@ import {
   CarouselItem,
   CarouselNext,
   CarouselPrevious,
-} from '@/components/ui/carousel';
-import { useGuestbookRealtime } from '@/hooks/use-guestbook-realtime';
-import type { TicketData } from '@/lib/types/guestbook.types';
+} from "@/components/ui/carousel";
+import { useGuestbookRealtime } from "@/hooks/use-guestbook-realtime";
+import type { TicketData } from "@/lib/types/guestbook.types";
 
 type GuestbookTicketsCarouselProps = {
   initialTickets?: TicketData[];
@@ -25,7 +25,7 @@ export function GuestbookTicketsCarousel({
   initialTickets = [],
   maxTickets = 25,
 }: GuestbookTicketsCarouselProps) {
-  const t = useTranslations('guestbook');
+  const t = useTranslations("guestbook");
   const { tickets, activeViewers } = useGuestbookRealtime(
     initialTickets,
     maxTickets
@@ -42,7 +42,7 @@ export function GuestbookTicketsCarousel({
     setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap() + 1);
 
-    api.on('select', () => {
+    api.on("select", () => {
       setCurrent(api.selectedScrollSnap() + 1);
     });
   }, [api]);
@@ -56,12 +56,12 @@ export function GuestbookTicketsCarousel({
               <Users className="h-6 w-6 text-purple-400" />
             </div>
           </div>
-          <h2 className="mb-2 font-bold text-3xl">{t('communityTickets')}</h2>
-          <p className="text-gray-400">{t('beFirstToCreate')}</p>
+          <h2 className="mb-2 font-bold text-3xl">{t("communityTickets")}</h2>
+          <p className="text-gray-400">{t("beFirstToCreate")}</p>
         </div>
         <Card className="border-gray-800 bg-gray-900/50 backdrop-blur-sm">
           <CardContent className="py-16 text-center">
-            <p className="text-gray-400">{t('noTicketsYet')}</p>
+            <p className="text-gray-400">{t("noTicketsYet")}</p>
           </CardContent>
         </Card>
       </div>
@@ -76,14 +76,14 @@ export function GuestbookTicketsCarousel({
             <Users className="h-6 w-6 text-purple-400" />
           </div>
         </div>
-        <h2 className="mb-2 font-bold text-3xl">{t('communityTickets')}</h2>
+        <h2 className="mb-2 font-bold text-3xl">{t("communityTickets")}</h2>
         <p className="text-gray-400">
-          {t('uniqueTicketsCount', { count: tickets.length })}
+          {t("uniqueTicketsCount", { count: tickets.length })}
         </p>
         {activeViewers > 0 && (
           <p className="mt-1 text-gray-500 text-sm">
             <span className="mr-1 inline-block h-2 w-2 animate-pulse rounded-full bg-green-500" />
-            {t('viewingNow', { count: activeViewers })}
+            {t("viewingNow", { count: activeViewers })}
           </p>
         )}
       </div>
@@ -92,7 +92,7 @@ export function GuestbookTicketsCarousel({
         <Carousel
           className="w-full"
           opts={{
-            align: 'start',
+            align: "start",
             loop: true,
           }}
           setApi={setApi}

@@ -1,6 +1,6 @@
-import { Github, Mail, Sparkles, User } from 'lucide-react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Badge } from '@/components/ui/badge';
+import { Github, Mail, Sparkles, User } from "lucide-react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Badge } from "@/components/ui/badge";
 
 type UserTicketProps = {
   user: {
@@ -17,27 +17,27 @@ type UserTicketProps = {
     background?: string;
   };
   ticketNumber?: string;
-  scale?: 'normal' | 'small';
+  scale?: "normal" | "small";
 };
 
 const getProviderIcon = (provider: string) => {
   switch (provider.toLowerCase()) {
-    case 'github':
+    case "github":
       return <Github className="h-3 w-3" />;
-    case 'google':
+    case "google":
       return <Mail className="h-3 w-3" />;
     default:
       return <User className="h-3 w-3" />;
   }
 };
 
-const getTicketColors = (colors?: UserTicketProps['colors']) => {
+const getTicketColors = (colors?: UserTicketProps["colors"]) => {
   const hasCustomColors = !!colors;
   return {
-    primary: hasCustomColors ? colors.primary : '#8b5cf6',
-    secondary: hasCustomColors ? colors.secondary : '#ec4899',
-    accent: hasCustomColors ? colors.accent : '#a78bfa',
-    background: hasCustomColors ? colors.background || '#1f1f23' : '#1f1f23',
+    primary: hasCustomColors ? colors.primary : "#8b5cf6",
+    secondary: hasCustomColors ? colors.secondary : "#ec4899",
+    accent: hasCustomColors ? colors.accent : "#a78bfa",
+    background: hasCustomColors ? colors.background || "#1f1f23" : "#1f1f23",
     hasCustom: hasCustomColors,
   };
 };
@@ -46,17 +46,17 @@ export function UserTicket({
   user,
   colors,
   ticketNumber,
-  scale = 'normal',
+  scale = "normal",
 }: UserTicketProps) {
   const ticketColors = getTicketColors(colors);
-  const isSmall = scale === 'small';
+  const isSmall = scale === "small";
 
   const generateKeyFromColors = () => {
     if (!colors) {
-      return ticketNumber || '';
+      return ticketNumber || "";
     }
 
-    return `${Object.values(colors).join('-')}-${ticketNumber || ''}`;
+    return `${Object.values(colors).join("-")}-${ticketNumber || ""}`;
   };
 
   return (
@@ -76,7 +76,7 @@ export function UserTicket({
           style={{
             background: ticketColors.background,
             clipPath:
-              'polygon(0 40px, 40px 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%)',
+              "polygon(0 40px, 40px 0, 100% 0, 100% calc(100% - 40px), calc(100% - 40px) 100%, 0 100%)",
           }}
         >
           {/* Grid Pattern Background */}
@@ -84,7 +84,7 @@ export function UserTicket({
             className="absolute inset-0 opacity-[0.03]"
             style={{
               backgroundImage: `linear-gradient(${ticketColors.primary} 1px, transparent 1px), linear-gradient(90deg, ${ticketColors.primary} 1px, transparent 1px)`,
-              backgroundSize: '50px 50px',
+              backgroundSize: "50px 50px",
             }}
           />
 
@@ -99,7 +99,7 @@ export function UserTicket({
           {/* Content */}
           <div className="relative">
             {/* Header Section */}
-            <div className={`${isSmall ? 'px-6 py-4' : 'px-8 py-6'} pb-0`}>
+            <div className={`${isSmall ? "px-6 py-4" : "px-8 py-6"} pb-0`}>
               <div className="mb-6 flex items-center justify-between">
                 {/* Conference Branding */}
                 <div className="flex items-center gap-2">
@@ -132,10 +132,10 @@ export function UserTicket({
               </div>
 
               {/* User Info Section */}
-              <div className={`${isSmall ? 'py-6' : 'py-8'}`}>
+              <div className={`${isSmall ? "py-6" : "py-8"}`}>
                 <div className="flex items-center gap-5">
                   <Avatar
-                    className={`${isSmall ? 'h-16 w-16' : 'h-20 w-20'} ring-4 ring-gray-800`}
+                    className={`${isSmall ? "h-16 w-16" : "h-20 w-20"} ring-4 ring-gray-800`}
                     style={{
                       boxShadow: `0 0 40px ${ticketColors.primary}30`,
                     }}
@@ -145,19 +145,19 @@ export function UserTicket({
                       className="font-bold text-lg"
                       style={{
                         background: `linear-gradient(135deg, ${ticketColors.primary}, ${ticketColors.secondary})`,
-                        color: 'white',
+                        color: "white",
                       }}
                     >
                       {user.name
-                        .split(' ')
+                        .split(" ")
                         .map((n) => n[0])
-                        .join('')
+                        .join("")
                         .toUpperCase()}
                     </AvatarFallback>
                   </Avatar>
                   <div className="flex-1">
                     <h2
-                      className={`font-bold ${isSmall ? 'text-xl' : 'text-2xl'} mb-1 text-white`}
+                      className={`font-bold ${isSmall ? "text-xl" : "text-2xl"} mb-1 text-white`}
                     >
                       {user.name}
                     </h2>
@@ -174,7 +174,7 @@ export function UserTicket({
             </div>
 
             {/* Ticket Number Section */}
-            <div className={`${isSmall ? 'px-6 py-4' : 'px-8 py-6'} pt-6`}>
+            <div className={`${isSmall ? "px-6 py-4" : "px-8 py-6"} pt-6`}>
               <div className="flex items-end justify-between">
                 <div>
                   <p className="mb-2 text-[10px] text-gray-500 uppercase tracking-wider">
@@ -182,14 +182,14 @@ export function UserTicket({
                   </p>
                   <div className="flex items-baseline gap-3">
                     <span
-                      className={`font-bold font-mono ${isSmall ? 'text-2xl' : 'text-3xl'}`}
+                      className={`font-bold font-mono ${isSmall ? "text-2xl" : "text-3xl"}`}
                       key={generateKeyFromColors()}
                       style={{
                         background: `linear-gradient(to right, ${ticketColors.primary}, ${ticketColors.secondary})`,
-                        backgroundClip: 'text',
-                        WebkitBackgroundClip: 'text',
-                        color: 'transparent',
-                        WebkitTextFillColor: 'transparent',
+                        backgroundClip: "text",
+                        WebkitBackgroundClip: "text",
+                        color: "transparent",
+                        WebkitTextFillColor: "transparent",
                       }}
                     >
                       #{ticketNumber || `${Date.now().toString().slice(-6)}`}

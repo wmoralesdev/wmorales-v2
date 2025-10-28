@@ -1,8 +1,8 @@
-import { Github, Mail, Vote } from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { authService } from '@/lib/auth';
+import { Github, Mail, Vote } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { authService } from "@/lib/auth";
 
 type PollSignInCardProps = {
   pollTitle: string;
@@ -13,14 +13,14 @@ export function PollSignInCard({
   pollTitle,
   currentPath,
 }: PollSignInCardProps) {
-  const t = useTranslations('polls');
-  const tAuth = useTranslations('auth');
+  const t = useTranslations("polls");
+  const tAuth = useTranslations("auth");
 
-  const handleSignIn = async (provider: 'github' | 'google') => {
+  const handleSignIn = async (provider: "github" | "google") => {
     try {
       await authService.signInWithProvider(provider, currentPath);
     } catch (error) {
-      console.error('Error signing in:', error);
+      console.error("Error signing in:", error);
     }
   };
 
@@ -33,33 +33,33 @@ export function PollSignInCard({
           </div>
         </div>
         <CardTitle className="text-2xl text-white">
-          {t('signInTitle')}
+          {t("signInTitle")}
         </CardTitle>
         <p className="text-muted-foreground">
-          {t('signInDescription', { pollTitle })}
+          {t("signInDescription", { pollTitle })}
         </p>
       </CardHeader>
       <CardContent className="space-y-4">
         <Button
           className="h-12 w-full border-2 border-gray-700 text-base transition-all duration-200 hover:border-purple-400 hover:bg-purple-50/10"
-          onClick={() => handleSignIn('github')}
+          onClick={() => handleSignIn("github")}
           variant="outline"
         >
           <Github className="mr-3 h-5 w-5" />
-          {tAuth('continueWith', { provider: 'GitHub' })}
+          {tAuth("continueWith", { provider: "GitHub" })}
         </Button>
 
         <Button
           className="h-12 w-full border-2 border-gray-700 text-base transition-all duration-200 hover:border-purple-400 hover:bg-purple-50/10"
-          onClick={() => handleSignIn('google')}
+          onClick={() => handleSignIn("google")}
           variant="outline"
         >
           <Mail className="mr-3 h-5 w-5" />
-          {tAuth('continueWith', { provider: 'Google' })}
+          {tAuth("continueWith", { provider: "Google" })}
         </Button>
 
         <div className="pt-4 text-center">
-          <p className="text-muted-foreground text-xs">{t('signInTerms')}</p>
+          <p className="text-muted-foreground text-xs">{t("signInTerms")}</p>
         </div>
       </CardContent>
     </Card>

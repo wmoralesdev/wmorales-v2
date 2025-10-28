@@ -18,7 +18,7 @@ export type PollQuestion = {
   pollId: string;
   questionOrder: number;
   question: string;
-  type: 'single' | 'multiple';
+  type: "single" | "multiple";
   maxSelections: number | null;
   createdAt: Date;
   options?: PollOption[];
@@ -80,7 +80,7 @@ export type PollResults = {
 };
 
 export type RealtimeVoteUpdate = {
-  type: 'vote_added' | 'vote_removed';
+  type: "vote_added" | "vote_removed";
   pollId: string;
   questionId: string;
   optionId: string;

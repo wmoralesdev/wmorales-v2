@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
-import { codeToHtml } from 'shiki';
-import { CopyButton } from './copy-button';
+import { useEffect, useState } from "react";
+import { codeToHtml } from "shiki";
+import { CopyButton } from "./copy-button";
 
 type CodeBlockProps = {
   children: string;
@@ -12,10 +12,10 @@ type CodeBlockProps = {
 
 export function CodeBlock({
   children,
-  language = 'javascript',
+  language = "javascript",
   filename,
 }: CodeBlockProps) {
-  const [highlightedCode, setHighlightedCode] = useState<string>('');
+  const [highlightedCode, setHighlightedCode] = useState<string>("");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -26,22 +26,22 @@ export function CodeBlock({
         // Normalize language names
         const normalizedLang = language
           .toLowerCase()
-          .replace('js', 'javascript')
-          .replace('ts', 'typescript');
+          .replace("js", "javascript")
+          .replace("ts", "typescript");
 
         // Use Shiki to highlight the code
         const html = await codeToHtml(children, {
           lang: normalizedLang,
-          theme: 'dark-plus', // VS Code dark theme
+          theme: "dark-plus", // VS Code dark theme
           transformers: [
             {
               code(node) {
                 node.properties.style =
-                  'display: block; overflow-x: auto; padding: 0; background: transparent; font-size: 14px; line-height: 1.6; letter-spacing: -0.02em;';
+                  "display: block; overflow-x: auto; padding: 0; background: transparent; font-size: 14px; line-height: 1.6; letter-spacing: -0.02em;";
               },
               pre(node) {
                 node.properties.style =
-                  'background: rgb(30, 30, 30); margin: 0; padding: 1.25rem; border-radius: 0; font-size: 14px; line-height: 1.6;';
+                  "background: rgb(30, 30, 30); margin: 0; padding: 1.25rem; border-radius: 0; font-size: 14px; line-height: 1.6;";
               },
             },
           ],
@@ -51,11 +51,11 @@ export function CodeBlock({
       } catch {
         // Fallback to plain text with basic styling
         const escapedCode = children
-          .replace(/&/g, '&amp;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;')
-          .replace(/"/g, '&quot;')
-          .replace(/'/g, '&#39;');
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
 
         setHighlightedCode(`
           <pre style="background: rgb(30, 30, 30); margin: 0; padding: 1.25rem; color: rgb(212, 212, 212); font-size: 14px; line-height: 1.6; overflow-x: auto;">
@@ -81,12 +81,12 @@ export function CodeBlock({
       <div className="relative">
         <div
           className={`
-            ${filename ? 'rounded-b-lg border-t-0' : 'rounded-lg'} overflow-hidden border border-gray-700/50 ${isLoading ? 'bg-gray-900' : ''} `}
+            ${filename ? "rounded-b-lg border-t-0" : "rounded-lg"} overflow-hidden border border-gray-700/50 ${isLoading ? "bg-gray-900" : ""} `}
         >
           {isLoading ? (
             <div className="bg-gray-900 p-5">
               <div className="animate-pulse font-mono text-gray-400 text-sm">
-                {children.split('\n').map((_, i) => {
+                {children.split("\n").map((_, i) => {
                   // Use deterministic width based on index to avoid hydration mismatch
                   const widths = [
                     95, 85, 90, 75, 88, 92, 80, 95, 70, 85, 88, 95,

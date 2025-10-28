@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from "react";
 
 export function ReadingProgress() {
   const [progress, setProgress] = useState(0);
@@ -14,10 +14,10 @@ export function ReadingProgress() {
       setProgress(scrollPercent);
     };
 
-    window.addEventListener('scroll', updateProgress);
+    window.addEventListener("scroll", updateProgress);
     updateProgress();
 
-    return () => window.removeEventListener('scroll', updateProgress);
+    return () => window.removeEventListener("scroll", updateProgress);
   }, []);
 
   return (

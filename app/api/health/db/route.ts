@@ -1,5 +1,5 @@
-import { NextResponse } from 'next/server';
-import { db } from '@/lib/db-utils';
+import { NextResponse } from "next/server";
+import { db } from "@/lib/db-utils";
 
 export async function GET() {
   try {
@@ -9,7 +9,7 @@ export async function GET() {
 
     if (!isHealthy) {
       return NextResponse.json(
-        { status: 'unhealthy', duration },
+        { status: "unhealthy", duration },
         { status: 503 }
       );
     }
@@ -17,7 +17,7 @@ export async function GET() {
     const connectionInfo = await db.getConnectionInfo();
 
     return NextResponse.json({
-      status: 'healthy',
+      status: "healthy",
       duration,
       connectionInfo,
       timestamp: new Date().toISOString(),
@@ -25,8 +25,8 @@ export async function GET() {
   } catch (error) {
     return NextResponse.json(
       {
-        status: 'error',
-        error: error instanceof Error ? error.message : 'Unknown error',
+        status: "error",
+        error: error instanceof Error ? error.message : "Unknown error",
         timestamp: new Date().toISOString(),
       },
       { status: 500 }

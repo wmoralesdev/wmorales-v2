@@ -1,17 +1,17 @@
-'use client';
+"use client";
 
-import { AlertCircle } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { AlertCircle } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export default function AuthCodeErrorPage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="max-w-md w-full border-gray-800 bg-gray-900/80 backdrop-blur-xl">
+    <div className="flex min-h-screen items-center justify-center p-4">
+      <Card className="w-full max-w-md border-gray-800 bg-gray-900/80 backdrop-blur-xl">
         <CardHeader>
           <CardTitle className="text-2xl text-white">
             Authentication Error
@@ -26,7 +26,7 @@ export default function AuthCodeErrorPage() {
             <AlertDescription className="text-gray-400">
               There was an error during the authentication process. This could
               be due to:
-              <ul className="list-disc list-inside mt-2 space-y-1">
+              <ul className="mt-2 list-inside list-disc space-y-1">
                 <li>The authentication code expired</li>
                 <li>The authentication was cancelled</li>
                 <li>A network error occurred</li>
@@ -36,15 +36,15 @@ export default function AuthCodeErrorPage() {
 
           <div className="flex gap-2">
             <Button
+              className="flex-1 border-gray-700 hover:bg-gray-800"
               onClick={() => router.back()}
               variant="outline"
-              className="flex-1 border-gray-700 hover:bg-gray-800"
             >
               Go Back
             </Button>
             <Button
-              onClick={() => router.push('/')}
               className="flex-1 bg-purple-600 hover:bg-purple-700"
+              onClick={() => router.push("/")}
             >
               Go Home
             </Button>

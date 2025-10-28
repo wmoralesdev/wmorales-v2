@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useCallback, useRef } from 'react';
-import useSWR, { type KeyedMutator } from 'swr';
-import { getUserEventImages } from '@/app/actions/events.actions';
+import { useCallback, useRef } from "react";
+import useSWR, { type KeyedMutator } from "swr";
+import { getUserEventImages } from "@/app/actions/events.actions";
 
 type EventImage = {
   id: string;
@@ -39,7 +39,7 @@ export function useUserEventImages(
     isValidating,
     mutate,
   } = useSWR(
-    eventId ? ['user-event-images', eventId] : null,
+    eventId ? ["user-event-images", eventId] : null,
     async ([, id]: [string, string]): Promise<EventImage[]> => {
       const images = await getUserEventImages(id);
       return images.map(
@@ -94,11 +94,11 @@ export function useUserEventImages(
   // Sync with real-time updates
   const syncUpdate = useCallback(
     (update: {
-      type: 'add' | 'remove';
+      type: "add" | "remove";
       image?: EventImage;
       imageId?: string;
     }) => {
-      if (update.type === 'add' && update.image) {
+      if (update.type === "add" && update.image) {
         mutate(
           (current = []) => {
             // Avoid duplicates
@@ -115,7 +115,7 @@ export function useUserEventImages(
             populateCache: true,
           }
         );
-      } else if (update.type === 'remove' && update.imageId) {
+      } else if (update.type === "remove" && update.imageId) {
         mutate(
           (current = []) => current.filter((img) => img.id !== update.imageId),
           {

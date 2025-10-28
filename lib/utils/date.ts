@@ -1,5 +1,5 @@
-import { format, formatDistanceToNow } from 'date-fns';
-import { enUS, es } from 'date-fns/locale';
+import { format, formatDistanceToNow } from "date-fns";
+import { enUS, es } from "date-fns/locale";
 
 // Mapping between next-intl locales and date-fns locales
 const dateLocales = {

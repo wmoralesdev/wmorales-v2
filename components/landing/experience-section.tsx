@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { motion, type Variants } from 'framer-motion';
+import { motion, type Variants } from "framer-motion";
 import {
   Building2,
   Calendar,
@@ -10,9 +10,9 @@ import {
   Server,
   Sparkles,
   Users,
-} from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { useLocale, useTranslations } from 'next-intl';
+} from "lucide-react";
+import { useLocale, useTranslations } from "next-intl";
+import { Badge } from "@/components/ui/badge";
 
 // Animation variants following our style guide
 const containerVariants: Variants = {
@@ -33,7 +33,7 @@ const itemVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   },
 };
@@ -60,7 +60,7 @@ const experienceVariants: Variants = {
     scale: 1,
     transition: {
       duration: 0.5,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   },
 };
@@ -71,7 +71,7 @@ const iconVariants: Variants = {
     scale: 1,
     rotate: 0,
     transition: {
-      type: 'spring',
+      type: "spring",
       stiffness: 200,
       damping: 15,
     },
@@ -90,80 +90,80 @@ const companyIcons: Record<string, React.ElementType> = {
 };
 
 export function ExperienceSection() {
-  const t = useTranslations('homepage.experience');
+  const t = useTranslations("homepage.experience");
   const locale = useLocale();
 
   const experiences = [
     {
-      company: 'Southworks',
-      role: t('companies.Southworks.role'),
-      period: locale === 'es' ? 'Abr 2023 – Actualidad' : 'Apr 2023 – Now',
+      company: "Southworks",
+      role: t("companies.Southworks.role"),
+      period: locale === "es" ? "Abr 2023 – Actualidad" : "Apr 2023 – Now",
       achievements: [
-        t('companies.Southworks.achievements.0'),
-        t('companies.Southworks.achievements.1'),
+        t("companies.Southworks.achievements.0"),
+        t("companies.Southworks.achievements.1"),
       ],
       current: true,
-      color: 'from-purple-600 to-pink-600',
+      color: "from-purple-600 to-pink-600",
     },
     {
-      company: 'Freelance',
-      role: t('companies.Freelance.role'),
-      period: locale === 'es' ? 'Abr 2023 – Ene 2024' : 'Apr 2023 – Jan 2024',
+      company: "Freelance",
+      role: t("companies.Freelance.role"),
+      period: locale === "es" ? "Abr 2023 – Ene 2024" : "Apr 2023 – Jan 2024",
       achievements: [
-        t('companies.Freelance.achievements.0'),
-        t('companies.Freelance.achievements.1'),
+        t("companies.Freelance.achievements.0"),
+        t("companies.Freelance.achievements.1"),
       ],
-      color: 'from-blue-600 to-purple-600',
+      color: "from-blue-600 to-purple-600",
     },
     {
-      company: 'Ravn',
-      role: t('companies.Ravn.role'),
-      period: locale === 'es' ? 'Ene 2023 – Mar 2023' : 'Jan 2023 – Mar 2023',
+      company: "Ravn",
+      role: t("companies.Ravn.role"),
+      period: locale === "es" ? "Ene 2023 – Mar 2023" : "Jan 2023 – Mar 2023",
       achievements: [
-        t('companies.Ravn.achievements.0'),
-        t('companies.Ravn.achievements.1'),
+        t("companies.Ravn.achievements.0"),
+        t("companies.Ravn.achievements.1"),
       ],
-      color: 'from-indigo-600 to-blue-600',
+      color: "from-indigo-600 to-blue-600",
     },
     {
-      company: 'Resultier',
-      role: t('companies.Resultier.role'),
-      period: locale === 'es' ? 'Abr 2022 – Dic 2022' : 'Apr 2022 – Dec 2022',
+      company: "Resultier",
+      role: t("companies.Resultier.role"),
+      period: locale === "es" ? "Abr 2022 – Dic 2022" : "Apr 2022 – Dec 2022",
       achievements: [
-        t('companies.Resultier.achievements.0'),
-        t('companies.Resultier.achievements.1'),
+        t("companies.Resultier.achievements.0"),
+        t("companies.Resultier.achievements.1"),
       ],
-      color: 'from-green-600 to-teal-600',
+      color: "from-green-600 to-teal-600",
     },
     {
-      company: 'InnRoad',
-      role: t('companies.InnRoad.role'),
-      period: locale === 'es' ? 'Abr 2021 – Abr 2022' : 'Apr 2021 – Apr 2022',
+      company: "InnRoad",
+      role: t("companies.InnRoad.role"),
+      period: locale === "es" ? "Abr 2021 – Abr 2022" : "Apr 2021 – Apr 2022",
       achievements: [
-        t('companies.InnRoad.achievements.0'),
-        t('companies.InnRoad.achievements.1'),
+        t("companies.InnRoad.achievements.0"),
+        t("companies.InnRoad.achievements.1"),
       ],
-      color: 'from-orange-600 to-red-600',
+      color: "from-orange-600 to-red-600",
     },
     {
-      company: 'Elaniin',
-      role: t('companies.Elaniin.role'),
-      period: locale === 'es' ? 'Nov 2020 – Ene 2022' : 'Nov 2020 – Jan 2022',
+      company: "Elaniin",
+      role: t("companies.Elaniin.role"),
+      period: locale === "es" ? "Nov 2020 – Ene 2022" : "Nov 2020 – Jan 2022",
       achievements: [
-        t('companies.Elaniin.achievements.0'),
-        t('companies.Elaniin.achievements.1'),
+        t("companies.Elaniin.achievements.0"),
+        t("companies.Elaniin.achievements.1"),
       ],
-      color: 'from-yellow-600 to-orange-600',
+      color: "from-yellow-600 to-orange-600",
     },
     {
-      company: 'VincuHub',
-      role: t('companies.VincuHub.role'),
-      period: locale === 'es' ? 'Ene 2020 – Nov 2020' : 'Jan 2020 – Nov 2020',
+      company: "VincuHub",
+      role: t("companies.VincuHub.role"),
+      period: locale === "es" ? "Ene 2020 – Nov 2020" : "Jan 2020 – Nov 2020",
       achievements: [
-        t('companies.VincuHub.achievements.0'),
-        t('companies.VincuHub.achievements.1'),
+        t("companies.VincuHub.achievements.0"),
+        t("companies.VincuHub.achievements.1"),
       ],
-      color: 'from-pink-600 to-purple-600',
+      color: "from-pink-600 to-purple-600",
     },
   ];
 
@@ -183,7 +183,7 @@ export function ExperienceSection() {
           >
             <Sparkles className="h-5 w-5 text-purple-400" />
             <span className="font-medium text-purple-400 text-sm">
-              {t('sectionLabel')}
+              {t("sectionLabel")}
             </span>
           </motion.div>
 
@@ -191,13 +191,13 @@ export function ExperienceSection() {
             className="mb-4 font-bold text-3xl text-white sm:text-4xl lg:text-5xl"
             variants={itemVariants}
           >
-            {t('sectionTitle')}
+            {t("sectionTitle")}
           </motion.h2>
           <motion.p
             className="mx-auto max-w-2xl text-base text-gray-400 sm:text-lg"
             variants={itemVariants}
           >
-            {t('sectionDescription')}
+            {t("sectionDescription")}
           </motion.p>
         </motion.div>
 
@@ -212,7 +212,7 @@ export function ExperienceSection() {
           <motion.div
             className="lg:-translate-x-px absolute top-0 bottom-0 left-8 w-px lg:left-1/2"
             initial={{ scaleY: 0, originY: 0 }}
-            transition={{ duration: 1.5, ease: 'easeOut' }}
+            transition={{ duration: 1.5, ease: "easeOut" }}
             viewport={{ once: true }}
             whileInView={{ scaleY: 1 }}
           >
@@ -226,7 +226,7 @@ export function ExperienceSection() {
 
               return (
                 <motion.div
-                  className={`relative flex items-center ${isEven ? 'lg:justify-start' : 'lg:justify-end'}`}
+                  className={`relative flex items-center ${isEven ? "lg:justify-start" : "lg:justify-end"}`}
                   key={exp.company + exp.role}
                   variants={experienceVariants}
                 >
@@ -248,7 +248,7 @@ export function ExperienceSection() {
                           transition={{
                             duration: 2,
                             repeat: Number.POSITIVE_INFINITY,
-                            ease: 'easeInOut',
+                            ease: "easeInOut",
                           }}
                         >
                           <div className="h-full w-full animate-ping rounded-full bg-green-500" />
@@ -261,8 +261,8 @@ export function ExperienceSection() {
                   <motion.div
                     className={`ml-28 lg:ml-0 ${
                       isEven
-                        ? 'lg:mr-[calc(50%+4rem)]'
-                        : 'lg:ml-[calc(50%+4rem)]'
+                        ? "lg:mr-[calc(50%+4rem)]"
+                        : "lg:ml-[calc(50%+4rem)]"
                     } group cursor-pointer`}
                     transition={{ duration: 0.2 }}
                     whileHover={{ scale: 1.02 }}
@@ -270,7 +270,7 @@ export function ExperienceSection() {
                     <div className="relative rounded-2xl border border-gray-800 bg-gray-900/40 p-6 backdrop-blur-xl transition-all duration-300 hover:border-purple-800/50 hover:bg-gray-900/60">
                       {/* Gradient accent */}
                       <div
-                        className={`absolute top-0 ${isEven ? 'left-0' : 'right-0'} h-full w-1 rounded-full bg-gradient-to-b ${exp.color} opacity-50 transition-opacity group-hover:opacity-100`}
+                        className={`absolute top-0 ${isEven ? "left-0" : "right-0"} h-full w-1 rounded-full bg-gradient-to-b ${exp.color} opacity-50 transition-opacity group-hover:opacity-100`}
                       />
 
                       {/* Header */}

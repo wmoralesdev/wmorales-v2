@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import * as TogglePrimitive from '@radix-ui/react-toggle';
-import { cva, type VariantProps } from 'class-variance-authority';
-import type * as React from 'react';
+import * as TogglePrimitive from "@radix-ui/react-toggle";
+import { cva, type VariantProps } from "class-variance-authority";
+import type * as React from "react";
 
-import { cn } from '@/lib/utils';
+import { cn } from "@/lib/utils";
 
 const toggleVariants = cva(
   // biome-ignore lint/nursery/useSortedClasses: breaks the build
@@ -12,19 +12,19 @@ const toggleVariants = cva(
   {
     variants: {
       variant: {
-        default: 'bg-transparent',
+        default: "bg-transparent",
         outline:
-          'border border-input bg-transparent shadow-xs hover:bg-accent hover:text-accent-foreground',
+          "border border-input bg-transparent shadow-xs hover:bg-accent hover:text-accent-foreground",
       },
       size: {
-        default: 'h-9 min-w-9 px-2',
-        sm: 'h-8 min-w-8 px-1.5',
-        lg: 'h-10 min-w-10 px-2.5',
+        default: "h-9 min-w-9 px-2",
+        sm: "h-8 min-w-8 px-1.5",
+        lg: "h-10 min-w-10 px-2.5",
       },
     },
     defaultVariants: {
-      variant: 'default',
-      size: 'default',
+      variant: "default",
+      size: "default",
     },
   }
 );

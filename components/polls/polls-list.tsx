@@ -1,20 +1,20 @@
-'use client';
+"use client";
 
-import { motion, type Variants } from 'framer-motion';
-import { BarChart3, Check, Copy, ExternalLink, Users } from 'lucide-react';
-import { useLocale, useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { motion, type Variants } from "framer-motion";
+import { BarChart3, Check, Copy, ExternalLink, Users } from "lucide-react";
+import Link from "next/link";
+import { useLocale, useTranslations } from "next-intl";
+import { useEffect, useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { subscribeToPollsList } from '@/lib/supabase/realtime';
+} from "@/components/ui/card";
+import { subscribeToPollsList } from "@/lib/supabase/realtime";
 
 type Poll = {
   id: string;
@@ -51,20 +51,20 @@ const cardVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   },
   hover: {
     scale: 1.02,
     transition: {
       duration: 0.2,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   },
 };
 
 export function PollsList({ polls }: PollsListProps) {
-  const t = useTranslations('polls');
+  const t = useTranslations("polls");
   const locale = useLocale();
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [activeUsers, setActiveUsers] = useState<Record<string, number>>({});
@@ -89,14 +89,14 @@ export function PollsList({ polls }: PollsListProps) {
       setTimeout(() => setCopiedCode(null), 2000);
     } catch (_err) {
       // Fallback for older browsers
-      const textArea = document.createElement('textarea');
+      const textArea = document.createElement("textarea");
       textArea.value = `${window.location.origin}/polls/${code}`;
-      textArea.style.position = 'absolute';
-      textArea.style.left = '-999999px';
+      textArea.style.position = "absolute";
+      textArea.style.left = "-999999px";
       document.body.appendChild(textArea);
       textArea.select();
       try {
-        document.execCommand('copy');
+        document.execCommand("copy");
         setCopiedCode(code);
         setTimeout(() => setCopiedCode(null), 2000);
       } catch (_copyErr) {
@@ -127,19 +127,19 @@ export function PollsList({ polls }: PollsListProps) {
                         {poll.title}
                       </CardTitle>
                       <CardDescription className="line-clamp-2 text-gray-400">
-                        {poll.description || t('defaultDescription')}
+                        {poll.description || t("defaultDescription")}
                       </CardDescription>
                     </div>
                     <div className="ml-4 flex flex-col items-end gap-2">
                       <Badge
                         className={
                           poll.isActive
-                            ? 'border-green-500/30 bg-green-500/20 text-green-400'
-                            : 'border-gray-500/30 bg-gray-500/20 text-gray-400'
+                            ? "border-green-500/30 bg-green-500/20 text-green-400"
+                            : "border-gray-500/30 bg-gray-500/20 text-gray-400"
                         }
-                        variant={poll.isActive ? 'default' : 'secondary'}
+                        variant={poll.isActive ? "default" : "secondary"}
                       >
-                        {poll.isActive ? t('active') : t('closed')}
+                        {poll.isActive ? t("active") : t("closed")}
                       </Badge>
                       {currentActiveUsers > 0 && poll.isActive && (
                         <Badge
@@ -147,7 +147,7 @@ export function PollsList({ polls }: PollsListProps) {
                           variant="outline"
                         >
                           <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
-                          {currentActiveUsers} {t('live')}
+                          {currentActiveUsers} {t("live")}
                         </Badge>
                       )}
                     </div>
@@ -158,13 +158,13 @@ export function PollsList({ polls }: PollsListProps) {
                     <div className="flex items-center gap-1">
                       <BarChart3 className="h-4 w-4" />
                       <span>
-                        {t('questions', { count: poll._count.questions })}
+                        {t("questions", { count: poll._count.questions })}
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Users className="h-4 w-4" />
                       <span>
-                        {t('totalVoters', { count: poll._count.sessions })}
+                        {t("totalVoters", { count: poll._count.sessions })}
                       </span>
                     </div>
                   </div>
@@ -189,14 +189,14 @@ export function PollsList({ polls }: PollsListProps) {
 
                     <div className="flex gap-2">
                       <Button className="h-9 flex-1 cursor-pointer bg-gradient-to-r from-purple-500 to-purple-600 text-white transition-all duration-300 hover:from-purple-600 hover:to-purple-700">
-                        {t('viewPoll')}
+                        {t("viewPoll")}
                         <ExternalLink className="ml-2 h-3 w-3" />
                       </Button>
                     </div>
                   </div>
 
                   <div className="text-gray-500 text-xs">
-                    {t('created')}{' '}
+                    {t("created")}{" "}
                     {new Date(poll.createdAt).toLocaleDateString(locale)}
                   </div>
                 </CardContent>

@@ -1,27 +1,26 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
+"use client";
 
-import type { UseFormReturn } from 'react-hook-form';
-import { Checkbox } from '@/components/ui/checkbox';
+import type { UseFormReturn } from "react-hook-form";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
 
-import type { Question } from '@/lib/types/survey.types';
+import type { Question } from "@/lib/types/survey.types";
 
 type QuestionRendererProps = {
   question: Question;
@@ -35,7 +34,7 @@ const FormLabelWrapper = ({ children }: { children: React.ReactNode }) => (
 export function QuestionRenderer({ question, form }: QuestionRendererProps) {
   const renderField = () => {
     switch (question.type) {
-      case 'text':
+      case "text":
         return (
           <FormField
             control={form.control}
@@ -53,7 +52,7 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
                     placeholder={question.placeholder}
                     {...field}
                     className="border-gray-700 bg-gray-800/50 text-white placeholder:text-gray-500 focus:border-purple-500/50"
-                    value={field.value || ''}
+                    value={field.value || ""}
                   />
                 </FormControl>
                 <FormMessage className="text-red-400" />
@@ -62,7 +61,7 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
           />
         );
 
-      case 'textarea':
+      case "textarea":
         return (
           <FormField
             control={form.control}
@@ -80,7 +79,7 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
                     className="min-h-[100px] border-gray-700 bg-gray-800/50 text-white placeholder:text-gray-500 focus:border-purple-500/50"
                     placeholder={question.placeholder}
                     {...field}
-                    value={field.value || ''}
+                    value={field.value || ""}
                   />
                 </FormControl>
                 <FormMessage className="text-red-400" />
@@ -89,7 +88,7 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
           />
         );
 
-      case 'radio':
+      case "radio":
         return (
           <FormField
             control={form.control}
@@ -132,7 +131,7 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
           />
         );
 
-      case 'checkbox':
+      case "checkbox":
         return (
           <FormField
             control={form.control}
@@ -151,36 +150,34 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
                       control={form.control}
                       key={option.value}
                       name={question.id}
-                      render={({ field }) => {
-                        return (
-                          <FormItem className="flex items-center space-x-2 space-y-0">
-                            <FormControl>
-                              <Checkbox
-                                checked={field.value?.includes(option.value)}
-                                className="border-gray-600 data-[state=checked]:border-purple-500 data-[state=checked]:bg-purple-500"
-                                onCheckedChange={(checked) => {
-                                  const currentValue = field.value || [];
-                                  if (checked) {
-                                    field.onChange([
-                                      ...currentValue,
-                                      option.value,
-                                    ]);
-                                  } else {
-                                    field.onChange(
-                                      currentValue.filter(
-                                        (v: string) => v !== option.value
-                                      )
-                                    );
-                                  }
-                                }}
-                              />
-                            </FormControl>
-                            <FormLabel className="cursor-pointer font-normal text-gray-300">
-                              {option.label}
-                            </FormLabel>
-                          </FormItem>
-                        );
-                      }}
+                      render={({ field }) => (
+                        <FormItem className="flex items-center space-x-2 space-y-0">
+                          <FormControl>
+                            <Checkbox
+                              checked={field.value?.includes(option.value)}
+                              className="border-gray-600 data-[state=checked]:border-purple-500 data-[state=checked]:bg-purple-500"
+                              onCheckedChange={(checked) => {
+                                const currentValue = field.value || [];
+                                if (checked) {
+                                  field.onChange([
+                                    ...currentValue,
+                                    option.value,
+                                  ]);
+                                } else {
+                                  field.onChange(
+                                    currentValue.filter(
+                                      (v: string) => v !== option.value
+                                    )
+                                  );
+                                }
+                              }}
+                            />
+                          </FormControl>
+                          <FormLabel className="cursor-pointer font-normal text-gray-300">
+                            {option.label}
+                          </FormLabel>
+                        </FormItem>
+                      )}
                     />
                   ))}
                 </div>
@@ -190,7 +187,7 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
           />
         );
 
-      case 'select':
+      case "select":
         return (
           <FormField
             control={form.control}
@@ -211,7 +208,7 @@ export function QuestionRenderer({ question, form }: QuestionRendererProps) {
                     <SelectTrigger className="w-full border-gray-700 bg-gray-800/50 text-white focus:border-purple-500/50">
                       <SelectValue
                         className="placeholder:text-gray-500"
-                        placeholder={question.placeholder || 'Select an option'}
+                        placeholder={question.placeholder || "Select an option"}
                       />
                     </SelectTrigger>
                   </FormControl>

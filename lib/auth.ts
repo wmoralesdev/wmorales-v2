@@ -1,7 +1,7 @@
-import type { User } from '@supabase/supabase-js';
-import { createClient } from './supabase/client';
+import type { User } from "@supabase/supabase-js";
+import { createClient } from "./supabase/client";
 
-export type AuthProvider = 'github' | 'google';
+export type AuthProvider = "github" | "google";
 
 export type AuthUser = User;
 
@@ -13,7 +13,7 @@ export class AuthService {
       provider,
       options: {
         redirectTo: `${window.location.origin}/auth/callback${
-          redirectTo ? `?next=${encodeURIComponent(redirectTo)}` : ''
+          redirectTo ? `?next=${encodeURIComponent(redirectTo)}` : ""
         }`,
       },
     });
@@ -44,7 +44,7 @@ export class AuthService {
     const { data, error } = await this.supabase.auth.verifyOtp({
       email,
       token,
-      type: 'email',
+      type: "email",
     });
 
     if (error) {

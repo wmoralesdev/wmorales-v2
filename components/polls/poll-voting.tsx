@@ -1,38 +1,37 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
+"use client";
 
-import { AnimatePresence, motion } from 'framer-motion';
-import { AlertCircle, Check, ChevronRight, Loader2, Users } from 'lucide-react';
-import { useCallback, useEffect, useReducer, useState } from 'react';
-import { usePathname } from 'next/navigation';
-import { getPollResults, votePoll } from '@/app/actions/poll.actions';
-import { PollResultsDashboard } from '@/components/polls/poll-results-dashboard';
-import { PollSignInCard } from '@/components/polls/poll-sign-in-card';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { AnimatePresence, motion } from "framer-motion";
+import { AlertCircle, Check, ChevronRight, Loader2, Users } from "lucide-react";
+import { usePathname } from "next/navigation";
+import { useCallback, useEffect, useReducer, useState } from "react";
+import { getPollResults, votePoll } from "@/app/actions/poll.actions";
+import { PollResultsDashboard } from "@/components/polls/poll-results-dashboard";
+import { PollSignInCard } from "@/components/polls/poll-sign-in-card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
-import { authService } from '@/lib/auth';
+} from "@/components/ui/card";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { authService } from "@/lib/auth";
 import {
   type PollPresence,
   type PollRealtimeEvent,
   subscribeToPollUpdates,
-} from '@/lib/supabase/realtime';
+} from "@/lib/supabase/realtime";
 import type {
   PollQuestion,
   PollResults,
   PollWithQuestions,
-} from '@/lib/types/poll.types';
-import { cn } from '@/lib/utils';
+} from "@/lib/types/poll.types";
+import { cn } from "@/lib/utils";
 
 type PollVotingProps = {
   poll: PollWithQuestions;
@@ -55,20 +54,20 @@ type PollVotingState = {
 
 // Action types
 type PollVotingAction =
-  | { type: 'SET_SELECTED_OPTIONS'; payload: Record<string, string | string[]> }
+  | { type: "SET_SELECTED_OPTIONS"; payload: Record<string, string | string[]> }
   | {
-      type: 'UPDATE_SELECTED_OPTION';
+      type: "UPDATE_SELECTED_OPTION";
       payload: { questionId: string; value: string | string[] };
     }
-  | { type: 'SET_USER_VOTES'; payload: Record<string, string[]> }
-  | { type: 'SET_RESULTS'; payload: PollResults }
-  | { type: 'SET_VOTING'; payload: boolean }
-  | { type: 'SET_SHOW_RESULTS'; payload: boolean }
-  | { type: 'SET_SHOW_DASHBOARD'; payload: boolean }
-  | { type: 'SET_TOTAL_VOTERS'; payload: number }
-  | { type: 'SET_ACTIVE_USERS'; payload: PollPresence[] }
-  | { type: 'SET_VALIDATION_ERRORS'; payload: string[] }
-  | { type: 'CLEAR_VALIDATION_ERROR'; payload: number };
+  | { type: "SET_USER_VOTES"; payload: Record<string, string[]> }
+  | { type: "SET_RESULTS"; payload: PollResults }
+  | { type: "SET_VOTING"; payload: boolean }
+  | { type: "SET_SHOW_RESULTS"; payload: boolean }
+  | { type: "SET_SHOW_DASHBOARD"; payload: boolean }
+  | { type: "SET_TOTAL_VOTERS"; payload: number }
+  | { type: "SET_ACTIVE_USERS"; payload: PollPresence[] }
+  | { type: "SET_VALIDATION_ERRORS"; payload: string[] }
+  | { type: "CLEAR_VALIDATION_ERROR"; payload: number };
 
 // Reducer function
 function pollVotingReducer(
@@ -76,9 +75,9 @@ function pollVotingReducer(
   action: PollVotingAction
 ): PollVotingState {
   switch (action.type) {
-    case 'SET_SELECTED_OPTIONS':
+    case "SET_SELECTED_OPTIONS":
       return { ...state, selectedOptions: action.payload };
-    case 'UPDATE_SELECTED_OPTION':
+    case "UPDATE_SELECTED_OPTION":
       return {
         ...state,
         selectedOptions: {
@@ -86,23 +85,23 @@ function pollVotingReducer(
           [action.payload.questionId]: action.payload.value,
         },
       };
-    case 'SET_USER_VOTES':
+    case "SET_USER_VOTES":
       return { ...state, userVotes: action.payload };
-    case 'SET_RESULTS':
+    case "SET_RESULTS":
       return { ...state, results: action.payload };
-    case 'SET_VOTING':
+    case "SET_VOTING":
       return { ...state, voting: action.payload };
-    case 'SET_SHOW_RESULTS':
+    case "SET_SHOW_RESULTS":
       return { ...state, showResults: action.payload };
-    case 'SET_SHOW_DASHBOARD':
+    case "SET_SHOW_DASHBOARD":
       return { ...state, showDashboard: action.payload };
-    case 'SET_TOTAL_VOTERS':
+    case "SET_TOTAL_VOTERS":
       return { ...state, totalVoters: action.payload };
-    case 'SET_ACTIVE_USERS':
+    case "SET_ACTIVE_USERS":
       return { ...state, activeUsers: action.payload };
-    case 'SET_VALIDATION_ERRORS':
+    case "SET_VALIDATION_ERRORS":
       return { ...state, validationErrors: action.payload };
-    case 'CLEAR_VALIDATION_ERROR':
+    case "CLEAR_VALIDATION_ERROR":
       return {
         ...state,
         validationErrors: state.validationErrors.filter(
@@ -164,16 +163,16 @@ export function PollVoting({
     const initial: Record<string, string | string[]> = {};
     for (const question of poll.questions) {
       const votes = state.userVotes[question.id] || [];
-      if (question.type === 'single') {
-        initial[question.id] = votes[0] || '';
+      if (question.type === "single") {
+        initial[question.id] = votes[0] || "";
       } else {
         initial[question.id] = votes;
       }
     }
-    dispatch({ type: 'SET_SELECTED_OPTIONS', payload: initial });
+    dispatch({ type: "SET_SELECTED_OPTIONS", payload: initial });
 
     if (allQuestionsAnswered) {
-      dispatch({ type: 'SET_SHOW_DASHBOARD', payload: true });
+      dispatch({ type: "SET_SHOW_DASHBOARD", payload: true });
     }
   }, [poll.questions, state.userVotes, allQuestionsAnswered]);
 
@@ -181,18 +180,18 @@ export function PollVoting({
     const channel = subscribeToPollUpdates(
       poll.code,
       async (event: PollRealtimeEvent) => {
-        if (event.type === 'poll_closed') {
+        if (event.type === "poll_closed") {
           window.location.reload();
         } else {
           const { data } = await getPollResults(poll.id);
           if (data) {
-            dispatch({ type: 'SET_RESULTS', payload: data });
-            dispatch({ type: 'SET_TOTAL_VOTERS', payload: data.totalVotes });
+            dispatch({ type: "SET_RESULTS", payload: data });
+            dispatch({ type: "SET_TOTAL_VOTERS", payload: data.totalVotes });
           }
         }
       },
       (users) => {
-        dispatch({ type: 'SET_ACTIVE_USERS', payload: users });
+        dispatch({ type: "SET_ACTIVE_USERS", payload: users });
       }
     );
 
@@ -206,12 +205,12 @@ export function PollVoting({
       const hasVoted = Object.keys(state.userVotes).length > 0;
       if (hasVoted) {
         const timer = setTimeout(() => {
-          dispatch({ type: 'SET_SHOW_RESULTS', payload: true });
+          dispatch({ type: "SET_SHOW_RESULTS", payload: true });
         }, poll.resultsDelay * 1000);
         return () => clearTimeout(timer);
       }
     } else if (poll.showResults) {
-      dispatch({ type: 'SET_SHOW_RESULTS', payload: true });
+      dispatch({ type: "SET_SHOW_RESULTS", payload: true });
     }
   }, [poll.showResults, poll.resultsDelay, state.userVotes]);
 
@@ -226,11 +225,11 @@ export function PollVoting({
 
       const questionNumber = index + 1;
 
-      if (question.type === 'single' && !answer) {
+      if (question.type === "single" && !answer) {
         return `Question ${questionNumber} requires an answer`;
       }
 
-      if (question.type === 'multiple') {
+      if (question.type === "multiple") {
         const hasSelection = answer && (answer as string[]).length > 0;
         if (!hasSelection) {
           return `Question ${questionNumber} requires at least one selection`;
@@ -262,11 +261,11 @@ export function PollVoting({
         return Array.isArray(selected) ? selected : [selected];
       }
       // If the error indicates the user has already voted, we can still consider it successful
-      if (result.error === 'You have already voted for this question') {
+      if (result.error === "You have already voted for this question") {
         return Array.isArray(selected) ? selected : [selected];
       }
       // For authentication errors, throw to handle at the component level
-      if (result.error === 'Authentication required') {
+      if (result.error === "Authentication required") {
         throw new Error(result.error);
       }
       return null;
@@ -331,41 +330,41 @@ export function PollVoting({
   const handleSubmitAll = useCallback(async () => {
     const errors = validateAnswers();
     if (errors.length > 0) {
-      dispatch({ type: 'SET_VALIDATION_ERRORS', payload: errors });
+      dispatch({ type: "SET_VALIDATION_ERRORS", payload: errors });
       return;
     }
 
-    dispatch({ type: 'SET_VALIDATION_ERRORS', payload: [] });
-    dispatch({ type: 'SET_VOTING', payload: true });
+    dispatch({ type: "SET_VALIDATION_ERRORS", payload: [] });
+    dispatch({ type: "SET_VOTING", payload: true });
 
     try {
       const newVotes = await processUnansweredQuestions();
-      dispatch({ type: 'SET_USER_VOTES', payload: newVotes });
+      dispatch({ type: "SET_USER_VOTES", payload: newVotes });
 
       const { data } = await getPollResults(poll.id);
       if (data) {
-        dispatch({ type: 'SET_RESULTS', payload: data });
+        dispatch({ type: "SET_RESULTS", payload: data });
       }
 
       setTimeout(
-        () => dispatch({ type: 'SET_SHOW_DASHBOARD', payload: true }),
+        () => dispatch({ type: "SET_SHOW_DASHBOARD", payload: true }),
         500
       );
     } catch (error) {
       // Handle authentication errors
       if (
         error instanceof Error &&
-        error.message === 'Authentication required'
+        error.message === "Authentication required"
       ) {
         setIsAuthenticated(false);
       } else {
         dispatch({
-          type: 'SET_VALIDATION_ERRORS',
-          payload: ['Failed to submit votes. Please try again.'],
+          type: "SET_VALIDATION_ERRORS",
+          payload: ["Failed to submit votes. Please try again."],
         });
       }
     } finally {
-      dispatch({ type: 'SET_VOTING', payload: false });
+      dispatch({ type: "SET_VOTING", payload: false });
     }
   }, [validateAnswers, processUnansweredQuestions, poll.id]);
 
@@ -379,9 +378,9 @@ export function PollVoting({
       return;
     }
 
-    if (question.type === 'single') {
+    if (question.type === "single") {
       dispatch({
-        type: 'UPDATE_SELECTED_OPTION',
+        type: "UPDATE_SELECTED_OPTION",
         payload: { questionId, value },
       });
     } else {
@@ -390,19 +389,18 @@ export function PollVoting({
         ? [...current, value]
         : current.filter((v) => v !== value);
       dispatch({
-        type: 'UPDATE_SELECTED_OPTION',
+        type: "UPDATE_SELECTED_OPTION",
         payload: { questionId, value: newValue },
       });
     }
 
     // Clear validation error for this question
     const questionIndex = poll.questions.findIndex((q) => q.id === questionId);
-    dispatch({ type: 'CLEAR_VALIDATION_ERROR', payload: questionIndex });
+    dispatch({ type: "CLEAR_VALIDATION_ERROR", payload: questionIndex });
   };
 
-  const hasVoted = (questionId: string) => {
-    return (state.userVotes[questionId] || []).length > 0;
-  };
+  const hasVoted = (questionId: string) =>
+    (state.userVotes[questionId] || []).length > 0;
 
   const getOptionPercentage = (questionId: string, optionId: string) => {
     if (!state.results) {
@@ -443,10 +441,10 @@ export function PollVoting({
   }
 
   // Show sign-in card if not authenticated and haven't voted yet
-  if (!isAuthenticated && !allQuestionsAnswered) {
+  if (!(isAuthenticated || allQuestionsAnswered)) {
     return (
       <div className="app-container">
-        <PollSignInCard pollTitle={poll.title} currentPath={pathname} />
+        <PollSignInCard currentPath={pathname} pollTitle={poll.title} />
       </div>
     );
   }
@@ -511,8 +509,8 @@ export function PollVoting({
               <div className="mt-2 flex items-center gap-2 text-gray-500 text-sm">
                 <Users className="h-4 w-4" />
                 <span>
-                  {state.totalVoters}{' '}
-                  {state.totalVoters === 1 ? 'voter' : 'voters'}
+                  {state.totalVoters}{" "}
+                  {state.totalVoters === 1 ? "voter" : "voters"}
                 </span>
               </div>
             )}
@@ -531,14 +529,14 @@ export function PollVoting({
             <CardContent className="py-4">
               <div className="flex items-center justify-between">
                 <span className="text-gray-400 text-sm">
-                  Progress: {answeredQuestions} / {poll.questions.length}{' '}
+                  Progress: {answeredQuestions} / {poll.questions.length}{" "}
                   questions answered
                 </span>
                 {allQuestionsAnswered && (
                   <Button
                     className="border-purple-500/30 bg-purple-500/20 text-purple-300 hover:bg-purple-500/30"
                     onClick={() =>
-                      dispatch({ type: 'SET_SHOW_DASHBOARD', payload: true })
+                      dispatch({ type: "SET_SHOW_DASHBOARD", payload: true })
                     }
                     size="sm"
                     variant="outline"
@@ -591,8 +589,8 @@ export function PollVoting({
             >
               <Card
                 className={cn(
-                  'border-gray-800 bg-gray-900/80 backdrop-blur-xl',
-                  isAnswered && 'opacity-75'
+                  "border-gray-800 bg-gray-900/80 backdrop-blur-xl",
+                  isAnswered && "opacity-75"
                 )}
               >
                 <CardHeader>
@@ -610,14 +608,14 @@ export function PollVoting({
                       </Badge>
                     )}
                   </div>
-                  {question.type === 'multiple' && question.maxSelections && (
+                  {question.type === "multiple" && question.maxSelections && (
                     <CardDescription className="text-gray-400">
                       Select up to {question.maxSelections} options
                     </CardDescription>
                   )}
                 </CardHeader>
                 <CardContent className="space-y-4">
-                  {question.type === 'single' ? (
+                  {question.type === "single" ? (
                     <RadioGroup
                       disabled={isAnswered}
                       onValueChange={(value) =>
@@ -666,14 +664,14 @@ export function PollVoting({
                                 <motion.div
                                   animate={{ width: `${percentage}%` }}
                                   className={cn(
-                                    'h-full',
+                                    "h-full",
                                     option.color ||
-                                      'bg-gradient-to-r from-purple-500/20 to-purple-600/20'
+                                      "bg-gradient-to-r from-purple-500/20 to-purple-600/20"
                                   )}
                                   initial={{ width: 0 }}
                                   transition={{
                                     duration: 0.5,
-                                    ease: 'easeOut',
+                                    ease: "easeOut",
                                   }}
                                 />
                               </div>
@@ -736,14 +734,14 @@ export function PollVoting({
                                 <motion.div
                                   animate={{ width: `${percentage}%` }}
                                   className={cn(
-                                    'h-full',
+                                    "h-full",
                                     option.color ||
-                                      'bg-gradient-to-r from-purple-500/20 to-purple-600/20'
+                                      "bg-gradient-to-r from-purple-500/20 to-purple-600/20"
                                   )}
                                   initial={{ width: 0 }}
                                   transition={{
                                     duration: 0.5,
-                                    ease: 'easeOut',
+                                    ease: "easeOut",
                                   }}
                                 />
                               </div>

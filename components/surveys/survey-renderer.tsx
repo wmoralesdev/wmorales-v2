@@ -1,35 +1,34 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
+"use client";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { AnimatePresence, motion } from 'framer-motion';
-import { ArrowLeft, ArrowRight, Check, Info } from 'lucide-react';
-import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { toast } from 'sonner';
-import * as z from 'zod';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { AnimatePresence, motion } from "framer-motion";
+import { ArrowLeft, ArrowRight, Check, Info } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
 import {
   completeSurveyResponse,
   createSurveyResponse,
   saveSurveyAnswer,
-} from '@/app/actions/survey.actions';
-import { Button } from '@/components/ui/button';
+} from "@/app/actions/survey.actions";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Form } from '@/components/ui/form';
+} from "@/components/ui/card";
+import { Form } from "@/components/ui/form";
 import type {
   Question,
   SurveyQuestion,
   SurveySection,
   SurveyWithSections,
-} from '@/lib/types/survey.types';
-import { QuestionRenderer } from './question-renderer';
+} from "@/lib/types/survey.types";
+import { QuestionRenderer } from "./question-renderer";
 
 type SurveyRendererProps = {
   survey: SurveyWithSections;
@@ -67,23 +66,23 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
     const schemas = {
       text: () =>
         question.required
-          ? z.string().min(1, 'This field is required')
+          ? z.string().min(1, "This field is required")
           : z.string().optional(),
       textarea: () =>
         question.required
-          ? z.string().min(1, 'This field is required')
+          ? z.string().min(1, "This field is required")
           : z.string().optional(),
       radio: () =>
         question.required
-          ? z.string().min(1, 'Please select an option')
+          ? z.string().min(1, "Please select an option")
           : z.string().optional(),
       select: () =>
         question.required
-          ? z.string().min(1, 'Please select an option')
+          ? z.string().min(1, "Please select an option")
           : z.string().optional(),
       checkbox: () =>
         question.required
-          ? z.array(z.string()).min(1, 'Please select at least one option')
+          ? z.array(z.string()).min(1, "Please select at least one option")
           : z.array(z.string()).optional(),
     } as const;
 
@@ -126,12 +125,9 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
     }
     return null;
   };
-  const isLastSection = (nextPath: string | null): boolean => {
-    return (
-      currentSectionIndex >= survey.sections.length - 1 ||
-      Boolean(nextPath && !survey.sections.find((s) => s.path === nextPath))
-    );
-  };
+  const isLastSection = (nextPath: string | null): boolean =>
+    currentSectionIndex >= survey.sections.length - 1 ||
+    Boolean(nextPath && !survey.sections.find((s) => s.path === nextPath));
 
   const handleSubmit = async () => {
     if (!responseId) {
@@ -146,7 +142,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
       // Redirect to thank you or results page
       router.push(`/surveys/${survey.id}?completed=true`);
     } catch (_error) {
-      toast.error('Failed to submit survey');
+      toast.error("Failed to submit survey");
     } finally {
       setIsSubmitting(false);
     }

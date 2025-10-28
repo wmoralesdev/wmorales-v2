@@ -1,0 +1,16 @@
+{
+  "extends": ["ultracite/core", "ultracite/react", "ultracite/next"],
+  "linter": {
+    "rules": {
+      "nursery": {
+        "noEmptySource": "off"
+      },
+      "performance": {
+        "noBarrelFile": "off"
+      },
+      "suspicious": {
+        "noConsole": "off"
+      }
+    }
+  }
+}

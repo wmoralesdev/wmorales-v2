@@ -23,7 +23,7 @@ export type SurveyQuestion = {
   sectionId: string;
   questionOrder: number;
   question: string;
-  type: 'text' | 'textarea' | 'radio' | 'checkbox' | 'select';
+  type: "text" | "textarea" | "radio" | "checkbox" | "select";
   required: boolean;
   placeholder?: string | null;
   options?: SurveyQuestionOption[];
@@ -58,7 +58,7 @@ export type SurveyAnswer = {
 export type Question = {
   id: string;
   question: string;
-  type: 'text' | 'textarea' | 'radio' | 'checkbox' | 'select';
+  type: "text" | "textarea" | "radio" | "checkbox" | "select";
   required?: boolean;
   placeholder?: string;
   options?: Option[];

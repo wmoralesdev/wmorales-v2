@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import type { EventImage } from '@prisma/client';
-import { motion, type Variants } from 'framer-motion';
-import { Eye, Image as ImageIcon, Sparkles } from 'lucide-react';
-import Image from 'next/image';
-import { useState } from 'react';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { useTranslations } from 'next-intl';
+import type { EventImage } from "@prisma/client";
+import { motion, type Variants } from "framer-motion";
+import { Eye, Image as ImageIcon, Sparkles } from "lucide-react";
+import Image from "next/image";
+import { useTranslations } from "next-intl";
+import { useState } from "react";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 type ImageGridProps = {
   images: EventImage[];
@@ -31,13 +31,13 @@ const itemVariants: Variants = {
     scale: 1,
     transition: {
       duration: 0.4,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   },
 };
 
 export function ImageGrid({ images, onImageClick }: ImageGridProps) {
-  const t = useTranslations('events');
+  const t = useTranslations("events");
   const [hoveredImage, setHoveredImage] = useState<string | null>(null);
 
   if (images.length === 0) {
@@ -54,9 +54,9 @@ export function ImageGrid({ images, onImageClick }: ImageGridProps) {
             <Sparkles className="-top-2 -right-2 absolute h-6 w-6 animate-pulse text-purple-400" />
           </div>
           <h3 className="mb-3 font-semibold text-white text-xl">
-            {t('noPhotosYet')}
+            {t("noPhotosYet")}
           </h3>
-          <p className="text-gray-400 text-sm">{t('beTheFirstToShare')}</p>
+          <p className="text-gray-400 text-sm">{t("beTheFirstToShare")}</p>
         </div>
       </motion.div>
     );
@@ -81,7 +81,7 @@ export function ImageGrid({ images, onImageClick }: ImageGridProps) {
         >
           <div className="aspect-square overflow-hidden rounded-xl border border-gray-800 bg-gray-900/50 transition-all duration-300 group-hover:border-purple-500/50 group-hover:shadow-lg group-hover:shadow-purple-500/20">
             <Image
-              alt={image.caption || 'Event photo'}
+              alt={image.caption || "Event photo"}
               className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110"
               height={100}
               loading="lazy"
@@ -93,7 +93,7 @@ export function ImageGrid({ images, onImageClick }: ImageGridProps) {
           {/* Overlay */}
           <div className="absolute inset-0 flex items-center justify-center rounded-xl bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100">
             <Button
-              className="border-0 bg-purple-500/90 text-white shadow-lg backdrop-blur-sm hover:bg-purple-600/90 cursor-pointer"
+              className="cursor-pointer border-0 bg-purple-500/90 text-white shadow-lg backdrop-blur-sm hover:bg-purple-600/90"
               size="sm"
             >
               <Eye className="h-4 w-4" />

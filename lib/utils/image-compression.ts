@@ -1,4 +1,4 @@
-import imageCompression from 'browser-image-compression';
+import imageCompression from "browser-image-compression";
 
 export interface CompressionOptions {
   maxSizeMB: number;
@@ -78,7 +78,7 @@ export async function compressImage(
 
     return compressedFile;
   } catch (error) {
-    console.error('Image compression failed:', error);
+    console.error("Image compression failed:", error);
     // Return original file if compression fails
     return file;
   }
@@ -121,11 +121,11 @@ export async function batchCompressImages(
  */
 export function isValidImageFile(file: File): boolean {
   const validTypes = [
-    'image/jpeg',
-    'image/jpg',
-    'image/png',
-    'image/webp',
-    'image/heic',
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/webp",
+    "image/heic",
   ];
   return validTypes.includes(file.type.toLowerCase());
 }
@@ -136,11 +136,11 @@ export function isValidImageFile(file: File): boolean {
  * @returns string - Formatted file size
  */
 export function formatFileSize(bytes: number): string {
-  if (bytes === 0) return '0 Bytes';
+  if (bytes === 0) return "0 Bytes";
 
   const k = 1024;
-  const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+  const sizes = ["Bytes", "KB", "MB", "GB"];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
 
-  return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
+  return Number.parseFloat((bytes / k ** i).toFixed(2)) + " " + sizes[i];
 }

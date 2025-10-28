@@ -1,6 +1,5 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { PrismaClientKnownRequestError } from '@prisma/client/runtime/library';
-import { prisma } from './prisma';
+import { PrismaClientKnownRequestError } from "@prisma/client/runtime/library";
+import { prisma } from "./prisma";
 
 type RetryOptions = {
   maxRetries?: number;
@@ -34,7 +33,7 @@ function logRetryAttempt(
   delay: number,
   error: unknown
 ): void {
-  if (process.env.NODE_ENV === 'development') {
+  if (process.env.NODE_ENV === "development") {
     // biome-ignore lint/suspicious/noConsole: Development logging for database retries
     console.warn(
       `Database operation failed (attempt ${attempt + 1}/${maxRetries + 1}), retrying in ${delay}ms...`,
@@ -50,17 +49,17 @@ function isRetryableError(error: unknown): boolean {
     // P1001: Can't reach database server
     // P1008: Operations timed out
     // P1017: Server has closed the connection
-    return ['P1001', 'P1008', 'P1017'].includes(error.code);
+    return ["P1001", "P1008", "P1017"].includes(error.code);
   }
 
   if (error instanceof Error) {
     const message = error.message.toLowerCase();
     return (
-      message.includes('connection') ||
-      message.includes('timeout') ||
-      message.includes('econnrefused') ||
-      message.includes('enotfound') ||
-      message.includes('server has closed')
+      message.includes("connection") ||
+      message.includes("timeout") ||
+      message.includes("econnrefused") ||
+      message.includes("enotfound") ||
+      message.includes("server has closed")
     );
   }
 
@@ -167,13 +166,13 @@ export const db = {
       return result[0];
     } catch (error) {
       // Log error in development only
-      if (process.env.NODE_ENV === 'development') {
+      if (process.env.NODE_ENV === "development") {
         // biome-ignore lint/suspicious/noConsole: Development logging for connection diagnostics
-        console.error('Failed to get connection info:', error);
+        console.error("Failed to get connection info:", error);
       }
       return null;
     }
   },
 };
 
-export { prisma } from './prisma';
+export { prisma } from "./prisma";

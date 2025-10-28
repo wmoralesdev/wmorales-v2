@@ -1,39 +1,39 @@
 // Export all markdown components from their individual files
 
-export { Alert } from '@/components/ui/alert';
+export { Alert } from "@/components/ui/alert";
 // Export UI components for convenience
-export { Badge } from '@/components/ui/badge';
-export { Button } from '@/components/ui/button';
-export { Callout } from './callout';
-export { CardComponent as Card } from './card';
-export { CodeBlock } from './code-block';
-export { CopyButton } from './copy-button';
-export { H1, H2, H3, H4, H5, H6, Heading } from './heading';
-export { ImageComponent as Image } from './image';
-export { LinkComponent as Link } from './link';
+export { Badge } from "@/components/ui/badge";
+export { Button } from "@/components/ui/button";
+export { Callout } from "./callout";
+export { CardComponent as Card } from "./card";
+export { CodeBlock } from "./code-block";
+export { CopyButton } from "./copy-button";
+export { H1, H2, H3, H4, H5, H6, Heading } from "./heading";
+export { ImageComponent as Image } from "./image";
+export { LinkComponent as Link } from "./link";
 
 // Export existing components
-export { PostCard } from './post-card';
-export { ReadingProgress } from './reading-progress';
-export { SeparatorComponent as Separator } from './separator';
-export { ShareButtons } from './share-buttons';
-export { TableOfContents } from './table-of-contents';
-export { Video } from './video';
+export { PostCard } from "./post-card";
+export { ReadingProgress } from "./reading-progress";
+export { SeparatorComponent as Separator } from "./separator";
+export { ShareButtons } from "./share-buttons";
+export { TableOfContents } from "./table-of-contents";
+export { Video } from "./video";
 
-import { Alert } from '@/components/ui/alert';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+import { Alert } from "@/components/ui/alert";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 // Import components for the main object
-import { Callout } from './callout';
-import { CardComponent } from './card';
-import { CodeBlock } from './code-block';
-import { CopyButton } from './copy-button';
-import { H1, H2, H3, H4, H5, H6, Heading } from './heading';
-import { ImageComponent } from './image';
-import { LinkComponent } from './link';
-import { SeparatorComponent } from './separator';
-import { TableOfContents } from './table-of-contents';
-import { Video } from './video';
+import { Callout } from "./callout";
+import { CardComponent } from "./card";
+import { CodeBlock } from "./code-block";
+import { CopyButton } from "./copy-button";
+import { H1, H2, H3, H4, H5, H6, Heading } from "./heading";
+import { ImageComponent } from "./image";
+import { LinkComponent } from "./link";
+import { SeparatorComponent } from "./separator";
+import { TableOfContents } from "./table-of-contents";
+import { Video } from "./video";
 
 // Main components object for Markdoc rendering
 export const MarkdownComponents = {

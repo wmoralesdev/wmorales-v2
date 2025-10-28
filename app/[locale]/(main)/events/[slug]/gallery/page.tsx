@@ -1,9 +1,9 @@
-import type { EventContent } from '@prisma/client';
-import { setRequestLocale } from 'next-intl/server';
-import { notFound } from 'next/navigation';
-import { getEventBySlug } from '@/app/actions/events.actions';
-import { ArtisticGallery } from '@/components/events/artistic-gallery';
-import { BackToTop } from '@/components/common/backtotop';
+import type { EventContent } from "@prisma/client";
+import { notFound } from "next/navigation";
+import { setRequestLocale } from "next-intl/server";
+import { getEventBySlug } from "@/app/actions/events.actions";
+import { BackToTop } from "@/components/common/backtotop";
+import { ArtisticGallery } from "@/components/events/artistic-gallery";
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
@@ -21,12 +21,12 @@ export async function generateMetadata({ params }: Props) {
 
     return {
       title: `${eventContent.title} - Gallery`,
-      description: eventContent.description || 'Event photo gallery',
+      description: eventContent.description || "Event photo gallery",
     };
   } catch {
     return {
-      title: 'Gallery Not Found',
-      description: 'This gallery could not be found.',
+      title: "Gallery Not Found",
+      description: "This gallery could not be found.",
     };
   }
 }
@@ -57,7 +57,7 @@ export default async function EventGalleryPage({ params }: Props) {
         <BackToTop />
       </>
     );
-  } catch (error) {
+  } catch {
     notFound();
   }
 }

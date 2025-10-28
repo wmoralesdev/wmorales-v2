@@ -1,7 +1,9 @@
-'use client';
+"use client";
 
-import { motion, type Variants } from 'framer-motion';
-import { ChevronDown } from 'lucide-react';
+import { motion, type Variants } from "framer-motion";
+import { ChevronDown } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useEffect, useRef, useState } from "react";
 import {
   CoffeeChatCard,
   CurrentlyLearningCard,
@@ -9,11 +11,9 @@ import {
   GlobalReachCard,
   TechStackCard,
   TerminalCard,
-} from '@/components/landing/hero-cards';
-import { Button } from '@/components/ui/button';
-import { EMAIL } from '@/lib/consts';
-import { useTranslations } from 'next-intl';
-import { useEffect, useRef, useState } from 'react';
+} from "@/components/landing/hero-cards";
+import { Button } from "@/components/ui/button";
+import { EMAIL } from "@/lib/consts";
 
 // Type definitions for Google Calendar API
 declare global {
@@ -50,26 +50,26 @@ const itemVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   },
 };
 
 export function HeroSection() {
-  const t = useTranslations('homepage.hero');
+  const t = useTranslations("homepage.hero");
   const mainButtonRef = useRef<HTMLScriptElement | null>(null);
   const [mainScriptLoaded, setMainScriptLoaded] = useState(false);
   const [mainButtonInitialized, setMainButtonInitialized] = useState(false);
 
   const scrollToContact = () => {
-    document.querySelector('#contact')?.scrollIntoView({ behavior: 'smooth' });
+    document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
   };
 
   useEffect(() => {
     // Load the Google Calendar script for main button
-    const script = document.createElement('script');
+    const script = document.createElement("script");
     script.src =
-      'https://calendar.google.com/calendar/scheduling-button-script.js';
+      "https://calendar.google.com/calendar/scheduling-button-script.js";
     script.async = true;
 
     script.onload = () => {
@@ -79,15 +79,15 @@ export function HeroSection() {
       if (mainButtonRef.current && window.calendar?.schedulingButton) {
         try {
           window.calendar.schedulingButton.load({
-            url: 'https://calendar.google.com/calendar/appointments/schedules/AcZssZ3le7owokGKyKwsSTL9NavJ_kVj19-XBgqzGbwLcx5Q8qmSQNOK-C0rYCpJqDumc8mHycf9P-lg?gv=true',
-            color: '#fff',
-            label: t('letsWorkTogether'),
+            url: "https://calendar.google.com/calendar/appointments/schedules/AcZssZ3le7owokGKyKwsSTL9NavJ_kVj19-XBgqzGbwLcx5Q8qmSQNOK-C0rYCpJqDumc8mHycf9P-lg?gv=true",
+            color: "#fff",
+            label: t("letsWorkTogether"),
             target: mainButtonRef.current,
           });
           setMainButtonInitialized(true);
         } catch (error) {
           console.error(
-            'Failed to initialize main Google Calendar button:',
+            "Failed to initialize main Google Calendar button:",
             error
           );
         }
@@ -95,7 +95,7 @@ export function HeroSection() {
     };
 
     script.onerror = () => {
-      console.error('Failed to load Google Calendar script for main button');
+      console.error("Failed to load Google Calendar script for main button");
       setMainScriptLoaded(true); // Set as loaded to show fallback
     };
 
@@ -117,8 +117,8 @@ export function HeroSection() {
 
   const handleMainFallbackClick = () => {
     window.open(
-      'https://calendar.google.com/calendar/appointments/schedules/AcZssZ3le7owokGKyKwsSTL9NavJ_kVj19-XBgqzGbwLcx5Q8qmSQNOK-C0rYCpJqDumc8mHycf9P-lg?gv=true',
-      '_blank'
+      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ3le7owokGKyKwsSTL9NavJ_kVj19-XBgqzGbwLcx5Q8qmSQNOK-C0rYCpJqDumc8mHycf9P-lg?gv=true",
+      "_blank"
     );
   };
 
@@ -140,28 +140,28 @@ export function HeroSection() {
                   <div className="absolute inset-0 h-3 w-3 animate-ping rounded-full bg-green-500" />
                 </div>
                 <span className="font-medium text-green-400 text-sm">
-                  {t('availableForNewProjects')}
+                  {t("availableForNewProjects")}
                 </span>
               </div>
 
               <h1 className="font-bold text-4xl tracking-tight sm:text-5xl lg:text-6xl">
-                <span className="text-gray-400">👋 {t('title')}</span>
+                <span className="text-gray-400">👋 {t("title")}</span>
                 <br />
                 <span className="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
-                  {t('innovate')}
+                  {t("innovate")}
                 </span>
               </h1>
 
               <div className="space-y-4">
                 <h2 className="font-semibold text-2xl sm:text-3xl lg:text-4xl">
-                  <span className="text-white">{t('developmentWith')}</span>{' '}
+                  <span className="text-white">{t("developmentWith")}</span>{" "}
                   <span className="bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
-                    {t('passion')}
+                    {t("passion")}
                   </span>
                   <br />
-                  <span className="text-white">{t('toCreateImpactful')}</span>
+                  <span className="text-white">{t("toCreateImpactful")}</span>
                   <br />
-                  <span className="text-gray-300">{t('products')}.</span>
+                  <span className="text-gray-300">{t("products")}.</span>
                 </h2>
               </div>
 
@@ -189,18 +189,18 @@ export function HeroSection() {
                     onClick={handleMainFallbackClick}
                     size="lg"
                   >
-                    {t('letsWorkTogether')}
+                    {t("letsWorkTogether")}
                   </Button>
                 )}
 
                 {/* Loading state */}
                 {!mainScriptLoaded && (
                   <Button
-                    className="rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white shadow-lg opacity-50"
+                    className="rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white opacity-50 shadow-lg"
                     disabled
                     size="lg"
                   >
-                    {t('letsWorkTogether')}
+                    {t("letsWorkTogether")}
                   </Button>
                 )}
 
@@ -283,7 +283,7 @@ export function HeroSection() {
           transition={{
             duration: 2,
             repeat: Number.POSITIVE_INFINITY,
-            ease: 'easeInOut',
+            ease: "easeInOut",
           }}
         >
           <ChevronDown className="h-6 w-6 text-purple-400/60" />

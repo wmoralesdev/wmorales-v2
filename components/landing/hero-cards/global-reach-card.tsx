@@ -1,12 +1,12 @@
-import { Globe } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import { BaseCard, type BaseCardProps } from './base-card';
-import { useTranslations } from 'next-intl';
+import { Globe } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { Badge } from "@/components/ui/badge";
+import { BaseCard, type BaseCardProps } from "./base-card";
 
-type GlobalReachCardProps = Omit<BaseCardProps, 'children' | 'id'>;
+type GlobalReachCardProps = Omit<BaseCardProps, "children" | "id">;
 
 export function GlobalReachCard(props: GlobalReachCardProps) {
-  const t = useTranslations('homepage.cards');
+  const t = useTranslations("homepage.cards");
 
   return (
     <BaseCard
@@ -23,9 +23,9 @@ export function GlobalReachCard(props: GlobalReachCardProps) {
         </div>
         <div>
           <div className="font-bold text-2xl text-white lg:text-3xl">10+</div>
-          <p className="text-gray-400 text-xs lg:text-sm">{t('globalReach')}</p>
+          <p className="text-gray-400 text-xs lg:text-sm">{t("globalReach")}</p>
           <p className="mt-1 text-gray-500 text-xs">
-            {t('clientsFromAroundTheWorld')}
+            {t("clientsFromAroundTheWorld")}
           </p>
         </div>
       </div>

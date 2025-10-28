@@ -6,7 +6,7 @@ import { routing } from "./i18n/routing";
 // Create the internationalization middleware
 const intlMiddleware = createMiddleware(routing);
 
-export async function middleware(request: NextRequest) {
+export default async function proxy(request: NextRequest) {
   // Step 1: Skip i18n for API routes, redirect routes, and auth callback
   // These routes should not have locale prefixes
   const isApiRoute = request.nextUrl.pathname.startsWith("/api");
@@ -21,7 +21,12 @@ export async function middleware(request: NextRequest) {
     // Check if internationalization middleware requires a redirect
     // If intl middleware returns a redirect (307 or 302), return it immediately
     // This ensures proper locale handling before any authentication logic
-    if (intlResponse.status === 307 || intlResponse.status === 302) {
+    const REDIRECT_STATUS_CODE_307 = 307;
+    const REDIRECT_STATUS_CODE_302 = 302;
+    if (
+      intlResponse.status === REDIRECT_STATUS_CODE_307 ||
+      intlResponse.status === REDIRECT_STATUS_CODE_302
+    ) {
       return intlResponse;
     }
   }
@@ -95,8 +100,8 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - manifest.json (PWA manifest)
-     * - public folder files
+     * - public folder files (images, videos, etc.)
      */
-    "/((?!api|r/|_next/static|_next/image|favicon.ico|manifest.json|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    "/((?!api|r/|_next/static|_next/image|favicon.ico|manifest.json|.*\\.(?:svg|png|jpg|jpeg|gif|webp|webm|mp4|mp3|ogg|pdf|zip)$).*)",
   ],
 };

@@ -1,16 +1,16 @@
-import type { Event, EventContent } from '@prisma/client';
-import { AlertTriangle, Sparkles } from 'lucide-react';
-import { getTranslations, setRequestLocale } from 'next-intl/server';
+import type { Event, EventContent } from "@prisma/client";
+import { AlertTriangle, Sparkles } from "lucide-react";
+import { getTranslations, setRequestLocale } from "next-intl/server";
 import {
   getEventBySlug,
   getUserEventImages,
-} from '@/app/actions/events.actions';
-import { EventGallery } from '@/components/events/event-gallery';
-import { Alert, AlertDescription } from '@/components/ui/alert';
-import { createClient } from '@/lib/supabase/server';
-import { InnerHero } from '@/components/common/inner-hero';
-import { BackToTop } from '@/components/common/backtotop';
-import { ExtendedEventImage } from '@/lib/types/event.types';
+} from "@/app/actions/events.actions";
+import { BackToTop } from "@/components/common/backtotop";
+import { InnerHero } from "@/components/common/inner-hero";
+import { EventGallery } from "@/components/events/event-gallery";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { createClient } from "@/lib/supabase/server";
+import type { ExtendedEventImage } from "@/lib/types/event.types";
 
 type Props = {
   params: Promise<{ locale: string; slug: string }>;
@@ -34,12 +34,12 @@ export async function generateMetadata({ params }: Props) {
 
     return {
       title: eventContent.title,
-      description: eventContent.description || 'Event photo gallery',
+      description: eventContent.description || "Event photo gallery",
     };
   } catch {
     return {
-      title: 'Event Not Found',
-      description: 'This event could not be found.',
+      title: "Event Not Found",
+      description: "This event could not be found.",
     };
   }
 }
@@ -69,7 +69,7 @@ export default async function EventPage({ params }: Props) {
   setRequestLocale(locale);
 
   // Get translations
-  const t = await getTranslations('events');
+  const t = await getTranslations("events");
 
   // Fetch event data first, then user images with the event ID
   const event = await getEventBySlug(slug);
@@ -92,7 +92,7 @@ export default async function EventPage({ params }: Props) {
       ...img,
       caption: img.caption || null,
       profile: {
-        name: img.profile.name || 'Unknown',
+        name: img.profile.name || "Unknown",
         avatar: img.profile.avatar || undefined,
       },
     })),
@@ -101,17 +101,17 @@ export default async function EventPage({ params }: Props) {
   return (
     <div className="min-h-screen">
       <InnerHero
-        description={event.content[0].description || t('sharePhotos')}
+        description={event.content[0].description || t("sharePhotos")}
         icon={Sparkles}
         title={event.content[0].title}
       />
 
-      <div className="container mx-auto lg:px-4 py-16">
+      <div className="container mx-auto py-16 lg:px-4">
         {isEventEnded && (
           <Alert className="mb-6 border-yellow-500/30 bg-yellow-500/10">
             <AlertTriangle className="h-4 w-4 text-yellow-400" />
             <AlertDescription className="text-yellow-300">
-              {t('eventEnded')}
+              {t("eventEnded")}
             </AlertDescription>
           </Alert>
         )}

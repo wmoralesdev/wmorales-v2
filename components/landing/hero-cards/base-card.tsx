@@ -1,10 +1,9 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
+"use client";
 
-import { motion, type Variants } from 'framer-motion';
-import { type ReactNode, useEffect, useRef, useState } from 'react';
-import { Card } from '@/components/ui/card';
-import { cn } from '@/lib/utils';
+import { motion, type Variants } from "framer-motion";
+import { type ReactNode, useEffect, useRef, useState } from "react";
+import { Card } from "@/components/ui/card";
+import { cn } from "@/lib/utils";
 
 export type BaseCardProps = {
   id: string;
@@ -28,14 +27,14 @@ export const cardVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   },
   hover: {
     scale: 1.05,
     transition: {
       duration: 0.2,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   },
 };
@@ -46,12 +45,12 @@ export const floatVariants: Variants = {
     transition: {
       duration: 6,
       repeat: Number.POSITIVE_INFINITY,
-      ease: 'easeInOut',
+      ease: "easeInOut",
     },
   },
 };
 
-const STORAGE_KEY = 'hero-cards-positions';
+const STORAGE_KEY = "hero-cards-positions";
 
 // Reset all card positions
 export function resetCardPositions() {
@@ -67,7 +66,7 @@ export function BaseCard({
   defaultPosition,
   isDraggable = true,
   variants = cardVariants,
-  whileHover = 'hover',
+  whileHover = "hover",
   animate,
   transition,
   animateFloat = false,
@@ -83,8 +82,8 @@ export function BaseCard({
       setIsDesktop(window.innerWidth >= 1024);
     };
     checkDesktop();
-    window.addEventListener('resize', checkDesktop);
-    return () => window.removeEventListener('resize', checkDesktop);
+    window.addEventListener("resize", checkDesktop);
+    return () => window.removeEventListener("resize", checkDesktop);
   }, []);
 
   // Load position from localStorage
@@ -138,7 +137,7 @@ export function BaseCard({
   return (
     <motion.div
       animate={combinedAnimate}
-      className={cn('cursor-pointer', containerClassName, isDragging && 'z-50')}
+      className={cn("cursor-pointer", containerClassName, isDragging && "z-50")}
       drag={isDesktop && isDraggable}
       dragConstraints={dragConstraints}
       dragElastic={0.1}
@@ -156,10 +155,10 @@ export function BaseCard({
     >
       <Card
         className={cn(
-          'h-full transition-colors',
-          'hover:border-purple-800/50',
-          isDragging && 'cursor-grabbing shadow-2xl',
-          !isDragging && isDesktop && isDraggable && 'cursor-grab',
+          "h-full transition-colors",
+          "hover:border-purple-800/50",
+          isDragging && "cursor-grabbing shadow-2xl",
+          !isDragging && isDesktop && isDraggable && "cursor-grab",
           className
         )}
       >

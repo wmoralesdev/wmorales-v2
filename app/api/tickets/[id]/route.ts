@@ -1,5 +1,5 @@
-import { type NextRequest, NextResponse } from 'next/server';
-import { getTicketById } from '@/app/actions/guestbook.actions';
+import { type NextRequest, NextResponse } from "next/server";
+import { getTicketById } from "@/app/actions/guestbook.actions";
 
 export async function GET(
   _request: NextRequest,
@@ -11,7 +11,7 @@ export async function GET(
     const ticket = await getTicketById(id);
 
     if (!ticket) {
-      return NextResponse.json({ error: 'Ticket not found' }, { status: 404 });
+      return NextResponse.json({ error: "Ticket not found" }, { status: 404 });
     }
 
     return NextResponse.json({
@@ -30,7 +30,7 @@ export async function GET(
     });
   } catch {
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: "Internal server error" },
       { status: 500 }
     );
   }

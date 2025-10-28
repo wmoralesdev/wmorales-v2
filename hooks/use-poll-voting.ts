@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import { useCallback, useRef } from 'react';
-import useSWR, { type KeyedMutator } from 'swr';
-import { getUserVotes, votePoll } from '@/app/actions/poll.actions';
+import { useCallback, useRef } from "react";
+import useSWR, { type KeyedMutator } from "swr";
+import { getUserVotes, votePoll } from "@/app/actions/poll.actions";
 
 type UserVotes = Record<string, string[]>;
 
@@ -32,7 +32,7 @@ export function usePollVoting(
     isValidating,
     mutate,
   } = useSWR(
-    pollId ? ['user-votes', pollId] : null,
+    pollId ? ["user-votes", pollId] : null,
     async ([, id]: [string, string]) => {
       const { data } = await getUserVotes(id);
       return data || {};
@@ -127,7 +127,7 @@ export function usePollVoting(
 
         return {
           success: false,
-          error: error instanceof Error ? error.message : 'Failed to vote',
+          error: error instanceof Error ? error.message : "Failed to vote",
         };
       }
     },
@@ -164,7 +164,7 @@ export function usePollVoting(
             return {
               questionId,
               success: false,
-              error: error instanceof Error ? error.message : 'Failed to vote',
+              error: error instanceof Error ? error.message : "Failed to vote",
             };
           }
         });
@@ -199,7 +199,7 @@ export function usePollVoting(
         return {
           success: false,
           error:
-            error instanceof Error ? error.message : 'Failed to submit votes',
+            error instanceof Error ? error.message : "Failed to submit votes",
           results,
         };
       }
@@ -210,11 +210,11 @@ export function usePollVoting(
   // Sync with real-time updates
   const syncUpdate = useCallback(
     (update: {
-      type: 'vote_added' | 'vote_removed';
+      type: "vote_added" | "vote_removed";
       questionId: string;
       optionIds?: string[];
     }) => {
-      if (update.type === 'vote_added' && update.optionIds) {
+      if (update.type === "vote_added" && update.optionIds) {
         mutate(
           (current = {}) => ({
             ...current,
@@ -225,7 +225,7 @@ export function usePollVoting(
             populateCache: true,
           }
         );
-      } else if (update.type === 'vote_removed') {
+      } else if (update.type === "vote_removed") {
         mutate(
           (current = {}) => {
             const updated = { ...current };
@@ -244,25 +244,20 @@ export function usePollVoting(
 
   // Check if user has voted for a specific question
   const hasVoted = useCallback(
-    (questionId: string) => {
-      return (userVotes?.[questionId] || []).length > 0;
-    },
+    (questionId: string) => (userVotes?.[questionId] || []).length > 0,
     [userVotes]
   );
 
   // Get user's vote for a specific question
   const getUserVote = useCallback(
-    (questionId: string) => {
-      return userVotes?.[questionId] || [];
-    },
+    (questionId: string) => userVotes?.[questionId] || [],
     [userVotes]
   );
 
   // Check if all questions are answered
   const allQuestionsAnswered = useCallback(
-    (questionIds: string[]) => {
-      return questionIds.every((questionId) => hasVoted(questionId));
-    },
+    (questionIds: string[]) =>
+      questionIds.every((questionId) => hasVoted(questionId)),
     [hasVoted]
   );
 

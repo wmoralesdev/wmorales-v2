@@ -1,17 +1,16 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
+"use client";
 
-import { motion, type Variants } from 'framer-motion';
-import { ArrowRight, BarChart3 } from 'lucide-react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
+import { motion, type Variants } from "framer-motion";
+import { ArrowRight, BarChart3 } from "lucide-react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
+} from "@/components/ui/card";
 
 // Animation variants
 const containerVariants: Variants = {
@@ -31,14 +30,14 @@ const cardVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   },
   hover: {
     scale: 1.02,
     transition: {
       duration: 0.2,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   },
 };
@@ -105,7 +104,7 @@ export function SurveysListClient({ surveys, error }: SurveysListClientProps) {
               <div className="flex items-center justify-between text-gray-500 text-sm">
                 <span className="inline-flex items-center gap-1.5">
                   <div
-                    className={`h-2 w-2 rounded-full ${survey.status === 'active' ? 'animate-pulse bg-green-500' : 'bg-gray-500'}`}
+                    className={`h-2 w-2 rounded-full ${survey.status === "active" ? "animate-pulse bg-green-500" : "bg-gray-500"}`}
                   />
                   Status: {survey.status}
                 </span>

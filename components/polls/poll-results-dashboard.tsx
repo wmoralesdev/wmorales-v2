@@ -1,27 +1,26 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-'use client';
+"use client";
 
-import type { RealtimeChannel } from '@supabase/supabase-js';
-import { AnimatePresence, motion } from 'framer-motion';
-import { Activity, BarChart3, PieChart, RefreshCw, Users } from 'lucide-react';
-import { useEffect, useRef, useState } from 'react';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import type { RealtimeChannel } from "@supabase/supabase-js";
+import { AnimatePresence, motion } from "framer-motion";
+import { Activity, BarChart3, PieChart, RefreshCw, Users } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { usePollResultsSWR } from '@/hooks/use-poll-results-swr';
+} from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { usePollResultsSWR } from "@/hooks/use-poll-results-swr";
 import {
   type PollPresence,
   type PollRealtimeEvent,
   subscribeToPollUpdates,
-} from '@/lib/supabase/realtime';
-import type { PollResults } from '@/lib/types/poll.types';
-import { cn } from '@/lib/utils';
+} from "@/lib/supabase/realtime";
+import type { PollResults } from "@/lib/types/poll.types";
+import { cn } from "@/lib/utils";
 
 type PollResultsDashboardProps = {
   pollId: string;
@@ -32,13 +31,13 @@ type PollResultsDashboardProps = {
 
 function getInitials(name?: string): string {
   if (!name) {
-    return 'UN';
+    return "UN";
   }
 
   return name
-    .split(' ')
+    .split(" ")
     .map((n) => n[0])
-    .join('')
+    .join("")
     .toUpperCase()
     .slice(0, 2);
 }
@@ -84,7 +83,7 @@ export function PollResultsDashboard({
     const channel = subscribeToPollUpdates(
       pollCode,
       async (event: PollRealtimeEvent) => {
-        if (event.type === 'results_updated' || event.type === 'vote_added') {
+        if (event.type === "results_updated" || event.type === "vote_added") {
           setIsUpdating(true);
           await refreshRef.current();
           setTimeout(() => setIsUpdating(false), 500);
@@ -260,7 +259,7 @@ export function PollResultsDashboard({
                               animate={{ width: `${option.percentage}%` }}
                               className="h-full bg-gradient-to-r from-purple-500 to-purple-600"
                               initial={{ width: 0 }}
-                              transition={{ duration: 0.5, ease: 'easeOut' }}
+                              transition={{ duration: 0.5, ease: "easeOut" }}
                             />
                           </div>
                         </motion.div>
@@ -281,7 +280,7 @@ export function PollResultsDashboard({
                         Question {index + 1}: {question.question}
                       </CardTitle>
                       <CardDescription className="text-gray-400">
-                        {question.totalQuestionVotes} total responses •{' '}
+                        {question.totalQuestionVotes} total responses •{" "}
                         {question.type} choice
                       </CardDescription>
                     </CardHeader>
@@ -292,9 +291,9 @@ export function PollResultsDashboard({
                           .map((option: any, optionIndex: number) => (
                             <div
                               className={cn(
-                                'flex items-center justify-between rounded-lg border border-transparent p-3',
+                                "flex items-center justify-between rounded-lg border border-transparent p-3",
                                 optionIndex === 0 &&
-                                  'border-purple-500/30 bg-purple-500/10'
+                                  "border-purple-500/30 bg-purple-500/10"
                               )}
                               key={option.optionId}
                             >
@@ -309,10 +308,10 @@ export function PollResultsDashboard({
                                 )}
                                 <span
                                   className={cn(
-                                    'font-medium',
+                                    "font-medium",
                                     optionIndex === 0
-                                      ? 'text-purple-300'
-                                      : 'text-gray-300'
+                                      ? "text-purple-300"
+                                      : "text-gray-300"
                                   )}
                                 >
                                   {option.label}
@@ -383,7 +382,7 @@ export function PollResultsDashboard({
                     >
                       <Avatar className="h-8 w-8 border border-gray-700">
                         <AvatarImage
-                          alt={user.userName || 'User'}
+                          alt={user.userName || "User"}
                           src={user.userAvatar}
                         />
                         <AvatarFallback className="bg-purple-500/20 text-purple-300 text-xs">

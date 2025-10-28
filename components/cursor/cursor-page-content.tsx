@@ -1,6 +1,6 @@
-'use client';
+"use client";
 
-import { motion, type Variants } from 'framer-motion';
+import { motion, type Variants } from "framer-motion";
 import {
   BookOpen,
   Calendar,
@@ -13,11 +13,11 @@ import {
   Target,
   Users,
   Zap,
-} from 'lucide-react';
-import { useTranslations } from 'next-intl';
-import Link from 'next/link';
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
+} from "lucide-react";
+import Link from "next/link";
+import { useTranslations } from "next-intl";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 // Animation variants matching style guidelines
 const containerVariants: Variants = {
@@ -38,7 +38,7 @@ const itemVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   },
 };
@@ -51,14 +51,14 @@ const cardVariants: Variants = {
     y: 0,
     transition: {
       duration: 0.5,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   },
   hover: {
     scale: 1.05,
     transition: {
       duration: 0.2,
-      ease: 'easeOut',
+      ease: "easeOut",
     },
   },
 };
@@ -69,63 +69,63 @@ const floatVariants: Variants = {
     transition: {
       duration: 6,
       repeat: Number.POSITIVE_INFINITY,
-      ease: 'easeInOut',
+      ease: "easeInOut",
     },
   },
 };
 
 export function CursorPageContent() {
-  const t = useTranslations('cursor');
+  const t = useTranslations("cursor");
 
   const expertiseAreas = [
     {
-      title: t('expertise.tabCompletion.title'),
-      description: t('expertise.tabCompletion.description'),
+      title: t("expertise.tabCompletion.title"),
+      description: t("expertise.tabCompletion.description"),
       icon: Zap,
-      gradient: 'from-blue-500 to-purple-600',
+      gradient: "from-blue-500 to-purple-600",
     },
     {
-      title: t('expertise.inlineEdit.title'),
-      description: t('expertise.inlineEdit.description'),
+      title: t("expertise.inlineEdit.title"),
+      description: t("expertise.inlineEdit.description"),
       icon: Code2,
-      gradient: 'from-purple-500 to-pink-600',
+      gradient: "from-purple-500 to-pink-600",
     },
     {
-      title: t('expertise.agenticPrompts.title'),
-      description: t('expertise.agenticPrompts.description'),
+      title: t("expertise.agenticPrompts.title"),
+      description: t("expertise.agenticPrompts.description"),
       icon: MessageCircle,
-      gradient: 'from-green-500 to-teal-600',
+      gradient: "from-green-500 to-teal-600",
     },
   ];
 
   const offerings = [
     {
-      title: t('services.teamTraining.title'),
-      description: t('services.teamTraining.description'),
+      title: t("services.teamTraining.title"),
+      description: t("services.teamTraining.description"),
       features: [
-        t('services.teamTraining.features.workshops'),
-        t('services.teamTraining.features.bestPractices'),
-        t('services.teamTraining.features.customWorkflows'),
+        t("services.teamTraining.features.workshops"),
+        t("services.teamTraining.features.bestPractices"),
+        t("services.teamTraining.features.customWorkflows"),
       ],
       icon: Users,
     },
     {
-      title: t('services.consultations.title'),
-      description: t('services.consultations.description'),
+      title: t("services.consultations.title"),
+      description: t("services.consultations.description"),
       features: [
-        t('services.consultations.features.personalizedGuidance'),
-        t('services.consultations.features.workflowOptimization'),
-        t('services.consultations.features.advancedTechniques'),
+        t("services.consultations.features.personalizedGuidance"),
+        t("services.consultations.features.workflowOptimization"),
+        t("services.consultations.features.advancedTechniques"),
       ],
       icon: Calendar,
     },
     {
-      title: t('services.communityAccess.title'),
-      description: t('services.communityAccess.description'),
+      title: t("services.communityAccess.title"),
+      description: t("services.communityAccess.description"),
       features: [
-        t('services.communityAccess.features.whatsappGroup'),
-        t('services.communityAccess.features.resourceSharing'),
-        t('services.communityAccess.features.peerSupport'),
+        t("services.communityAccess.features.whatsappGroup"),
+        t("services.communityAccess.features.resourceSharing"),
+        t("services.communityAccess.features.peerSupport"),
       ],
       icon: Globe,
     },
@@ -141,8 +141,8 @@ export function CursorPageContent() {
             className="h-full w-full"
             style={{
               backgroundImage:
-                'linear-gradient(#8b5cf6 1px, transparent 1px), linear-gradient(90deg, #8b5cf6 1px, transparent 1px)',
-              backgroundSize: '50px 50px',
+                "linear-gradient(#8b5cf6 1px, transparent 1px), linear-gradient(90deg, #8b5cf6 1px, transparent 1px)",
+              backgroundSize: "50px 50px",
             }}
           />
         </div>
@@ -167,7 +167,7 @@ export function CursorPageContent() {
             >
               <div className="h-2 w-2 animate-pulse rounded-full bg-gradient-to-r from-purple-400 to-pink-400" />
               <span className="font-medium text-purple-300 text-xs lg:text-sm">
-                {t('pioneer')}
+                {t("pioneer")}
               </span>
             </motion.div>
           </motion.div>
@@ -176,14 +176,14 @@ export function CursorPageContent() {
             className="mb-6 bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text font-bold text-4xl text-transparent sm:text-5xl lg:text-6xl"
             variants={itemVariants}
           >
-            {t('title')}
+            {t("title")}
           </motion.h1>
 
           <motion.p
             className="mx-auto mb-8 max-w-2xl text-gray-400 text-lg sm:text-xl"
             variants={itemVariants}
           >
-            {t('subtitle')}
+            {t("subtitle")}
           </motion.p>
 
           {/* CTA Buttons with proper styling */}
@@ -194,7 +194,7 @@ export function CursorPageContent() {
             <Link href="https://linkedin.com/in/wmoralesdev" target="_blank">
               <Button className="group rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25">
                 <Linkedin className="mr-2 h-4 w-4" />
-                {t('connectLinkedIn')}
+                {t("connectLinkedIn")}
               </Button>
             </Link>
             <Link href="https://github.com/wmoralesdev" target="_blank">
@@ -203,7 +203,7 @@ export function CursorPageContent() {
                 variant="outline"
               >
                 <Github className="mr-2 h-4 w-4" />
-                {t('viewTemplates')}
+                {t("viewTemplates")}
               </Button>
             </Link>
           </motion.div>
@@ -230,16 +230,16 @@ export function CursorPageContent() {
               <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-purple-500/20 px-3 py-1">
                 <Target className="h-4 w-4 text-purple-400" />
                 <span className="font-medium text-purple-300 text-xs">
-                  {t('philosophy.label')}
+                  {t("philosophy.label")}
                 </span>
               </div>
 
               <h2 className="mb-4 font-bold text-2xl text-white">
-                {t('philosophy.title')}
+                {t("philosophy.title")}
               </h2>
 
               <p className="text-gray-400 leading-relaxed">
-                {t('philosophy.description')}
+                {t("philosophy.description")}
               </p>
             </div>
           </motion.div>
@@ -260,10 +260,10 @@ export function CursorPageContent() {
               className="mb-4 bg-gradient-to-r from-white to-purple-400 bg-clip-text font-bold text-3xl text-transparent"
               variants={itemVariants}
             >
-              {t('expertiseTitle')}
+              {t("expertiseTitle")}
             </motion.h2>
             <motion.p className="text-gray-400" variants={itemVariants}>
-              {t('expertiseSubtitle')}
+              {t("expertiseSubtitle")}
             </motion.p>
           </motion.div>
 
@@ -324,21 +324,21 @@ export function CursorPageContent() {
             >
               <Users className="mb-4 h-8 w-8 text-purple-400" />
               <h3 className="mb-3 font-bold text-white text-xl">
-                {t('community.title')}
+                {t("community.title")}
               </h3>
-              <p className="mb-4 text-gray-400">{t('community.description')}</p>
+              <p className="mb-4 text-gray-400">{t("community.description")}</p>
               <ul className="space-y-2">
                 <li className="flex items-start gap-2 text-gray-500 text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
-                  <span>{t('community.features.events')}</span>
+                  <span>{t("community.features.events")}</span>
                 </li>
                 <li className="flex items-start gap-2 text-gray-500 text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
-                  <span>{t('community.features.whatsapp')}</span>
+                  <span>{t("community.features.whatsapp")}</span>
                 </li>
                 <li className="flex items-start gap-2 text-gray-500 text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
-                  <span>{t('community.features.spanish')}</span>
+                  <span>{t("community.features.spanish")}</span>
                 </li>
               </ul>
             </motion.div>
@@ -351,21 +351,21 @@ export function CursorPageContent() {
             >
               <Sparkles className="mb-4 h-8 w-8 text-purple-400" />
               <h3 className="mb-3 font-bold text-white text-xl">
-                {t('future.title')}
+                {t("future.title")}
               </h3>
-              <p className="mb-4 text-gray-400">{t('future.description')}</p>
+              <p className="mb-4 text-gray-400">{t("future.description")}</p>
               <ul className="space-y-2">
                 <li className="flex items-start gap-2 text-gray-500 text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
-                  <span>{t('future.features.content')}</span>
+                  <span>{t("future.features.content")}</span>
                 </li>
                 <li className="flex items-start gap-2 text-gray-500 text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
-                  <span>{t('future.features.bestPractices')}</span>
+                  <span>{t("future.features.bestPractices")}</span>
                 </li>
                 <li className="flex items-start gap-2 text-gray-500 text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
-                  <span>{t('future.features.learning')}</span>
+                  <span>{t("future.features.learning")}</span>
                 </li>
               </ul>
             </motion.div>
@@ -387,10 +387,10 @@ export function CursorPageContent() {
               className="mb-4 bg-gradient-to-r from-white to-purple-400 bg-clip-text font-bold text-3xl text-transparent"
               variants={itemVariants}
             >
-              {t('servicesTitle')}
+              {t("servicesTitle")}
             </motion.h2>
             <motion.p className="text-gray-400" variants={itemVariants}>
-              {t('servicesSubtitle')}
+              {t("servicesSubtitle")}
             </motion.p>
           </motion.div>
 
@@ -449,7 +449,7 @@ export function CursorPageContent() {
             viewport={{ once: true }}
             whileInView="visible"
           >
-            <p className="mb-6 text-gray-400">{t('cta.question')}</p>
+            <p className="mb-6 text-gray-400">{t("cta.question")}</p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link href="https://calendly.com/wmoralesdev" target="_blank">
                 <Button
@@ -457,7 +457,7 @@ export function CursorPageContent() {
                   size="lg"
                 >
                   <Calendar className="mr-2 h-5 w-5" />
-                  {t('cta.schedule')}
+                  {t("cta.schedule")}
                 </Button>
               </Link>
               <Link href="https://chat.whatsapp.com/DLGP02iY1veKQqjc5Y6pOy">
@@ -467,7 +467,7 @@ export function CursorPageContent() {
                   variant="outline"
                 >
                   <MessageCircle className="mr-2 h-5 w-5" />
-                  {t('cta.joinCommunity')}
+                  {t("cta.joinCommunity")}
                 </Button>
               </Link>
             </div>
@@ -491,12 +491,12 @@ export function CursorPageContent() {
           >
             <BookOpen className="mx-auto mb-4 h-12 w-12 text-purple-400" />
             <h3 className="mb-2 font-bold text-white text-xl">
-              {t('resources.title')}
+              {t("resources.title")}
             </h3>
-            <p className="mb-6 text-gray-400">{t('resources.description')}</p>
+            <p className="mb-6 text-gray-400">{t("resources.description")}</p>
             <Badge className="border-purple-500/30 bg-purple-500/20 text-purple-300">
               <Sparkles className="mr-1 h-3 w-3" />
-              {t('resources.launchingIn')}
+              {t("resources.launchingIn")}
             </Badge>
           </motion.div>
         </motion.div>
