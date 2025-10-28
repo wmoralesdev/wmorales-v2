@@ -25,6 +25,8 @@ import { createFilePreview, validateImageFile } from "./utils";
 
 // Constants
 const MAX_IMAGES_DIVISOR = 20;
+const PERCENTAGE_MULTIPLIER = 100;
+const MAX_PHOTOS_ALLOWED = 20;
 
 type ImageUploadProps = {
   onUpload: (imageUrl: string, caption?: string) => Promise<void>;
@@ -317,7 +319,9 @@ export function ImageUpload({
                 <div className="h-full w-full animate-pulse bg-gray-700/50" />
               ) : (
                 <motion.div
-                  animate={{ width: `${(maxImages / MAX_IMAGES_DIVISOR) * 100}%` }}
+                  animate={{
+                    width: `${(maxImages / MAX_IMAGES_DIVISOR) * PERCENTAGE_MULTIPLIER}%`,
+                  }}
                   className="h-full bg-gradient-to-r from-purple-500 to-pink-500"
                   initial={{ width: "100%" }}
                   transition={{ duration: 0.5, ease: "easeOut" }}
@@ -328,7 +332,8 @@ export function ImageUpload({
               <div className="mt-2 h-3 w-32 animate-pulse rounded bg-gray-700/50" />
             ) : (
               <p className="mt-2 text-gray-500 text-xs">
-                {20 - maxImages} {t("of")} 20 {t("photosShared")}
+                {MAX_PHOTOS_ALLOWED - maxImages} {t("of")}{" "}
+                {MAX_PHOTOS_ALLOWED} {t("photosShared")}
               </p>
             )}
           </div>

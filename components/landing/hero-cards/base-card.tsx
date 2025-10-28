@@ -5,6 +5,9 @@ import { type ReactNode, useEffect, useRef, useState } from "react";
 import { Card } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
+// Constants
+const DESKTOP_BREAKPOINT = 1024;
+
 export type BaseCardProps = {
   id: string;
   children: ReactNode;
@@ -79,7 +82,7 @@ export function BaseCard({
   // Check if desktop
   useEffect(() => {
     const checkDesktop = () => {
-      setIsDesktop(window.innerWidth >= 1024);
+      setIsDesktop(window.innerWidth >= DESKTOP_BREAKPOINT);
     };
     checkDesktop();
     window.addEventListener("resize", checkDesktop);
