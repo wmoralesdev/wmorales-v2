@@ -4,6 +4,14 @@ import { motion, type Variants } from "framer-motion";
 import type { Project } from "@/lib/types/showcase.types";
 import { ProjectCard } from "./project-card";
 
+// Constants
+const ANIMATION_DURATION = 0.5;
+const EASE_X1 = 0.25;
+const EASE_Y1 = 0.46;
+const EASE_X2 = 0.45;
+const EASE_Y2 = 0.94;
+const EASE_ARRAY = [EASE_X1, EASE_Y1, EASE_X2, EASE_Y2];
+
 type ProjectGridProps = {
   projects: Project[];
 };
@@ -24,8 +32,8 @@ const itemVariants: Variants = {
     opacity: 1,
     y: 0,
     transition: {
-      duration: 0.5,
-      ease: [0.25, 0.46, 0.45, 0.94],
+      duration: ANIMATION_DURATION,
+      ease: EASE_ARRAY,
     },
   },
 };
