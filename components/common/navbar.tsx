@@ -102,7 +102,13 @@ type MobileNavItemProps = {
   t: ReturnType<typeof useTranslations>;
 };
 
-function MobileNavItem({ href, label, pathname, onClose, t }: MobileNavItemProps) {
+function MobileNavItem({
+  href,
+  label,
+  pathname,
+  onClose,
+  t,
+}: MobileNavItemProps) {
   return (
     <Link href={href} onClick={onClose}>
       <Button
@@ -391,9 +397,24 @@ export function Navbar() {
             <NavigationMenuList>
               <DesktopNavItem href="/" label="home" pathname={pathname} t={t} />
 
-              <DesktopNavItem href="/guestbook" label="guestbook" pathname={pathname} t={t} />
-              <DesktopNavItem href="/events" label="events" pathname={pathname} t={t} />
-              <DesktopNavItem href="/cursor" label="cursor" pathname={pathname} t={t} />
+              <DesktopNavItem
+                href="/guestbook"
+                label="guestbook"
+                pathname={pathname}
+                t={t}
+              />
+              <DesktopNavItem
+                href="/events"
+                label="events"
+                pathname={pathname}
+                t={t}
+              />
+              <DesktopNavItem
+                href="/cursor"
+                label="cursor"
+                pathname={pathname}
+                t={t}
+              />
             </NavigationMenuList>
           </NavigationMenu>
 
@@ -458,10 +479,34 @@ export function Navbar() {
 
                       {/* Navigation Links */}
                       <div className="space-y-1">
-                        <MobileNavItem href="/" label="home" pathname={pathname} onClose={() => setIsOpen(false)} t={t} />
-                        <MobileNavItem href="/guestbook" label="guestbook" pathname={pathname} onClose={() => setIsOpen(false)} t={t} />
-                        <MobileNavItem href="/events" label="events" pathname={pathname} onClose={() => setIsOpen(false)} t={t} />
-                        <MobileNavItem href="/cursor" label="cursor" pathname={pathname} onClose={() => setIsOpen(false)} t={t} />
+                        <MobileNavItem
+                          href="/"
+                          label="home"
+                          onClose={() => setIsOpen(false)}
+                          pathname={pathname}
+                          t={t}
+                        />
+                        <MobileNavItem
+                          href="/guestbook"
+                          label="guestbook"
+                          onClose={() => setIsOpen(false)}
+                          pathname={pathname}
+                          t={t}
+                        />
+                        <MobileNavItem
+                          href="/events"
+                          label="events"
+                          onClose={() => setIsOpen(false)}
+                          pathname={pathname}
+                          t={t}
+                        />
+                        <MobileNavItem
+                          href="/cursor"
+                          label="cursor"
+                          onClose={() => setIsOpen(false)}
+                          pathname={pathname}
+                          t={t}
+                        />
                       </div>
 
                       {/* Divider */}

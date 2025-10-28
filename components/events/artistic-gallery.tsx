@@ -8,12 +8,10 @@ import {
   useScroll,
   useTransform,
 } from "framer-motion";
-import { ArrowLeft, ImageIcon } from "lucide-react";
+import { ImageIcon } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
-import { Button } from "@/components/ui/button";
 import { useArtisticGalleryStore } from "@/lib/stores/artistic-gallery-store";
 import { subscribeToEventUpdates } from "@/lib/supabase/realtime";
 import type { ExtendedEventImage } from "@/lib/types/event.types";
@@ -317,8 +315,8 @@ export function ArtisticGallery({
   }, [showGallery, manageScrollLock]);
 
   // Helper function to transform event image data
-  const transformImageData = useCallback((imageData: any, eventId: string): ExtendedEventImage => {
-    return {
+  const transformImageData = useCallback(
+    (imageData: any, eventId: string): ExtendedEventImage => ({
       id: imageData.id,
       eventId,
       profileId: imageData.profileId,
@@ -329,18 +327,22 @@ export function ArtisticGallery({
         name: imageData.profile.name,
         avatar: imageData.profile.avatar || undefined,
       },
-    };
-  }, []);
+    }),
+    []
+  );
 
   // Handle realtime event updates
-  const handleEventUpdate = useCallback((eventUpdate: any) => {
-    if (eventUpdate.type === "image_uploaded" && eventUpdate.image) {
-      const newImage = transformImageData(eventUpdate.image, event.id);
-      addImage(newImage);
-    } else if (eventUpdate.type === "image_deleted" && eventUpdate.imageId) {
-      removeImage(eventUpdate.imageId);
-    }
-  }, [event.id, addImage, removeImage, transformImageData]);
+  const handleEventUpdate = useCallback(
+    (eventUpdate: any) => {
+      if (eventUpdate.type === "image_uploaded" && eventUpdate.image) {
+        const newImage = transformImageData(eventUpdate.image, event.id);
+        addImage(newImage);
+      } else if (eventUpdate.type === "image_deleted" && eventUpdate.imageId) {
+        removeImage(eventUpdate.imageId);
+      }
+    },
+    [event.id, addImage, removeImage, transformImageData]
+  );
 
   // Subscribe to realtime updates if event is active
   useEffect(() => {
