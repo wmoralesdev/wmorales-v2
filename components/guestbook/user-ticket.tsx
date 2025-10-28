@@ -4,6 +4,12 @@ import { Badge } from "@/components/ui/badge";
 
 // Constants
 const TIMESTAMP_SLICE_LENGTH = 6;
+const PATTERN_BAR_COUNT = 4;
+const PATTERN_HEIGHT_BASE = 100;
+const PATTERN_HEIGHT_MIN = 20;
+const PATTERN_HEIGHT_DECREMENT = 25;
+const PATTERN_BAR_WIDTH_PX = 8;
+const RADIAL_GRADIENT_STOP = 70;
 
 type UserTicketProps = {
   user: {
@@ -203,8 +209,11 @@ export function UserTicket({
 
                 {/* Visual Pattern */}
                 <div className="flex gap-1">
-                  {[...new Array(4)].map((_, i) => {
-                    const height = Math.max(20, 100 - i * 25);
+                  {[...new Array(PATTERN_BAR_COUNT)].map((_, i) => {
+                    const height = Math.max(
+                      PATTERN_HEIGHT_MIN,
+                      PATTERN_HEIGHT_BASE - i * PATTERN_HEIGHT_DECREMENT
+                    );
                     return (
                       <div
                         className="h-8 w-1"
@@ -225,7 +234,7 @@ export function UserTicket({
         <div
           className="-top-2 -right-2 absolute h-16 w-16 rounded-full opacity-20"
           style={{
-            background: `radial-gradient(circle, ${ticketColors.accent}, transparent 70%)`,
+            background: `radial-gradient(circle, ${ticketColors.accent}, transparent ${RADIAL_GRADIENT_STOP}%)`,
           }}
         />
       </div>

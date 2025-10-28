@@ -6,6 +6,10 @@ import type {
 } from "./realtime";
 import { createClient } from "./server";
 
+// Constants
+const CHANNEL_SUBSCRIPTION_TIMEOUT_MS = 5000;
+const CHANNEL_CLEANUP_DELAY_MS = 100;
+
 // Server-side broadcast function for poll updates
 export async function broadcastPollUpdate(
   pollCode: string,
@@ -19,7 +23,7 @@ export async function broadcastPollUpdate(
   await new Promise<void>((resolve, reject) => {
     const timeout = setTimeout(() => {
       reject(new Error("Channel subscription timeout"));
-    }, 5000);
+    }, CHANNEL_SUBSCRIPTION_TIMEOUT_MS);
 
     channel.subscribe((status) => {
       if (status === "SUBSCRIBED") {
@@ -36,7 +40,7 @@ export async function broadcastPollUpdate(
             // Clean up after a short delay to ensure message is sent
             setTimeout(() => {
               supabase.removeChannel(channel);
-            }, 100);
+            }, CHANNEL_CLEANUP_DELAY_MS);
             resolve();
           })
           .catch(reject);
@@ -62,7 +66,7 @@ export async function broadcastGuestbookUpdate(event: GuestbookRealtimeEvent) {
   await new Promise<void>((resolve, reject) => {
     const timeout = setTimeout(() => {
       reject(new Error("Channel subscription timeout"));
-    }, 5000);
+    }, CHANNEL_SUBSCRIPTION_TIMEOUT_MS);
 
     channel.subscribe((status) => {
       if (status === "SUBSCRIBED") {
@@ -79,7 +83,7 @@ export async function broadcastGuestbookUpdate(event: GuestbookRealtimeEvent) {
             // Clean up after a short delay to ensure message is sent
             setTimeout(() => {
               supabase.removeChannel(channel);
-            }, 100);
+            }, CHANNEL_CLEANUP_DELAY_MS);
             resolve();
           })
           .catch(reject);
@@ -105,7 +109,7 @@ export async function broadcastEventUpdate(event: EventRealtimeEvent) {
   await new Promise<void>((resolve, reject) => {
     const timeout = setTimeout(() => {
       reject(new Error("Channel subscription timeout"));
-    }, 5000);
+    }, CHANNEL_SUBSCRIPTION_TIMEOUT_MS);
 
     channel.subscribe((status) => {
       if (status === "SUBSCRIBED") {
@@ -122,7 +126,7 @@ export async function broadcastEventUpdate(event: EventRealtimeEvent) {
             // Clean up after a short delay to ensure message is sent
             setTimeout(() => {
               supabase.removeChannel(channel);
-            }, 100);
+            }, CHANNEL_CLEANUP_DELAY_MS);
             resolve();
           })
           .catch(reject);
