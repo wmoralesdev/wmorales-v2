@@ -1,5 +1,8 @@
 {
   "extends": ["ultracite/core", "ultracite/react", "ultracite/next"],
+  "files": {
+    "includes": ["**", "!components/ui"]
+  },
   "linter": {
     "rules": {
       "nursery": {
