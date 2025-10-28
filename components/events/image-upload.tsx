@@ -16,7 +16,7 @@ import { toast } from "sonner";
 import { generateUploadURL } from "@/app/actions/events.actions";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/celebrt";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/lib/supabase/client";
 import { compressImage, formatFileSize } from "@/lib/utils/image-compression";
@@ -208,24 +208,23 @@ export function ImageUpload({
     validateAndProcessFiles(Array.from(files));
   };
 
+  const checkIfImageFile = useCallback((items: DataTransferItemList) => {
+    return Array.from(items).some(
+      (item) => item.kind === "file" && item.type.startsWith("image/")
+    );
+  }, []);
+
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-
-    const items = Array.from(e.dataTransfer.items);
-    const hasImageFile = items.some(
-      (item) => item.kind === "file" && item.type.startsWith("image/")
-    );
-
+    const hasImageFile = checkIfImageFile(e.dataTransfer.items);
     setIsDragActive(true);
     setIsDragReject(!hasImageFile);
-  }, []);
+  }, [checkIfImageFile]);
 
   const handleDragLeave = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
-
-    // Only reset if we're leaving the drop zone entirely
     if (!e.currentTarget.contains(e.relatedTarget as Node)) {
       setIsDragActive(false);
       setIsDragReject(false);
@@ -241,13 +240,10 @@ export function ImageUpload({
     (e: React.DragEvent) => {
       e.preventDefault();
       e.stopPropagation();
-
       setIsDragActive(false);
       setIsDragReject(false);
-
       const files = Array.from(e.dataTransfer.files);
       const imageFiles = files.filter((file) => file.type.startsWith("image/"));
-
       if (imageFiles.length > 0) {
         validateAndProcessFiles(imageFiles);
       } else {
