@@ -109,7 +109,7 @@ export function PhotoGrid({
           </div>
 
           {currentProfileId && currentProfileId === image.profileId && (
-            <div
+            <button
               className={cn(
                 "absolute top-2 right-2 z-50 flex size-8 items-center justify-center rounded-full bg-red-500",
                 deletingImageId === image.id
@@ -117,6 +117,7 @@ export function PhotoGrid({
                   : "cursor-pointer transition-all duration-300 hover:scale-110 hover:bg-red-600"
               )}
               onClick={(e) => e.stopPropagation()}
+              type="button"
             >
               <AlertDialog>
                 <AlertDialogTrigger asChild>
@@ -178,7 +179,7 @@ export function PhotoGrid({
                   </div>
                 </AlertDialogContent>
               </AlertDialog>
-            </div>
+            </button>
           )}
           <div className="absolute bottom-2 left-2 z-50 flex size-8 items-center justify-center rounded-full bg-red-500">
             <Avatar>

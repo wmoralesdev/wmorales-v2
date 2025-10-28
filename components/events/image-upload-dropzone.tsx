@@ -53,10 +53,18 @@ export function ImageUploadDropzone({
         className
       )}
       onClick={() => fileInputRef.current?.click()}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          fileInputRef.current?.click();
+        }
+      }}
       onDragEnter={onDragEnter}
       onDragLeave={onDragLeave}
       onDragOver={onDragOver}
       onDrop={onDrop}
+      role="button"
+      tabIndex={0}
     >
       <input
         accept="image/*"
