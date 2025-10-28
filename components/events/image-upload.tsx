@@ -14,9 +14,9 @@ import { useTranslations } from "next-intl";
 import { useCallback, useRef, useState } from "react";
 import { toast } from "sonner";
 import { generateUploadURL } from "@/app/actions/events.actions";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
 import { Label } from "@/components/ui/label";
 import { createClient } from "@/lib/supabase/client";
 import { compressImage, formatFileSize } from "@/lib/utils/image-compression";
@@ -37,8 +37,9 @@ const getCardClassName = (
   selectedFilesLength: number,
   _maxImages: number
 ) => {
-  const baseClasses = "rounded-none shadow-none backdrop-blur-xl transition-all duration-300 sm:rounded-lg sm:shadow-md";
-  
+  const baseClasses =
+    "rounded-none shadow-none backdrop-blur-xl transition-all duration-300 sm:rounded-lg sm:shadow-md";
+
   if (isDragReject) {
     return `${baseClasses} border-0 border-red-500/50 bg-red-500/10 sm:border-2`;
   }
@@ -51,7 +52,7 @@ const getCardClassName = (
   return `${baseClasses} border-0 border-gray-700 bg-gray-900/60 hover:border-purple-500/50 hover:bg-gray-900/80 sm:border-2 sm:border-dashed`;
 };
 
-const getBottomBorderClassName = (maxImages: number) => 
+const getBottomBorderClassName = (maxImages: number) =>
   maxImages > 0 ? "border-t sm:border-t-2" : "";
 
 const getInnerDivClassName = (isDragReject: boolean, isDragActive: boolean) => {
@@ -84,7 +85,11 @@ const getTitleClassName = (isDragReject: boolean, isDragActive: boolean) => {
   return "text-white";
 };
 
-const getDropZoneText = (isDragReject: boolean, isDragActive: boolean, t: ReturnType<typeof useTranslations>) => {
+const getDropZoneText = (
+  isDragReject: boolean,
+  isDragActive: boolean,
+  t: ReturnType<typeof useTranslations>
+) => {
   if (isDragReject) {
     return t("invalidFileType");
   }
@@ -105,7 +110,8 @@ const getButtonContent = (
       <>
         <ImageIcon className="relative z-10 mr-2 h-5 w-5 animate-pulse" />
         <span className="relative z-10 text-lg">
-          Compressing... ({compressionProgress.current}/{compressionProgress.total})
+          Compressing... ({compressionProgress.current}/
+          {compressionProgress.total})
         </span>
       </>
     );
@@ -122,7 +128,9 @@ const getButtonContent = (
     <>
       <Sparkles className="relative z-10 mr-2 h-5 w-5" />
       <span className="relative z-10 text-lg">
-        {selectedFilesLength === 1 ? t("sharePhoto") : t("sharePhotos", { count: selectedFilesLength })}
+        {selectedFilesLength === 1
+          ? t("sharePhoto")
+          : t("sharePhotos", { count: selectedFilesLength })}
       </span>
     </>
   );
@@ -156,19 +164,16 @@ export function ImageUpload({
   } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const createFilePreviews = useCallback(
-    async (files: File[]) => {
-      for (const file of files) {
-        try {
-          const url = await createFilePreview(file);
-          setPreviews((prev) => [...prev, { file, url }]);
-        } catch (error) {
-          console.error("Failed to create preview:", error);
-        }
+  const createFilePreviews = useCallback(async (files: File[]) => {
+    for (const file of files) {
+      try {
+        const url = await createFilePreview(file);
+        setPreviews((prev) => [...prev, { file, url }]);
+      } catch (error) {
+        console.error("Failed to create preview:", error);
       }
-    },
-    []
-  );
+    }
+  }, []);
 
   const validateAndProcessFiles = useCallback(
     async (files: File[]) => {
@@ -208,19 +213,24 @@ export function ImageUpload({
     validateAndProcessFiles(Array.from(files));
   };
 
-  const checkIfImageFile = useCallback((items: DataTransferItemList) => {
-    return Array.from(items).some(
-      (item) => item.kind === "file" && item.type.startsWith("image/")
-    );
-  }, []);
+  const checkIfImageFile = useCallback(
+    (items: DataTransferItemList) =>
+      Array.from(items).some(
+        (item) => item.kind === "file" && item.type.startsWith("image/")
+      ),
+    []
+  );
 
-  const handleDragEnter = useCallback((e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    const hasImageFile = checkIfImageFile(e.dataTransfer.items);
-    setIsDragActive(true);
-    setIsDragReject(!hasImageFile);
-  }, [checkIfImageFile]);
+  const handleDragEnter = useCallback(
+    (e: React.DragEvent) => {
+      e.preventDefault();
+      e.stopPropagation();
+      const hasImageFile = checkIfImageFile(e.dataTransfer.items);
+      setIsDragActive(true);
+      setIsDragReject(!hasImageFile);
+    },
+    [checkIfImageFile]
+  );
 
   const handleDragLeave = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -614,7 +624,12 @@ export function ImageUpload({
             size="lg"
           >
             <div className="absolute inset-0 translate-y-full bg-gradient-to-r from-purple-400/20 to-pink-400/20 transition-transform duration-300 group-hover:translate-y-0" />
-            {getButtonContent(compressionProgress, isUploading, selectedFiles.length, t)}
+            {getButtonContent(
+              compressionProgress,
+              isUploading,
+              selectedFiles.length,
+              t
+            )}
           </Button>
 
           {compressionProgress && (

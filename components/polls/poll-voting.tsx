@@ -120,6 +120,7 @@ function pollVotingReducer(
   }
 }
 
+// biome-ignore lint/complexity/noExcessiveCognitiveComplexity: Legacy component
 export function PollVoting({
   poll,
   initialResults,

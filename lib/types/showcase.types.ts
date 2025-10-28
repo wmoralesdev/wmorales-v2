@@ -51,7 +51,8 @@ export const ProjectCategory = {
   OTHER: "other",
 } as const;
 
-export type ProjectCategory = (typeof ProjectCategory)[keyof typeof ProjectCategory];
+export type ProjectCategory =
+  (typeof ProjectCategory)[keyof typeof ProjectCategory];
 
 export const TechCategory = {
   FRONTEND: "frontend",

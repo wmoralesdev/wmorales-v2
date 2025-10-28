@@ -119,7 +119,9 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
     form.reset(answers);
   }, [answers, form, form.reset]);
 
-  const findNextPath = (data: Record<string, string | string[]>): string | null => {
+  const findNextPath = (
+    data: Record<string, string | string[]>
+  ): string | null => {
     for (const [questionId, answer] of Object.entries(data)) {
       const question = currentSection.questions?.find(
         (q) => q.id === questionId

@@ -52,16 +52,15 @@ function validateUrl(url: string): NextResponse | null {
   try {
     new URL(url);
   } catch {
-    return NextResponse.json(
-      { error: "Invalid URL format" },
-      { status: 400 }
-    );
+    return NextResponse.json({ error: "Invalid URL format" }, { status: 400 });
   }
 
   return null;
 }
 
-async function validateCustomCode(customCode: string): Promise<NextResponse | null> {
+async function validateCustomCode(
+  customCode: string
+): Promise<NextResponse | null> {
   if (!CUSTOM_CODE_REGEX.test(customCode)) {
     return NextResponse.json(
       {
@@ -89,7 +88,7 @@ async function validateCustomCode(customCode: string): Promise<NextResponse | nu
 async function generateUniqueCode(): Promise<string | null> {
   const MAX_ATTEMPTS = 10;
   let attempts = 0;
-  
+
   do {
     const code = generateShortCode();
     const existing = await prisma.shortUrl.findUnique({
@@ -114,7 +113,16 @@ async function getOrCreateShortUrl(params: {
   code: string;
   request: NextRequest;
 }): Promise<NextResponse> {
-  const { url, customCode, title, description, image, expiresInDays, code, request } = params;
+  const {
+    url,
+    customCode,
+    title,
+    description,
+    image,
+    expiresInDays,
+    code,
+    request,
+  } = params;
 
   // Check if URL already exists with same metadata
   if (!customCode) {
@@ -219,18 +227,16 @@ export async function POST(request: NextRequest) {
     }
 
     // Get or create short URL
-    return await getOrCreateShortUrl(
-      {
-        url,
-        customCode,
-        title,
-        description,
-        image,
-        expiresInDays,
-        code,
-        request,
-      }
-    );
+    return await getOrCreateShortUrl({
+      url,
+      customCode,
+      title,
+      description,
+      image,
+      expiresInDays,
+      code,
+      request,
+    });
   } catch (error) {
     console.error("Error creating short URL:", error);
     return NextResponse.json(

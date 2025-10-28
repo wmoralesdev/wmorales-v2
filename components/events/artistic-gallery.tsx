@@ -264,7 +264,6 @@ function ImageItem({ image, index, scrollYProgress }: ImageItemProps) {
   );
 }
 
-
 export function ArtisticGallery({
   event,
   eventContent,

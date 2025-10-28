@@ -87,10 +87,15 @@ async function attemptOperation<T>(
   try {
     return await operation();
   } catch (error) {
-    const shouldRetry = isRetryableError(error) && config.attempt < config.maxRetries;
+    const shouldRetry =
+      isRetryableError(error) && config.attempt < config.maxRetries;
 
     if (shouldRetry) {
-      const delay = calculateDelay(config.attempt, config.baseDelay, config.maxDelay);
+      const delay = calculateDelay(
+        config.attempt,
+        config.baseDelay,
+        config.maxDelay
+      );
       logRetryAttempt(config.attempt, config.maxRetries, delay, error);
       await sleep(delay);
       return attemptOperation(operation, {
