@@ -4,6 +4,10 @@ import { Check, Copy } from "lucide-react";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 
+// Constants
+const COPY_SUCCESS_TIMEOUT_MS = 2000;
+const FALLBACK_TEXTAREA_OFFSET = -999999;
+
 type CopyButtonProps = {
   code: string;
 };
@@ -17,14 +21,14 @@ export function CopyButton({ code }: CopyButtonProps) {
       if (navigator.clipboard && window.isSecureContext) {
         await navigator.clipboard.writeText(code);
         setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        setTimeout(() => setCopied(false), COPY_SUCCESS_TIMEOUT_MS);
       } else {
         // Fallback for older browsers or non-secure contexts
         const textArea = document.createElement("textarea");
         textArea.value = code;
         textArea.style.position = "fixed";
-        textArea.style.left = "-999999px";
-        textArea.style.top = "-999999px";
+        textArea.style.left = `${FALLBACK_TEXTAREA_OFFSET}px`;
+        textArea.style.top = `${FALLBACK_TEXTAREA_OFFSET}px`;
         document.body.appendChild(textArea);
         textArea.focus();
         textArea.select();
@@ -32,7 +36,7 @@ export function CopyButton({ code }: CopyButtonProps) {
         try {
           document.execCommand("copy");
           setCopied(true);
-          setTimeout(() => setCopied(false), 2000);
+          setTimeout(() => setCopied(false), COPY_SUCCESS_TIMEOUT_MS);
         } catch (err) {
           console.error("Copy failed:", err);
         } finally {
@@ -46,15 +50,15 @@ export function CopyButton({ code }: CopyButtonProps) {
         const textArea = document.createElement("textarea");
         textArea.value = code;
         textArea.style.position = "fixed";
-        textArea.style.left = "-999999px";
-        textArea.style.top = "-999999px";
+        textArea.style.left = `${FALLBACK_TEXTAREA_OFFSET}px`;
+        textArea.style.top = `${FALLBACK_TEXTAREA_OFFSET}px`;
         document.body.appendChild(textArea);
         textArea.focus();
         textArea.select();
 
         document.execCommand("copy");
         setCopied(true);
-        setTimeout(() => setCopied(false), 2000);
+        setTimeout(() => setCopied(false), COPY_SUCCESS_TIMEOUT_MS);
 
         document.body.removeChild(textArea);
       } catch (fallbackErr) {
