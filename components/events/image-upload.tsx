@@ -263,6 +263,66 @@ export function ImageUpload({
     [validateAndProcessFiles, t]
   );
 
+  // Helper function to compress images
+  const compressImages = async (files: File[]): Promise<File[]> => {
+    setCompressionProgress({ current: 0, total: files.length });
+    const compressedFiles: File[] = [];
+
+    for (let i = 0; i < files.length; i++) {
+      const file = files[i];
+      try {
+        const compressedFile = await compressImage(file);
+        compressedFiles.push(compressedFile);
+        setCompressionProgress({ current: i + 1, total: files.length });
+      } catch (error) {
+        console.error(`Failed to compress ${file.name}:`, error);
+        compressedFiles.push(file);
+      }
+    }
+
+    setCompressionProgress(null);
+    return compressedFiles;
+  };
+
+  // Helper function to upload a single file
+  const uploadSingleFile = async (
+    file: File,
+    originalFileName: string,
+    supabase: ReturnType<typeof createClient>
+  ): Promise<boolean> => {
+    try {
+      const { filePath } = await generateUploadURL(slug, file.name);
+      const { error: uploadError } = await supabase.storage
+        .from("event-images")
+        .upload(filePath, file, { cacheControl: "3600", upsert: false });
+
+      if (uploadError) {
+        throw new Error(t("uploadImageError"));
+      }
+
+      const { data: { publicUrl } } = supabase.storage
+        .from("event-images")
+        .getPublicUrl(filePath);
+
+      const fileCaption = captions[originalFileName] || "";
+      await onUpload(publicUrl, fileCaption.trim() || undefined);
+      return true;
+    } catch (error) {
+      console.error(`Failed to upload ${file.name}:`, error);
+      return false;
+    }
+  };
+
+  // Helper function to reset form state
+  const resetForm = () => {
+    setSelectedFiles([]);
+    setPreviews([]);
+    setCaptions({});
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   const handleUpload = async () => {
     if (selectedFiles.length === 0) {
       return;
@@ -274,66 +334,19 @@ export function ImageUpload({
       let successCount = 0;
       let errorCount = 0;
 
-      // First, compress all images
-      setCompressionProgress({ current: 0, total: selectedFiles.length });
-      const compressedFiles: File[] = [];
+      const compressedFiles = await compressImages(selectedFiles);
 
-      for (let i = 0; i < selectedFiles.length; i++) {
-        const file = selectedFiles[i];
-        try {
-          const compressedFile = await compressImage(file);
-          compressedFiles.push(compressedFile);
-          setCompressionProgress({
-            current: i + 1,
-            total: selectedFiles.length,
-          });
-        } catch (error) {
-          console.error(`Failed to compress ${file.name}:`, error);
-          // Use original file if compression fails
-          compressedFiles.push(file);
-        }
-      }
-
-      // Clear compression progress
-      setCompressionProgress(null);
-
-      // Upload compressed files sequentially to avoid overwhelming the server
-      for (const file of compressedFiles) {
-        try {
-          // Get upload URL from server
-          const { filePath } = await generateUploadURL(slug, file.name);
-
-          // Upload to Supabase storage
-          const { error: uploadError } = await supabase.storage
-            .from("event-images")
-            .upload(filePath, file, {
-              cacheControl: "3600",
-              upsert: false,
-            });
-
-          if (uploadError) {
-            throw new Error(t("uploadImageError"));
-          }
-
-          // Get public URL
-          const {
-            data: { publicUrl },
-          } = supabase.storage.from("event-images").getPublicUrl(filePath);
-
-          // Call the parent upload handler with specific caption for this file
-          const originalFileName =
-            selectedFiles[compressedFiles.indexOf(file)].name;
-          const fileCaption = captions[originalFileName] || "";
-          await onUpload(publicUrl, fileCaption.trim() || undefined);
-
+      for (let i = 0; i < compressedFiles.length; i++) {
+        const file = compressedFiles[i];
+        const originalFileName = selectedFiles[i].name;
+        const success = await uploadSingleFile(file, originalFileName, supabase);
+        if (success) {
           successCount++;
-        } catch (error) {
+        } else {
           errorCount++;
-          console.error(`Failed to upload ${file.name}:`, error);
         }
       }
 
-      // Show summary toast
       if (successCount > 0) {
         toast.success(t("uploadSuccess", { count: successCount }));
       }
@@ -341,16 +354,9 @@ export function ImageUpload({
         toast.error(t("uploadErrors", { count: errorCount }));
       }
 
-      // Reset form
-      setSelectedFiles([]);
-      setPreviews([]);
-      setCaptions({});
-      if (fileInputRef.current) {
-        fileInputRef.current.value = "";
-      }
+      resetForm();
     } catch (error) {
-      const message =
-        error instanceof Error ? error.message : t("uploadImageError");
+      const message = error instanceof Error ? error.message : t("uploadImageError");
       toast.error(message);
     } finally {
       setUploadingFile(false);

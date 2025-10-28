@@ -62,6 +62,7 @@ function DesktopNavItem({ href, label, pathname, t }: DesktopNavItemProps) {
       key={href}
       variants={menuItemVariants}
     >
+      {/** biome-ignore lint/suspicious/noExplicitAny: Hard to type since it comes from i18n/navigation */}
       <NavigationMenuLink className="relative" href={href as any} key={href}>
         <Button
           className={cn(
@@ -110,6 +111,7 @@ function MobileNavItem({
   t,
 }: MobileNavItemProps) {
   return (
+    // biome-ignore lint/suspicious/noExplicitAny: Hard to type since it comes from i18n/navigation
     <Link href={href as any} onClick={onClose}>
       <Button
         className={cn(
