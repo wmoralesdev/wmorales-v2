@@ -156,6 +156,20 @@ export function ImageUpload({
   } | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const createFilePreviews = useCallback(
+    async (files: File[]) => {
+      for (const file of files) {
+        try {
+          const url = await createFilePreview(file);
+          setPreviews((prev) => [...prev, { file, url }]);
+        } catch (error) {
+          console.error("Failed to create preview:", error);
+        }
+      }
+    },
+    []
+  );
+
   const validateAndProcessFiles = useCallback(
     async (files: File[]) => {
       const validFiles: File[] = [];
@@ -172,25 +186,17 @@ export function ImageUpload({
           toast.error(validation.error || t("invalidFile"));
           continue;
         }
-
         validFiles.push(file);
-
-        // Create preview
-        try {
-          const url = await createFilePreview(file);
-          setPreviews((prev) => [...prev, { file, url }]);
-        } catch (error) {
-          console.error("Failed to create preview:", error);
-        }
       }
 
       if (validFiles.length > 0) {
         setSelectedFiles((prev) => [...prev, ...validFiles]);
+        await createFilePreviews(validFiles);
         return true;
       }
       return false;
     },
-    [t, selectedFiles.length, maxImages]
+    [t, selectedFiles.length, maxImages, createFilePreviews]
   );
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
