@@ -33,6 +33,13 @@ import type {
 } from "@/lib/types/poll.types";
 import { cn } from "@/lib/utils";
 
+// Constants
+const SECONDS_TO_MS_MULTIPLIER = 1000;
+const DASHBOARD_SHOW_DELAY_MS = 500;
+const PERCENTAGE_MULTIPLIER = 100;
+const ANIMATION_DELAY_INCREMENT = 0.1;
+const ANIMATION_DURATION_SHORT = 0.3;
+
 type PollVotingProps = {
   poll: PollWithQuestions;
   initialResults?: PollResults;
@@ -206,7 +213,7 @@ export function PollVoting({
       if (hasVoted) {
         const timer = setTimeout(() => {
           dispatch({ type: "SET_SHOW_RESULTS", payload: true });
-        }, poll.resultsDelay * 1000);
+        }, poll.resultsDelay * SECONDS_TO_MS_MULTIPLIER);
         return () => clearTimeout(timer);
       }
     } else if (poll.showResults) {
@@ -348,7 +355,7 @@ export function PollVoting({
 
       setTimeout(
         () => dispatch({ type: "SET_SHOW_DASHBOARD", payload: true }),
-        500
+        DASHBOARD_SHOW_DELAY_MS
       );
     } catch (error) {
       // Handle authentication errors
@@ -549,11 +556,14 @@ export function PollVoting({
               <div className="mt-2 h-2 overflow-hidden rounded-full bg-gray-800/50">
                 <motion.div
                   animate={{
-                    width: `${(answeredQuestions / poll.questions.length) * 100}%`,
+                    width: `${
+                      (answeredQuestions / poll.questions.length) *
+                      PERCENTAGE_MULTIPLIER
+                    }%`,
                   }}
                   className="h-full bg-gradient-to-r from-purple-500 to-purple-600"
                   initial={{ width: 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: ANIMATION_DURATION_SHORT }}
                 />
               </div>
             </CardContent>
@@ -585,7 +595,7 @@ export function PollVoting({
               animate={{ opacity: 1, y: 0 }}
               initial={{ opacity: 0, y: 20 }}
               key={question.id}
-              transition={{ delay: index * 0.1 }}
+              transition={{ delay: index * ANIMATION_DELAY_INCREMENT }}
             >
               <Card
                 className={cn(
