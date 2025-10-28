@@ -317,7 +317,7 @@ export function ArtisticGallery({
 
   // Helper function to transform event image data
   const transformImageData = useCallback(
-    (imageData: { id: string; profileId: string; imageUrl: string; caption: string | null; createdAt: string; profile: { name: string; avatar: string | null } }, eventId: string): ExtendedEventImage => ({
+    (imageData: { id: string; profileId: string; imageUrl: string; caption?: string; createdAt: string; profile: { name: string; avatar?: string } }, eventId: string): ExtendedEventImage => ({
       id: imageData.id,
       eventId,
       profileId: imageData.profileId,
@@ -334,7 +334,7 @@ export function ArtisticGallery({
 
   // Handle realtime event updates
   const handleEventUpdate = useCallback(
-    (eventUpdate: { type: string; image?: { id: string; profileId: string; imageUrl: string; caption: string | null; createdAt: string; profile: { name: string; avatar: string | null } }; imageId?: string }) => {
+    (eventUpdate: { type: string; image?: { id: string; profileId: string; imageUrl: string; caption?: string; createdAt: string; profile: { name: string; avatar?: string } }; imageId?: string }) => {
       if (eventUpdate.type === "image_uploaded" && eventUpdate.image) {
         const newImage = transformImageData(eventUpdate.image, event.id);
         addImage(newImage);
