@@ -294,7 +294,7 @@ export function PollVoting({
   );
 
   const createVotePromises = useCallback(() => {
-    const votePromises: Promise<any>[] = [];
+    const votePromises: Promise<{ questionId: string; votes: string[] }>[] = [];
 
     for (const question of poll.questions) {
       if (shouldProcessQuestion(question)) {

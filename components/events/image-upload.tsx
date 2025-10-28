@@ -84,7 +84,7 @@ const getTitleClassName = (isDragReject: boolean, isDragActive: boolean) => {
   return "text-white";
 };
 
-const getDropZoneText = (isDragReject: boolean, isDragActive: boolean, t: any) => {
+const getDropZoneText = (isDragReject: boolean, isDragActive: boolean, t: ReturnType<typeof useTranslations>) => {
   if (isDragReject) {
     return t("invalidFileType");
   }
@@ -98,7 +98,7 @@ const getButtonContent = (
   compressionProgress: { current: number; total: number } | null,
   isUploading: boolean,
   selectedFilesLength: number,
-  t: any
+  t: ReturnType<typeof useTranslations>
 ) => {
   if (compressionProgress) {
     return (

@@ -24,7 +24,7 @@ import type { Question } from "@/lib/types/survey.types";
 
 type QuestionRendererProps = {
   question: Question;
-  form: UseFormReturn<any>;
+  form: UseFormReturn<Record<string, string | string[]>>;
 };
 
 const FormLabelWrapper = ({ children }: { children: React.ReactNode }) => (

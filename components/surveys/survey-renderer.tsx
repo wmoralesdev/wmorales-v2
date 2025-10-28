@@ -45,7 +45,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
   const router = useRouter();
   const [currentSectionIndex, setCurrentSectionIndex] = useState(0);
   const [sectionPath, setSectionPath] = useState<string[]>([]);
-  const [answers, setAnswers] = useState<Record<string, any>>({});
+  const [answers, setAnswers] = useState<Record<string, string | string[]>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [responseId, setResponseId] = useState<string | null>(null);
 
@@ -119,7 +119,7 @@ export function SurveyRenderer({ survey }: SurveyRendererProps) {
     form.reset(answers);
   }, [answers, form, form.reset]);
 
-  const findNextPath = (data: Record<string, any>): string | null => {
+  const findNextPath = (data: Record<string, string | string[]>): string | null => {
     for (const [questionId, answer] of Object.entries(data)) {
       const question = currentSection.questions?.find(
         (q) => q.id === questionId
