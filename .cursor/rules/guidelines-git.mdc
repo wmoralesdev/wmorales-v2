@@ -1,0 +1,22 @@
+---
+alwaysApply: false
+description: Git commit and PR conventions
+---
+# Git & Version Control
+
+## Commit Guidelines
+
+- Use conventional commits with git flow conventions.
+- Format: `type(scope): description`
+- Examples:
+  - `feat(auth): add Google login with Supabase`
+  - `fix(users): correct user profile data fetching`
+  - `refactor(components): simplify hero section layout`
+  - `docs(readme): update installation instructions`
+
+## Pull Request Guidelines
+
+- Write clear, descriptive PR titles and descriptions.
+- Reference related issues or tasks in PRs.
+- Ensure all tests pass before requesting review.
+- Fix all lint and type errors before merging code.

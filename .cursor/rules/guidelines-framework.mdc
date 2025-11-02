@@ -1,0 +1,49 @@
+---
+alwaysApply: true
+description: Core framework and technology stack requirements
+---
+# Framework & Tech Stack
+
+## Next.js 15+
+
+- Use the `/app` directory and server components by default.
+- Use `use client` only when strictly necessary (e.g., for hooks that require client-side state).
+  - Never use `use client` at `page.tsx` level, move the client logic to its own component file.
+- Use `fetch`, `cache`, and `revalidate` for data fetching as per Next.js 15 standards.
+- Use `metadata` export for SEO and social sharing.
+- Use `next/font` for font loading.
+- Do not use deprecated APIs (e.g., `getServerSideProps`, `getStaticProps`).
+
+## TypeScript
+
+- All files must use `.ts` or `.tsx` extensions.
+- Enable `strict` mode in `tsconfig.json`.
+- Use explicit types for all function parameters and return values.
+- Avoid use of `any`. Use `unknown` and type guards if necessary.
+- Prefer type aliases and interfaces for data structures.
+
+## Tailwind CSS
+
+- Use utility classes for all styling.
+- Do not use custom CSS except for global resets or variables in `globals.css`.
+- Use Tailwind's `dark:` variant for dark mode support.
+- Extend the theme in `tailwind.config.js` for custom colors, fonts, or spacing.
+- Use semantic class names for custom utilities.
+
+## shadcn/ui
+
+- Use shadcn/ui components for all UI primitives (Button, Card, Dialog, etc.).
+- Customize shadcn/ui components via props and Tailwind classes, not by editing library code.
+- Follow shadcn/ui accessibility and keyboard navigation best practices.
+- Use shadcn/ui theming for consistent light/dark mode.
+
+## Authentication (Supabase)
+
+- Configure Supabase client securely using environment variables.
+- Only Google and Github OAuth providers are allowed.
+- Protect routes/pages that require authentication using Supabase session checks.
+- Do not expose Supabase service keys on the client.
+
+## Dark Mode
+
+- Implement dark mode as default, do not use directly `dark:` directive. There is no other theme or mode, just the dark one.
