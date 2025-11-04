@@ -355,12 +355,17 @@
   "homepage": {
     "hero": {
       "availableForNewProjects": "Available for new projects",
-      "title": "I'm Walter, and I",
-      "innovate": "innovate",
-      "developmentWith": "Development with",
-      "passion": "passion",
-      "toCreateImpactful": "to create impactful",
-      "products": "products",
+      "greeting": "Hi, I'm Walter",
+      "role1": "Cursor Ambassador",
+      "role2": "Software Engineer",
+      "role3": "AI Enthusiast",
+      "tagline": "I transform complex problems into elegant solutions using cutting-edge technology.",
+      "getStarted": "Get started",
+      "viewDemo": "View demo",
+      "mainTitle1": "Build innovative",
+      "mainTitle2": "products",
+      "mainTitle3": "together",
+      "subtitle": "Senior full-stack developer and Cursor Ambassador specializing in AI-powered development and modern web technologies.",
       "letsWorkTogether": "Let's work together"
     },
     "cards": {

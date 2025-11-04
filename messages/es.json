@@ -336,6 +336,17 @@
   "homepage": {
     "hero": {
       "availableForNewProjects": "Disponible para nuevos proyectos",
+      "greeting": "Hola, soy Walter",
+      "role1": "Embajador de Cursor",
+      "role2": "Ingeniero de Software",
+      "role3": "Entusiasta de IA",
+      "tagline": "Transformo problemas complejos en soluciones elegantes usando tecnología de punta.",
+      "getStarted": "Empezar",
+      "viewDemo": "Ver demo",
+      "mainTitle1": "Construyamos productos",
+      "mainTitle2": "innovadores",
+      "mainTitle3": "juntos",
+      "subtitle": "Desarrollador full-stack senior y Embajador de Cursor especializado en desarrollo potenciado por IA y tecnologías web modernas.",
       "title": "Soy Walter, y",
       "innovate": "te ayudaré",
       "developmentWith": "a innovar",

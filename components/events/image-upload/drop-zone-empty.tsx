@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { CloudUpload, Upload } from "lucide-react";
-import { useTranslations } from "next-intl";
+import type { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import {
   getDropZoneText,
@@ -93,4 +93,3 @@ export function DropZoneEmpty({
     </motion.div>
   );
 }
-

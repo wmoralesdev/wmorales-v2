@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { ImageIcon, Sparkles, Upload } from "lucide-react";
-import { useTranslations } from "next-intl";
+import type { useTranslations } from "next-intl";
 import { Button } from "@/components/ui/button";
 import { PERCENTAGE_MULTIPLIER } from "./utils";
 
@@ -15,7 +15,8 @@ function getButtonContent(
       <>
         <ImageIcon className="relative z-10 mr-2 h-5 w-5 animate-pulse" />
         <span className="relative z-10 text-lg">
-          Compressing... ({compressionProgress.current}/{compressionProgress.total})
+          Compressing... ({compressionProgress.current}/
+          {compressionProgress.total})
         </span>
       </>
     );
@@ -74,7 +75,12 @@ export function UploadButton({
         size="lg"
       >
         <div className="absolute inset-0 translate-y-full bg-gradient-to-r from-purple-400/20 to-pink-400/20 transition-transform duration-300 group-hover:translate-y-0" />
-        {getButtonContent(compressionProgress, isUploading, selectedFilesLength, t)}
+        {getButtonContent(
+          compressionProgress,
+          isUploading,
+          selectedFilesLength,
+          t
+        )}
       </Button>
 
       {compressionProgress && (
@@ -108,4 +114,3 @@ export function UploadButton({
     </div>
   );
 }
-

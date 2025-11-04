@@ -1,35 +1,10 @@
 "use client";
 
 import { motion, type Variants } from "framer-motion";
-import { ChevronDown } from "lucide-react";
+import Image from "next/image";
 import { useTranslations } from "next-intl";
-import { useEffect, useRef, useState } from "react";
-import {
-  CoffeeChatCard,
-  CurrentlyLearningCard,
-  CursorAmbassadorCard,
-  GlobalReachCard,
-  TechStackCard,
-  TerminalCard,
-} from "@/components/landing/hero-cards";
+import { InteractiveTerminal } from "@/components/landing/interactive-terminal";
 import { Button } from "@/components/ui/button";
-import { EMAIL } from "@/lib/consts";
-
-// Type definitions for Google Calendar API
-declare global {
-  type Window = {
-    calendar?: {
-      schedulingButton: {
-        load: (options: {
-          url: string;
-          color: string;
-          label: string;
-          target: HTMLElement;
-        }) => void;
-      };
-    };
-  };
-}
 
 // Animation variants
 const containerVariants: Variants = {
@@ -57,238 +32,106 @@ const itemVariants: Variants = {
 
 export function HeroSection() {
   const t = useTranslations("homepage.hero");
-  const mainButtonRef = useRef<HTMLScriptElement | null>(null);
-  const [mainScriptLoaded, setMainScriptLoaded] = useState(false);
-  const [mainButtonInitialized, setMainButtonInitialized] = useState(false);
-
-  const scrollToContact = () => {
-    document.querySelector("#contact")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  useEffect(() => {
-    // Load the Google Calendar script for main button
-    const script = document.createElement("script");
-    script.src =
-      "https://calendar.google.com/calendar/scheduling-button-script.js";
-    script.async = true;
-
-    script.onload = () => {
-      setMainScriptLoaded(true);
-
-      // Initialize the button after script loads
-      if (mainButtonRef.current && window.calendar?.schedulingButton) {
-        try {
-          window.calendar.schedulingButton.load({
-            url: "https://calendar.google.com/calendar/appointments/schedules/AcZssZ3le7owokGKyKwsSTL9NavJ_kVj19-XBgqzGbwLcx5Q8qmSQNOK-C0rYCpJqDumc8mHycf9P-lg?gv=true",
-            color: "#fff",
-            label: t("letsWorkTogether"),
-            target: mainButtonRef.current,
-          });
-          setMainButtonInitialized(true);
-        } catch (error) {
-          console.error(
-            "Failed to initialize main Google Calendar button:",
-            error
-          );
-        }
-      }
-    };
-
-    script.onerror = () => {
-      console.error("Failed to load Google Calendar script for main button");
-      setMainScriptLoaded(true); // Set as loaded to show fallback
-    };
-
-    // Insert the script where we want the button to appear
-    if (mainButtonRef.current) {
-      mainButtonRef.current.parentNode?.insertBefore(
-        script,
-        mainButtonRef.current.nextSibling
-      );
-    }
-
-    return () => {
-      // Cleanup
-      if (script.parentNode) {
-        script.parentNode.removeChild(script);
-      }
-    };
-  }, [t]);
-
-  const handleMainFallbackClick = () => {
-    window.open(
-      "https://calendar.google.com/calendar/appointments/schedules/AcZssZ3le7owokGKyKwsSTL9NavJ_kVj19-XBgqzGbwLcx5Q8qmSQNOK-C0rYCpJqDumc8mHycf9P-lg?gv=true",
-      "_blank"
-    );
-  };
 
   return (
-    <section className="relative min-h-screen overflow-hidden px-4 pt-24 pb-16 sm:px-6 lg:px-8">
+    <section className="relative min-h-screen overflow-hidden px-4 py-8 sm:px-6 lg:px-8 lg:py-0">
       <div className="relative z-10 mx-auto max-w-7xl">
-        <div className="grid min-h-[calc(100vh-8rem)] grid-cols-1 items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div className="flex min-h-screen flex-col items-center justify-center lg:grid lg:grid-cols-2 lg:gap-16">
           {/* Left side - Text content */}
           <motion.div
             animate="visible"
-            className="space-y-8 text-center lg:text-left"
+            className="order-2 space-y-8 py-12 text-center lg:order-1 lg:py-0 lg:text-left"
             initial="hidden"
             variants={containerVariants}
           >
             <motion.div className="space-y-6" variants={itemVariants}>
+              {/* Status indicator */}
               <div className="flex items-center justify-center gap-2 lg:justify-start">
                 <div className="relative">
-                  <div className="h-3 w-3 rounded-full bg-green-500" />
-                  <div className="absolute inset-0 h-3 w-3 animate-ping rounded-full bg-green-500" />
+                  <div className="h-2.5 w-2.5 rounded-full bg-green-500" />
+                  <div className="absolute inset-0 h-2.5 w-2.5 animate-ping rounded-full bg-green-500" />
                 </div>
-                <span className="font-medium text-green-400 text-sm">
+                <span className="font-medium text-green-400 text-xs">
                   {t("availableForNewProjects")}
                 </span>
               </div>
 
-              <h1 className="font-bold text-4xl tracking-tight sm:text-5xl lg:text-6xl">
-                <span className="text-gray-400">👋 {t("title")}</span>
-                <br />
-                <span className="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text text-transparent">
-                  {t("innovate")}
-                </span>
-              </h1>
-
-              <div className="space-y-4">
-                <h2 className="font-semibold text-2xl sm:text-3xl lg:text-4xl">
-                  <span className="text-white">{t("developmentWith")}</span>{" "}
-                  <span className="bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
-                    {t("passion")}
-                  </span>
-                  <br />
-                  <span className="text-white">{t("toCreateImpactful")}</span>
-                  <br />
-                  <span className="text-gray-300">{t("products")}.</span>
-                </h2>
+              {/* Main heading with profile picture */}
+              <div className="space-y-6">
+                <div className="flex flex-col items-center gap-6 lg:flex-row lg:items-start">
+                  <div className="relative h-28 w-28 shrink-0 overflow-hidden rounded-full border-2 border-purple-500/30 shadow-purple-500/20 shadow-xl lg:h-32 lg:w-32">
+                    <Image
+                      alt="Walter Morales"
+                      className="object-cover"
+                      fill
+                      priority
+                      src="/me.jpeg"
+                    />
+                  </div>
+                  <div className="space-y-4">
+                    <h1 className="font-bold text-4xl text-white tracking-tight sm:text-5xl lg:text-6xl">
+                      {t("greeting")}{" "}
+                      <span className="inline-block origin-[70%_70%] animate-[wave_2.5s_infinite] text-4xl">
+                        👋
+                      </span>
+                    </h1>
+                    <h2 className="font-medium text-gray-300 text-lg sm:text-xl lg:text-2xl">
+                      <span className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
+                        <Image
+                          alt="Cursor Logo"
+                          className="inline-block"
+                          height={18}
+                          src="/cube-2d-dark.svg"
+                          width={18}
+                        />
+                        {t("role1")}
+                      </span>
+                      <span className="mx-2 text-gray-500">|</span>
+                      {t("role2")}
+                      <span className="mx-2 text-gray-500">|</span>
+                      {t("role3")}
+                    </h2>
+                  </div>
+                </div>
               </div>
 
-              <div className="flex items-center justify-center gap-4 text-gray-400 lg:justify-start">
-                <span className="text-2xl">/</span>
+              {/* Tagline */}
+              <p className="mx-auto max-w-xl text-base text-gray-400 leading-relaxed lg:mx-0 lg:text-lg">
+                {t("tagline")}
+              </p>
+
+              {/* Email */}
+              <div className="flex flex-col items-center gap-4 text-gray-500 text-sm md:flex-row md:items-center">
+                <Button
+                  asChild
+                  className="rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-6 py-5 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25"
+                >
+                  <a href="https://calendar.google.com/calendar/appointments/schedules/AcZssZ3le7owokGKyKwsSTL9NavJ_kVj19-XBgqzGbwLcx5Q8qmSQNOK-C0rYCpJqDumc8mHycf9P-lg?gv=true">
+                    {t("getStarted")}
+                  </a>
+                </Button>
+                <span className="mr-2">/</span>
                 <a
                   className="transition-colors hover:text-purple-400"
-                  href={`mailto:${EMAIL}`}
+                  href="mailto:hello@wmorales.dev"
                 >
-                  {EMAIL}
+                  hello@wmorales.dev
                 </a>
               </div>
             </motion.div>
-
-            <motion.div
-              className="flex justify-center lg:justify-start"
-              variants={itemVariants}
-            >
-              {/* Google Calendar Button Container */}
-              <div className="hero-google-calendar-button-container inline-flex">
-                {/* Fallback button shown while loading or if script fails */}
-                {!mainButtonInitialized && mainScriptLoaded && (
-                  <Button
-                    className="rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25"
-                    onClick={handleMainFallbackClick}
-                    size="lg"
-                  >
-                    {t("letsWorkTogether")}
-                  </Button>
-                )}
-
-                {/* Loading state */}
-                {!mainScriptLoaded && (
-                  <Button
-                    className="rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white opacity-50 shadow-lg"
-                    disabled
-                    size="lg"
-                  >
-                    {t("letsWorkTogether")}
-                  </Button>
-                )}
-
-                {/* This script ref is used as the target for the Google Calendar button */}
-                <script ref={mainButtonRef} type="text/javascript" />
-              </div>
-            </motion.div>
           </motion.div>
 
-          {/* Right side - Visual cards */}
+          {/* Right side - Interactive Terminal */}
           <motion.div
             animate="visible"
-            className="relative grid grid-cols-1 gap-4 sm:grid-cols-2 lg:h-[700px]"
+            className="order-1 w-full py-8 lg:order-2 lg:py-0"
             initial="hidden"
             variants={containerVariants}
           >
-            {/* Desktop Layout - Absolute Positioning */}
-            <div className="hidden lg:block">
-              <GlobalReachCard
-                containerClassName="absolute top-0 left-0 w-48"
-                transition={{ delay: 0 }}
-              />
-
-              <CursorAmbassadorCard
-                containerClassName="absolute top-0 right-0 w-56"
-                transition={{ delay: 0.1 }}
-              />
-
-              <CurrentlyLearningCard
-                containerClassName="absolute top-36 left-12 w-52"
-                transition={{ delay: 0.2 }}
-              />
-
-              <TechStackCard
-                containerClassName="absolute bottom-24 left-0 w-64"
-                transition={{ delay: 0.3 }}
-              />
-
-              <TerminalCard
-                containerClassName="absolute bottom-24 right-0 w-72"
-                transition={{ delay: 0.4 }}
-              />
-
-              <CoffeeChatCard
-                containerClassName="absolute bottom-0 left-1/2 -translate-x-1/2 w-72"
-                onChatClick={scrollToContact}
-                transition={{ delay: 0.6 }}
-              />
-            </div>
-
-            {/* Mobile/Tablet Layout - Grid */}
-            <div className="contents lg:hidden">
-              <GlobalReachCard transition={{ delay: 0 }} />
-              <CursorAmbassadorCard transition={{ delay: 0.1 }} />
-              <CurrentlyLearningCard transition={{ delay: 0.2 }} />
-              <TechStackCard transition={{ delay: 0.3 }} />
-              <TerminalCard
-                containerClassName="sm:col-span-2"
-                transition={{ delay: 0.4 }}
-              />
-              <CoffeeChatCard
-                containerClassName="sm:col-span-2"
-                onChatClick={scrollToContact}
-                transition={{ delay: 0.6 }}
-              />
-            </div>
+            <InteractiveTerminal />
           </motion.div>
         </div>
       </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        animate={{ opacity: 1, y: 0 }}
-        className="-translate-x-1/2 absolute bottom-8 left-1/2 transform"
-        initial={{ opacity: 0, y: 20 }}
-        transition={{ delay: 1.5, duration: 0.6 }}
-      >
-        <motion.div
-          animate={{ y: [0, -10, 0] }}
-          transition={{
-            duration: 2,
-            repeat: Number.POSITIVE_INFINITY,
-            ease: "easeInOut",
-          }}
-        >
-          <ChevronDown className="h-6 w-6 text-purple-400/60" />
-        </motion.div>
-      </motion.div>
     </section>
   );
 }

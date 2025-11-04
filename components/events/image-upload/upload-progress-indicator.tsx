@@ -1,7 +1,11 @@
 import { motion } from "framer-motion";
 import { Camera } from "lucide-react";
-import { useTranslations } from "next-intl";
-import { MAX_IMAGES_DIVISOR, MAX_PHOTOS_ALLOWED, PERCENTAGE_MULTIPLIER } from "./utils";
+import type { useTranslations } from "next-intl";
+import {
+  MAX_IMAGES_DIVISOR,
+  MAX_PHOTOS_ALLOWED,
+  PERCENTAGE_MULTIPLIER,
+} from "./utils";
 
 type UploadProgressIndicatorProps = {
   maxImages: number;
@@ -75,4 +79,3 @@ export function UploadProgressIndicator({
     </div>
   );
 }
-

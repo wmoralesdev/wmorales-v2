@@ -1,6 +1,6 @@
+import { useTranslations } from "next-intl";
 import { useCallback, useRef, useState } from "react";
 import { toast } from "sonner";
-import { useTranslations } from "next-intl";
 import { generateUploadURL } from "@/app/actions/events.actions";
 import { createClient } from "@/lib/supabase/client";
 import { compressImage } from "@/lib/utils/image-compression";
@@ -12,7 +12,11 @@ type UseImageUploadProps = {
   onUpload: (imageUrl: string, caption?: string) => Promise<void>;
 };
 
-export function useImageUpload({ maxImages, slug, onUpload }: UseImageUploadProps) {
+export function useImageUpload({
+  maxImages,
+  slug,
+  onUpload,
+}: UseImageUploadProps) {
   const t = useTranslations("events");
   const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<{ file: File; url: string }[]>([]);
@@ -159,9 +163,9 @@ export function useImageUpload({ maxImages, slug, onUpload }: UseImageUploadProp
         throw new Error(t("uploadImageError"));
       }
 
-      const { data: { publicUrl } } = supabase.storage
-        .from("event-images")
-        .getPublicUrl(filePath);
+      const {
+        data: { publicUrl },
+      } = supabase.storage.from("event-images").getPublicUrl(filePath);
 
       const fileCaption = captions[originalFileName] || "";
       await onUpload(publicUrl, fileCaption.trim() || undefined);
@@ -197,7 +201,11 @@ export function useImageUpload({ maxImages, slug, onUpload }: UseImageUploadProp
       for (let i = 0; i < compressedFiles.length; i++) {
         const file = compressedFiles[i];
         const originalFileName = selectedFiles[i].name;
-        const success = await uploadSingleFile(file, originalFileName, supabase);
+        const success = await uploadSingleFile(
+          file,
+          originalFileName,
+          supabase
+        );
         if (success) {
           successCount++;
         } else {
@@ -214,7 +222,8 @@ export function useImageUpload({ maxImages, slug, onUpload }: UseImageUploadProp
 
       resetForm();
     } catch (error) {
-      const message = error instanceof Error ? error.message : t("uploadImageError");
+      const message =
+        error instanceof Error ? error.message : t("uploadImageError");
       toast.error(message);
     } finally {
       setUploadingFile(false);
@@ -268,4 +277,3 @@ export function useImageUpload({ maxImages, slug, onUpload }: UseImageUploadProp
     handleDropZoneClick,
   };
 }
-

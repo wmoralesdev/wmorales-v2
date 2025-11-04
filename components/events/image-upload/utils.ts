@@ -1,4 +1,4 @@
-import { useTranslations } from "next-intl";
+import type { useTranslations } from "next-intl";
 
 // Constants
 export const MAX_IMAGES_DIVISOR = 20;
@@ -32,7 +32,10 @@ export const getCardClassName = (
 export const getBottomBorderClassName = (maxImages: number) =>
   maxImages > 0 ? "border-t sm:border-t-2" : "";
 
-export const getInnerDivClassName = (isDragReject: boolean, isDragActive: boolean) => {
+export const getInnerDivClassName = (
+  isDragReject: boolean,
+  isDragActive: boolean
+) => {
   if (isDragReject) {
     return "bg-red-500/5";
   }
@@ -42,7 +45,10 @@ export const getInnerDivClassName = (isDragReject: boolean, isDragActive: boolea
   return "hover:bg-gray-800/30";
 };
 
-export const getIconClassName = (isDragReject: boolean, isDragActive: boolean) => {
+export const getIconClassName = (
+  isDragReject: boolean,
+  isDragActive: boolean
+) => {
   if (isDragReject) {
     return "text-red-400";
   }
@@ -52,7 +58,10 @@ export const getIconClassName = (isDragReject: boolean, isDragActive: boolean) =
   return "text-gray-400";
 };
 
-export const getTitleClassName = (isDragReject: boolean, isDragActive: boolean) => {
+export const getTitleClassName = (
+  isDragReject: boolean,
+  isDragActive: boolean
+) => {
   if (isDragReject) {
     return "text-red-300";
   }
@@ -75,5 +84,3 @@ export const getDropZoneText = (
   }
   return t("dragDropOrClick");
 };
-
-
