@@ -138,7 +138,9 @@ export function InteractiveTerminal() {
             type="button"
           />
         </div>
-        <div className="ml-4 text-muted-foreground text-sm">walter@portfolio ~ %</div>
+        <div className="ml-4 text-muted-foreground text-sm">
+          walter@portfolio ~ %
+        </div>
       </div>
 
       {/* Terminal Content */}
@@ -179,7 +181,9 @@ export function InteractiveTerminal() {
               >
                 {cmd.input && (
                   <div className="flex items-start">
-                    <span className="mr-2 text-purple-600 dark:text-purple-400">$</span>
+                    <span className="mr-2 text-purple-600 dark:text-purple-400">
+                      $
+                    </span>
                     <span className="text-foreground">{cmd.input}</span>
                   </div>
                 )}
@@ -204,7 +208,9 @@ export function InteractiveTerminal() {
           {/* Command Suggestions - Always visible */}
           {!isTyping && (
             <div className="mb-3 space-y-2">
-              <div className="text-muted-foreground text-xs">Quick commands:</div>
+              <div className="text-muted-foreground text-xs">
+                Quick commands:
+              </div>
               <div className="flex flex-wrap gap-2">
                 {COMMAND_SUGGESTIONS.map((cmd) => (
                   <button
@@ -226,7 +232,9 @@ export function InteractiveTerminal() {
           {/* Current Input Line */}
           {!isTyping && (
             <div className="flex items-center">
-              <span className="mr-2 text-purple-600 dark:text-purple-400">$</span>
+              <span className="mr-2 text-purple-600 dark:text-purple-400">
+                $
+              </span>
               <input
                 autoComplete="off"
                 className="flex-1 bg-transparent text-foreground placeholder-muted-foreground outline-none"

@@ -9,8 +9,9 @@ export const aboutCommand = {
           building innovative solutions using cutting-edge technology.
         </p>
         <p>
-          Based in El Salvador, working with global teams to deliver high-quality
-          software products and promote AI-powered development practices.
+          Based in El Salvador, working with global teams to deliver
+          high-quality software products and promote AI-powered development
+          practices.
         </p>
         <p>
           Specialized in Next.js, React, TypeScript, and modern AI tooling for
@@ -20,4 +21,3 @@ export const aboutCommand = {
     </div>
   ),
 };
-

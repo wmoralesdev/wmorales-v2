@@ -34,4 +34,3 @@ export const COMMAND_SUGGESTIONS = [
   "contact",
   "socials",
 ] as const;
-

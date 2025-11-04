@@ -3,6 +3,7 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { JetBrains_Mono, Poppins, Space_Grotesk } from "next/font/google";
+import { getLocale } from "next-intl/server";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/components/auth/auth-provider";
 import { AnimatedMesh } from "@/components/common/animated-mesh";
@@ -29,12 +30,11 @@ const jetbrainsMono = JetBrains_Mono({
 
 type Props = {
   children: React.ReactNode;
-  params: Promise<{ locale: string }>;
 };
 
-export default async function RootLayout({ children, params }: Props) {
-  // Extract locale from URL params
-  const { locale } = await params;
+export default async function RootLayout({ children }: Props) {
+  // Get locale from next-intl (handled at [locale] level)
+  const locale = await getLocale();
 
   return (
     <html lang={locale} suppressHydrationWarning>

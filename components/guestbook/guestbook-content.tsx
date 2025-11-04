@@ -174,7 +174,9 @@ export function GuestbookContent() {
                     placeholder={t("moodPlaceholder")}
                     value={customMessage}
                   />
-                  <p className="text-muted-foreground text-xs">{t("moodExamples")}</p>
+                  <p className="text-muted-foreground text-xs">
+                    {t("moodExamples")}
+                  </p>
                 </div>
                 <Button
                   className="w-full gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"

@@ -293,7 +293,9 @@ function MobileUserSection() {
             <p className="truncate font-medium text-sm text-foreground">
               {displayName}
             </p>
-            <p className="truncate text-muted-foreground text-xs">{user.email}</p>
+            <p className="truncate text-muted-foreground text-xs">
+              {user.email}
+            </p>
           </div>
         </div>
         <Button
@@ -376,25 +378,25 @@ export function Navbar() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-      <Link
-        className="group flex cursor-pointer select-none items-center gap-2 outline-none"
-        href="/"
-      >
-        <div>
-          <Image
-            alt="Walter Morales"
-            className="transform-gpu transition-transform duration-200 ease-in-out group-hover:rotate-180"
-            height={24}
-            priority
-            quality={100}
-            src="/wm.svg"
-            width={24}
-          />
-        </div>
-        <span className="font-bold text-lg text-foreground tracking-tighter group-hover:text-purple-400 dark:group-hover:text-purple-400">
-          WM
-        </span>
-      </Link>
+          <Link
+            className="group flex cursor-pointer select-none items-center gap-2 outline-none"
+            href="/"
+          >
+            <div>
+              <Image
+                alt="Walter Morales"
+                className="transform-gpu transition-transform duration-200 ease-in-out group-hover:rotate-180"
+                height={24}
+                priority
+                quality={100}
+                src="/wm.svg"
+                width={24}
+              />
+            </div>
+            <span className="font-bold text-lg text-foreground tracking-tighter group-hover:text-purple-400 dark:group-hover:text-purple-400">
+              WM
+            </span>
+          </Link>
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden items-center space-x-8 md:flex">
             <NavigationMenuList>

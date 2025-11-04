@@ -12,19 +12,24 @@ export const projectsCommand = {
           </div>
         </div>
         <div>
-          <span className="text-cyan-400 font-medium">Event Management Platform</span>
+          <span className="text-cyan-400 font-medium">
+            Event Management Platform
+          </span>
           <div className="ml-2 mt-1 text-sm text-gray-400">
-            Real-time photo sharing system with QR code integration for live events
+            Real-time photo sharing system with QR code integration for live
+            events
           </div>
         </div>
         <div>
-          <span className="text-cyan-400 font-medium">AI-Powered Development Tools</span>
+          <span className="text-cyan-400 font-medium">
+            AI-Powered Development Tools
+          </span>
           <div className="ml-2 mt-1 text-sm text-gray-400">
-            Custom integrations and workflows leveraging AI for enhanced productivity
+            Custom integrations and workflows leveraging AI for enhanced
+            productivity
           </div>
         </div>
       </div>
     </div>
   ),
 };
-

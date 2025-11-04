@@ -1,8 +1,8 @@
 import { Sparkles } from "lucide-react";
 import type { Metadata } from "next";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { Link } from "@/i18n/navigation";
 import { getTicketById } from "@/app/actions/guestbook.actions";
 import { UserTicket } from "@/components/guestbook/user-ticket";
 import { Button } from "@/components/ui/button";
@@ -129,7 +129,7 @@ export default async function TicketPage({ params }: Props) {
                 <p className="mb-6 text-muted-foreground">
                   {t("joinDescription")}
                 </p>
-                <Link href={`/${locale}/guestbook`}>
+                <Link href="/guestbook">
                   <Button className="bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600">
                     <Sparkles className="mr-2 h-4 w-4" />
                     {t("generateTicket")}

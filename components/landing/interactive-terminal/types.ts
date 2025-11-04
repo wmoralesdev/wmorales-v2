@@ -9,4 +9,3 @@ export type CommandDefinition = {
   description: string;
   execute: () => string | ReactNode;
 };
-

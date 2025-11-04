@@ -14,13 +14,15 @@ export function SignInCard({ onSignIn }: SignInCardProps) {
   return (
     <Card className="mx-auto max-w-md">
       <CardHeader className="text-center">
-                <div className="mb-4 flex justify-center">
-                  <div className="rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-3">
-                    <LogIn className="h-8 w-8 text-purple-600 dark:text-purple-400" />
-                  </div>
-                </div>
-                <CardTitle className="text-2xl text-foreground">{t("signInTitle")}</CardTitle>
-                <p className="text-muted-foreground">{t("signInDescription")}</p>
+        <div className="mb-4 flex justify-center">
+          <div className="rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-3">
+            <LogIn className="h-8 w-8 text-purple-600 dark:text-purple-400" />
+          </div>
+        </div>
+        <CardTitle className="text-2xl text-foreground">
+          {t("signInTitle")}
+        </CardTitle>
+        <p className="text-muted-foreground">{t("signInDescription")}</p>
       </CardHeader>
       <CardContent className="space-y-4">
         <Button

@@ -11,11 +11,11 @@ type TypingOutputProps = {
 export function TypingOutput({ content, onComplete }: TypingOutputProps) {
   const isString = typeof content === "string";
   const [showFullContent, setShowFullContent] = useState(false);
-  
+
   // Extract text from ReactNode for typing animation (memoized to prevent re-extraction)
   const textToType = useMemo(
     () => (isString ? content : extractText(content)),
-    [content, isString],
+    [content, isString]
   );
   const { displayedText, isTyping } = useTypingAnimation(textToType, true);
 
@@ -63,4 +63,3 @@ export function TypingOutput({ content, onComplete }: TypingOutputProps) {
     </motion.div>
   );
 }
-

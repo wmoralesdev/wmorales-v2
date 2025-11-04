@@ -10,8 +10,8 @@ import {
   Sparkles,
   Twitter,
 } from "lucide-react";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
+import { Link } from "@/i18n/navigation";
 import { EMAIL } from "@/lib/consts";
 
 // Animation variants
@@ -54,10 +54,10 @@ export function Footer() {
   const t = useTranslations("footer");
 
   const navigation = [
-    { name: t("home"), href: "/" },
-    { name: t("guestbook"), href: "/guestbook" },
-    { name: t("events"), href: "/events" },
-    { name: t("cursor"), href: "/cursor" },
+    { name: t("home"), href: "/" as const },
+    { name: t("guestbook"), href: "/guestbook" as const },
+    { name: t("events"), href: "/events" as const },
+    { name: t("cursor"), href: "/cursor" as const },
   ];
 
   return (
@@ -155,16 +155,15 @@ export function Footer() {
               </div>
 
               {/* CTA */}
-              <Link href={`mailto:${EMAIL}`}>
-                <motion.button
-                  className="group flex items-center gap-2 rounded-lg border border-purple-500/50 bg-purple-500/10 px-4 py-2 font-medium text-purple-600 text-sm backdrop-blur-sm transition-all hover:bg-purple-500/20 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300"
-                  whileHover={{ scale: 1.02 }}
-                  whileTap={{ scale: 0.98 }}
-                >
-                  <Send className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
-                  {t("getInTouch")}
-                </motion.button>
-              </Link>
+              <motion.a
+                className="group flex items-center gap-2 rounded-lg border border-purple-500/50 bg-purple-500/10 px-4 py-2 font-medium text-purple-600 text-sm backdrop-blur-sm transition-all hover:bg-purple-500/20 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300"
+                href={`mailto:${EMAIL}`}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                <Send className="h-4 w-4 transition-transform group-hover:translate-x-0.5" />
+                {t("getInTouch")}
+              </motion.a>
             </motion.div>
           </div>
 

@@ -41,7 +41,7 @@ export function useTerminal() {
       // Return null for error - component will handle error display
       return null;
     },
-    [addToHistory, clearCommands, resetHistoryIndex],
+    [addToHistory, clearCommands, resetHistoryIndex]
   );
 
   const handleCommand = useCallback(
@@ -54,12 +54,12 @@ export function useTerminal() {
         addCommand({ input, output: createErrorOutput(input) });
       }
     },
-    [addCommand, executeCommand],
+    [addCommand, executeCommand]
   );
 
   const handleTab = useCallback(() => {
     const matches = Object.keys(COMMANDS).filter((cmd) =>
-      cmd.startsWith(currentInput.toLowerCase()),
+      cmd.startsWith(currentInput.toLowerCase())
     );
     if (matches.length === 1) {
       setCurrentInput(matches[0]);
@@ -89,17 +89,16 @@ export function useTerminal() {
           handleTab();
         }
       },
-    [currentInput, handleCommand, handleTab, navigateHistory, setCurrentInput],
+    [currentInput, handleCommand, handleTab, navigateHistory, setCurrentInput]
   );
 
   const createHandleSuggestionClick = useCallback(
-    (createErrorOutput: (input: string) => ReactNode) =>
-      (command: string) => {
-        handleCommand(command, createErrorOutput);
-        setCurrentInput("");
-        inputRef.current?.focus();
-      },
-    [handleCommand, setCurrentInput],
+    (createErrorOutput: (input: string) => ReactNode) => (command: string) => {
+      handleCommand(command, createErrorOutput);
+      setCurrentInput("");
+      inputRef.current?.focus();
+    },
+    [handleCommand, setCurrentInput]
   );
 
   const focusInput = useCallback(() => {

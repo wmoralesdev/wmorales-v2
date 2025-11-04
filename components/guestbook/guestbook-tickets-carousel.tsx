@@ -60,7 +60,9 @@ export function GuestbookTicketsCarousel({
               <Users className="h-6 w-6 text-purple-600 dark:text-purple-400" />
             </div>
           </div>
-          <h2 className="mb-2 font-bold text-3xl text-foreground">{t("communityTickets")}</h2>
+          <h2 className="mb-2 font-bold text-3xl text-foreground">
+            {t("communityTickets")}
+          </h2>
           <p className="text-muted-foreground">{t("beFirstToCreate")}</p>
         </div>
         <Card className="border-border bg-card/50 backdrop-blur-sm">
@@ -80,7 +82,9 @@ export function GuestbookTicketsCarousel({
             <Users className="h-6 w-6 text-purple-600 dark:text-purple-400" />
           </div>
         </div>
-        <h2 className="mb-2 font-bold text-3xl text-foreground">{t("communityTickets")}</h2>
+        <h2 className="mb-2 font-bold text-3xl text-foreground">
+          {t("communityTickets")}
+        </h2>
         <p className="text-muted-foreground">
           {t("uniqueTicketsCount", { count: tickets.length })}
         </p>

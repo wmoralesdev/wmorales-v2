@@ -21,11 +21,11 @@ export const helpCommand: CommandDefinition = {
       <div className="ml-4 space-y-1.5 text-gray-300">
         {COMMAND_LIST.map((cmd) => (
           <div key={cmd.name}>
-            <span className="text-cyan-400">{cmd.name}</span> - {cmd.description}
+            <span className="text-cyan-400">{cmd.name}</span> -{" "}
+            {cmd.description}
           </div>
         ))}
       </div>
     </div>
   ),
 };
-

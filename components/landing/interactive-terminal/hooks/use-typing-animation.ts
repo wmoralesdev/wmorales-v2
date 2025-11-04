@@ -5,7 +5,7 @@ const TYPING_DELAY_MS = 15;
 export function useTypingAnimation(
   text: string,
   enabled = true,
-  delay = TYPING_DELAY_MS,
+  delay = TYPING_DELAY_MS
 ): { displayedText: string; isTyping: boolean } {
   const [displayedText, setDisplayedText] = useState("");
   const [isTyping, setIsTyping] = useState(false);
@@ -38,4 +38,3 @@ export function useTypingAnimation(
 
   return { displayedText, isTyping };
 }
-

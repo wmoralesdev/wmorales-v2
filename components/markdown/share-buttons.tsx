@@ -1,7 +1,6 @@
 "use client";
 
 import { Facebook, Link2, Linkedin, Twitter } from "lucide-react";
-import Link from "next/link";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -44,34 +43,34 @@ export function ShareButtons({ title, url }: ShareButtonsProps) {
       <span className="text-gray-400 text-sm">Share this post:</span>
       <div className="flex gap-2">
         <Button asChild size="sm" variant="outline">
-          <Link
+          <a
             aria-label="Share on Twitter"
             href={shareLinks.twitter}
             rel="noopener noreferrer"
             target="_blank"
           >
             <Twitter className="h-4 w-4" />
-          </Link>
+          </a>
         </Button>
         <Button asChild size="sm" variant="outline">
-          <Link
+          <a
             aria-label="Share on Facebook"
             href={shareLinks.facebook}
             rel="noopener noreferrer"
             target="_blank"
           >
             <Facebook className="h-4 w-4" />
-          </Link>
+          </a>
         </Button>
         <Button asChild size="sm" variant="outline">
-          <Link
+          <a
             aria-label="Share on LinkedIn"
             href={shareLinks.linkedin}
             rel="noopener noreferrer"
             target="_blank"
           >
             <Linkedin className="h-4 w-4" />
-          </Link>
+          </a>
         </Button>
         <Button
           aria-label="Copy link"

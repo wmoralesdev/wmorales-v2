@@ -26,7 +26,7 @@ export function extractText(node: ReactNode): string {
   }
 
   if (node && typeof node === "object" && "props" in node) {
-    const { children } = node.props || {};
+    const { children } = node.props as { children: ReactNode };
     if (children !== null && children !== undefined) {
       if (Array.isArray(children)) {
         return children.map(extractText).filter(Boolean).join(" ");
@@ -37,4 +37,3 @@ export function extractText(node: ReactNode): string {
 
   return "";
 }
-

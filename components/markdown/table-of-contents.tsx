@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 
@@ -24,12 +23,12 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
                 className={cn("text-sm", heading.level > 2 && "ml-4")}
                 key={heading.id}
               >
-                <Link
-                  className="text-gray-400 transition-colors hover:text-white"
+                <a
+                  className="text-gray-400 transition-colors hover:text-white scroll-smooth"
                   href={`#${heading.id}`}
                 >
                   {heading.title}
-                </Link>
+                </a>
               </li>
             ))}
           </ul>

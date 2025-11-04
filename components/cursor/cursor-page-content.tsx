@@ -14,7 +14,6 @@ import {
   Users,
   Zap,
 } from "lucide-react";
-import Link from "next/link";
 import { useTranslations } from "next-intl";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -191,13 +190,21 @@ export function CursorPageContent() {
             className="flex flex-wrap items-center justify-center gap-4"
             variants={itemVariants}
           >
-            <Link href="https://linkedin.com/in/wmoralesdev" target="_blank">
+            <a
+              href="https://linkedin.com/in/wmoralesdev"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               <Button className="group rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25">
                 <Linkedin className="mr-2 h-4 w-4" />
                 {t("connectLinkedIn")}
               </Button>
-            </Link>
-            <Link href="https://github.com/wmoralesdev" target="_blank">
+            </a>
+            <a
+              href="https://github.com/wmoralesdev"
+              rel="noopener noreferrer"
+              target="_blank"
+            >
               <Button
                 className="group rounded-full border-purple-500/50 bg-transparent px-8 py-6 text-purple-900 backdrop-blur-xl transition-all duration-300 hover:bg-purple-500/20 dark:text-purple-300"
                 variant="outline"
@@ -205,7 +212,7 @@ export function CursorPageContent() {
                 <Github className="mr-2 h-4 w-4" />
                 {t("viewTemplates")}
               </Button>
-            </Link>
+            </a>
           </motion.div>
         </motion.div>
       </section>
@@ -297,7 +304,9 @@ export function CursorPageContent() {
                     <h3 className="mb-2 font-semibold text-lg text-foreground">
                       {area.title}
                     </h3>
-                    <p className="text-sm text-muted-foreground">{area.description}</p>
+                    <p className="text-sm text-muted-foreground">
+                      {area.description}
+                    </p>
                   </div>
                 </motion.div>
               );
@@ -326,7 +335,9 @@ export function CursorPageContent() {
               <h3 className="mb-3 font-bold text-xl text-foreground">
                 {t("community.title")}
               </h3>
-              <p className="mb-4 text-muted-foreground">{t("community.description")}</p>
+              <p className="mb-4 text-muted-foreground">
+                {t("community.description")}
+              </p>
               <ul className="space-y-2">
                 <li className="flex items-start gap-2 text-sm text-muted-foreground">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-600 dark:bg-purple-400" />
@@ -353,7 +364,9 @@ export function CursorPageContent() {
               <h3 className="mb-3 font-bold text-xl text-foreground">
                 {t("future.title")}
               </h3>
-              <p className="mb-4 text-muted-foreground">{t("future.description")}</p>
+              <p className="mb-4 text-muted-foreground">
+                {t("future.description")}
+              </p>
               <ul className="space-y-2">
                 <li className="flex items-start gap-2 text-sm text-muted-foreground">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-600 dark:bg-purple-400" />
@@ -451,7 +464,11 @@ export function CursorPageContent() {
           >
             <p className="mb-6 text-foreground/80">{t("cta.question")}</p>
             <div className="flex flex-wrap items-center justify-center gap-4">
-              <Link href="https://calendly.com/wmoralesdev" target="_blank">
+              <a
+                href="https://calendly.com/wmoralesdev"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 <Button
                   className="group rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-8 py-6 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25"
                   size="lg"
@@ -459,8 +476,12 @@ export function CursorPageContent() {
                   <Calendar className="mr-2 h-5 w-5" />
                   {t("cta.schedule")}
                 </Button>
-              </Link>
-              <Link href="https://chat.whatsapp.com/DLGP02iY1veKQqjc5Y6pOy">
+              </a>
+              <a
+                href="https://chat.whatsapp.com/DLGP02iY1veKQqjc5Y6pOy"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
                 <Button
                   className="rounded-full border-purple-500/50 bg-transparent px-8 py-6 text-purple-900 backdrop-blur-xl transition-all duration-300 hover:bg-purple-500/20 dark:text-purple-300"
                   size="lg"
@@ -469,7 +490,7 @@ export function CursorPageContent() {
                   <MessageCircle className="mr-2 h-5 w-5" />
                   {t("cta.joinCommunity")}
                 </Button>
-              </Link>
+              </a>
             </div>
           </motion.div>
         </div>
@@ -493,7 +514,9 @@ export function CursorPageContent() {
             <h3 className="mb-2 font-bold text-xl text-foreground">
               {t("resources.title")}
             </h3>
-            <p className="mb-6 text-muted-foreground">{t("resources.description")}</p>
+            <p className="mb-6 text-muted-foreground">
+              {t("resources.description")}
+            </p>
             <Badge className="border-purple-500/30 bg-purple-500/10 text-purple-900 dark:bg-purple-500/20 dark:text-purple-300">
               <Sparkles className="mr-1 h-3 w-3" />
               {t("resources.launchingIn")}

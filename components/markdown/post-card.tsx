@@ -1,7 +1,7 @@
 import { CalendarDays } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "@/i18n/navigation";
 import {
   Card,
   CardContent,
@@ -29,7 +29,7 @@ type PostCardProps = {
 
 export function PostCard({ post, featured = false }: PostCardProps) {
   return (
-    <Link href={`/blog/${post.slug}`}>
+    <Link href={`/blog/${post.slug}` as any}>
       <Card
         className={`h-full transition-colors hover:border-purple-600 ${featured ? "md:col-span-2" : ""}`}
       >
