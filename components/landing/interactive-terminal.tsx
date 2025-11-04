@@ -26,9 +26,9 @@ export function InteractiveTerminal() {
   } = useTerminal();
 
   const createErrorOutput = (input: string) => (
-    <div className="text-red-400">
+    <div className="text-red-600 dark:text-red-400">
       Command not found: {input}
-      <div className="mt-1 text-gray-400 text-sm">
+      <div className="mt-1 text-muted-foreground text-sm">
         Type 'help' for available commands
       </div>
     </div>
@@ -114,7 +114,7 @@ export function InteractiveTerminal() {
         height: getTerminalHeight(),
         maxWidth: getExpandedMaxWidth(),
       }}
-      className={`relative overflow-hidden rounded-xl border border-gray-800 bg-black/80 shadow-2xl backdrop-blur-sm ${
+      className={`relative overflow-hidden rounded-xl border border-border bg-card shadow-2xl backdrop-blur-sm ${
         isExpanded ? "mx-auto" : "w-full"
       }`}
       initial={{ opacity: 0, y: 20 }}
@@ -122,7 +122,7 @@ export function InteractiveTerminal() {
       transition={{ delay: 0.4, duration: 0.5 }}
     >
       {/* Terminal Header */}
-      <div className="flex items-center gap-2 border-gray-800 border-b px-4 py-3">
+      <div className="flex items-center gap-2 border-border border-b px-4 py-3">
         <div className="flex gap-2">
           <div className="size-3 rounded-full bg-red-500" />
           <button
@@ -138,7 +138,7 @@ export function InteractiveTerminal() {
             type="button"
           />
         </div>
-        <div className="ml-4 text-gray-400 text-sm">walter@portfolio ~ %</div>
+        <div className="ml-4 text-muted-foreground text-sm">walter@portfolio ~ %</div>
       </div>
 
       {/* Terminal Content */}
@@ -156,12 +156,12 @@ export function InteractiveTerminal() {
         >
           {/* Welcome Message */}
           {isTyping ? (
-            <div className="mb-4 whitespace-pre-line text-green-400">
+            <div className="mb-4 whitespace-pre-line text-green-600 dark:text-green-400">
               {typedText}
               <span className="animate-pulse">▊</span>
             </div>
           ) : (
-            <div className="mb-4 whitespace-pre-line text-green-400">
+            <div className="mb-4 whitespace-pre-line text-green-600 dark:text-green-400">
               {welcomeMessage}
             </div>
           )}
@@ -179,8 +179,8 @@ export function InteractiveTerminal() {
               >
                 {cmd.input && (
                   <div className="flex items-start">
-                    <span className="mr-2 text-purple-400">$</span>
-                    <span className="text-gray-100">{cmd.input}</span>
+                    <span className="mr-2 text-purple-600 dark:text-purple-400">$</span>
+                    <span className="text-foreground">{cmd.input}</span>
                   </div>
                 )}
                 {cmd.output && (
@@ -191,7 +191,7 @@ export function InteractiveTerminal() {
                     transition={{ duration: 0.15, delay: 0.05 }}
                   >
                     {typeof cmd.output === "string" ? (
-                      <div className="text-gray-300">{cmd.output}</div>
+                      <div className="text-muted-foreground">{cmd.output}</div>
                     ) : (
                       cmd.output
                     )}
@@ -204,11 +204,11 @@ export function InteractiveTerminal() {
           {/* Command Suggestions - Always visible */}
           {!isTyping && (
             <div className="mb-3 space-y-2">
-              <div className="text-gray-400 text-xs">Quick commands:</div>
+              <div className="text-muted-foreground text-xs">Quick commands:</div>
               <div className="flex flex-wrap gap-2">
                 {COMMAND_SUGGESTIONS.map((cmd) => (
                   <button
-                    className="rounded border border-gray-700 bg-gray-900/50 px-3 py-1.5 text-cyan-400 text-xs transition-colors hover:border-cyan-500 hover:bg-gray-900 focus:outline-none focus:ring-1 focus:ring-cyan-500"
+                    className="rounded border border-border bg-muted/50 px-3 py-1.5 text-cyan-600 text-xs transition-colors hover:border-cyan-500 hover:bg-muted dark:text-cyan-400 focus:outline-none focus:ring-1 focus:ring-cyan-500"
                     key={cmd}
                     onClick={(e) => {
                       e.stopPropagation();
@@ -226,10 +226,10 @@ export function InteractiveTerminal() {
           {/* Current Input Line */}
           {!isTyping && (
             <div className="flex items-center">
-              <span className="mr-2 text-purple-400">$</span>
+              <span className="mr-2 text-purple-600 dark:text-purple-400">$</span>
               <input
                 autoComplete="off"
-                className="flex-1 bg-transparent text-gray-100 placeholder-gray-600 outline-none"
+                className="flex-1 bg-transparent text-foreground placeholder-muted-foreground outline-none"
                 onChange={(e) => setCurrentInput(e.target.value)}
                 onKeyDown={handleKeyDown}
                 placeholder="Enter a command..."
@@ -239,7 +239,7 @@ export function InteractiveTerminal() {
                 type="text"
                 value={currentInput}
               />
-              <span className="animate-pulse text-gray-400">▊</span>
+              <span className="animate-pulse text-muted-foreground">▊</span>
             </div>
           )}
         </motion.div>

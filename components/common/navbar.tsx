@@ -43,6 +43,7 @@ import {
   NavigationMenuList,
 } from "../ui/navigation-menu";
 import { Clock } from "./clock";
+import { ThemeToggle } from "./theme-toggle";
 
 const MotionMenuItem = motion.create(NavigationMenuItem);
 
@@ -289,14 +290,14 @@ function MobileUserSection() {
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1">
-            <p className="truncate font-medium text-sm text-white">
+            <p className="truncate font-medium text-sm text-foreground">
               {displayName}
             </p>
-            <p className="truncate text-gray-400 text-xs">{user.email}</p>
+            <p className="truncate text-muted-foreground text-xs">{user.email}</p>
           </div>
         </div>
         <Button
-          className="w-full border-gray-700 hover:bg-gray-800"
+          className="w-full"
           disabled={isLoading}
           onClick={handleSignOut}
           variant="outline"
@@ -310,12 +311,12 @@ function MobileUserSection() {
 
   return (
     <div className="space-y-3">
-      <p className="font-medium text-gray-400 text-xs uppercase tracking-wider">
+      <p className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
         {t("account")}
       </p>
       <div className="space-y-2">
         <Button
-          className="w-full justify-start border-gray-700 hover:bg-gray-800"
+          className="w-full justify-start"
           onClick={handleSignInWithGoogle}
           variant="outline"
         >
@@ -329,7 +330,7 @@ function MobileUserSection() {
           {t("continueWith", { provider: "Google" })}
         </Button>
         <Button
-          className="w-full justify-start border-gray-700 hover:bg-gray-800"
+          className="w-full justify-start"
           onClick={handleSignInWithGitHub}
           variant="outline"
         >
@@ -364,7 +365,7 @@ export function Navbar() {
     <motion.nav
       animate="visible"
       className={cn(
-        "fixed top-0 right-0 left-0 z-50 border-b transition-all duration-300",
+        "fixed top-0 right-0 left-0 z-50 border-b border-border transition-all duration-300",
         scrolled
           ? "bg-background/95 shadow-lg backdrop-blur-md"
           : "bg-background/80 backdrop-blur-md"
@@ -375,25 +376,25 @@ export function Navbar() {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
-          <Link
-            className="group flex cursor-pointer select-none items-center gap-2 outline-none"
-            href="/"
-          >
-            <div>
-              <Image
-                alt="Walter Morales"
-                className="transform-gpu transition-transform duration-200 ease-in-out group-hover:rotate-180"
-                height={24}
-                priority
-                quality={100}
-                src="/wm.svg"
-                width={24}
-              />
-            </div>
-            <span className="font-bold text-lg text-white tracking-tighter group-hover:text-purple-400">
-              WM
-            </span>
-          </Link>
+      <Link
+        className="group flex cursor-pointer select-none items-center gap-2 outline-none"
+        href="/"
+      >
+        <div>
+          <Image
+            alt="Walter Morales"
+            className="transform-gpu transition-transform duration-200 ease-in-out group-hover:rotate-180"
+            height={24}
+            priority
+            quality={100}
+            src="/wm.svg"
+            width={24}
+          />
+        </div>
+        <span className="font-bold text-lg text-foreground tracking-tighter group-hover:text-purple-400 dark:group-hover:text-purple-400">
+          WM
+        </span>
+      </Link>
           {/* Desktop Navigation */}
           <NavigationMenu className="hidden items-center space-x-8 md:flex">
             <NavigationMenuList>
@@ -423,6 +424,7 @@ export function Navbar() {
           {/* Desktop Right Side Elements */}
           <div className="hidden items-center gap-4 md:flex">
             <Clock />
+            <ThemeToggle />
             <LocaleToggle />
             <SignInButton />
           </div>
@@ -470,11 +472,11 @@ export function Navbar() {
                             src="/wm.svg"
                             width={24}
                           />
-                          <span className="font-bold text-lg text-white">
+                          <span className="font-bold text-lg text-foreground">
                             WM
                           </span>
                         </div>
-                        <p className="hidden text-gray-500 text-xs lg:block">
+                        <p className="hidden text-muted-foreground text-xs lg:block">
                           {tCommon("escToClose")}
                         </p>
                       </div>
@@ -512,22 +514,30 @@ export function Navbar() {
                       </div>
 
                       {/* Divider */}
-                      <div className="my-4 border-gray-800 border-t" />
+                      <div className="my-4 border-border border-t" />
 
                       {/* User Section & Actions */}
                       <div className="space-y-4 px-3">
+                        {/* Theme Toggle */}
+                        <div className="space-y-2">
+                          <p className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
+                            Theme
+                          </p>
+                          <ThemeToggle showLabel />
+                        </div>
+
                         {/* Language Toggle */}
                         <div className="space-y-2">
-                          <p className="font-medium text-gray-400 text-xs uppercase tracking-wider">
+                          <p className="font-medium text-muted-foreground text-xs uppercase tracking-wider">
                             {t("language")}
                           </p>
-                          <div className="flex rounded-lg bg-gray-800/50 p-1">
+                          <div className="flex rounded-lg bg-muted/50 p-1">
                             <button
                               className={cn(
                                 "flex-1 rounded-md px-3 py-1.5 font-medium text-sm transition-all",
                                 locale === "en"
                                   ? "bg-purple-500 text-white shadow-sm"
-                                  : "text-gray-400 hover:text-white"
+                                  : "text-muted-foreground hover:text-foreground"
                               )}
                               onClick={() => {
                                 if (locale !== "en") {
@@ -569,7 +579,7 @@ export function Navbar() {
                                 "flex-1 rounded-md px-3 py-1.5 font-medium text-sm transition-all",
                                 locale === "es"
                                   ? "bg-purple-500 text-white shadow-sm"
-                                  : "text-gray-400 hover:text-white"
+                                  : "text-muted-foreground hover:text-foreground"
                               )}
                               onClick={() => {
                                 if (locale !== "es") {

@@ -109,8 +109,8 @@ export default async function EventPage({ params }: Props) {
       <div className="container mx-auto py-16 lg:px-4">
         {isEventEnded && (
           <Alert className="mb-6 border-yellow-500/30 bg-yellow-500/10">
-            <AlertTriangle className="h-4 w-4 text-yellow-400" />
-            <AlertDescription className="text-yellow-300">
+            <AlertTriangle className="h-4 w-4 text-yellow-600 dark:text-yellow-400" />
+            <AlertDescription className="text-yellow-700 dark:text-yellow-300">
               {t("eventEnded")}
             </AlertDescription>
           </Alert>

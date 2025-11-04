@@ -5,7 +5,7 @@ import { motion } from "framer-motion";
 export function AnimatedMesh() {
   return (
     <div className="fixed inset-0 z-0 overflow-hidden bg-background">
-      <div className="absolute inset-0 bg-gradient-to-br from-black via-gray-900 to-black opacity-50" />
+      <div className="absolute inset-0 bg-gradient-to-br from-background via-muted/30 to-background opacity-50" />
       <motion.div
         animate={{
           background: [
@@ -15,7 +15,7 @@ export function AnimatedMesh() {
             "radial-gradient(circle at 20% 50%, rgba(147, 51, 234, 0.15) 0%, transparent 50%)",
           ],
         }}
-        className="absolute inset-0"
+        className="absolute inset-0 opacity-60 dark:opacity-100"
         transition={{
           duration: 10,
           repeat: Number.POSITIVE_INFINITY,

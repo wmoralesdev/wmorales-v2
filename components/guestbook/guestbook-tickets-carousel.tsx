@@ -57,15 +57,15 @@ export function GuestbookTicketsCarousel({
         <div className="mb-8 text-center">
           <div className="mb-4 inline-flex items-center justify-center">
             <div className="rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-2">
-              <Users className="h-6 w-6 text-purple-400" />
+              <Users className="h-6 w-6 text-purple-600 dark:text-purple-400" />
             </div>
           </div>
-          <h2 className="mb-2 font-bold text-3xl">{t("communityTickets")}</h2>
-          <p className="text-gray-400">{t("beFirstToCreate")}</p>
+          <h2 className="mb-2 font-bold text-3xl text-foreground">{t("communityTickets")}</h2>
+          <p className="text-muted-foreground">{t("beFirstToCreate")}</p>
         </div>
-        <Card className="border-gray-800 bg-gray-900/50 backdrop-blur-sm">
+        <Card className="border-border bg-card/50 backdrop-blur-sm">
           <CardContent className="py-16 text-center">
-            <p className="text-gray-400">{t("noTicketsYet")}</p>
+            <p className="text-muted-foreground">{t("noTicketsYet")}</p>
           </CardContent>
         </Card>
       </div>
@@ -77,15 +77,15 @@ export function GuestbookTicketsCarousel({
       <div className="mb-8 text-center">
         <div className="mb-4 inline-flex items-center justify-center">
           <div className="rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-2">
-            <Users className="h-6 w-6 text-purple-400" />
+            <Users className="h-6 w-6 text-purple-600 dark:text-purple-400" />
           </div>
         </div>
-        <h2 className="mb-2 font-bold text-3xl">{t("communityTickets")}</h2>
-        <p className="text-gray-400">
+        <h2 className="mb-2 font-bold text-3xl text-foreground">{t("communityTickets")}</h2>
+        <p className="text-muted-foreground">
           {t("uniqueTicketsCount", { count: tickets.length })}
         </p>
         {activeViewers > 0 && (
-          <p className="mt-1 text-gray-500 text-sm">
+          <p className="mt-1 text-muted-foreground text-sm">
             <span className="mr-1 inline-block h-2 w-2 animate-pulse rounded-full bg-green-500" />
             {t("viewingNow", { count: activeViewers })}
           </p>
@@ -147,7 +147,7 @@ export function GuestbookTicketsCarousel({
             <CarouselPrevious className="relative inset-0 translate-x-0 translate-y-0" />
             <div className="flex items-center gap-1 px-4">
               {count > 0 && (
-                <span className="text-gray-400 text-sm">
+                <span className="text-muted-foreground text-sm">
                   {current} / {count}
                 </span>
               )}

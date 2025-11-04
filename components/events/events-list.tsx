@@ -49,30 +49,14 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
 
   if (events.length === 0) {
     return (
-      <Card className="border-gray-800 bg-gray-900/60 backdrop-blur-xl">
+      <Card className="border-border bg-card/60 backdrop-blur-xl">
         <CardContent className="pt-6">
           <div className="text-center">
-            <Users className="mx-auto mb-4 h-12 w-12 text-purple-400 opacity-50" />
-            <p className="font-medium text-lg text-white">
+            <Users className="mx-auto mb-4 h-12 w-12 text-purple-600 opacity-50 dark:text-purple-400" />
+            <p className="font-medium text-lg text-foreground">
               {t("noActiveEvents")}
             </p>
-            <p className="mt-2 text-gray-400">{t("checkBackLater")}</p>
-          </div>
-        </CardContent>
-      </Card>
-    );
-  }
-
-  if (events.length === 0) {
-    return (
-      <Card className="border-gray-800 bg-gray-900/60 backdrop-blur-xl">
-        <CardContent className="pt-6">
-          <div className="text-center">
-            <Users className="mx-auto mb-4 h-12 w-12 text-purple-400 opacity-50" />
-            <p className="font-medium text-lg text-white">
-              {t("noActiveEvents")}
-            </p>
-            <p className="mt-2 text-gray-400">{t("checkBackLater")}</p>
+            <p className="mt-2 text-muted-foreground">{t("checkBackLater")}</p>
           </div>
         </CardContent>
       </Card>
@@ -89,28 +73,28 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
       {events.map((event) => (
         <motion.div key={event.id} variants={itemVariants}>
           <Link href={`/events/${event.slug}`}>
-            <Card className="group cursor-pointer rounded-none border-0 border-gray-800 border-b bg-gray-900/60 shadow-none backdrop-blur-xl transition-all duration-300 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10 sm:rounded-lg sm:border sm:shadow-md">
+            <Card className="group cursor-pointer rounded-none border-0 border-border border-b bg-card/60 shadow-none backdrop-blur-xl transition-all duration-300 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10 sm:rounded-lg sm:border sm:shadow-md">
               <CardHeader className="p-4 sm:px-6 md:py-0">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="flex-1">
-                    <CardTitle className="text-base text-white transition-colors group-hover:text-purple-300 sm:text-lg">
+                    <CardTitle className="text-base text-foreground transition-colors group-hover:text-purple-600 dark:group-hover:text-purple-300 sm:text-lg">
                       {event.content[0].title}
                     </CardTitle>
-                    <CardDescription className="mt-1 text-gray-400 text-sm">
+                    <CardDescription className="mt-1 text-muted-foreground text-sm">
                       {event.content[0].description || t("sharePhotos")}
                     </CardDescription>
                   </div>
                   <div className="flex flex-wrap items-center gap-2">
                     {event.endsAt && new Date() > event.endsAt ? (
                       <Badge
-                        className="border-gray-500/30 bg-gray-500/10 text-gray-300 text-xs"
+                        className="border-muted-foreground/30 bg-muted/10 text-muted-foreground text-xs"
                         variant="outline"
                       >
                         {t("ended")}
                       </Badge>
                     ) : (
                       <Badge
-                        className="border-green-500/30 bg-green-500/10 text-green-300 text-xs"
+                        className="border-green-500/30 bg-green-500/10 text-green-600 text-xs dark:text-green-300"
                         variant="outline"
                       >
                         <span className="mr-1 h-1.5 w-1.5 animate-pulse rounded-full bg-green-400" />
@@ -118,7 +102,7 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
                       </Badge>
                     )}
                     <Badge
-                      className="border-purple-500/30 bg-purple-500/10 text-purple-300 text-xs"
+                      className="border-purple-500/30 bg-purple-500/10 text-purple-600 text-xs dark:text-purple-300"
                       variant="outline"
                     >
                       {t("photosCount", { count: event.images?.length ?? 0 })}
@@ -128,9 +112,9 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
               </CardHeader>
               <CardContent className="p-4 pt-0 sm:px-6 sm:pt-0">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-                  <div className="flex flex-wrap items-center gap-3 text-gray-500 text-xs sm:text-sm">
+                  <div className="flex flex-wrap items-center gap-3 text-muted-foreground text-xs sm:text-sm">
                     <div className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3 text-purple-400 sm:h-4 sm:w-4" />
+                      <Calendar className="h-3 w-3 text-purple-600 dark:text-purple-400 sm:h-4 sm:w-4" />
                       <span>
                         {formatDistanceToNowLocalized(
                           new Date(event.createdAt),
@@ -142,12 +126,12 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Image className="h-3 w-3 text-purple-400 sm:h-4 sm:w-4" />
+                      <Image className="h-3 w-3 text-purple-600 dark:text-purple-400 sm:h-4 sm:w-4" />
                       <span>{t("maxPhotos", { count: event.maxImages })}</span>
                     </div>
                     {event.endsAt && new Date() < event.endsAt && (
                       <div className="flex items-center gap-1">
-                        <Sparkles className="h-3 w-3 text-purple-400 sm:h-4 sm:w-4" />
+                        <Sparkles className="h-3 w-3 text-purple-600 dark:text-purple-400 sm:h-4 sm:w-4" />
                         <span>
                           {t("endsIn", {
                             time: formatDistanceToNowLocalized(

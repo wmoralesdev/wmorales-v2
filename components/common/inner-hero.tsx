@@ -6,9 +6,9 @@ type InnerHeroProps = {
 
 export function InnerHero({ title, description, icon: Icon }: InnerHeroProps) {
   return (
-    <div className="relative overflow-hidden">
+    <div className="relative overflow-hidden bg-background">
       {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
+      <div className="absolute inset-0 opacity-5 dark:opacity-5">
         <div
           className="h-full w-full"
           style={{
@@ -29,13 +29,13 @@ export function InnerHero({ title, description, icon: Icon }: InnerHeroProps) {
         <div className="text-center">
           <div className="mb-6 inline-flex items-center justify-center">
             <div className="rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-3">
-              <Icon className="h-8 w-8 text-purple-400" />
+              <Icon className="h-8 w-8 text-purple-600 dark:text-purple-400" />
             </div>
           </div>
-          <h1 className="mb-4 bg-gradient-to-r from-white to-gray-400 bg-clip-text font-bold text-5xl text-transparent">
+          <h1 className="mb-4 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text font-bold text-5xl text-transparent">
             {title}
           </h1>
-          <p className="mx-auto max-w-2xl text-gray-400 text-lg">
+          <p className="mx-auto max-w-2xl text-muted-foreground text-lg">
             {description}
           </p>
         </div>

@@ -23,7 +23,7 @@ export function BackToTop() {
     <AnimatePresence>
       {isVisible && (
         <Button
-          className="fixed right-4 bottom-4 z-[9999] cursor-pointer hover:bg-purple-500/10 hover:text-purple-500"
+          className="fixed right-4 bottom-4 z-[9999] cursor-pointer hover:bg-purple-500/10 hover:text-purple-600 dark:hover:text-purple-400"
           onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
           size="icon"
           variant="outline"

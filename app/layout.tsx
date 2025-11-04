@@ -6,6 +6,7 @@ import { JetBrains_Mono, Poppins, Space_Grotesk } from "next/font/google";
 import { Toaster } from "sonner";
 import { AuthProvider } from "@/components/auth/auth-provider";
 import { AnimatedMesh } from "@/components/common/animated-mesh";
+import { ThemeProvider } from "@/components/common/theme-provider";
 import { cn } from "@/lib/utils";
 
 const spaceGrotesk = Space_Grotesk({
@@ -36,7 +37,7 @@ export default async function RootLayout({ children, params }: Props) {
   const { locale } = await params;
 
   return (
-    <html className="dark" lang={locale}>
+    <html lang={locale} suppressHydrationWarning>
       <head>
         <link href="/wm.ico" rel="icon" />
         <link href="/wm.ico" rel="shortcut icon" />
@@ -55,11 +56,18 @@ export default async function RootLayout({ children, params }: Props) {
           "min-h-screen text-foreground antialiased"
         )}
       >
-        <AnimatedMesh />
-        <AuthProvider>{children}</AuthProvider>
-        <Toaster position="bottom-right" />
-        <Analytics />
-        <SpeedInsights />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <AnimatedMesh />
+          <AuthProvider>{children}</AuthProvider>
+          <Toaster position="bottom-right" />
+          <Analytics />
+          <SpeedInsights />
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -151,7 +151,7 @@ export function LiveEventView({
         {/* Left Column - Upload & Stats */}
         <div className="space-y-0 sm:space-y-6">
           {/* Upload Section */}
-          <Card className="rounded-none border-0 border-gray-800 bg-gray-900/80 shadow-none backdrop-blur-xl sm:rounded-lg sm:border sm:shadow-md">
+          <Card className="rounded-none border-0 border-border bg-card/80 shadow-none backdrop-blur-xl sm:rounded-lg sm:border sm:shadow-md">
             <CardContent className="px-0 lg:px-6">
               {canUpload ? (
                 <AuthenticatedImageUpload
@@ -163,8 +163,8 @@ export function LiveEventView({
                 />
               ) : (
                 <Alert className="border-purple-500/30 bg-purple-500/10">
-                  <Sparkles className="h-4 w-4" />
-                  <AlertDescription className="text-purple-300">
+                  <Sparkles className="h-4 w-4 text-purple-600 dark:text-purple-400" />
+                  <AlertDescription className="text-purple-700 dark:text-purple-300">
                     {t("maxPhotosReached", { maxImages: event.maxImages })}
                   </AlertDescription>
                 </Alert>
@@ -186,10 +186,10 @@ export function LiveEventView({
 
         {/* Middle Column - Live Photo Carousel */}
         <div className="lg:col-span-2">
-          <Card className="h-full rounded-none border-0 border-gray-800 border-t bg-gray-900/80 shadow-none backdrop-blur-xl sm:rounded-lg sm:border sm:border-t-0 sm:shadow-md">
+          <Card className="h-full rounded-none border-0 border-border border-t bg-card/80 shadow-none backdrop-blur-xl sm:rounded-lg sm:border sm:border-t-0 sm:shadow-md">
             <CardHeader className="px-4 sm:px-6">
-              <CardTitle className="flex items-center gap-2 text-white text-xl">
-                <Eye className="h-5 w-5 text-purple-400" />
+              <CardTitle className="flex items-center gap-2 text-xl text-foreground">
+                <Eye className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                 {t("livePhotoWall")}
               </CardTitle>
             </CardHeader>
@@ -206,10 +206,10 @@ export function LiveEventView({
                   {/* Instagram-style Photo Grid */}
                   <div className="space-y-4">
                     <div className="flex items-center justify-between">
-                      <h3 className="font-medium text-gray-400 text-sm">
+                      <h3 className="font-medium text-muted-foreground text-sm">
                         {t("allPhotos")} ({eventImages.length})
                       </h3>
-                      <div className="flex items-center gap-2 text-gray-500 text-xs">
+                      <div className="flex items-center gap-2 text-muted-foreground text-xs">
                         <div className="h-2 w-2 animate-pulse rounded-full bg-green-400" />
                         {t("updatingLive")}
                       </div>
@@ -224,13 +224,13 @@ export function LiveEventView({
                   </div>
                 </div>
               ) : (
-                <div className="mx-0 flex aspect-[16/9] items-center justify-center rounded-lg bg-gray-800/50 sm:mx-0">
+                <div className="mx-0 flex aspect-[16/9] items-center justify-center rounded-lg bg-muted/50 sm:mx-0">
                   <div className="p-8 text-center">
-                    <Camera className="mx-auto mb-4 h-16 w-16 text-gray-600" />
-                    <p className="mb-2 text-gray-400 text-lg">
+                    <Camera className="mx-auto mb-4 h-16 w-16 text-muted-foreground" />
+                    <p className="mb-2 text-lg text-foreground">
                       {t("beFirstToShare")}
                     </p>
-                    <p className="text-gray-500 text-sm">
+                    <p className="text-muted-foreground text-sm">
                       {t("uploadPhotoPrompt")}
                     </p>
                   </div>

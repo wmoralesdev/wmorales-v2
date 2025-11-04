@@ -23,13 +23,13 @@ export default async function EventsPage({ params }: Props) {
   // Get translations
   const t = await getTranslations("events");
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-black">
+    <div className="min-h-screen bg-gradient-to-br from-background via-muted/30 to-background">
       <div className="mx-auto px-0 pt-20 pb-12 sm:container sm:px-4 sm:pt-24 sm:pb-16">
         <div className="mb-6 px-4 sm:mb-8 sm:px-0">
-          <h1 className="bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text font-bold text-2xl text-transparent tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">
+          <h1 className="bg-gradient-to-r from-foreground via-purple-200 to-purple-400 bg-clip-text font-bold text-2xl text-transparent tracking-tight sm:text-3xl md:text-4xl lg:text-5xl">
             {t("title")}
           </h1>
-          <p className="mt-2 text-gray-400 text-sm sm:text-base">
+          <p className="mt-2 text-muted-foreground text-sm sm:text-base">
             {t("description")}
           </p>
         </div>
@@ -37,8 +37,8 @@ export default async function EventsPage({ params }: Props) {
         <Suspense
           fallback={
             <div className="flex h-64 items-center justify-center">
-              <div className="flex items-center gap-2 text-gray-400">
-                <Sparkles className="h-5 w-5 animate-pulse text-purple-400" />
+              <div className="flex items-center gap-2 text-muted-foreground">
+                <Sparkles className="h-5 w-5 animate-pulse text-purple-600 dark:text-purple-400" />
                 {t("loadingEvents")}
               </div>
             </div>

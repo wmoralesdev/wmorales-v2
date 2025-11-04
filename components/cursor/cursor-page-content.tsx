@@ -136,7 +136,7 @@ export function CursorPageContent() {
       {/* Hero Section */}
       <section className="relative overflow-hidden px-4 pt-24 pb-16 sm:px-6 lg:px-8">
         {/* Background gradient effect */}
-        <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0 opacity-[0.03] dark:opacity-5">
           <div
             className="h-full w-full"
             style={{
@@ -162,25 +162,25 @@ export function CursorPageContent() {
           <motion.div variants={itemVariants}>
             <motion.div
               animate="animate"
-              className="mb-8 inline-flex items-center gap-2 rounded-full border border-purple-500/30 bg-purple-500/20 px-4 py-2 backdrop-blur-xl"
+              className="mb-8 inline-flex items-center gap-2 rounded-full border border-purple-600/30 bg-purple-500/10 px-4 py-2 text-purple-900 backdrop-blur-xl dark:border-purple-500/30 dark:bg-purple-500/20 dark:text-purple-300"
               variants={floatVariants}
             >
               <div className="h-2 w-2 animate-pulse rounded-full bg-gradient-to-r from-purple-400 to-pink-400" />
-              <span className="font-medium text-purple-300 text-xs lg:text-sm">
+              <span className="font-medium text-xs lg:text-sm">
                 {t("pioneer")}
               </span>
             </motion.div>
           </motion.div>
 
           <motion.h1
-            className="mb-6 bg-gradient-to-r from-white via-purple-200 to-purple-400 bg-clip-text font-bold text-4xl text-transparent sm:text-5xl lg:text-6xl"
+            className="mb-6 bg-gradient-to-r from-foreground via-purple-900 to-purple-700 bg-clip-text font-bold text-4xl text-transparent dark:from-white dark:via-purple-200 dark:to-purple-400 sm:text-5xl lg:text-6xl"
             variants={itemVariants}
           >
             {t("title")}
           </motion.h1>
 
           <motion.p
-            className="mx-auto mb-8 max-w-2xl text-gray-400 text-lg sm:text-xl"
+            className="mx-auto mb-8 max-w-2xl text-lg text-foreground/80 sm:text-xl"
             variants={itemVariants}
           >
             {t("subtitle")}
@@ -199,7 +199,7 @@ export function CursorPageContent() {
             </Link>
             <Link href="https://github.com/wmoralesdev" target="_blank">
               <Button
-                className="group rounded-full border-purple-500/50 bg-transparent px-8 py-6 text-purple-300 backdrop-blur-xl transition-all duration-300 hover:bg-purple-500/20"
+                className="group rounded-full border-purple-500/50 bg-transparent px-8 py-6 text-purple-900 backdrop-blur-xl transition-all duration-300 hover:bg-purple-500/20 dark:text-purple-300"
                 variant="outline"
               >
                 <Github className="mr-2 h-4 w-4" />
@@ -220,25 +220,25 @@ export function CursorPageContent() {
           whileInView="visible"
         >
           <motion.div
-            className="relative overflow-hidden rounded-2xl border border-purple-500/30 bg-gray-900/80 p-8 backdrop-blur-xl"
+            className="relative overflow-hidden rounded-2xl border border-purple-500/30 bg-card/80 p-8 backdrop-blur-xl dark:border-purple-500/30"
             variants={cardVariants}
             whileHover="hover"
           >
             <div className="-translate-y-32 absolute top-0 right-0 h-64 w-64 translate-x-32 rounded-full bg-purple-600/20 blur-3xl" />
 
             <div className="relative z-10">
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-purple-500/20 px-3 py-1">
-                <Target className="h-4 w-4 text-purple-400" />
-                <span className="font-medium text-purple-300 text-xs">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-purple-500/10 px-3 py-1 dark:bg-purple-500/20">
+                <Target className="h-4 w-4 text-purple-700 dark:text-purple-400" />
+                <span className="font-medium text-xs text-purple-900 dark:text-purple-300">
                   {t("philosophy.label")}
                 </span>
               </div>
 
-              <h2 className="mb-4 font-bold text-2xl text-white">
+              <h2 className="mb-4 font-bold text-2xl text-foreground">
                 {t("philosophy.title")}
               </h2>
 
-              <p className="text-gray-400 leading-relaxed">
+              <p className="leading-relaxed text-muted-foreground">
                 {t("philosophy.description")}
               </p>
             </div>
@@ -257,12 +257,12 @@ export function CursorPageContent() {
             whileInView="visible"
           >
             <motion.h2
-              className="mb-4 bg-gradient-to-r from-white to-purple-400 bg-clip-text font-bold text-3xl text-transparent"
+              className="mb-4 bg-gradient-to-r from-foreground to-purple-600 bg-clip-text font-bold text-3xl text-transparent dark:from-white dark:to-purple-400"
               variants={itemVariants}
             >
               {t("expertiseTitle")}
             </motion.h2>
-            <motion.p className="text-gray-400" variants={itemVariants}>
+            <motion.p className="text-muted-foreground" variants={itemVariants}>
               {t("expertiseSubtitle")}
             </motion.p>
           </motion.div>
@@ -278,7 +278,7 @@ export function CursorPageContent() {
               const Icon = area.icon;
               return (
                 <motion.div
-                  className="group relative cursor-pointer overflow-hidden rounded-xl border border-gray-800 bg-gray-900/80 p-6 backdrop-blur-xl transition-all hover:border-purple-500/50"
+                  className="group relative cursor-pointer overflow-hidden rounded-xl border border-border bg-card/80 p-6 backdrop-blur-xl transition-all hover:border-purple-500/50"
                   key={area.title}
                   variants={cardVariants}
                   whileHover="hover"
@@ -294,10 +294,10 @@ export function CursorPageContent() {
                       <Icon className="h-6 w-6 text-white" />
                     </div>
 
-                    <h3 className="mb-2 font-semibold text-lg text-white">
+                    <h3 className="mb-2 font-semibold text-lg text-foreground">
                       {area.title}
                     </h3>
-                    <p className="text-gray-400 text-sm">{area.description}</p>
+                    <p className="text-sm text-muted-foreground">{area.description}</p>
                   </div>
                 </motion.div>
               );
@@ -318,26 +318,26 @@ export function CursorPageContent() {
           <div className="grid gap-8 lg:grid-cols-2">
             {/* Community Building */}
             <motion.div
-              className="rounded-xl border border-gray-800 bg-gray-900/80 p-8 backdrop-blur-xl transition-all hover:border-purple-500/50"
+              className="rounded-xl border border-border bg-card/80 p-8 backdrop-blur-xl transition-all hover:border-purple-500/50"
               variants={cardVariants}
               whileHover="hover"
             >
-              <Users className="mb-4 h-8 w-8 text-purple-400" />
-              <h3 className="mb-3 font-bold text-white text-xl">
+              <Users className="mb-4 h-8 w-8 text-purple-600 dark:text-purple-400" />
+              <h3 className="mb-3 font-bold text-xl text-foreground">
                 {t("community.title")}
               </h3>
-              <p className="mb-4 text-gray-400">{t("community.description")}</p>
+              <p className="mb-4 text-muted-foreground">{t("community.description")}</p>
               <ul className="space-y-2">
-                <li className="flex items-start gap-2 text-gray-500 text-sm">
-                  <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
+                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-600 dark:bg-purple-400" />
                   <span>{t("community.features.events")}</span>
                 </li>
-                <li className="flex items-start gap-2 text-gray-500 text-sm">
-                  <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
+                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-600 dark:bg-purple-400" />
                   <span>{t("community.features.whatsapp")}</span>
                 </li>
-                <li className="flex items-start gap-2 text-gray-500 text-sm">
-                  <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
+                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-600 dark:bg-purple-400" />
                   <span>{t("community.features.spanish")}</span>
                 </li>
               </ul>
@@ -345,26 +345,26 @@ export function CursorPageContent() {
 
             {/* Future Vision */}
             <motion.div
-              className="rounded-xl border border-gray-800 bg-gray-900/80 p-8 backdrop-blur-xl transition-all hover:border-purple-500/50"
+              className="rounded-xl border border-border bg-card/80 p-8 backdrop-blur-xl transition-all hover:border-purple-500/50"
               variants={cardVariants}
               whileHover="hover"
             >
-              <Sparkles className="mb-4 h-8 w-8 text-purple-400" />
-              <h3 className="mb-3 font-bold text-white text-xl">
+              <Sparkles className="mb-4 h-8 w-8 text-purple-600 dark:text-purple-400" />
+              <h3 className="mb-3 font-bold text-xl text-foreground">
                 {t("future.title")}
               </h3>
-              <p className="mb-4 text-gray-400">{t("future.description")}</p>
+              <p className="mb-4 text-muted-foreground">{t("future.description")}</p>
               <ul className="space-y-2">
-                <li className="flex items-start gap-2 text-gray-500 text-sm">
-                  <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
+                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-600 dark:bg-purple-400" />
                   <span>{t("future.features.content")}</span>
                 </li>
-                <li className="flex items-start gap-2 text-gray-500 text-sm">
-                  <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
+                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-600 dark:bg-purple-400" />
                   <span>{t("future.features.bestPractices")}</span>
                 </li>
-                <li className="flex items-start gap-2 text-gray-500 text-sm">
-                  <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-400" />
+                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                  <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-600 dark:bg-purple-400" />
                   <span>{t("future.features.learning")}</span>
                 </li>
               </ul>
@@ -384,12 +384,12 @@ export function CursorPageContent() {
             whileInView="visible"
           >
             <motion.h2
-              className="mb-4 bg-gradient-to-r from-white to-purple-400 bg-clip-text font-bold text-3xl text-transparent"
+              className="mb-4 bg-gradient-to-r from-foreground to-purple-600 bg-clip-text font-bold text-3xl text-transparent dark:from-white dark:to-purple-400"
               variants={itemVariants}
             >
               {t("servicesTitle")}
             </motion.h2>
-            <motion.p className="text-gray-400" variants={itemVariants}>
+            <motion.p className="text-muted-foreground" variants={itemVariants}>
               {t("servicesSubtitle")}
             </motion.p>
           </motion.div>
@@ -405,7 +405,7 @@ export function CursorPageContent() {
               const Icon = offering.icon;
               return (
                 <motion.div
-                  className="group relative cursor-pointer overflow-hidden rounded-xl border border-gray-800 bg-black/80 p-6 backdrop-blur-xl transition-all hover:border-purple-500/50"
+                  className="group relative cursor-pointer overflow-hidden rounded-xl border border-border bg-card/80 p-6 backdrop-blur-xl transition-all hover:border-purple-500/50"
                   key={offering.title}
                   variants={cardVariants}
                   whileHover="hover"
@@ -413,24 +413,24 @@ export function CursorPageContent() {
                   <div className="absolute inset-0 bg-gradient-to-br from-purple-900/20 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
 
                   <div className="relative z-10">
-                    <div className="mb-4 inline-flex rounded-lg bg-purple-500/20 p-3">
-                      <Icon className="h-6 w-6 text-purple-400" />
+                    <div className="mb-4 inline-flex rounded-lg bg-purple-500/10 p-3 dark:bg-purple-500/20">
+                      <Icon className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                     </div>
 
-                    <h3 className="mb-2 font-semibold text-lg text-white">
+                    <h3 className="mb-2 font-semibold text-lg text-foreground">
                       {offering.title}
                     </h3>
-                    <p className="mb-4 text-gray-400 text-sm">
+                    <p className="mb-4 text-sm text-muted-foreground">
                       {offering.description}
                     </p>
 
                     <ul className="space-y-2">
                       {offering.features.map((feature) => (
                         <li
-                          className="flex items-center gap-2 text-gray-500 text-xs"
+                          className="flex items-center gap-2 text-xs text-muted-foreground"
                           key={feature}
                         >
-                          <div className="h-1 w-1 rounded-full bg-purple-400" />
+                          <div className="h-1 w-1 rounded-full bg-purple-600 dark:bg-purple-400" />
                           {feature}
                         </li>
                       ))}
@@ -449,7 +449,7 @@ export function CursorPageContent() {
             viewport={{ once: true }}
             whileInView="visible"
           >
-            <p className="mb-6 text-gray-400">{t("cta.question")}</p>
+            <p className="mb-6 text-foreground/80">{t("cta.question")}</p>
             <div className="flex flex-wrap items-center justify-center gap-4">
               <Link href="https://calendly.com/wmoralesdev" target="_blank">
                 <Button
@@ -462,7 +462,7 @@ export function CursorPageContent() {
               </Link>
               <Link href="https://chat.whatsapp.com/DLGP02iY1veKQqjc5Y6pOy">
                 <Button
-                  className="rounded-full border-purple-500/50 bg-transparent px-8 py-6 text-purple-300 backdrop-blur-xl transition-all duration-300 hover:bg-purple-500/20"
+                  className="rounded-full border-purple-500/50 bg-transparent px-8 py-6 text-purple-900 backdrop-blur-xl transition-all duration-300 hover:bg-purple-500/20 dark:text-purple-300"
                   size="lg"
                   variant="outline"
                 >
@@ -485,16 +485,16 @@ export function CursorPageContent() {
           whileInView="visible"
         >
           <motion.div
-            className="rounded-xl border border-purple-500/30 bg-gradient-to-br from-purple-900/20 to-gray-900/50 p-8 backdrop-blur-xl"
+            className="rounded-xl border border-purple-500/30 bg-gradient-to-br from-purple-900/20 to-card/50 p-8 backdrop-blur-xl"
             variants={cardVariants}
             whileHover={{ scale: 1.02 }}
           >
-            <BookOpen className="mx-auto mb-4 h-12 w-12 text-purple-400" />
-            <h3 className="mb-2 font-bold text-white text-xl">
+            <BookOpen className="mx-auto mb-4 h-12 w-12 text-purple-600 dark:text-purple-400" />
+            <h3 className="mb-2 font-bold text-xl text-foreground">
               {t("resources.title")}
             </h3>
-            <p className="mb-6 text-gray-400">{t("resources.description")}</p>
-            <Badge className="border-purple-500/30 bg-purple-500/20 text-purple-300">
+            <p className="mb-6 text-muted-foreground">{t("resources.description")}</p>
+            <Badge className="border-purple-500/30 bg-purple-500/10 text-purple-900 dark:bg-purple-500/20 dark:text-purple-300">
               <Sparkles className="mr-1 h-3 w-3" />
               {t("resources.launchingIn")}
             </Badge>

@@ -130,15 +130,15 @@ export function GuestbookContent() {
                 </div>
               </div>
             ) : (
-              <Card className="border-gray-800 bg-gray-900/50 backdrop-blur-sm">
+              <Card className="border-border bg-card/50 backdrop-blur-sm">
                 <CardContent className="flex min-h-[400px] flex-col items-center justify-center p-12 text-center">
                   <div className="mb-4 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-4">
-                    <Sparkles className="h-8 w-8 text-purple-400" />
+                    <Sparkles className="h-8 w-8 text-purple-600 dark:text-purple-400" />
                   </div>
-                  <h3 className="mb-2 font-semibold text-xl">
+                  <h3 className="mb-2 font-semibold text-xl text-foreground">
                     {t("noTicketYet")}
                   </h3>
-                  <p className="text-gray-400">{t("describeMood")}</p>
+                  <p className="text-muted-foreground">{t("describeMood")}</p>
                 </CardContent>
               </Card>
             )}
@@ -146,24 +146,24 @@ export function GuestbookContent() {
 
           {/* Generate/Update Form */}
           <div className="animate-delay-200 animate-fade-in-up">
-            <Card className="h-full border-gray-800 bg-gray-900/50 backdrop-blur-sm">
+            <Card className="h-full border-border bg-card/50 backdrop-blur-sm">
               <CardHeader className="space-y-1">
                 <div className="flex items-center gap-2">
                   <div className="rounded-lg bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-2">
-                    <Palette className="h-5 w-5 text-purple-400" />
+                    <Palette className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                   </div>
-                  <h2 className="font-semibold text-xl">
+                  <h2 className="font-semibold text-xl text-foreground">
                     {userTicket ? t("updateTicket") : t("createTicketForm")}
                   </h2>
                 </div>
-                <p className="text-gray-400 text-sm">
+                <p className="text-muted-foreground text-sm">
                   {userTicket ? t("changeMood") : t("tellMood")}
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
                 <div className="space-y-2">
                   <Textarea
-                    className="min-h-32 resize-none border-gray-700 bg-gray-800/50 placeholder:text-gray-500"
+                    className="min-h-32 resize-none border-border bg-muted/50 placeholder:text-muted-foreground"
                     onChange={(e) => setCustomMessage(e.target.value)}
                     onKeyDown={(e) => {
                       if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
@@ -174,7 +174,7 @@ export function GuestbookContent() {
                     placeholder={t("moodPlaceholder")}
                     value={customMessage}
                   />
-                  <p className="text-gray-500 text-xs">{t("moodExamples")}</p>
+                  <p className="text-muted-foreground text-xs">{t("moodExamples")}</p>
                 </div>
                 <Button
                   className="w-full gap-2 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600"

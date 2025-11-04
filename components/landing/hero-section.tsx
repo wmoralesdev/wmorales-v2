@@ -51,7 +51,7 @@ export function HeroSection() {
                   <div className="h-2.5 w-2.5 rounded-full bg-green-500" />
                   <div className="absolute inset-0 h-2.5 w-2.5 animate-ping rounded-full bg-green-500" />
                 </div>
-                <span className="font-medium text-green-400 text-xs">
+                <span className="font-medium text-green-600 text-xs dark:text-green-400">
                   {t("availableForNewProjects")}
                 </span>
               </div>
@@ -69,13 +69,13 @@ export function HeroSection() {
                     />
                   </div>
                   <div className="space-y-4">
-                    <h1 className="font-bold text-4xl text-white tracking-tight sm:text-5xl lg:text-6xl">
+                    <h1 className="font-bold text-4xl text-foreground tracking-tight sm:text-5xl lg:text-6xl">
                       {t("greeting")}{" "}
                       <span className="inline-block origin-[70%_70%] animate-[wave_2.5s_infinite] text-4xl">
                         👋
                       </span>
                     </h1>
-                    <h2 className="font-medium text-gray-300 text-lg sm:text-xl lg:text-2xl">
+                    <h2 className="font-medium text-muted-foreground text-lg sm:text-xl lg:text-2xl">
                       <span className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
                         <Image
                           alt="Cursor Logo"
@@ -86,9 +86,9 @@ export function HeroSection() {
                         />
                         {t("role1")}
                       </span>
-                      <span className="mx-2 text-gray-500">|</span>
+                      <span className="mx-2 text-muted-foreground">|</span>
                       {t("role2")}
-                      <span className="mx-2 text-gray-500">|</span>
+                      <span className="mx-2 text-muted-foreground">|</span>
                       {t("role3")}
                     </h2>
                   </div>
@@ -96,12 +96,12 @@ export function HeroSection() {
               </div>
 
               {/* Tagline */}
-              <p className="mx-auto max-w-xl text-base text-gray-400 leading-relaxed lg:mx-0 lg:text-lg">
+              <p className="mx-auto max-w-xl text-base text-muted-foreground leading-relaxed lg:mx-0 lg:text-lg">
                 {t("tagline")}
               </p>
 
               {/* Email */}
-              <div className="flex flex-col items-center gap-4 text-gray-500 text-sm md:flex-row md:items-center">
+              <div className="flex flex-col items-center gap-4 text-muted-foreground text-sm md:flex-row md:items-center">
                 <Button
                   asChild
                   className="rounded-full bg-gradient-to-r from-purple-500 to-purple-600 px-6 py-5 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25"
