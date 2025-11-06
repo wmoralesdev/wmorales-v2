@@ -127,6 +127,29 @@ function MobileNavItem({
   );
 }
 
+// Helper function to switch locale
+function switchLocale(targetLocale: string) {
+  const validLocales = ["en", "es"];
+  const currentUrl = new URL(window.location.href);
+  const pathSegments = currentUrl.pathname.split("/").filter(Boolean);
+
+  // Remove the current locale from path segments if it exists
+  if (pathSegments.length > 0 && validLocales.includes(pathSegments[0] || "")) {
+    pathSegments.shift();
+  }
+
+  // Handle root path
+  const pathWithoutLocale = pathSegments.length > 0 ? pathSegments.join("/") : "";
+  const newPath = pathWithoutLocale ? `/${targetLocale}/${pathWithoutLocale}` : `/${targetLocale}`;
+
+  // Add search parameters if they exist
+  const searchParams = currentUrl.searchParams.toString();
+  const fullUrl = searchParams ? `${newPath}?${searchParams}` : newPath;
+
+  // Use window.location.href for direct navigation to avoid next-intl router issues
+  window.location.href = fullUrl;
+}
+
 // Locale Toggle Component
 type LocaleToggleProps = {
   showLabel?: boolean;
@@ -137,25 +160,7 @@ function LocaleToggle({ showLabel = true }: LocaleToggleProps) {
 
   const toggleLocale = () => {
     const newLocale = locale === "en" ? "es" : "en";
-
-    // Extract dynamic route parameters from the current URL
-    const currentUrl = new URL(window.location.href);
-    const pathSegments = currentUrl.pathname.split("/").filter(Boolean);
-
-    // Remove the locale from the path segments
-    if (pathSegments[0] === locale) {
-      pathSegments.shift();
-    }
-
-    // Reconstruct the path for the new locale
-    const newPath = `/${newLocale}/${pathSegments.join("/")}`;
-
-    // Add search parameters if they exist
-    const searchParams = currentUrl.searchParams.toString();
-    const fullUrl = searchParams ? `${newPath}?${searchParams}` : newPath;
-
-    // Use window.location.href for direct navigation to avoid next-intl router issues
-    window.location.href = fullUrl;
+    switchLocale(newLocale);
   };
 
   return (
@@ -543,33 +548,7 @@ export function Navbar() {
                               )}
                               onClick={() => {
                                 if (locale !== "en") {
-                                  const newLocale = "en";
-
-                                  // Extract dynamic route parameters from the current URL
-                                  const currentUrl = new URL(
-                                    window.location.href
-                                  );
-                                  const pathSegments = currentUrl.pathname
-                                    .split("/")
-                                    .filter(Boolean);
-
-                                  // Remove the locale from the path segments
-                                  if (pathSegments[0] === locale) {
-                                    pathSegments.shift();
-                                  }
-
-                                  // Reconstruct the path for the new locale
-                                  const newPath = `/${newLocale}/${pathSegments.join("/")}`;
-
-                                  // Add search parameters if they exist
-                                  const searchParams =
-                                    currentUrl.searchParams.toString();
-                                  const fullUrl = searchParams
-                                    ? `${newPath}?${searchParams}`
-                                    : newPath;
-
-                                  // Use window.location.href for direct navigation
-                                  window.location.href = fullUrl;
+                                  switchLocale("en");
                                 }
                               }}
                               type="button"
@@ -585,33 +564,7 @@ export function Navbar() {
                               )}
                               onClick={() => {
                                 if (locale !== "es") {
-                                  const newLocale = "es";
-
-                                  // Extract dynamic route parameters from the current URL
-                                  const currentUrl = new URL(
-                                    window.location.href
-                                  );
-                                  const pathSegments = currentUrl.pathname
-                                    .split("/")
-                                    .filter(Boolean);
-
-                                  // Remove the locale from the path segments
-                                  if (pathSegments[0] === locale) {
-                                    pathSegments.shift();
-                                  }
-
-                                  // Reconstruct the path for the new locale
-                                  const newPath = `/${newLocale}/${pathSegments.join("/")}`;
-
-                                  // Add search parameters if they exist
-                                  const searchParams =
-                                    currentUrl.searchParams.toString();
-                                  const fullUrl = searchParams
-                                    ? `${newPath}?${searchParams}`
-                                    : newPath;
-
-                                  // Use window.location.href for direct navigation
-                                  window.location.href = fullUrl;
+                                  switchLocale("es");
                                 }
                               }}
                               type="button"

@@ -1,9 +1,10 @@
 export const aboutCommand = {
   description: "Learn more about me",
+  category: "profile" as const,
   execute: () => (
-    <div className="space-y-3 text-gray-300">
-      <div className="text-green-400 font-semibold">About</div>
-      <div className="space-y-2 text-gray-300">
+    <div className="space-y-3 text-slate-700 dark:text-gray-300">
+      <div className="font-semibold text-green-600 dark:text-green-400">About</div>
+      <div className="space-y-2 text-slate-700 dark:text-gray-300">
         <p>
           Senior Software Engineer and Cursor Ambassador with a passion for
           building innovative solutions using cutting-edge technology.

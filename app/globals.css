@@ -158,6 +158,14 @@
     font-weight: var(--mono-weight);
   }
 
+  .terminal-font {
+    font-family: var(--mono-family) !important;
+  }
+
+  .terminal-font * {
+    font-family: var(--mono-family) !important;
+  }
+
   p,
   a,
   span,
