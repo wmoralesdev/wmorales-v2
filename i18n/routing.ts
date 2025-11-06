@@ -20,6 +20,7 @@ export const routing = defineRouting({
     "/polls": "/polls",
     "/polls/[code]": "/polls/[code]",
     "/surveys": "/surveys",
+    "/surveys/[id]": "/surveys/[id]",
     "/surveys/[id]/fill": "/surveys/[id]/fill",
     "/keystatic": "/keystatic",
     "/showcase": "/showcase",

@@ -31,7 +31,11 @@ function OpenOutput({ target, url }: { target?: string; url?: string }) {
   }
 
   if (target === "contact") {
-    router.push("/#contact");
+    router.push("/");
+    // Navigate to hash after navigation
+    setTimeout(() => {
+      window.location.hash = "contact";
+    }, 0);
     return (
       <div className="text-green-600 dark:text-green-400">
         {t("openNavigating", { target: "contact" })}
@@ -40,7 +44,7 @@ function OpenOutput({ target, url }: { target?: string; url?: string }) {
   }
 
   if (target === "resume") {
-    router.push("/resume");
+    window.open("/resume.pdf", "_blank");
     return (
       <div className="text-green-600 dark:text-green-400">
         {t("openNavigating", { target: "resume" })}

@@ -16,7 +16,10 @@ export function GuestbookUserTicket({
 }: GuestbookUserTicketProps) {
   return (
     <div className="animate-delay-400 animate-fade-in-up">
-      <Link className="group block" href={`/guestbook/${userTicket.id}`}>
+      <Link
+        className="group block"
+        href={{ pathname: "/guestbook/[id]", params: { id: userTicket.id } }}
+      >
         <div className="relative">
           <UserTicket
             colors={{

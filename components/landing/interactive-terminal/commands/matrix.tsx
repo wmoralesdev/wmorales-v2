@@ -107,18 +107,20 @@ export const matrixCommand = {
   category: "fun" as const,
   execute: (args?: string[]) => {
     let seconds = 5;
-    const secondsIndex = args?.indexOf("--seconds");
-    if (
-      secondsIndex !== undefined &&
-      secondsIndex >= 0 &&
-      args &&
-      args[secondsIndex + 1]
-        ? args[secondsIndex + 1]
-        : undefined
-    ) {
-      const parsed = Number.parseInt(args?.[secondsIndex + 1] ?? "", 10);
-      if (!Number.isNaN(parsed) && parsed > 0 && parsed <= MAX_MATRIX_SECONDS) {
-        seconds = parsed;
+    if (args) {
+      const secondsIndex = args.indexOf("--seconds");
+      if (secondsIndex >= 0 && secondsIndex + 1 < args.length) {
+        const secondsValue = args[secondsIndex + 1];
+        if (secondsValue) {
+          const parsed = Number.parseInt(secondsValue, 10);
+          if (
+            !Number.isNaN(parsed) &&
+            parsed > 0 &&
+            parsed <= MAX_MATRIX_SECONDS
+          ) {
+            seconds = parsed;
+          }
+        }
       }
     }
 

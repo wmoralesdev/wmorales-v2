@@ -122,7 +122,9 @@ export function PollsList({ polls }: PollsListProps) {
 
         return (
           <motion.div key={poll.id} variants={cardVariants} whileHover="hover">
-            <Link href={`/polls/${poll.code}`}>
+            <Link
+              href={{ pathname: "/polls/[code]", params: { code: poll.code } }}
+            >
               <Card className="h-full cursor-pointer border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all hover:border-purple-500/50">
                 <CardHeader>
                   <div className="flex items-start justify-between">

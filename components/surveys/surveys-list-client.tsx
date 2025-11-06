@@ -127,7 +127,12 @@ export function SurveysListClient({ surveys, error }: SurveysListClientProps) {
                     asChild
                     className="flex-1 bg-gradient-to-r from-purple-500 to-purple-600 text-white shadow-lg transition-all duration-300 hover:from-purple-600 hover:to-purple-700 hover:shadow-purple-500/25"
                   >
-                    <Link href={`/surveys/${survey.id}/fill`}>
+                    <Link
+                      href={{
+                        pathname: "/surveys/[id]/fill",
+                        params: { id: survey.id },
+                      }}
+                    >
                       Take Survey
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </Link>
@@ -138,7 +143,12 @@ export function SurveysListClient({ surveys, error }: SurveysListClientProps) {
                     size="icon"
                     variant="outline"
                   >
-                    <Link href={`/surveys/${survey.id}`}>
+                    <Link
+                      href={{
+                        pathname: "/surveys/[id]",
+                        params: { id: survey.id },
+                      }}
+                    >
                       <BarChart3 className="h-4 w-4" />
                     </Link>
                   </Button>

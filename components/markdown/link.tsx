@@ -33,12 +33,14 @@ export function LinkComponent({ href, children, showIcon = true }: LinkProps) {
   }
 
   // Use i18n Link for internal routes
+  // Markdown links can be dynamic, so we use type assertion for flexibility
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return (
     <Link
       className={cn(
         "inline-flex items-center gap-1 text-purple-400 underline decoration-purple-400/30 underline-offset-2 transition-colors hover:text-purple-300 hover:decoration-purple-300/50"
       )}
-      href={href}
+      href={href as any}
     >
       {children}
     </Link>

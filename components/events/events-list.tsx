@@ -72,7 +72,9 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
     >
       {events.map((event) => (
         <motion.div key={event.id} variants={itemVariants}>
-          <Link href={`/events/${event.slug}`}>
+          <Link
+            href={{ pathname: "/events/[slug]", params: { slug: event.slug } }}
+          >
             <Card className="group cursor-pointer rounded-none border-0 border-border border-b bg-card/60 shadow-none backdrop-blur-xl transition-all duration-300 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10 sm:rounded-lg sm:border sm:shadow-md">
               <CardHeader className="p-4 sm:px-6 md:py-0">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">

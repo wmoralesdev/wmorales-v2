@@ -29,7 +29,7 @@ type PostCardProps = {
 
 export function PostCard({ post, featured = false }: PostCardProps) {
   return (
-    <Link href={`/blog/${post.slug}`}>
+    <Link href={{ pathname: "/blog/[slug]", params: { slug: post.slug } }}>
       <Card
         className={`h-full transition-colors hover:border-purple-600 ${featured ? "md:col-span-2" : ""}`}
       >
