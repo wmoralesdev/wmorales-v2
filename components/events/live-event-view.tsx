@@ -188,7 +188,7 @@ export function LiveEventView({
         <div className="lg:col-span-2">
           <Card className="h-full rounded-none border-0 border-border border-t bg-card/80 shadow-none backdrop-blur-xl sm:rounded-lg sm:border sm:border-t-0 sm:shadow-md">
             <CardHeader className="px-4 sm:px-6">
-              <CardTitle className="flex items-center gap-2 text-xl text-foreground">
+              <CardTitle className="flex items-center gap-2 text-foreground text-xl">
                 <Eye className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                 {t("livePhotoWall")}
               </CardTitle>
@@ -227,7 +227,7 @@ export function LiveEventView({
                 <div className="mx-0 flex aspect-[16/9] items-center justify-center rounded-lg bg-muted/50 sm:mx-0">
                   <div className="p-8 text-center">
                     <Camera className="mx-auto mb-4 h-16 w-16 text-muted-foreground" />
-                    <p className="mb-2 text-lg text-foreground">
+                    <p className="mb-2 text-foreground text-lg">
                       {t("beFirstToShare")}
                     </p>
                     <p className="text-muted-foreground text-sm">

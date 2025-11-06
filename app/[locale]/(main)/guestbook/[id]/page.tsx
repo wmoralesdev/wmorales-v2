@@ -2,11 +2,11 @@ import { Sparkles } from "lucide-react";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getTranslations, setRequestLocale } from "next-intl/server";
-import { Link } from "@/i18n/navigation";
 import { getTicketById } from "@/app/actions/guestbook.actions";
 import { UserTicket } from "@/components/guestbook/user-ticket";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
 import { createMetadata, siteConfig } from "@/lib/metadata";
 
 type Props = {

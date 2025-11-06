@@ -2,9 +2,11 @@
 
 import { useTranslations } from "next-intl";
 
+const COIN_FLIP_THRESHOLD = 0.5;
+
 function FlipOutput() {
   const t = useTranslations("terminal");
-  const result = Math.random() < 0.5 ? "heads" : "tails";
+  const result = Math.random() < COIN_FLIP_THRESHOLD ? "heads" : "tails";
 
   return (
     <div className="space-y-1">
@@ -28,4 +30,3 @@ export const flipCommand = {
   category: "fun" as const,
   execute: () => <FlipOutput />,
 };
-

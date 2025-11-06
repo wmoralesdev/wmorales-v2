@@ -22,10 +22,9 @@ export const bannerCommand = {
 `.trim();
 
     return (
-      <div className="whitespace-pre font-mono text-xs text-green-600 dark:text-green-400">
+      <div className="whitespace-pre font-mono text-green-600 text-xs dark:text-green-400">
         {banner}
       </div>
     );
   },
 };
-

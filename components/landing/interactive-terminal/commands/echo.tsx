@@ -17,4 +17,3 @@ export const echoCommand = {
     return <EchoOutput text={args.join(" ")} />;
   },
 };
-

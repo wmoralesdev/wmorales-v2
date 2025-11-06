@@ -25,7 +25,9 @@ type TerminalState = {
 };
 
 const loadHistoryFromStorage = (): string[] => {
-  if (typeof window === "undefined") return [];
+  if (typeof window === "undefined") {
+    return [];
+  }
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored) {
@@ -39,9 +41,14 @@ const loadHistoryFromStorage = (): string[] => {
 };
 
 const saveHistoryToStorage = (history: string[]) => {
-  if (typeof window === "undefined") return;
+  if (typeof window === "undefined") {
+    return;
+  }
   try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(history.slice(0, MAX_HISTORY_SIZE)));
+    localStorage.setItem(
+      STORAGE_KEY,
+      JSON.stringify(history.slice(0, MAX_HISTORY_SIZE))
+    );
   } catch {
     // Ignore errors
   }

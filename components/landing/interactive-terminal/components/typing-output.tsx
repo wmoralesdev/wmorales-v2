@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { motion } from "framer-motion";
-import { extractText } from "../utils/extract-text";
+import { type ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { useTypingAnimation } from "../hooks/use-typing-animation";
+import { extractText } from "../utils/extract-text";
 
 type TypingOutputProps = {
   content: string | ReactNode;

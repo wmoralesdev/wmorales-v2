@@ -4,7 +4,6 @@ import type { Event, EventContent, EventImage } from "@prisma/client";
 import { motion, type Variants } from "framer-motion";
 import { ArrowRight, Calendar, Image, Sparkles, Users } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
 import { formatDistanceToNowLocalized } from "@/lib/utils";
 
 export type EventWithContent = Event & {
@@ -53,7 +53,7 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
         <CardContent className="pt-6">
           <div className="text-center">
             <Users className="mx-auto mb-4 h-12 w-12 text-purple-600 opacity-50 dark:text-purple-400" />
-            <p className="font-medium text-lg text-foreground">
+            <p className="font-medium text-foreground text-lg">
               {t("noActiveEvents")}
             </p>
             <p className="mt-2 text-muted-foreground">{t("checkBackLater")}</p>
@@ -72,12 +72,12 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
     >
       {events.map((event) => (
         <motion.div key={event.id} variants={itemVariants}>
-          <Link href={`/events/${event.slug}` as any}>
+          <Link href={`/events/${event.slug}`}>
             <Card className="group cursor-pointer rounded-none border-0 border-border border-b bg-card/60 shadow-none backdrop-blur-xl transition-all duration-300 hover:border-purple-500/50 hover:shadow-lg hover:shadow-purple-500/10 sm:rounded-lg sm:border sm:shadow-md">
               <CardHeader className="p-4 sm:px-6 md:py-0">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                   <div className="flex-1">
-                    <CardTitle className="text-base text-foreground transition-colors group-hover:text-purple-600 dark:group-hover:text-purple-300 sm:text-lg">
+                    <CardTitle className="text-base text-foreground transition-colors group-hover:text-purple-600 sm:text-lg dark:group-hover:text-purple-300">
                       {event.content[0].title}
                     </CardTitle>
                     <CardDescription className="mt-1 text-muted-foreground text-sm">
@@ -114,7 +114,7 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div className="flex flex-wrap items-center gap-3 text-muted-foreground text-xs sm:text-sm">
                     <div className="flex items-center gap-1">
-                      <Calendar className="h-3 w-3 text-purple-600 dark:text-purple-400 sm:h-4 sm:w-4" />
+                      <Calendar className="h-3 w-3 text-purple-600 sm:h-4 sm:w-4 dark:text-purple-400" />
                       <span>
                         {formatDistanceToNowLocalized(
                           new Date(event.createdAt),
@@ -126,12 +126,12 @@ export function EventsList({ events }: { events: EventWithContent[] }) {
                       </span>
                     </div>
                     <div className="flex items-center gap-1">
-                      <Image className="h-3 w-3 text-purple-600 dark:text-purple-400 sm:h-4 sm:w-4" />
+                      <Image className="h-3 w-3 text-purple-600 sm:h-4 sm:w-4 dark:text-purple-400" />
                       <span>{t("maxPhotos", { count: event.maxImages })}</span>
                     </div>
                     {event.endsAt && new Date() < event.endsAt && (
                       <div className="flex items-center gap-1">
-                        <Sparkles className="h-3 w-3 text-purple-600 dark:text-purple-400 sm:h-4 sm:w-4" />
+                        <Sparkles className="h-3 w-3 text-purple-600 sm:h-4 sm:w-4 dark:text-purple-400" />
                         <span>
                           {t("endsIn", {
                             time: formatDistanceToNowLocalized(

@@ -35,7 +35,7 @@ export function InnerHero({ title, description, icon: Icon }: InnerHeroProps) {
           <h1 className="mb-4 bg-gradient-to-r from-foreground to-muted-foreground bg-clip-text font-bold text-5xl text-transparent">
             {title}
           </h1>
-          <p className="mx-auto max-w-2xl text-muted-foreground text-lg">
+          <p className="mx-auto max-w-2xl text-lg text-muted-foreground">
             {description}
           </p>
         </div>

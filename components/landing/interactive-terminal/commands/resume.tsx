@@ -30,7 +30,7 @@ function ResumeOutput({ download }: { download: boolean }) {
       <div className="font-semibold text-green-600 dark:text-green-400">
         Resume
       </div>
-      <div className="mt-2 text-sm text-slate-600 dark:text-gray-400">
+      <div className="mt-2 text-slate-600 text-sm dark:text-gray-400">
         {t("resumeSummary")}
       </div>
     </div>

@@ -1,8 +1,8 @@
 import { Share2 } from "lucide-react";
 import { UserTicket } from "@/components/guestbook/user-ticket";
-import { Link } from "@/i18n/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
 import type { TicketData } from "@/lib/types/guestbook.types";
 
 type GuestbookUserTicketProps = {
@@ -16,7 +16,7 @@ export function GuestbookUserTicket({
 }: GuestbookUserTicketProps) {
   return (
     <div className="animate-delay-400 animate-fade-in-up">
-      <Link className="group block" href={`/guestbook/${userTicket.id}` as any}>
+      <Link className="group block" href={`/guestbook/${userTicket.id}`}>
         <div className="relative">
           <UserTicket
             colors={{

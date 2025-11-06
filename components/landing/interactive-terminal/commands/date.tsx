@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations, useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 function DateOutput() {
   const t = useTranslations("terminal");
@@ -15,9 +15,7 @@ function DateOutput() {
       <div className="font-semibold text-green-600 dark:text-green-400">
         {t("dateLabel")}
       </div>
-      <div className="ml-4 text-slate-700 dark:text-gray-300">
-        {dateStr}
-      </div>
+      <div className="ml-4 text-slate-700 dark:text-gray-300">{dateStr}</div>
     </div>
   );
 }
@@ -29,4 +27,3 @@ export const dateCommand = {
   category: "system" as const,
   execute: () => <DateOutput />,
 };
-

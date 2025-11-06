@@ -172,14 +172,14 @@ export function CursorPageContent() {
           </motion.div>
 
           <motion.h1
-            className="mb-6 bg-gradient-to-r from-foreground via-purple-900 to-purple-700 bg-clip-text font-bold text-4xl text-transparent dark:from-white dark:via-purple-200 dark:to-purple-400 sm:text-5xl lg:text-6xl"
+            className="mb-6 bg-gradient-to-r from-foreground via-purple-900 to-purple-700 bg-clip-text font-bold text-4xl text-transparent sm:text-5xl lg:text-6xl dark:from-white dark:via-purple-200 dark:to-purple-400"
             variants={itemVariants}
           >
             {t("title")}
           </motion.h1>
 
           <motion.p
-            className="mx-auto mb-8 max-w-2xl text-lg text-foreground/80 sm:text-xl"
+            className="mx-auto mb-8 max-w-2xl text-foreground/80 text-lg sm:text-xl"
             variants={itemVariants}
           >
             {t("subtitle")}
@@ -236,7 +236,7 @@ export function CursorPageContent() {
             <div className="relative z-10">
               <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-purple-500/10 px-3 py-1 dark:bg-purple-500/20">
                 <Target className="h-4 w-4 text-purple-700 dark:text-purple-400" />
-                <span className="font-medium text-xs text-purple-900 dark:text-purple-300">
+                <span className="font-medium text-purple-900 text-xs dark:text-purple-300">
                   {t("philosophy.label")}
                 </span>
               </div>
@@ -245,7 +245,7 @@ export function CursorPageContent() {
                 {t("philosophy.title")}
               </h2>
 
-              <p className="leading-relaxed text-muted-foreground">
+              <p className="text-muted-foreground leading-relaxed">
                 {t("philosophy.description")}
               </p>
             </div>
@@ -301,10 +301,10 @@ export function CursorPageContent() {
                       <Icon className="h-6 w-6 text-white" />
                     </div>
 
-                    <h3 className="mb-2 font-semibold text-lg text-foreground">
+                    <h3 className="mb-2 font-semibold text-foreground text-lg">
                       {area.title}
                     </h3>
-                    <p className="text-sm text-muted-foreground">
+                    <p className="text-muted-foreground text-sm">
                       {area.description}
                     </p>
                   </div>
@@ -332,22 +332,22 @@ export function CursorPageContent() {
               whileHover="hover"
             >
               <Users className="mb-4 h-8 w-8 text-purple-600 dark:text-purple-400" />
-              <h3 className="mb-3 font-bold text-xl text-foreground">
+              <h3 className="mb-3 font-bold text-foreground text-xl">
                 {t("community.title")}
               </h3>
               <p className="mb-4 text-muted-foreground">
                 {t("community.description")}
               </p>
               <ul className="space-y-2">
-                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2 text-muted-foreground text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-600 dark:bg-purple-400" />
                   <span>{t("community.features.events")}</span>
                 </li>
-                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2 text-muted-foreground text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-600 dark:bg-purple-400" />
                   <span>{t("community.features.whatsapp")}</span>
                 </li>
-                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2 text-muted-foreground text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-600 dark:bg-purple-400" />
                   <span>{t("community.features.spanish")}</span>
                 </li>
@@ -361,22 +361,22 @@ export function CursorPageContent() {
               whileHover="hover"
             >
               <Sparkles className="mb-4 h-8 w-8 text-purple-600 dark:text-purple-400" />
-              <h3 className="mb-3 font-bold text-xl text-foreground">
+              <h3 className="mb-3 font-bold text-foreground text-xl">
                 {t("future.title")}
               </h3>
               <p className="mb-4 text-muted-foreground">
                 {t("future.description")}
               </p>
               <ul className="space-y-2">
-                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2 text-muted-foreground text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-600 dark:bg-purple-400" />
                   <span>{t("future.features.content")}</span>
                 </li>
-                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2 text-muted-foreground text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-600 dark:bg-purple-400" />
                   <span>{t("future.features.bestPractices")}</span>
                 </li>
-                <li className="flex items-start gap-2 text-sm text-muted-foreground">
+                <li className="flex items-start gap-2 text-muted-foreground text-sm">
                   <span className="mt-1.5 block h-1 w-1 rounded-full bg-purple-600 dark:bg-purple-400" />
                   <span>{t("future.features.learning")}</span>
                 </li>
@@ -430,17 +430,17 @@ export function CursorPageContent() {
                       <Icon className="h-6 w-6 text-purple-600 dark:text-purple-400" />
                     </div>
 
-                    <h3 className="mb-2 font-semibold text-lg text-foreground">
+                    <h3 className="mb-2 font-semibold text-foreground text-lg">
                       {offering.title}
                     </h3>
-                    <p className="mb-4 text-sm text-muted-foreground">
+                    <p className="mb-4 text-muted-foreground text-sm">
                       {offering.description}
                     </p>
 
                     <ul className="space-y-2">
                       {offering.features.map((feature) => (
                         <li
-                          className="flex items-center gap-2 text-xs text-muted-foreground"
+                          className="flex items-center gap-2 text-muted-foreground text-xs"
                           key={feature}
                         >
                           <div className="h-1 w-1 rounded-full bg-purple-600 dark:bg-purple-400" />
@@ -511,7 +511,7 @@ export function CursorPageContent() {
             whileHover={{ scale: 1.02 }}
           >
             <BookOpen className="mx-auto mb-4 h-12 w-12 text-purple-600 dark:text-purple-400" />
-            <h3 className="mb-2 font-bold text-xl text-foreground">
+            <h3 className="mb-2 font-bold text-foreground text-xl">
               {t("resources.title")}
             </h3>
             <p className="mb-6 text-muted-foreground">

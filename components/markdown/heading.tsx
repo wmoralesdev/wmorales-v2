@@ -14,7 +14,7 @@ export function Heading({ children, id, level }: HeadingProps) {
       {children}
       {id && (
         <a
-          className="-left-6 absolute top-0 opacity-0 transition-opacity group-hover:opacity-100 scroll-smooth"
+          className="-left-6 absolute top-0 scroll-smooth opacity-0 transition-opacity group-hover:opacity-100"
           href={`#${id}`}
         >
           <span className="text-gray-400 hover:text-white">#</span>

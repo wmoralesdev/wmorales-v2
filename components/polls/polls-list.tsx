@@ -3,7 +3,6 @@
 import { motion, type Variants } from "framer-motion";
 import { BarChart3, Check, Copy, ExternalLink, Users } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
 import { useEffect, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -14,6 +13,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Link } from "@/i18n/navigation";
 import { subscribeToPollsList } from "@/lib/supabase/realtime";
 
 // Constants
@@ -122,7 +122,7 @@ export function PollsList({ polls }: PollsListProps) {
 
         return (
           <motion.div key={poll.id} variants={cardVariants} whileHover="hover">
-            <Link href={`/polls/${poll.code}` as any}>
+            <Link href={`/polls/${poll.code}`}>
               <Card className="h-full cursor-pointer border-gray-800 bg-gray-900/80 backdrop-blur-xl transition-all hover:border-purple-500/50">
                 <CardHeader>
                   <div className="flex items-start justify-between">

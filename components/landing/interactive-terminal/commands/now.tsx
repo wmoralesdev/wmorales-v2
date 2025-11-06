@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations, useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 function NowOutput() {
   const t = useTranslations("terminal");
@@ -30,4 +30,3 @@ export const nowCommand = {
   category: "system" as const,
   execute: () => <NowOutput />,
 };
-

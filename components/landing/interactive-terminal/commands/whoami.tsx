@@ -36,4 +36,3 @@ export const whoamiCommand = {
     return <WhoamiOutput showLinks={showLinks} />;
   },
 };
-

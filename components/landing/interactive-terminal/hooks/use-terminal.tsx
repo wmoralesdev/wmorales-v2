@@ -1,8 +1,16 @@
 import type { ReactNode } from "react";
-import { type KeyboardEvent, useCallback, useEffect, useRef, useState } from "react";
+import {
+  type KeyboardEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useTerminalStore } from "@/lib/stores/terminal-store";
 import { COMMANDS } from "../commands";
 import type { Command } from "../types";
+
+const WHITESPACE_REGEX = /\s+/;
 
 export function useTerminal() {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -26,52 +34,55 @@ export function useTerminal() {
     loadHistoryFromStorage();
   }, [loadHistoryFromStorage]);
 
-  const parseCommand = useCallback((input: string): { command: string; args: string[] } => {
-    const trimmed = input.trim();
-    if (!trimmed) {
-      return { command: "", args: [] };
-    }
-
-    // Handle history recall: !! (repeat last), !<n> (by number), !<prefix> (by prefix)
-    if (trimmed.startsWith("!")) {
-      const rest = trimmed.slice(1);
-      
-      // !! - repeat last command
-      if (rest === "!") {
-        const lastCmd = commandHistory[commandHistory.length - 1];
-        if (lastCmd) {
-          return parseCommand(lastCmd);
-        }
+  const parseCommand = useCallback(
+    (input: string): { command: string; args: string[] } => {
+      const trimmed = input.trim();
+      if (!trimmed) {
         return { command: "", args: [] };
       }
 
-      // !<n> - by number
-      const num = Number.parseInt(rest, 10);
-      if (!Number.isNaN(num) && num > 0 && num <= commandHistory.length) {
-        const historyIndex = commandHistory.length - num;
-        const recalledCmd = commandHistory[historyIndex];
-        if (recalledCmd) {
-          return parseCommand(recalledCmd);
-        }
-      }
+      // Handle history recall: !! (repeat last), !<n> (by number), !<prefix> (by prefix)
+      if (trimmed.startsWith("!")) {
+        const rest = trimmed.slice(1);
 
-      // !<prefix> - by prefix (find last command starting with prefix)
-      if (rest.length > 0) {
-        for (let i = commandHistory.length - 1; i >= 0; i--) {
-          const cmd = commandHistory[i];
-          if (cmd && cmd.toLowerCase().startsWith(rest.toLowerCase())) {
-            return parseCommand(cmd);
+        // !! - repeat last command
+        if (rest === "!") {
+          const lastCmd = commandHistory.at(-1);
+          if (lastCmd) {
+            return parseCommand(lastCmd);
+          }
+          return { command: "", args: [] };
+        }
+
+        // !<n> - by number
+        const num = Number.parseInt(rest, 10);
+        if (!Number.isNaN(num) && num > 0 && num <= commandHistory.length) {
+          const historyIndex = commandHistory.length - num;
+          const recalledCmd = commandHistory[historyIndex];
+          if (recalledCmd) {
+            return parseCommand(recalledCmd);
+          }
+        }
+
+        // !<prefix> - by prefix (find last command starting with prefix)
+        if (rest.length > 0) {
+          for (let i = commandHistory.length - 1; i >= 0; i--) {
+            const cmd = commandHistory[i];
+            if (cmd?.toLowerCase().startsWith(rest.toLowerCase())) {
+              return parseCommand(cmd);
+            }
           }
         }
       }
-    }
 
-    const parts = trimmed.split(/\s+/);
-    const command = parts[0]?.toLowerCase() ?? "";
-    const args = parts.slice(1);
+      const parts = trimmed.split(WHITESPACE_REGEX);
+      const command = parts[0]?.toLowerCase() ?? "";
+      const args = parts.slice(1);
 
-    return { command, args };
-  }, [commandHistory]);
+      return { command, args };
+    },
+    [commandHistory]
+  );
 
   const executeCommand = useCallback(
     (input: string): Command | null => {
@@ -107,38 +118,42 @@ export function useTerminal() {
   );
 
   const handleCommand = useCallback(
-    (input: string, createErrorOutput: (input: string) => ReactNode) => {
+    // biome-ignore lint/nursery/noShadow: False positive - parameter doesn't shadow anything
+    (input: string, onError: (input: string) => ReactNode) => {
       const { command: cmdName } = parseCommand(input);
       const command = executeCommand(input);
-      
+
       if (command) {
         addCommand(command);
-      } else {
+      } else if (cmdName !== "clear" && cmdName !== "cls") {
         // Check if this was a clear command (which returns null intentionally)
-        if (cmdName !== "clear" && cmdName !== "cls") {
-          // Handle error case - create error message in component
-          addCommand({ input, output: createErrorOutput(input) });
-        }
-        // If it was clear/cls, do nothing (screen already cleared)
+        // Handle error case - create error message in component
+        addCommand({ input, output: onError(input) });
       }
+      // If it was clear/cls, do nothing (screen already cleared)
     },
     [addCommand, executeCommand, parseCommand]
   );
 
-  const getAutocompleteMatches = useCallback((input: string) => {
-    const { command } = parseCommand(input);
-    if (!command) return [];
-    
-    return Object.entries(COMMANDS)
-      .filter(([cmdName]) => cmdName.startsWith(command.toLowerCase()))
-      .map(([cmdName, cmdDef]) => ({
-        name: cmdName,
-        description: cmdDef.descriptionKey 
-          ? cmdDef.description 
-          : cmdDef.description,
-        fullCommand: cmdName,
-      }));
-  }, [parseCommand]);
+  const getAutocompleteMatches = useCallback(
+    (input: string) => {
+      const { command } = parseCommand(input);
+      if (!command) {
+        return [];
+      }
+
+      return Object.entries(COMMANDS)
+        .filter(([cmdName]) => cmdName.startsWith(command.toLowerCase()))
+        .map(([cmdName, cmdDef]) => ({
+          name: cmdName,
+          description: cmdDef.descriptionKey
+            ? cmdDef.description
+            : cmdDef.description,
+          fullCommand: cmdName,
+        }));
+    },
+    [parseCommand]
+  );
 
   const handleTab = useCallback(() => {
     const matches = getAutocompleteMatches(currentInput);
@@ -161,9 +176,13 @@ export function useTerminal() {
             </div>
             <div className="ml-4 space-y-1 font-mono text-sm">
               {matches.map((match) => (
-                <div key={match.name} className="space-x-2">
-                  <span className="text-cyan-600 dark:text-cyan-400">{match.name}</span>
-                  <span className="text-muted-foreground text-xs">- {match.description}</span>
+                <div className="space-x-2" key={match.name}>
+                  <span className="text-cyan-600 dark:text-cyan-400">
+                    {match.name}
+                  </span>
+                  <span className="text-muted-foreground text-xs">
+                    - {match.description}
+                  </span>
                 </div>
               ))}
             </div>
@@ -173,7 +192,14 @@ export function useTerminal() {
         setTabPressedCount(0);
       }
     }
-  }, [currentInput, setCurrentInput, parseCommand, tabPressedCount, addCommand, getAutocompleteMatches]);
+  }, [
+    currentInput,
+    setCurrentInput,
+    parseCommand,
+    tabPressedCount,
+    addCommand,
+    getAutocompleteMatches,
+  ]);
 
   const getGhostText = useCallback(() => {
     const matches = getAutocompleteMatches(currentInput);
@@ -186,7 +212,7 @@ export function useTerminal() {
   }, [currentInput, parseCommand, getAutocompleteMatches]);
 
   const createHandleKeyDown = useCallback(
-    (createErrorOutput: (input: string) => ReactNode) =>
+    (onError: (input: string) => ReactNode) =>
       (e: KeyboardEvent<HTMLInputElement>) => {
         // Reset tab count on any other key
         if (e.key !== "Tab") {
@@ -194,7 +220,7 @@ export function useTerminal() {
         }
 
         if (e.key === "Enter") {
-          handleCommand(currentInput, createErrorOutput);
+          handleCommand(currentInput, onError);
           setCurrentInput("");
           setTabPressedCount(0);
         } else if (e.key === "ArrowUp") {
@@ -235,7 +261,15 @@ export function useTerminal() {
           }
         }
       },
-    [currentInput, handleCommand, handleTab, navigateHistory, setCurrentInput, clearCommands, addCommand]
+    [
+      currentInput,
+      handleCommand,
+      handleTab,
+      navigateHistory,
+      setCurrentInput,
+      clearCommands,
+      addCommand,
+    ]
   );
 
   const createHandleSuggestionClick = useCallback(

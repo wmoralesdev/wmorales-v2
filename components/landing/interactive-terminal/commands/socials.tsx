@@ -3,7 +3,9 @@ export const socialsCommand = {
   category: "profile" as const,
   execute: () => (
     <div className="space-y-3 text-slate-700 dark:text-gray-300">
-      <div className="font-semibold text-green-600 dark:text-green-400">Social Links</div>
+      <div className="font-semibold text-green-600 dark:text-green-400">
+        Social Links
+      </div>
       <div className="space-y-2">
         <div>
           GitHub:{" "}

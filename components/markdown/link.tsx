@@ -38,7 +38,7 @@ export function LinkComponent({ href, children, showIcon = true }: LinkProps) {
       className={cn(
         "inline-flex items-center gap-1 text-purple-400 underline decoration-purple-400/30 underline-offset-2 transition-colors hover:text-purple-300 hover:decoration-purple-300/50"
       )}
-      href={href as any}
+      href={href}
     >
       {children}
     </Link>

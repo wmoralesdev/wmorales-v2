@@ -2,10 +2,15 @@
 
 import { useTranslations } from "next-intl";
 import { Kbd, KbdGroup } from "@/components/ui/kbd";
-import { COMMANDS } from "./index";
 import type { CommandCategory } from "../types";
+import { COMMANDS } from "./index";
 
-const categoryOrder: CommandCategory[] = ["profile", "system", "navigation", "fun"];
+const categoryOrder: CommandCategory[] = [
+  "profile",
+  "system",
+  "navigation",
+  "fun",
+];
 const categoryLabels: Record<CommandCategory, string> = {
   profile: "Profile",
   system: "System",
@@ -42,16 +47,16 @@ function HelpOutput({ commandName }: { commandName?: string }) {
           {description}
         </div>
         {cmd.usage && (
-          <div className="ml-4 font-mono text-sm text-slate-600 dark:text-gray-400">
+          <div className="ml-4 font-mono text-slate-600 text-sm dark:text-gray-400">
             {cmd.usage}
           </div>
         )}
         {examples && (
-          <div className="ml-4 mt-2 space-y-1">
-            <div className="text-xs font-semibold text-slate-600 dark:text-gray-400">
+          <div className="mt-2 ml-4 space-y-1">
+            <div className="font-semibold text-slate-600 text-xs dark:text-gray-400">
               Examples:
             </div>
-            <div className="font-mono text-xs text-slate-600 dark:text-gray-400">
+            <div className="font-mono text-slate-600 text-xs dark:text-gray-400">
               {examples}
             </div>
           </div>
@@ -61,7 +66,10 @@ function HelpOutput({ commandName }: { commandName?: string }) {
   }
 
   // Show all commands grouped by category
-  const commandsByCategory: Record<CommandCategory, Array<[string, typeof COMMANDS[string]]>> = {
+  const commandsByCategory: Record<
+    CommandCategory,
+    [string, (typeof COMMANDS)[string]][]
+  > = {
     profile: [],
     system: [],
     navigation: [],
@@ -69,12 +77,12 @@ function HelpOutput({ commandName }: { commandName?: string }) {
   };
 
   // Group commands by category
-  Object.entries(COMMANDS).forEach(([name, cmd]) => {
+  for (const [name, cmd] of Object.entries(COMMANDS)) {
     const category = cmd.category || "system";
     if (category in commandsByCategory) {
       commandsByCategory[category].push([name, cmd]);
     }
-  });
+  }
 
   return (
     <div className="space-y-4">
@@ -85,11 +93,13 @@ function HelpOutput({ commandName }: { commandName?: string }) {
       {/* Commands grouped by category */}
       {categoryOrder.map((category) => {
         const commands = commandsByCategory[category];
-        if (commands.length === 0) return null;
+        if (commands.length === 0) {
+          return null;
+        }
 
         return (
-          <div key={category} className="ml-4 space-y-1.5">
-            <div className="text-xs font-semibold text-muted-foreground uppercase">
+          <div className="ml-4 space-y-1.5" key={category}>
+            <div className="font-semibold text-muted-foreground text-xs uppercase">
               {categoryLabels[category]}
             </div>
             {commands.map(([name, cmd]) => {
@@ -98,10 +108,15 @@ function HelpOutput({ commandName }: { commandName?: string }) {
                 : cmd.description;
 
               return (
-                <div key={name} className="text-sm text-slate-700 dark:text-gray-300">
-                  <span className="text-cyan-600 dark:text-cyan-400">{name}</span>
+                <div
+                  className="text-slate-700 text-sm dark:text-gray-300"
+                  key={name}
+                >
+                  <span className="text-cyan-600 dark:text-cyan-400">
+                    {name}
+                  </span>
                   {cmd.aliases && cmd.aliases.length > 0 && (
-                    <span className="ml-1 text-xs text-muted-foreground">
+                    <span className="ml-1 text-muted-foreground text-xs">
                       ({cmd.aliases.join(", ")})
                     </span>
                   )}
@@ -118,7 +133,7 @@ function HelpOutput({ commandName }: { commandName?: string }) {
         <div className="font-semibold text-green-600 dark:text-green-400">
           {t("helpShortcuts")}
         </div>
-        <div className="ml-4 space-y-1.5 text-sm text-slate-700 dark:text-gray-300">
+        <div className="ml-4 space-y-1.5 text-slate-700 text-sm dark:text-gray-300">
           <div className="flex items-center gap-2">
             <span>{t("shortcutEnter")}:</span>
             <KbdGroup>
@@ -173,7 +188,7 @@ function HelpOutput({ commandName }: { commandName?: string }) {
         <div className="font-semibold text-green-600 dark:text-green-400">
           {t("helpExamples")}
         </div>
-        <div className="ml-4 whitespace-pre-line font-mono text-sm text-slate-600 dark:text-gray-400">
+        <div className="ml-4 whitespace-pre-line font-mono text-slate-600 text-sm dark:text-gray-400">
           {t("helpExample")}
         </div>
       </div>

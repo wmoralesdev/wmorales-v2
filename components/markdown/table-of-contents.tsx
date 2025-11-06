@@ -24,7 +24,7 @@ export function TableOfContents({ headings }: TableOfContentsProps) {
                 key={heading.id}
               >
                 <a
-                  className="text-gray-400 transition-colors hover:text-white scroll-smooth"
+                  className="scroll-smooth text-gray-400 transition-colors hover:text-white"
                   href={`#${heading.id}`}
                 >
                   {heading.title}

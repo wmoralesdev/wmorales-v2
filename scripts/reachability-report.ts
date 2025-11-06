@@ -1,7 +1,7 @@
 #!/usr/bin/env tsx
 
-import { readFileSync, readdirSync, statSync } from "fs";
-import { join, relative, resolve, dirname } from "path";
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { dirname, join, relative, resolve } from "node:path";
 
 const PROJECT_ROOT = resolve(__dirname, "..");
 const ENTRY_POINTS = [
@@ -81,7 +81,7 @@ function resolveImportPath(
   fromFile: FilePath
 ): FilePath | null {
   // Skip external packages
-  if (!importPath.startsWith(".") && !importPath.startsWith("@/")) {
+  if (!(importPath.startsWith(".") || importPath.startsWith("@/"))) {
     return null;
   }
 
@@ -122,43 +122,96 @@ function extractImports(content: string, filePath: FilePath): FilePath[] {
   // Static imports: import ... from "..."
   const staticImportRegex =
     /import\s+(?:type\s+)?(?:[\w\s{},*]+from\s+)?["']([^"']+)["']/g;
-  let match;
-  while ((match = staticImportRegex.exec(content)) !== null) {
+  let match: RegExpExecArray | null = staticImportRegex.exec(content);
+  while (match !== null) {
     const resolved = resolveImportPath(match[1], filePath);
     if (resolved) {
       imports.push(resolved);
     }
+    match = staticImportRegex.exec(content);
   }
 
   // Dynamic imports: import("...")
   const dynamicImportRegex = /import\s*\(\s*["']([^"']+)["']\s*\)/g;
-  while ((match = dynamicImportRegex.exec(content)) !== null) {
+  match = dynamicImportRegex.exec(content);
+  while (match !== null) {
     const resolved = resolveImportPath(match[1], filePath);
     if (resolved) {
       imports.push(resolved);
     }
+    match = dynamicImportRegex.exec(content);
   }
 
   // next/dynamic: dynamic(() => import("..."))
   const dynamicNextRegex =
     /dynamic\s*\(\s*(?:\(\)\s*=>\s*)?import\s*\(\s*["']([^"']+)["']\s*\)/g;
-  while ((match = dynamicNextRegex.exec(content)) !== null) {
+  match = dynamicNextRegex.exec(content);
+  while (match !== null) {
     const resolved = resolveImportPath(match[1], filePath);
     if (resolved) {
       imports.push(resolved);
     }
+    match = dynamicNextRegex.exec(content);
   }
 
   // require(): require("...")
   const requireRegex = /require\s*\(\s*["']([^"']+)["']\s*\)/g;
-  while ((match = requireRegex.exec(content)) !== null) {
+  match = requireRegex.exec(content);
+  while (match !== null) {
     const resolved = resolveImportPath(match[1], filePath);
     if (resolved) {
       imports.push(resolved);
     }
+    match = requireRegex.exec(content);
   }
 
   return imports;
+}
+
+function findMatchingFile(imp: FilePath, files: FilePath[]): FilePath | null {
+  const candidatePaths = [
+    join(PROJECT_ROOT, imp),
+    join(PROJECT_ROOT, `${imp}.ts`),
+    join(PROJECT_ROOT, `${imp}.tsx`),
+    join(PROJECT_ROOT, imp, "index.ts"),
+    join(PROJECT_ROOT, imp, "index.tsx"),
+  ];
+
+  for (const candidate of candidatePaths) {
+    try {
+      const stat = statSync(candidate);
+      if (stat.isFile()) {
+        const relCandidate = relative(PROJECT_ROOT, candidate);
+        if (files.includes(relCandidate)) {
+          return relCandidate;
+        }
+      }
+    } catch {
+      // File doesn't exist, continue
+    }
+  }
+
+  // Try to find the file in the files list
+  const matchingFile = files.find((f) => f === imp || f.startsWith(`${imp}.`));
+  return matchingFile || null;
+}
+
+function processFileImports(
+  file: FilePath,
+  imports: FilePath[],
+  graph: ImportGraph,
+  files: FilePath[]
+): void {
+  if (!graph.has(file)) {
+    graph.set(file, new Set());
+  }
+
+  for (const imp of imports) {
+    const matchingFile = findMatchingFile(imp, files);
+    if (matchingFile) {
+      graph.get(file)?.add(matchingFile);
+    }
+  }
 }
 
 function buildImportGraph(files: FilePath[]): ImportGraph {
@@ -169,48 +222,7 @@ function buildImportGraph(files: FilePath[]): ImportGraph {
     try {
       const content = readFileSync(fullPath, "utf-8");
       const imports = extractImports(content, file);
-
-      if (!graph.has(file)) {
-        graph.set(file, new Set());
-      }
-
-      for (const imp of imports) {
-        // Check if the imported file exists
-        const candidatePaths = [
-          join(PROJECT_ROOT, imp),
-          join(PROJECT_ROOT, `${imp}.ts`),
-          join(PROJECT_ROOT, `${imp}.tsx`),
-          join(PROJECT_ROOT, imp, "index.ts"),
-          join(PROJECT_ROOT, imp, "index.tsx"),
-        ];
-
-        let found = false;
-        for (const candidate of candidatePaths) {
-          try {
-            const stat = statSync(candidate);
-            if (stat.isFile()) {
-              const relCandidate = relative(PROJECT_ROOT, candidate);
-              if (files.includes(relCandidate)) {
-                graph.get(file)!.add(relCandidate);
-                found = true;
-                break;
-              }
-            }
-          } catch {
-            // File doesn't exist, continue
-          }
-        }
-
-        if (!found) {
-          // Try to find the file in the files list
-          const matchingFile = files.find(
-            (f) => f === imp || f.startsWith(`${imp}.`)
-          );
-          if (matchingFile) {
-            graph.get(file)!.add(matchingFile);
-          }
-        }
-      }
+      processFileImports(file, imports, graph, files);
     } catch (error) {
       console.warn(`Warning: Could not read ${file}: ${error}`);
     }
@@ -231,7 +243,10 @@ function findReachableFiles(
   }
 
   while (queue.length > 0) {
-    const current = queue.shift()!;
+    const current = queue.shift();
+    if (!current) {
+      break;
+    }
     const imports = graph.get(current) || new Set();
 
     for (const imp of imports) {
@@ -277,10 +292,10 @@ function main() {
   // Filter out files that should always be kept
   const filesToAnalyze = allFiles.filter((f) => !shouldKeepFile(f));
 
-  console.log(`🔗 Building import graph...`);
+  console.log("🔗 Building import graph...");
   const graph = buildImportGraph(allFiles);
 
-  console.log(`🚀 Finding entry points...`);
+  console.log("🚀 Finding entry points...");
   const entryPoints: FilePath[] = [];
   for (const entry of ENTRY_POINTS) {
     const fullPath = join(PROJECT_ROOT, entry);
@@ -297,11 +312,10 @@ function main() {
   for (const file of allFiles) {
     if (
       file.includes("/page.tsx") &&
-      ALLOWED_ROUTES.some((pattern) => pattern.test(file))
+      ALLOWED_ROUTES.some((pattern) => pattern.test(file)) &&
+      !entryPoints.includes(file)
     ) {
-      if (!entryPoints.includes(file)) {
-        entryPoints.push(file);
-      }
+      entryPoints.push(file);
     }
   }
 
@@ -318,18 +332,18 @@ function main() {
   const alwaysKeepFiles = allFiles.filter((f) => shouldKeepFile(f));
   const totalReachable = reachable.size + alwaysKeepFiles.length;
 
-  console.log(`\n📊 Summary:`);
+  console.log("\n📊 Summary:");
   console.log(`  Total files: ${allFiles.length}`);
   console.log(`  Reachable files: ${totalReachable}`);
   console.log(`  Unreachable files: ${unreachable.length}`);
 
   if (unreachable.length > 0) {
-    console.log(`\n❌ Unreachable files:`);
+    console.log("\n❌ Unreachable files:");
     for (const file of unreachable.sort()) {
       console.log(`  ${file}`);
     }
   } else {
-    console.log(`\n✅ No unreachable files found!`);
+    console.log("\n✅ No unreachable files found!");
   }
 
   return unreachable;

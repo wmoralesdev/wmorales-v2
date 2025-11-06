@@ -59,8 +59,8 @@ export default async function RootLayout({ children }: Props) {
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          enableSystem
           disableTransitionOnChange
+          enableSystem
         >
           <AnimatedMesh />
           <AuthProvider>{children}</AuthProvider>

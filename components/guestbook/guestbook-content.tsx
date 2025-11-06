@@ -135,7 +135,7 @@ export function GuestbookContent() {
                   <div className="mb-4 rounded-full bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-4">
                     <Sparkles className="h-8 w-8 text-purple-600 dark:text-purple-400" />
                   </div>
-                  <h3 className="mb-2 font-semibold text-xl text-foreground">
+                  <h3 className="mb-2 font-semibold text-foreground text-xl">
                     {t("noTicketYet")}
                   </h3>
                   <p className="text-muted-foreground">{t("describeMood")}</p>
@@ -152,7 +152,7 @@ export function GuestbookContent() {
                   <div className="rounded-lg bg-gradient-to-r from-purple-500/20 to-pink-500/20 p-2">
                     <Palette className="h-5 w-5 text-purple-600 dark:text-purple-400" />
                   </div>
-                  <h2 className="font-semibold text-xl text-foreground">
+                  <h2 className="font-semibold text-foreground text-xl">
                     {userTicket ? t("updateTicket") : t("createTicketForm")}
                   </h2>
                 </div>

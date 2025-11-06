@@ -139,8 +139,11 @@ function switchLocale(targetLocale: string) {
   }
 
   // Handle root path
-  const pathWithoutLocale = pathSegments.length > 0 ? pathSegments.join("/") : "";
-  const newPath = pathWithoutLocale ? `/${targetLocale}/${pathWithoutLocale}` : `/${targetLocale}`;
+  const pathWithoutLocale =
+    pathSegments.length > 0 ? pathSegments.join("/") : "";
+  const newPath = pathWithoutLocale
+    ? `/${targetLocale}/${pathWithoutLocale}`
+    : `/${targetLocale}`;
 
   // Add search parameters if they exist
   const searchParams = currentUrl.searchParams.toString();
@@ -295,7 +298,7 @@ function MobileUserSection() {
             </AvatarFallback>
           </Avatar>
           <div className="min-w-0 flex-1">
-            <p className="truncate font-medium text-sm text-foreground">
+            <p className="truncate font-medium text-foreground text-sm">
               {displayName}
             </p>
             <p className="truncate text-muted-foreground text-xs">
@@ -372,7 +375,7 @@ export function Navbar() {
     <motion.nav
       animate="visible"
       className={cn(
-        "fixed top-0 right-0 left-0 z-50 border-b border-border transition-all duration-300",
+        "fixed top-0 right-0 left-0 z-50 border-border border-b transition-all duration-300",
         scrolled
           ? "bg-background/95 shadow-lg backdrop-blur-md"
           : "bg-background/80 backdrop-blur-md"
@@ -398,7 +401,7 @@ export function Navbar() {
                 width={24}
               />
             </div>
-            <span className="font-bold text-lg text-foreground tracking-tighter group-hover:text-purple-400 dark:group-hover:text-purple-400">
+            <span className="font-bold text-foreground text-lg tracking-tighter group-hover:text-purple-400 dark:group-hover:text-purple-400">
               WM
             </span>
           </Link>
@@ -479,7 +482,7 @@ export function Navbar() {
                             src="/wm.svg"
                             width={24}
                           />
-                          <span className="font-bold text-lg text-foreground">
+                          <span className="font-bold text-foreground text-lg">
                             WM
                           </span>
                         </div>

@@ -1,14 +1,17 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useRef, useState } from "react";
-import { useTranslations } from "next-intl";
-import { COMMAND_SUGGESTIONS } from "./interactive-terminal/commands";
-import { COMMANDS } from "./interactive-terminal/commands";
-import { useTerminal } from "./interactive-terminal/hooks/use-terminal";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Button } from "@/components/ui/button";
 import { ChevronDown } from "lucide-react";
+import { useTranslations } from "next-intl";
+import { useEffect, useRef, useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { COMMAND_SUGGESTIONS, COMMANDS } from "./interactive-terminal/commands";
+import { useTerminal } from "./interactive-terminal/hooks/use-terminal";
 import type { CommandCategory } from "./interactive-terminal/types";
 
 const TYPING_DELAY_MS = 30;
@@ -42,16 +45,15 @@ export function InteractiveTerminal() {
   } = useTerminal();
 
   const ghostText = getGhostText();
-  const ghostTextSuffix = ghostText && ghostText.length > currentInput.length
-    ? ghostText.slice(currentInput.length)
-    : "";
+  const ghostTextSuffix =
+    ghostText && ghostText.length > currentInput.length
+      ? ghostText.slice(currentInput.length)
+      : "";
 
   const createErrorOutput = (input: string) => (
     <div className="text-red-600 dark:text-red-400">
       {t("notFound", { input })}
-      <div className="mt-1 text-muted-foreground text-sm">
-        {t("typeHelp")}
-      </div>
+      <div className="mt-1 text-muted-foreground text-sm">{t("typeHelp")}</div>
     </div>
   );
 
@@ -198,7 +200,9 @@ export function InteractiveTerminal() {
                     <span className="mr-2 text-purple-600 dark:text-purple-400">
                       $
                     </span>
-                    <span className="text-slate-900 dark:text-foreground">{cmd.input}</span>
+                    <span className="text-slate-900 dark:text-foreground">
+                      {cmd.input}
+                    </span>
                   </div>
                 )}
                 {cmd.output && (
@@ -239,7 +243,7 @@ export function InteractiveTerminal() {
                     {cmd}
                   </button>
                 ))}
-                <Popover open={showMoreMenu} onOpenChange={setShowMoreMenu}>
+                <Popover onOpenChange={setShowMoreMenu} open={showMoreMenu}>
                   <PopoverTrigger asChild>
                     <Button
                       className="h-7 rounded border border-border bg-muted/50 px-3 text-cyan-600 text-xs transition-colors hover:border-cyan-500 hover:bg-muted focus:outline-none focus:ring-1 focus:ring-cyan-500 dark:text-cyan-400"
@@ -252,18 +256,28 @@ export function InteractiveTerminal() {
                   </PopoverTrigger>
                   <PopoverContent align="start" className="w-64 p-2">
                     <div className="space-y-2">
-                      {(Object.entries(COMMAND_CATEGORIES) as Array<[CommandCategory, string[]]>).map(([category, cmds]) => {
-                        if (cmds.length === 0) return null;
-                        const categoryLabel = category.charAt(0).toUpperCase() + category.slice(1);
+                      {(
+                        Object.entries(COMMAND_CATEGORIES) as [
+                          CommandCategory,
+                          string[],
+                        ][]
+                      ).map(([category, cmds]) => {
+                        if (cmds.length === 0) {
+                          return null;
+                        }
+                        const categoryLabel =
+                          category.charAt(0).toUpperCase() + category.slice(1);
                         return (
                           <div key={category}>
-                            <div className="mb-1 text-xs font-semibold text-muted-foreground uppercase">
+                            <div className="mb-1 font-semibold text-muted-foreground text-xs uppercase">
                               {categoryLabel}
                             </div>
                             <div className="flex flex-wrap gap-1.5">
                               {cmds.map((cmd) => {
                                 const cmdDef = COMMANDS[cmd];
-                                if (!cmdDef) return null;
+                                if (!cmdDef) {
+                                  return null;
+                                }
                                 return (
                                   <button
                                     className="rounded border border-border bg-muted/50 px-2 py-1 text-cyan-600 text-xs transition-colors hover:border-cyan-500 hover:bg-muted focus:outline-none focus:ring-1 focus:ring-cyan-500 dark:text-cyan-400"
@@ -310,7 +324,7 @@ export function InteractiveTerminal() {
                   value={currentInput}
                 />
                 {ghostTextSuffix && (
-                  <span className="pointer-events-none absolute left-0 top-0 z-0 text-muted-foreground opacity-50">
+                  <span className="pointer-events-none absolute top-0 left-0 z-0 text-muted-foreground opacity-50">
                     {currentInput}
                     <span className="text-slate-400 dark:text-slate-500">
                       {ghostTextSuffix}

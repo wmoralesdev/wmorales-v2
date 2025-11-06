@@ -75,7 +75,7 @@ export function HeroSection() {
                         👋
                       </span>
                     </h1>
-                    <h2 className="font-medium text-muted-foreground text-lg sm:text-xl lg:text-2xl">
+                    <h2 className="font-medium text-lg text-muted-foreground sm:text-xl lg:text-2xl">
                       <span className="inline-flex items-center gap-2 bg-gradient-to-r from-purple-400 to-purple-600 bg-clip-text text-transparent">
                         <Image
                           alt="Cursor Logo"

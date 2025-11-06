@@ -1,6 +1,6 @@
 "use client";
 
-import { useTranslations, useLocale } from "next-intl";
+import { useLocale, useTranslations } from "next-intl";
 
 function TimeOutput() {
   const t = useTranslations("terminal");
@@ -15,9 +15,7 @@ function TimeOutput() {
       <div className="font-semibold text-green-600 dark:text-green-400">
         {t("timeLabel")}
       </div>
-      <div className="ml-4 text-slate-700 dark:text-gray-300">
-        {timeStr}
-      </div>
+      <div className="ml-4 text-slate-700 dark:text-gray-300">{timeStr}</div>
     </div>
   );
 }
@@ -29,4 +27,3 @@ export const timeCommand = {
   category: "system" as const,
   execute: () => <TimeOutput />,
 };
-

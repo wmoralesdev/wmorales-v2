@@ -1,8 +1,8 @@
 "use client";
 
 import { useTranslations } from "next-intl";
-import { useEffect } from "react";
 import { useTheme } from "next-themes";
+import { useEffect } from "react";
 
 function ThemeOutput({ mode }: { mode?: string }) {
   const t = useTranslations("terminal");
@@ -33,10 +33,10 @@ function ThemeOutput({ mode }: { mode?: string }) {
       <div className="font-semibold text-green-600 dark:text-green-400">
         Theme Toggle
       </div>
-      <div className="mt-2 text-sm text-slate-600 dark:text-gray-400">
+      <div className="mt-2 text-slate-600 text-sm dark:text-gray-400">
         Current theme: {theme || "system"}
       </div>
-      <div className="mt-2 text-sm text-slate-600 dark:text-gray-400">
+      <div className="mt-2 text-slate-600 text-sm dark:text-gray-400">
         {t("themeUsage")}
       </div>
     </div>
@@ -48,7 +48,5 @@ export const themeCommand = {
   descriptionKey: "terminal.themeUsage",
   usage: "theme [dark|light|toggle]",
   category: "system" as const,
-  execute: (args?: string[]) => {
-    return <ThemeOutput mode={args?.[0]} />;
-  },
+  execute: (args?: string[]) => <ThemeOutput mode={args?.[0]} />,
 };

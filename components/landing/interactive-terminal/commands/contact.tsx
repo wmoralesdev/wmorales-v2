@@ -3,7 +3,9 @@ export const contactCommand = {
   category: "profile" as const,
   execute: () => (
     <div className="space-y-3 text-slate-700 dark:text-gray-300">
-      <div className="font-semibold text-green-600 dark:text-green-400">Contact Information</div>
+      <div className="font-semibold text-green-600 dark:text-green-400">
+        Contact Information
+      </div>
       <div className="space-y-2">
         <div>
           Email:{" "}
@@ -14,7 +16,7 @@ export const contactCommand = {
             hello@wmorales.dev
           </a>
         </div>
-        <div className="text-sm text-slate-600 dark:text-gray-400">
+        <div className="text-slate-600 text-sm dark:text-gray-400">
           Available for consulting, collaborations, and interesting projects
         </div>
       </div>

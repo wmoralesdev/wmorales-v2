@@ -3,28 +3,39 @@
 import { useTranslations } from "next-intl";
 import { useEffect, useRef, useState } from "react";
 
+const CANVAS_WIDTH = 600;
+const CANVAS_HEIGHT = 300;
+const MATRIX_RESET_PROBABILITY = 0.975;
+const MAX_MATRIX_SECONDS = 30;
+
 function MatrixOutput({ seconds }: { seconds: number }) {
   const t = useTranslations("terminal");
   const [isRunning, setIsRunning] = useState(true);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const animationRef = useRef<number>();
+  const animationRef = useRef<number>(0);
 
   useEffect(() => {
-    if (!canvasRef.current || !isRunning) return;
+    if (!(canvasRef.current && isRunning)) {
+      return;
+    }
 
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
-    if (!ctx) return;
+    if (!ctx) {
+      return;
+    }
 
-    canvas.width = 600;
-    canvas.height = 300;
+    canvas.width = CANVAS_WIDTH;
+    canvas.height = CANVAS_HEIGHT;
 
-    const chars = "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
+    const chars =
+      "01アイウエオカキクケコサシスセソタチツテトナニヌネノハヒフヘホマミムメモヤユヨラリルレロワヲン";
     const fontSize = 14;
     const columns = canvas.width / fontSize;
-    const drops: number[] = Array(Math.floor(columns)).fill(1);
+    const drops: number[] = new Array(Math.floor(columns)).fill(1);
 
-    let startTime = Date.now();
+    const startTime = Date.now();
+    // biome-ignore lint/style/noMagicNumbers: no magic numbers
     const duration = seconds * 1000;
 
     const draw = () => {
@@ -43,7 +54,10 @@ function MatrixOutput({ seconds }: { seconds: number }) {
         const text = chars[Math.floor(Math.random() * chars.length)];
         ctx.fillText(text, i * fontSize, drops[i] * fontSize);
 
-        if (drops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+        if (
+          drops[i] * fontSize > canvas.height &&
+          Math.random() > MATRIX_RESET_PROBABILITY
+        ) {
           drops[i] = 0;
         }
         drops[i]++;
@@ -71,15 +85,15 @@ function MatrixOutput({ seconds }: { seconds: number }) {
 
   return (
     <div className="space-y-2">
-      <div className="text-xs text-muted-foreground">
+      <div className="text-muted-foreground text-xs">
         {t("matrixRunning", { seconds })}
       </div>
       <canvas
-        ref={canvasRef}
         className="rounded border border-green-600/50"
+        ref={canvasRef}
         style={{ maxWidth: "100%", height: "auto" }}
       />
-      <div className="text-xs text-muted-foreground">
+      <div className="text-muted-foreground text-xs">
         {t("matrixPressCtrlC")}
       </div>
     </div>
@@ -97,10 +111,13 @@ export const matrixCommand = {
     if (
       secondsIndex !== undefined &&
       secondsIndex >= 0 &&
+      args &&
       args[secondsIndex + 1]
+        ? args[secondsIndex + 1]
+        : undefined
     ) {
-      const parsed = Number.parseInt(args[secondsIndex + 1], 10);
-      if (!Number.isNaN(parsed) && parsed > 0 && parsed <= 30) {
+      const parsed = Number.parseInt(args?.[secondsIndex + 1] ?? "", 10);
+      if (!Number.isNaN(parsed) && parsed > 0 && parsed <= MAX_MATRIX_SECONDS) {
         seconds = parsed;
       }
     }
@@ -108,4 +125,3 @@ export const matrixCommand = {
     return <MatrixOutput seconds={seconds} />;
   },
 };
-

@@ -5,9 +5,7 @@ import { useRouter } from "@/i18n/navigation";
 
 function OpenUsage() {
   const t = useTranslations("terminal");
-  return (
-    <div className="text-muted-foreground text-sm">{t("openUsage")}</div>
-  );
+  return <div className="text-muted-foreground text-sm">{t("openUsage")}</div>;
 }
 
 function OpenOutput({ target, url }: { target?: string; url?: string }) {
@@ -71,4 +69,3 @@ export const openCommand = {
     return <OpenOutput target={target} />;
   },
 };
-

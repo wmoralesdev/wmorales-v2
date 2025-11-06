@@ -34,7 +34,6 @@ function logRetryAttempt(
   error: unknown
 ): void {
   if (process.env.NODE_ENV === "development") {
-    // biome-ignore lint/suspicious/noConsole: Development logging for database retries
     console.warn(
       `Database operation failed (attempt ${attempt + 1}/${maxRetries + 1}), retrying in ${delay}ms...`,
       {
@@ -178,7 +177,6 @@ export const db = {
     } catch (error) {
       // Log error in development only
       if (process.env.NODE_ENV === "development") {
-        // biome-ignore lint/suspicious/noConsole: Development logging for connection diagnostics
         console.error("Failed to get connection info:", error);
       }
       return null;

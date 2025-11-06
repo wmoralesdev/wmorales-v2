@@ -6,11 +6,7 @@ import { useTerminalStore } from "@/lib/stores/terminal-store";
 
 function CopyUsage() {
   const t = useTranslations("terminal");
-  return (
-    <div className="text-muted-foreground text-sm">
-      {t("copyUsage")}
-    </div>
-  );
+  return <div className="text-muted-foreground text-sm">{t("copyUsage")}</div>;
 }
 
 function CopyOutput({ textToCopy }: { textToCopy: string }) {
@@ -31,17 +27,13 @@ function CopyOutput({ textToCopy }: { textToCopy: string }) {
 
   if (copied) {
     return (
-      <div className="text-green-600 dark:text-green-400">
-        {t("copied")}
-      </div>
+      <div className="text-green-600 dark:text-green-400">{t("copied")}</div>
     );
   }
 
   if (error) {
     return (
-      <div className="text-red-600 dark:text-red-400">
-        {t("copyFailed")}
-      </div>
+      <div className="text-red-600 dark:text-red-400">{t("copyFailed")}</div>
     );
   }
 
@@ -75,9 +67,7 @@ function CopyLastOutput() {
 
   if (copied) {
     return (
-      <div className="text-green-600 dark:text-green-400">
-        {t("copied")}
-      </div>
+      <div className="text-green-600 dark:text-green-400">{t("copied")}</div>
     );
   }
 
@@ -89,11 +79,7 @@ function CopyLastOutput() {
     );
   }
 
-  return (
-    <div className="text-muted-foreground text-sm">
-      {t("copying")}
-    </div>
-  );
+  return <div className="text-muted-foreground text-sm">{t("copying")}</div>;
 }
 
 export const copyCommand = {
@@ -114,4 +100,3 @@ export const copyCommand = {
     return <CopyOutput textToCopy={textToCopy} />;
   },
 };
-

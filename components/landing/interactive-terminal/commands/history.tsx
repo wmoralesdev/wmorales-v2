@@ -25,13 +25,14 @@ function HistoryOutput({ grepTerm }: { grepTerm?: string }) {
           <div className="font-semibold text-green-600 dark:text-green-400">
             {t("historyHeader", { count: filteredHistory.length })}
             {grepTerm && (
-              <span className="ml-2 text-xs text-muted-foreground">
+              <span className="ml-2 text-muted-foreground text-xs">
                 (filtered by: "{grepTerm}")
               </span>
             )}
           </div>
-          <div className="ml-4 space-y-0.5 font-mono text-sm text-slate-700 dark:text-gray-300">
+          <div className="ml-4 space-y-0.5 font-mono text-slate-700 text-sm dark:text-gray-300">
             {filteredHistory.map((cmd, index) => (
+              // biome-ignore lint/suspicious/noArrayIndexKey: It's fine to use index as key
               <div key={`${cmd}-${index}`}>
                 {filteredHistory.length - index}. {cmd}
               </div>
@@ -68,7 +69,9 @@ function HistoryExportOutput() {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
-    if (commandHistory.length === 0) return;
+    if (commandHistory.length === 0) {
+      return;
+    }
 
     const historyText = commandHistory
       .map((cmd, index) => `${commandHistory.length - index}. ${cmd}`)
@@ -93,9 +96,7 @@ function HistoryExportOutput() {
   }
 
   return (
-    <div className="text-muted-foreground text-sm">
-      {t("historyExporting")}
-    </div>
+    <div className="text-muted-foreground text-sm">{t("historyExporting")}</div>
   );
 }
 
@@ -113,10 +114,9 @@ export const historyCommand = {
     }
     const grepIndex = args?.indexOf("--grep");
     const grepTerm =
-      grepIndex !== undefined && grepIndex >= 0 && args[grepIndex + 1]
+      grepIndex !== undefined && grepIndex >= 0 && args && args[grepIndex + 1]
         ? args[grepIndex + 1]
         : undefined;
     return <HistoryOutput grepTerm={grepTerm} />;
   },
 };
-
