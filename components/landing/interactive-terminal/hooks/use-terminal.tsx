@@ -34,6 +34,42 @@ export function useTerminal() {
     loadHistoryFromStorage();
   }, [loadHistoryFromStorage]);
 
+  // Helper to handle history recall: !! (repeat last)
+  const recallLastCommand = useCallback(
+    (): string | null => commandHistory.at(-1) ?? null,
+    [commandHistory]
+  );
+
+  // Helper to handle history recall: !<n> (by number)
+  const recallCommandByNumber = useCallback(
+    (num: number): string | null => {
+      if (num > 0 && num <= commandHistory.length) {
+        const historyIndex = commandHistory.length - num;
+        return commandHistory[historyIndex] ?? null;
+      }
+      return null;
+    },
+    [commandHistory]
+  );
+
+  // Helper to handle history recall: !<prefix> (by prefix)
+  const recallCommandByPrefix = useCallback(
+    (prefix: string): string | null => {
+      if (prefix.length === 0) {
+        return null;
+      }
+      const lowerPrefix = prefix.toLowerCase();
+      for (let i = commandHistory.length - 1; i >= 0; i--) {
+        const cmd = commandHistory[i];
+        if (cmd?.toLowerCase().startsWith(lowerPrefix)) {
+          return cmd;
+        }
+      }
+      return null;
+    },
+    [commandHistory]
+  );
+
   const parseCommand = useCallback(
     (input: string): { command: string; args: string[] } => {
       const trimmed = input.trim();
@@ -41,38 +77,75 @@ export function useTerminal() {
         return { command: "", args: [] };
       }
 
-      // Handle history recall: !! (repeat last), !<n> (by number), !<prefix> (by prefix)
-      if (trimmed.startsWith("!")) {
-        const rest = trimmed.slice(1);
+      // Helper to process !! (repeat last command)
+      const processRepeatLast = (
+        parseFn: (cmd: string) => { command: string; args: string[] }
+      ): { command: string; args: string[] } | null => {
+        const recalled = recallLastCommand();
+        if (recalled) {
+          return parseFn(recalled);
+        }
+        return { command: "", args: [] };
+      };
+
+      // Helper to process !<n> (by number)
+      const processByNumber = (
+        rest: string,
+        parseFn: (cmd: string) => { command: string; args: string[] }
+      ): { command: string; args: string[] } | null => {
+        const num = Number.parseInt(rest, 10);
+        if (Number.isNaN(num)) {
+          return null;
+        }
+        const recalled = recallCommandByNumber(num);
+        if (recalled) {
+          return parseFn(recalled);
+        }
+        return null;
+      };
+
+      // Helper to process !<prefix> (by prefix)
+      const processByPrefix = (
+        rest: string,
+        parseFn: (cmd: string) => { command: string; args: string[] }
+      ): { command: string; args: string[] } | null => {
+        const recalled = recallCommandByPrefix(rest);
+        if (recalled) {
+          return parseFn(recalled);
+        }
+        return null;
+      };
+
+      // Helper to process history recall syntax
+      const processHistoryRecall = (
+        inputValue: string,
+        parseFn: (cmd: string) => { command: string; args: string[] }
+      ): { command: string; args: string[] } | null => {
+        if (!inputValue.startsWith("!")) {
+          return null;
+        }
+
+        const rest = inputValue.slice(1);
 
         // !! - repeat last command
         if (rest === "!") {
-          const lastCmd = commandHistory.at(-1);
-          if (lastCmd) {
-            return parseCommand(lastCmd);
-          }
-          return { command: "", args: [] };
+          return processRepeatLast(parseFn);
         }
 
         // !<n> - by number
-        const num = Number.parseInt(rest, 10);
-        if (!Number.isNaN(num) && num > 0 && num <= commandHistory.length) {
-          const historyIndex = commandHistory.length - num;
-          const recalledCmd = commandHistory[historyIndex];
-          if (recalledCmd) {
-            return parseCommand(recalledCmd);
-          }
+        const byNumberResult = processByNumber(rest, parseFn);
+        if (byNumberResult) {
+          return byNumberResult;
         }
 
-        // !<prefix> - by prefix (find last command starting with prefix)
-        if (rest.length > 0) {
-          for (let i = commandHistory.length - 1; i >= 0; i--) {
-            const cmd = commandHistory[i];
-            if (cmd?.toLowerCase().startsWith(rest.toLowerCase())) {
-              return parseCommand(cmd);
-            }
-          }
-        }
+        // !<prefix> - by prefix
+        return processByPrefix(rest, parseFn);
+      };
+
+      // Handle history recall: !! (repeat last), !<n> (by number), !<prefix> (by prefix)
+      const historyResult = processHistoryRecall(trimmed, parseCommand);
+      if (historyResult) {
+        return historyResult;
       }
 
       const parts = trimmed.split(WHITESPACE_REGEX);
@@ -81,7 +154,7 @@ export function useTerminal() {
 
       return { command, args };
     },
-    [commandHistory]
+    [recallLastCommand, recallCommandByNumber, recallCommandByPrefix]
   );
 
   const executeCommand = useCallback(
@@ -211,6 +284,69 @@ export function useTerminal() {
     return "";
   }, [currentInput, parseCommand, getAutocompleteMatches]);
 
+  // Helper function to handle Ctrl/Cmd shortcuts
+  const handleModifierShortcut = useCallback(
+    (key: string, e: KeyboardEvent<HTMLInputElement>) => {
+      const lowerKey = key.toLowerCase();
+      if (lowerKey === "l") {
+        e.preventDefault();
+        clearCommands();
+        setCurrentInput("");
+      } else if (lowerKey === "u") {
+        e.preventDefault();
+        setCurrentInput("");
+      } else if (lowerKey === "c") {
+        e.preventDefault();
+        addCommand({
+          input: currentInput,
+          output: <span className="text-muted-foreground">^C</span>,
+        });
+        setCurrentInput("");
+      } else if (lowerKey === "k") {
+        e.preventDefault();
+        // Clear to end of line (just clear input for now)
+        setCurrentInput("");
+      }
+    },
+    [currentInput, setCurrentInput, clearCommands, addCommand]
+  );
+
+  // Helper function to handle arrow key navigation
+  const handleArrowKey = useCallback(
+    (direction: "up" | "down") => {
+      const historyItem = navigateHistory(direction);
+      if (historyItem !== null) {
+        setCurrentInput(historyItem);
+      }
+    },
+    [navigateHistory, setCurrentInput]
+  );
+
+  // Helper to handle non-modifier keys
+  const handleNonModifierKey = useCallback(
+    (
+      key: string,
+      onError: (input: string) => ReactNode,
+      e: KeyboardEvent<HTMLInputElement>
+    ) => {
+      if (key === "Enter") {
+        handleCommand(currentInput, onError);
+        setCurrentInput("");
+        setTabPressedCount(0);
+      } else if (key === "ArrowUp") {
+        e.preventDefault();
+        handleArrowKey("up");
+      } else if (key === "ArrowDown") {
+        e.preventDefault();
+        handleArrowKey("down");
+      } else if (key === "Tab") {
+        e.preventDefault();
+        handleTab();
+      }
+    },
+    [currentInput, handleCommand, handleArrowKey, handleTab, setCurrentInput]
+  );
+
   const createHandleKeyDown = useCallback(
     (onError: (input: string) => ReactNode) =>
       (e: KeyboardEvent<HTMLInputElement>) => {
@@ -219,57 +355,15 @@ export function useTerminal() {
           setTabPressedCount(0);
         }
 
-        if (e.key === "Enter") {
-          handleCommand(currentInput, onError);
-          setCurrentInput("");
-          setTabPressedCount(0);
-        } else if (e.key === "ArrowUp") {
-          e.preventDefault();
-          const historyItem = navigateHistory("up");
-          if (historyItem !== null) {
-            setCurrentInput(historyItem);
-          }
-        } else if (e.key === "ArrowDown") {
-          e.preventDefault();
-          const historyItem = navigateHistory("down");
-          if (historyItem !== null) {
-            setCurrentInput(historyItem);
-          }
-        } else if (e.key === "Tab") {
-          e.preventDefault();
-          handleTab();
-        } else if (e.ctrlKey || e.metaKey) {
+        if (e.ctrlKey || e.metaKey) {
           // Handle Ctrl/Cmd shortcuts
-          if (e.key === "l" || e.key === "L") {
-            e.preventDefault();
-            clearCommands();
-            setCurrentInput("");
-          } else if (e.key === "u" || e.key === "U") {
-            e.preventDefault();
-            setCurrentInput("");
-          } else if (e.key === "c" || e.key === "C") {
-            e.preventDefault();
-            addCommand({
-              input: currentInput,
-              output: <span className="text-muted-foreground">^C</span>,
-            });
-            setCurrentInput("");
-          } else if (e.key === "k" || e.key === "K") {
-            e.preventDefault();
-            // Clear to end of line (just clear input for now)
-            setCurrentInput("");
-          }
+          handleModifierShortcut(e.key, e);
+        } else {
+          // Handle non-modifier keys
+          handleNonModifierKey(e.key, onError, e);
         }
       },
-    [
-      currentInput,
-      handleCommand,
-      handleTab,
-      navigateHistory,
-      setCurrentInput,
-      clearCommands,
-      addCommand,
-    ]
+    [handleModifierShortcut, handleNonModifierKey]
   );
 
   const createHandleSuggestionClick = useCallback(
