@@ -4,21 +4,18 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { JetBrains_Mono, Poppins, Space_Grotesk } from "next/font/google";
 import { getLocale } from "next-intl/server";
-import { Toaster } from "sonner";
-import { AuthProvider } from "@/components/auth/auth-provider";
-import { AnimatedMesh } from "@/components/common/animated-mesh";
 import { ThemeProvider } from "@/components/common/theme-provider";
 import { cn } from "@/lib/utils";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
-  weight: ["500"],
+  weight: ["500", "600", "700"],
   variable: "--display-family",
 });
 
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["400"],
+  weight: ["400", "500"],
   variable: "--text-family",
 });
 
@@ -33,7 +30,6 @@ type Props = {
 };
 
 export default async function RootLayout({ children }: Props) {
-  // Get locale from next-intl (handled at [locale] level)
   const locale = await getLocale();
 
   return (
@@ -42,32 +38,25 @@ export default async function RootLayout({ children }: Props) {
         <link href="/wm.ico" rel="icon" />
         <link href="/wm.ico" rel="shortcut icon" />
         <link href="/wm.png" rel="apple-touch-icon" />
-        {/* Google Calendar Appointment Scheduling */}
-        <link
-          href="https://calendar.google.com/calendar/scheduling-button-script.css"
-          rel="stylesheet"
-        />
       </head>
       <body
         className={cn(
           spaceGrotesk.variable,
           poppins.variable,
           jetbrainsMono.variable,
-          "min-h-screen text-foreground antialiased"
+          "min-h-screen bg-background text-foreground antialiased"
         )}
       >
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          disableTransitionOnChange
           enableSystem
+          disableTransitionOnChange
         >
-          <AnimatedMesh />
-          <AuthProvider>{children}</AuthProvider>
-          <Toaster position="bottom-right" />
-          <Analytics />
-          <SpeedInsights />
+          {children}
         </ThemeProvider>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );

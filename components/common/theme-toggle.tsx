@@ -1,16 +1,10 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useState } from "react";
-import { Button } from "@/components/ui/button";
 
-type ThemeToggleProps = {
-  showLabel?: boolean;
-};
-
-export function ThemeToggle({ showLabel = false }: ThemeToggleProps) {
+export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -20,35 +14,28 @@ export function ThemeToggle({ showLabel = false }: ThemeToggleProps) {
 
   if (!mounted) {
     return (
-      <Button size="sm" variant="ghost">
-        <Moon className="h-4 w-4" />
-      </Button>
+      <button
+        className="text-muted-foreground/70 transition-colors hover:text-foreground"
+        aria-label="Toggle theme"
+      >
+        <Moon className="h-[18px] w-[18px]" />
+      </button>
     );
   }
 
   const isDark = theme === "dark";
 
-  const toggleTheme = () => {
-    setTheme(isDark ? "light" : "dark");
-  };
-
   return (
-    <motion.div
-      transition={{ duration: 0.2 }}
-      whileHover={{ scale: 1.05 }}
-      whileTap={{ scale: 0.95 }}
+    <button
+      onClick={() => setTheme(isDark ? "light" : "dark")}
+      className="text-muted-foreground/70 transition-colors hover:text-foreground"
+      aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
     >
-      <Button
-        className="flex items-center gap-2 font-medium text-sm"
-        onClick={toggleTheme}
-        size="sm"
-        variant="ghost"
-      >
-        {isDark ? <Sun className="h-4 w-4" /> : <Moon className="h-4 w-4" />}
-        {showLabel && (
-          <span className="hidden sm:inline">{isDark ? "Light" : "Dark"}</span>
-        )}
-      </Button>
-    </motion.div>
+      {isDark ? (
+        <Sun className="h-[18px] w-[18px]" />
+      ) : (
+        <Moon className="h-[18px] w-[18px]" />
+      )}
+    </button>
   );
 }

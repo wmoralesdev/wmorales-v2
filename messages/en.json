@@ -353,6 +353,14 @@
     "ogTicketNumber": "Ticket Number"
   },
   "homepage": {
+    "bento": {
+      "bio": "Based in El Salvador, I specialize in building scalable web applications with a focus on user experience and performance. I'm passionate about open source, AI, and community building."
+    },
+    "projects": {
+      "title": "Featured Projects",
+      "description": "A selection of projects I've worked on, from open source tools to full-stack applications.",
+      "viewMore": "View All Projects"
+    },
     "hero": {
       "availableForNewProjects": "Available for new projects",
       "greeting": "Hi, I'm Walter",

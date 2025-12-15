@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 @plugin "@tailwindcss/typography";
 
 @custom-variant dark (&:is(.dark *));
@@ -7,456 +6,138 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-
-  --color-sidebar-ring: var(--sidebar-ring);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar: var(--sidebar);
-  --color-chart-5: var(--chart-5);
-  --color-chart-4: var(--chart-4);
-  --color-chart-3: var(--chart-3);
-  --color-chart-2: var(--chart-2);
-  --color-chart-1: var(--chart-1);
-  --color-ring: var(--ring);
-  --color-input: var(--input);
-  --color-border: var(--border);
-  --color-destructive: var(--destructive);
-  --color-accent-foreground: var(--accent-foreground);
-  --color-accent: var(--accent);
-  --color-muted-foreground: var(--muted-foreground);
   --color-muted: var(--muted);
-  --color-secondary-foreground: var(--secondary-foreground);
-  --color-secondary: var(--secondary);
-  --color-primary-foreground: var(--primary-foreground);
-  --color-primary: var(--primary);
-  --color-popover-foreground: var(--popover-foreground);
-  --color-popover: var(--popover);
-  --color-card-foreground: var(--card-foreground);
-  --color-card: var(--card);
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-border: var(--border);
+  --color-ring: var(--ring);
 
   --font-display: var(--display-family);
   --font-text: var(--text-family);
   --font-mono: var(--mono-family);
+
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
 }
 
+/* Light mode - clean and readable */
 :root {
-  --radius: 0.625rem;
-  --background: oklch(0.99 0 0);
-  --foreground: oklch(0.15 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.15 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.15 0 0);
-  --primary: oklch(0.25 0 0);
-  --primary-foreground: oklch(0.99 0 0);
-  --secondary: oklch(0.96 0 0);
-  --secondary-foreground: oklch(0.25 0 0);
-  --muted: oklch(0.96 0 0);
-  --muted-foreground: oklch(0.5 0 0);
-  --accent: oklch(0.96 0 0);
-  --accent-foreground: oklch(0.25 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.9 0 0);
-  --input: oklch(0.95 0 0);
-  --ring: oklch(0.6 0 0);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.98 0 0);
-  --sidebar-foreground: oklch(0.15 0 0);
-  --sidebar-primary: oklch(0.25 0 0);
-  --sidebar-primary-foreground: oklch(0.99 0 0);
-  --sidebar-accent: oklch(0.96 0 0);
-  --sidebar-accent-foreground: oklch(0.25 0 0);
-  --sidebar-border: oklch(0.9 0 0);
-  --sidebar-ring: oklch(0.6 0 0);
-
-  --display-weight: 500;
-  --text-weight: 400;
-  --mono-weight: 400;
+  --radius: 0.375rem;
+  --background: oklch(0.985 0.002 280);
+  --foreground: oklch(0.15 0.01 280);
+  --muted: oklch(0.94 0.005 280);
+  --muted-foreground: oklch(0.45 0.02 280);
+  --accent: oklch(0.55 0.25 280);
+  --accent-foreground: oklch(0.98 0 0);
+  --border: oklch(0.88 0.01 280);
+  --ring: oklch(0.55 0.25 280);
 }
 
+/* Dark mode - improved contrast */
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
-}
-
-@layer utilities {
-  /* Hide scrollbar for Chrome, Safari and Opera */
-  .scrollbar-hide::-webkit-scrollbar {
-    display: none;
-  }
-
-  /* Hide scrollbar for IE, Edge and Firefox */
-  .scrollbar-hide {
-    -ms-overflow-style: none; /* IE and Edge */
-    scrollbar-width: none; /* Firefox */
-  }
+  --background: oklch(0.08 0.008 280);
+  --foreground: oklch(0.95 0.005 280);
+  --muted: oklch(0.15 0.01 280);
+  --muted-foreground: oklch(0.70 0.015 280);
+  --accent: oklch(0.72 0.2 280);
+  --accent-foreground: oklch(0.98 0 0);
+  --border: oklch(0.22 0.015 280);
+  --ring: oklch(0.72 0.2 280);
 }
 
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    @apply border-border;
   }
+
+  html {
+    @apply scroll-smooth;
+  }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-feature-settings: "ss01", "ss02", "cv01";
   }
 
-  .app-container {
-    @apply container max-w-3xl! mx-auto space-y-6 px-4 py-8;
-  }
-
-  .font-display {
-    font-weight: var(--display-weight);
-  }
-
-  .font-text {
-    font-weight: var(--text-weight);
-  }
-
-  .font-mono {
-    font-weight: var(--mono-weight);
-  }
-
-  .terminal-font {
-    font-family: var(--mono-family) !important;
-  }
-
-  .terminal-font * {
-    font-family: var(--mono-family) !important;
-  }
-
-  p,
-  a,
-  span,
-  button,
-  div {
-    @apply font-text;
-  }
-
-  .card-default {
-    @apply border-purple-700/50 bg-gradient-to-r from-purple-900/30 to-purple-800/30 p-4 backdrop-blur-xl;
+  ::selection {
+    @apply bg-accent/30 text-foreground;
   }
 }
 
 @layer utilities {
-  @keyframes gradient-x {
-    0%,
-    100% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
+  /* Dark mode prose */
+  .dark .prose-minimal {
+    @apply prose prose-invert max-w-none;
+    --tw-prose-body: oklch(0.85 0.008 280);
+    --tw-prose-headings: oklch(0.95 0.005 280);
+    --tw-prose-links: oklch(0.75 0.18 280);
+    --tw-prose-bold: oklch(0.95 0.005 280);
+    --tw-prose-code: oklch(0.88 0.05 280);
+    --tw-prose-pre-bg: oklch(0.12 0.008 280);
+    --tw-prose-pre-code: oklch(0.85 0.008 280);
+    --tw-prose-quotes: oklch(0.70 0.015 280);
+    --tw-prose-quote-borders: oklch(0.72 0.2 280);
+    --tw-prose-hr: oklch(0.22 0.015 280);
   }
 
-  @keyframes float {
-    0%,
-    100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
+  /* Light mode prose */
+  .prose-minimal {
+    @apply prose max-w-none;
+    --tw-prose-body: oklch(0.30 0.01 280);
+    --tw-prose-headings: oklch(0.15 0.01 280);
+    --tw-prose-links: oklch(0.45 0.22 280);
+    --tw-prose-bold: oklch(0.15 0.01 280);
+    --tw-prose-code: oklch(0.35 0.05 280);
+    --tw-prose-pre-bg: oklch(0.96 0.005 280);
+    --tw-prose-pre-code: oklch(0.30 0.01 280);
+    --tw-prose-quotes: oklch(0.45 0.02 280);
+    --tw-prose-quote-borders: oklch(0.55 0.25 280);
+    --tw-prose-hr: oklch(0.88 0.01 280);
   }
 
-  @keyframes float-slow {
-    0%,
-    100% {
-      transform: translateY(0px) translateX(0px);
-    }
-    33% {
-      transform: translateY(-8px) translateX(4px);
-    }
-    66% {
-      transform: translateY(8px) translateX(-4px);
-    }
+  .prose-minimal h2 {
+    @apply mt-10 mb-4 text-xl font-semibold tracking-tight;
   }
 
-  @keyframes twinkle {
-    0%,
-    100% {
-      opacity: 0.3;
-      transform: scale(0.8);
-    }
-    50% {
-      opacity: 1;
-      transform: scale(1.2);
-    }
+  .prose-minimal h3 {
+    @apply mt-8 mb-3 text-lg font-medium;
   }
 
-  @keyframes spin-slow {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
+  .prose-minimal p {
+    @apply leading-relaxed;
   }
 
-  @keyframes pulse-slow {
-    0%,
-    100% {
-      opacity: 0.6;
-      transform: scale(1);
-    }
-    50% {
-      opacity: 0.8;
-      transform: scale(1.05);
-    }
+  .prose-minimal a {
+    @apply underline underline-offset-2 decoration-accent/50 transition-colors hover:decoration-accent;
   }
 
-  @keyframes wave {
-    0% {
-      transform: rotate(0deg);
-    }
-    10% {
-      transform: rotate(14deg);
-    }
-    20% {
-      transform: rotate(-8deg);
-    }
-    30% {
-      transform: rotate(14deg);
-    }
-    40% {
-      transform: rotate(-4deg);
-    }
-    50% {
-      transform: rotate(10deg);
-    }
-    60% {
-      transform: rotate(0deg);
-    }
-    100% {
-      transform: rotate(0deg);
-    }
+  .prose-minimal code {
+    @apply rounded-sm bg-muted px-1.5 py-0.5 text-sm font-normal before:content-none after:content-none;
   }
 
-  .animate-gradient-x {
-    animation: gradient-x 3s ease infinite;
+  .prose-minimal pre {
+    @apply rounded-lg border border-border/50 bg-muted/50;
   }
 
-  .animate-float {
-    animation: float 3s ease-in-out infinite;
+  .prose-minimal pre code {
+    @apply bg-transparent p-0;
   }
 
-  .animate-float-delayed {
-    animation: float 3s ease-in-out infinite;
-    animation-delay: 1s;
+  .prose-minimal ul {
+    @apply my-4 list-disc pl-5;
   }
 
-  .animate-float-slow {
-    animation: float-slow 6s ease-in-out infinite;
+  .prose-minimal li {
+    @apply my-1.5;
   }
 
-  .animate-twinkle {
-    animation: twinkle 2s ease-in-out infinite;
+  .prose-minimal strong {
+    @apply font-semibold;
   }
 
-  .animate-twinkle-delayed {
-    animation: twinkle 2s ease-in-out infinite;
-    animation-delay: 0.5s;
-  }
-
-  .animate-spin-slow {
-    animation: spin-slow 8s linear infinite;
-  }
-
-  .animate-pulse-slow {
-    animation: pulse-slow 4s ease-in-out infinite;
-  }
-
-  @keyframes fade-in-up {
-    0% {
-      opacity: 0;
-      transform: translateY(30px);
-    }
-    100% {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  @keyframes fade-in {
-    0% {
-      opacity: 0;
-    }
-    100% {
-      opacity: 1;
-    }
-  }
-
-  .animate-fade-in-up {
-    animation: fade-in-up 0.8s ease-out forwards;
-    opacity: 0;
-  }
-
-  .animate-fade-in {
-    animation: fade-in 0.6s ease-out forwards;
-    opacity: 0;
-  }
-
-  .animate-delay-200 {
-    animation-delay: 0.2s;
-  }
-
-  .animate-delay-400 {
-    animation-delay: 0.4s;
-  }
-
-  .animate-delay-600 {
-    animation-delay: 0.6s;
-  }
-
-  .animate-delay-800 {
-    animation-delay: 0.8s;
-  }
-
-  .bg-300\% {
-    background-size: 300% 300%;
-  }
-
-  /* Google Calendar Scheduling Button Container */
-  .google-calendar-button-container {
-    display: inline-flex !important;
-    align-items: center !important;
-  }
-
-  /* Google Calendar Scheduling Button Styles */
-  .google-calendar-button-container button {
-    background: transparent !important;
-    border: 1px solid rgb(168 85 247 / 0.5) !important;
-    color: rgb(216 180 254) !important;
-    padding: 0.25rem 0.75rem !important;
-    font-size: 0.75rem !important;
-    line-height: 1rem !important;
-    border-radius: 0.375rem !important;
-    font-weight: 500 !important;
-    transition: all 0.2s !important;
-    height: 32px !important;
-    min-height: unset !important;
-    font-family: inherit !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    margin: 0 !important;
-    position: relative !important;
-    top: auto !important;
-    right: auto !important;
-    bottom: auto !important;
-    left: auto !important;
-    min-width: 65px !important;
-  }
-
-  .google-calendar-button-container .bookingjs-calendar-button:hover,
-  .google-calendar-button-container .pBWO3e:hover {
-    background: rgb(168 85 247 / 0.2) !important;
-    border-color: rgb(168 85 247 / 0.7) !important;
-    color: rgb(233 213 255) !important;
-  }
-
-  .google-calendar-button-container .bookingjs-calendar-button:focus,
-  .google-calendar-button-container .pBWO3e:focus {
-    outline: 2px solid transparent !important;
-    outline-offset: 2px !important;
-    box-shadow: 0 0 0 2px rgb(168 85 247 / 0.5) !important;
-  }
-
-  /* Hide Google Calendar button icon if present */
-  .google-calendar-button-container .bm2rHe {
-    display: none !important;
-  }
-
-  /* Hero Google Calendar Button Container */
-  .hero-google-calendar-button-container {
-    display: inline-flex !important;
-    align-items: center !important;
-  }
-
-  /* Hero Google Calendar Button Styles */
-  .hero-google-calendar-button-container button {
-    background: linear-gradient(
-      to right,
-      rgb(168 85 247),
-      rgb(147 51 234)
-    ) !important;
-    border: none !important;
-    color: white !important;
-    padding: 0.75rem 1.5rem !important;
-    font-size: 1rem !important;
-    line-height: 1.5rem !important;
-    border-radius: 9999px !important;
-    font-weight: 500 !important;
-    transition: all 0.3s !important;
-    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1) !important;
-    height: auto !important;
-    min-height: unset !important;
-    font-family: inherit !important;
-    display: inline-flex !important;
-    align-items: center !important;
-    justify-content: center !important;
-    margin: 0 !important;
-    position: relative !important;
-    top: auto !important;
-    right: auto !important;
-    bottom: auto !important;
-    left: auto !important;
-    min-width: unset !important;
-  }
-
-  .hero-google-calendar-button-container button:hover {
-    background: linear-gradient(
-      to right,
-      rgb(147 51 234),
-      rgb(126 34 206)
-    ) !important;
-    box-shadow: 0 10px 25px -5px rgb(168 85 247 / 0.25) !important;
-  }
-
-  .hero-google-calendar-button-container button:focus {
-    outline: 2px solid transparent !important;
-    outline-offset: 2px !important;
-    box-shadow: 0 0 0 3px rgb(168 85 247 / 0.5) !important;
+  .prose-minimal blockquote {
+    @apply border-l-2 border-accent/50 pl-4 italic;
   }
 }
