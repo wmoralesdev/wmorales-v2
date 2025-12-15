@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { FaGithub, FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import { ThemeToggle } from "@/components/common/theme-toggle";
+import { LanguageSwitcher } from "@/components/common/language-switcher";
 
 const socialLinks = [
   { href: "https://github.com/wmoralesdev", icon: FaGithub, label: "GitHub" },
@@ -61,6 +62,7 @@ export function MinimalHeader() {
           Design System
         </Link>
         <span className="h-3.5 w-px bg-border" />
+        <LanguageSwitcher />
         <ThemeToggle />
       </nav>
     </header>

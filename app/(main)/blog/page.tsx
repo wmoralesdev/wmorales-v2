@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { setRequestLocale } from "next-intl/server";
+import { getLocale } from "next-intl/server";
 import { formatDate, getAllPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
@@ -9,15 +9,9 @@ export const metadata: Metadata = {
     "Thoughts on software engineering, web development, and technology.",
 };
 
-type Props = {
-  params: Promise<{ locale: string }>;
-};
-
-export default async function BlogPage({ params }: Props) {
-  const { locale } = await params;
-  setRequestLocale(locale);
-
-  const posts = await getAllPosts();
+export default async function BlogPage() {
+  const locale = await getLocale();
+  const posts = await getAllPosts(locale);
 
   return (
     <div className="space-y-12">
@@ -52,7 +46,7 @@ export default async function BlogPage({ params }: Props) {
                   </h2>
                   <div className="flex items-center gap-2">
                     <time className="font-mono text-xs text-muted-foreground/60">
-                      {formatDate(post.date)}
+                      {formatDate(post.date, locale)}
                     </time>
                     {post.readingTimeText && (
                       <>

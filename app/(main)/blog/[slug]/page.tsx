@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { setRequestLocale } from "next-intl/server";
+import { getLocale } from "next-intl/server";
 import { AttachmentList } from "@/components/blog/attachment-list";
 import { PostBody } from "@/components/blog/post-body";
 import { PostImage } from "@/components/blog/post-image";
@@ -9,11 +9,11 @@ import { PostReadingProgress } from "@/components/blog/post-reading-progress";
 import { formatDate, getAllPosts, getPostBySlug } from "@/lib/blog";
 
 type Props = {
-  params: Promise<{ locale: string; slug: string }>;
+  params: Promise<{ slug: string }>;
 };
 
 export async function generateStaticParams() {
-  const posts = await getAllPosts();
+  const posts = await getAllPosts("en");
   return posts.map((post) => ({
     slug: post.slug,
   }));
@@ -21,7 +21,8 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const locale = await getLocale();
+  const post = await getPostBySlug(slug, locale);
 
   if (!post) {
     return {
@@ -76,10 +77,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  const { locale, slug } = await params;
-  setRequestLocale(locale);
-
-  const post = await getPostBySlug(slug);
+  const { slug } = await params;
+  const locale = await getLocale();
+  const post = await getPostBySlug(slug, locale);
 
   if (!post) {
     notFound();
@@ -104,7 +104,7 @@ export default async function BlogPostPage({ params }: Props) {
           </h1>
           <div className="flex flex-wrap items-center gap-3">
             <time className="font-mono text-muted-foreground text-xs">
-              {formatDate(post.meta.date)}
+              {formatDate(post.meta.date, locale)}
             </time>
             {post.meta.readingTimeText && (
               <>
