@@ -6,6 +6,7 @@ import { JetBrains_Mono, Poppins, Space_Grotesk } from "next/font/google";
 import { getLocale } from "next-intl/server";
 import { ThemeProvider } from "@/components/common/theme-provider";
 import { cn } from "@/lib/utils";
+import Script from 'next/script';
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -38,6 +39,13 @@ export default async function RootLayout({ children }: Props) {
         <link href="/wm.ico" rel="icon" />
         <link href="/wm.ico" rel="shortcut icon" />
         <link href="/wm.png" rel="apple-touch-icon" />
+        {process.env.NODE_ENV === "development" && (
+          <Script
+            src="//unpkg.com/react-grab/dist/index.global.js"
+            crossOrigin="anonymous"
+            strategy="beforeInteractive"
+          />
+        )}
       </head>
       <body
         className={cn(
@@ -50,8 +58,8 @@ export default async function RootLayout({ children }: Props) {
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          enableSystem
           disableTransitionOnChange
+          enableSystem
         >
           {children}
         </ThemeProvider>

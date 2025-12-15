@@ -25,30 +25,30 @@ const experiences = [
 export function MinimalExperiences() {
   return (
     <section className="space-y-5">
-      <h2 className="font-mono text-[11px] font-normal uppercase tracking-[0.2em] text-muted-foreground/60">
+      <h2 className="font-mono font-normal text-xs text-muted-foreground/60 uppercase tracking-[0.2em]">
         Experience
       </h2>
       <div className="space-y-0">
         {experiences.map((exp, idx) => (
           <div
+            className="group border-border/60 border-t py-4 first:border-t-0 first:pt-0"
             key={idx}
-            className="group border-t border-border/60 py-4 first:border-t-0 first:pt-0"
           >
             <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
-              <h3 className="font-display text-[15px] font-medium text-foreground">
+              <h3 className="font-display font-medium text-base text-foreground">
                 {exp.company}
                 {exp.current && (
                   <span className="ml-2 inline-block h-1.5 w-1.5 rounded-full bg-accent" />
                 )}
               </h3>
-              <span className="font-mono text-[11px] text-muted-foreground/50">
+              <span className="font-mono text-xs text-muted-foreground/50">
                 {exp.period}
               </span>
             </div>
-            <p className="mt-0.5 text-[13px] text-muted-foreground">
+            <p className="mt-0.5 text-sm text-muted-foreground">
               {exp.role}
             </p>
-            <p className="mt-1.5 font-mono text-[11px] text-muted-foreground/60">
+            <p className="mt-1.5 font-mono text-xs text-muted-foreground/60">
               {exp.tech}
             </p>
           </div>

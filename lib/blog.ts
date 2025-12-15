@@ -1,10 +1,20 @@
 import fs from "node:fs";
 import path from "node:path";
 import matter from "gray-matter";
+import readingTime from "reading-time";
+import rehypePrettyCode from "rehype-pretty-code";
+import rehypeStringify from "rehype-stringify";
 import { remark } from "remark";
-import html from "remark-html";
+import remarkRehype from "remark-rehype";
 
 const POSTS_DIRECTORY = path.join(process.cwd(), "content/blog");
+const MD_FILE_REGEX = /\.md$/;
+
+export type PostAttachment = {
+  title: string;
+  url: string;
+  type?: "pdf" | "slides" | "repo" | "other";
+};
 
 export type PostMeta = {
   slug: string;
@@ -13,6 +23,12 @@ export type PostMeta = {
   summary?: string;
   tags?: string[];
   published?: boolean;
+  readingTimeMinutes?: number;
+  readingTimeText?: string;
+  coverImage?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  attachments?: PostAttachment[];
 };
 
 export type Post = {
@@ -26,17 +42,19 @@ function ensurePostsDirectory(): void {
   }
 }
 
-export async function getAllPosts(): Promise<PostMeta[]> {
+export function getAllPosts(): PostMeta[] {
   ensurePostsDirectory();
 
   const fileNames = fs.readdirSync(POSTS_DIRECTORY);
   const posts = fileNames
     .filter((fileName) => fileName.endsWith(".md"))
     .map((fileName) => {
-      const slug = fileName.replace(/\.md$/, "");
+      const slug = fileName.replace(MD_FILE_REGEX, "");
       const filePath = path.join(POSTS_DIRECTORY, fileName);
       const fileContents = fs.readFileSync(filePath, "utf8");
-      const { data } = matter(fileContents);
+      const { data, content } = matter(fileContents);
+
+      const readingTimeResult = readingTime(content);
 
       return {
         slug: data.slug || slug,
@@ -45,12 +63,18 @@ export async function getAllPosts(): Promise<PostMeta[]> {
         summary: data.summary,
         tags: data.tags,
         published: data.published ?? true,
+        readingTimeMinutes: Math.ceil(readingTimeResult.minutes),
+        readingTimeText: readingTimeResult.text,
+        coverImage: data.coverImage,
+        ogImage: data.ogImage,
+        canonicalUrl: data.canonicalUrl,
+        attachments: data.attachments,
       } as PostMeta;
-    })
+    });
+
+  return posts
     .filter((post) => post.published !== false)
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
-  return posts;
 }
 
 export async function getPostBySlug(slug: string): Promise<Post | null> {
@@ -65,7 +89,16 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
   const fileContents = fs.readFileSync(filePath, "utf8");
   const { data, content } = matter(fileContents);
 
-  const processedContent = await remark().use(html).process(content);
+  const readingTimeResult = readingTime(content);
+
+  const processedContent = await remark()
+    .use(remarkRehype)
+    .use(rehypePrettyCode, {
+      theme: "github-dark",
+      keepBackground: false,
+    })
+    .use(rehypeStringify)
+    .process(content);
   const contentHtml = processedContent.toString();
 
   return {
@@ -76,6 +109,12 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
       summary: data.summary,
       tags: data.tags,
       published: data.published ?? true,
+      readingTimeMinutes: Math.ceil(readingTimeResult.minutes),
+      readingTimeText: readingTimeResult.text,
+      coverImage: data.coverImage,
+      ogImage: data.ogImage,
+      canonicalUrl: data.canonicalUrl,
+      attachments: data.attachments,
     },
     contentHtml,
   };
@@ -88,4 +127,3 @@ export function formatDate(dateString: string): string {
     day: "numeric",
   });
 }
-

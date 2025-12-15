@@ -15,8 +15,8 @@ export function ThemeToggle() {
   if (!mounted) {
     return (
       <button
-        className="text-muted-foreground/70 transition-colors hover:text-foreground"
         aria-label="Toggle theme"
+        className="text-muted-foreground/70 transition-colors hover:text-foreground"
       >
         <Moon className="h-[18px] w-[18px]" />
       </button>
@@ -27,9 +27,9 @@ export function ThemeToggle() {
 
   return (
     <button
-      onClick={() => setTheme(isDark ? "light" : "dark")}
-      className="text-muted-foreground/70 transition-colors hover:text-foreground"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
+      className="text-muted-foreground/70 transition-colors hover:text-foreground"
+      onClick={() => setTheme(isDark ? "light" : "dark")}
     >
       {isDark ? (
         <Sun className="h-[18px] w-[18px]" />

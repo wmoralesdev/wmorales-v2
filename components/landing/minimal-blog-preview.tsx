@@ -12,12 +12,12 @@ export async function MinimalBlogPreview() {
   return (
     <section className="space-y-5">
       <div className="flex items-baseline justify-between">
-        <h2 className="font-mono text-[11px] font-normal uppercase tracking-[0.2em] text-muted-foreground/60">
+        <h2 className="font-mono font-normal text-xs text-muted-foreground/60 uppercase tracking-[0.2em]">
           Latest Posts
         </h2>
         <Link
+          className="font-mono text-xs text-accent transition-colors hover:text-accent/80"
           href="/blog"
-          className="font-mono text-[11px] text-accent transition-colors hover:text-accent/80"
         >
           View all →
         </Link>
@@ -25,20 +25,20 @@ export async function MinimalBlogPreview() {
       <div className="space-y-0">
         {recentPosts.map((post) => (
           <article
+            className="group border-border/60 border-t py-4 first:border-t-0 first:pt-0"
             key={post.slug}
-            className="group border-t border-border/60 py-4 first:border-t-0 first:pt-0"
           >
-            <Link href={`/blog/${post.slug}`} className="block space-y-1.5">
+            <Link className="block space-y-1.5" href={`/blog/${post.slug}`}>
               <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:justify-between">
-                <h3 className="font-display text-[15px] font-medium text-foreground transition-colors group-hover:text-accent">
+                <h3 className="font-display font-medium text-base text-foreground transition-colors group-hover:text-accent">
                   {post.title}
                 </h3>
-                <time className="font-mono text-[11px] text-muted-foreground/50">
+                <time className="font-mono text-xs text-muted-foreground/50">
                   {formatDate(post.date)}
                 </time>
               </div>
               {post.summary && (
-                <p className="text-[13px] leading-relaxed text-muted-foreground/70">
+                <p className="text-sm text-muted-foreground/70 leading-relaxed">
                   {post.summary}
                 </p>
               )}
@@ -49,4 +49,3 @@ export async function MinimalBlogPreview() {
     </section>
   );
 }
-

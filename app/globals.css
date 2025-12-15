@@ -40,7 +40,7 @@
   --background: oklch(0.08 0.008 280);
   --foreground: oklch(0.95 0.005 280);
   --muted: oklch(0.15 0.01 280);
-  --muted-foreground: oklch(0.70 0.015 280);
+  --muted-foreground: oklch(0.7 0.015 280);
   --accent: oklch(0.72 0.2 280);
   --accent-foreground: oklch(0.98 0 0);
   --border: oklch(0.22 0.015 280);
@@ -77,7 +77,7 @@
     --tw-prose-code: oklch(0.88 0.05 280);
     --tw-prose-pre-bg: oklch(0.12 0.008 280);
     --tw-prose-pre-code: oklch(0.85 0.008 280);
-    --tw-prose-quotes: oklch(0.70 0.015 280);
+    --tw-prose-quotes: oklch(0.7 0.015 280);
     --tw-prose-quote-borders: oklch(0.72 0.2 280);
     --tw-prose-hr: oklch(0.22 0.015 280);
   }
@@ -85,13 +85,13 @@
   /* Light mode prose */
   .prose-minimal {
     @apply prose max-w-none;
-    --tw-prose-body: oklch(0.30 0.01 280);
+    --tw-prose-body: oklch(0.3 0.01 280);
     --tw-prose-headings: oklch(0.15 0.01 280);
     --tw-prose-links: oklch(0.45 0.22 280);
     --tw-prose-bold: oklch(0.15 0.01 280);
     --tw-prose-code: oklch(0.35 0.05 280);
     --tw-prose-pre-bg: oklch(0.96 0.005 280);
-    --tw-prose-pre-code: oklch(0.30 0.01 280);
+    --tw-prose-pre-code: oklch(0.3 0.01 280);
     --tw-prose-quotes: oklch(0.45 0.02 280);
     --tw-prose-quote-borders: oklch(0.55 0.25 280);
     --tw-prose-hr: oklch(0.88 0.01 280);
@@ -123,6 +123,14 @@
 
   .prose-minimal pre code {
     @apply bg-transparent p-0;
+  }
+
+  .prose-minimal pre[data-theme*=" "] {
+    @apply rounded-lg border border-border/50 bg-muted/50 p-4;
+  }
+
+  .prose-minimal code[data-theme*=" "] {
+    @apply rounded-sm bg-muted px-1.5 py-0.5 text-sm;
   }
 
   .prose-minimal ul {
