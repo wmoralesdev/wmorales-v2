@@ -10,6 +10,7 @@ const nextConfig: NextConfig = {
   experimental: {
     // Enable filesystem caching to reduce compile times and resource usage across dev restarts
     turbopackFileSystemCacheForDev: true,
+    viewTransition: true,
   },
   images: {
     qualities: [MAX_QUALITY, MIN_QUALITY],

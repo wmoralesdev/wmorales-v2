@@ -1,4 +1,5 @@
 import { MinimalBlogPreview } from "@/components/landing/minimal-blog-preview";
+import { MinimalEventsMarquee } from "@/components/landing/minimal-events-marquee";
 import { MinimalExperiences } from "@/components/landing/minimal-experiences";
 import { MinimalFooter } from "@/components/landing/minimal-footer";
 import { MinimalHeader } from "@/components/landing/minimal-header";
@@ -30,6 +31,7 @@ export default async function Home() {
       <div className="space-y-16">
         <MinimalHeader />
         <MinimalBlogPreview />
+        <MinimalEventsMarquee />
         <MinimalExperiences />
         <MinimalTech />
         <MinimalFooter />

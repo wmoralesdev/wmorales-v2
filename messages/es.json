@@ -79,6 +79,9 @@
     },
     "stack": {
       "title": "Stack"
+    },
+    "events": {
+      "title": "Eventos"
     }
   },
   "blog": {

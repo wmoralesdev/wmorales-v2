@@ -78,6 +78,27 @@
   }
 }
 
+/* View Transitions */
+::view-transition-old(root) {
+  animation: fadeOut 150ms ease-out;
+}
+
+::view-transition-new(root) {
+  animation: fadeIn 150ms ease-in;
+}
+
+@keyframes fadeOut {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+}
+
 @keyframes wmThemePing {
   0% {
     transform: scale(0.9);
@@ -90,6 +111,15 @@
   100% {
     transform: scale(1);
     box-shadow: 0 0 0 0 color-mix(in oklch, var(--accent), transparent 100%);
+  }
+}
+
+@keyframes wmMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
   }
 }
 
@@ -111,6 +141,47 @@
       transition-duration: 250ms;
       transition-timing-function: ease-out;
     }
+
+    /* Marquee Animation */
+    .wm-marquee {
+      animation: wmMarquee 30s linear infinite;
+      will-change: transform;
+    }
+
+    .wm-marquee-pausable:hover,
+    .wm-marquee-pausable:focus-within {
+      animation-play-state: paused;
+    }
+  }
+
+  /* Reduced motion: hide duplicate and allow scroll */
+  @media (prefers-reduced-motion: reduce) {
+    .wm-marquee {
+      animation: none;
+    }
+
+    .wm-marquee-duplicate {
+      display: none;
+    }
+
+    .wm-marquee-container {
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+    }
+
+    .wm-marquee-container > * {
+      scroll-snap-align: start;
+    }
+  }
+
+  /* Hide scrollbar */
+  .scrollbar-none {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  .scrollbar-none::-webkit-scrollbar {
+    display: none;
   }
 
   /* Dark mode prose */

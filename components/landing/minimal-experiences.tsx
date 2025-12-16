@@ -16,10 +16,10 @@ export async function MinimalExperiences() {
       <h2 className="font-mono font-normal text-xs text-muted-foreground/60 uppercase tracking-[0.2em]">
         {t("title")}
       </h2>
-      <div className="space-y-0">
+      <div className="space-y-0 wm-stagger-1">
         {experiences.map((exp, idx) => (
           <div
-            className="group border-border/60 border-t py-4 first:border-t-0 first:pt-0"
+            className="group wm-reveal border-border/60 border-t py-4 first:border-t-0 first:pt-0"
             key={idx}
           >
             <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
