@@ -18,7 +18,9 @@ function parseAcceptLanguage(acceptLanguage: string | null): string | null {
 
   // Find first supported locale
   for (const lang of languages) {
-    if (supportedLocales.includes(lang.code as (typeof supportedLocales)[number])) {
+    if (
+      supportedLocales.includes(lang.code as (typeof supportedLocales)[number])
+    ) {
       return lang.code;
     }
   }
@@ -29,12 +31,15 @@ function parseAcceptLanguage(acceptLanguage: string | null): string | null {
 export default getRequestConfig(async () => {
   const cookieStore = await cookies();
   const headersList = await headers();
-  
+
   // Try to get locale from cookie first
   let locale = cookieStore.get("wm_locale")?.value;
 
   // If no cookie, try Accept-Language header
-  if (!locale || !supportedLocales.includes(locale as (typeof supportedLocales)[number])) {
+  if (
+    !locale ||
+    !supportedLocales.includes(locale as (typeof supportedLocales)[number])
+  ) {
     const acceptLanguage = headersList.get("accept-language");
     locale = parseAcceptLanguage(acceptLanguage) || defaultLocale;
   }

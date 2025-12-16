@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { formatDate, getAllPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
@@ -11,6 +11,7 @@ export const metadata: Metadata = {
 
 export default async function BlogPage() {
   const locale = await getLocale();
+  const t = await getTranslations("blog.list");
   const posts = await getAllPosts(locale);
 
   return (
@@ -20,19 +21,17 @@ export default async function BlogPage() {
           className="inline-block font-mono text-xs text-accent transition-colors hover:text-accent/80"
           href="/"
         >
-          ← Home
+          {t("backToHome")}
         </Link>
         <h1 className="font-display font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
-          Blog
+          {t("title")}
         </h1>
-        <p className="text-sm text-muted-foreground">
-          Writing about software, design, and things I learn.
-        </p>
+        <p className="text-sm text-muted-foreground">{t("description")}</p>
       </header>
 
       <div className="space-y-0">
         {posts.length === 0 ? (
-          <p className="text-muted-foreground">No posts yet.</p>
+          <p className="text-muted-foreground">{t("noPosts")}</p>
         ) : (
           posts.map((post) => (
             <article

@@ -1,3 +1,5 @@
+import { getTranslations } from "next-intl/server";
+
 const experiences = [
   {
     company: "Applaudo Studios",
@@ -22,11 +24,13 @@ const experiences = [
   },
 ];
 
-export function MinimalExperiences() {
+export async function MinimalExperiences() {
+  const t = await getTranslations("homepage.experience");
+
   return (
     <section className="space-y-5">
       <h2 className="font-mono font-normal text-xs text-muted-foreground/60 uppercase tracking-[0.2em]">
-        Experience
+        {t("title")}
       </h2>
       <div className="space-y-0">
         {experiences.map((exp, idx) => (
@@ -45,9 +49,7 @@ export function MinimalExperiences() {
                 {exp.period}
               </span>
             </div>
-            <p className="mt-0.5 text-sm text-muted-foreground">
-              {exp.role}
-            </p>
+            <p className="mt-0.5 text-sm text-muted-foreground">{exp.role}</p>
             <p className="mt-1.5 font-mono text-xs text-muted-foreground/60">
               {exp.tech}
             </p>

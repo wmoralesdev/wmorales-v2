@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { AttachmentList } from "@/components/blog/attachment-list";
 import { PostBody } from "@/components/blog/post-body";
 import { PostImage } from "@/components/blog/post-image";
@@ -79,6 +79,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
   const locale = await getLocale();
+  const t = await getTranslations("blog.post");
   const post = await getPostBySlug(slug, locale);
 
   if (!post) {
@@ -97,7 +98,7 @@ export default async function BlogPostPage({ params }: Props) {
             className="inline-block font-mono text-accent text-xs transition-colors hover:text-accent/80"
             href="/blog"
           >
-            ← Blog
+            {t("backToBlog")}
           </Link>
           <h1 className="font-display font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
             {post.meta.title}
@@ -151,7 +152,7 @@ export default async function BlogPostPage({ params }: Props) {
             className="inline-block font-mono text-accent text-xs transition-colors hover:text-accent/80"
             href="/blog"
           >
-            ← Back to blog
+            {t("backToBlogFooter")}
           </Link>
         </footer>
       </article>

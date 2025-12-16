@@ -54,3 +54,6 @@ export default async function BlogPage() {
 
 The future of React and Next.js looks bright.
 
+
+
+

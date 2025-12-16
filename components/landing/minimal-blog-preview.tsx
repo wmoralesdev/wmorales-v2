@@ -1,9 +1,10 @@
 import Link from "next/link";
-import { getLocale } from "next-intl/server";
+import { getLocale, getTranslations } from "next-intl/server";
 import { formatDate, getAllPosts } from "@/lib/blog";
 
 export async function MinimalBlogPreview() {
   const locale = await getLocale();
+  const t = await getTranslations("homepage.blogPreview");
   const posts = await getAllPosts(locale);
   const recentPosts = posts.slice(0, 3);
 
@@ -15,13 +16,13 @@ export async function MinimalBlogPreview() {
     <section className="space-y-5">
       <div className="flex items-baseline justify-between">
         <h2 className="font-mono font-normal text-xs text-muted-foreground/60 uppercase tracking-[0.2em]">
-          Latest Posts
+          {t("title")}
         </h2>
         <Link
           className="font-mono text-xs text-accent transition-colors hover:text-accent/80"
           href="/blog"
         >
-          View all →
+          {t("viewAll")}
         </Link>
       </div>
       <div className="space-y-0">

@@ -24,3 +24,6 @@ Writing helps me think through problems more clearly. If something I share here 
 
 Stay tuned for more.
 
+
+
+

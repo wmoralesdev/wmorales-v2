@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { getTranslations } from "next-intl/server";
 import { FaGithub, FaLinkedin, FaXTwitter } from "react-icons/fa6";
-import { ThemeToggle } from "@/components/common/theme-toggle";
 import { LanguageSwitcher } from "@/components/common/language-switcher";
+import { ThemeToggle } from "@/components/common/theme-toggle";
 
 const socialLinks = [
   { href: "https://github.com/wmoralesdev", icon: FaGithub, label: "GitHub" },
@@ -13,24 +14,25 @@ const socialLinks = [
   { href: "https://x.com/wmoralesdev", icon: FaXTwitter, label: "X" },
 ];
 
-export function MinimalHeader() {
+export async function MinimalHeader() {
+  const t = await getTranslations("homepage.header");
+  const tNav = await getTranslations("navigation");
+
   return (
     <header className="space-y-6">
       <div className="space-y-4">
         <h1 className="font-display font-semibold text-4xl text-foreground tracking-tight sm:text-5xl">
-          Walter <span className="text-accent">Morales</span>
+          {t("name")} <span className="text-accent">{t("nameAccent")}</span>
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
-          Software Engineer building products with modern web technologies.
+          {t("role")}
           <br />
-          <span className="text-muted-foreground/80">
-            Based in El Salvador.
-          </span>
+          <span className="text-muted-foreground/80">{t("location")}</span>
         </p>
         <div className="flex items-center gap-2">
           <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-accent" />
           <span className="font-medium font-mono text-accent text-sm">
-            Cursor Ambassador for El Salvador
+            {t("ambassador")}
           </span>
         </div>
       </div>
@@ -50,16 +52,16 @@ export function MinimalHeader() {
         ))}
         <span className="h-3.5 w-px bg-border" />
         <Link
-          className="text-muted-foreground/70 text-sm transition-colors hover:text-foreground"
+          className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent hover:underline underline-offset-4"
           href="/blog"
         >
-          Blog
+          {tNav("blog")}
         </Link>
         <Link
-          className="text-muted-foreground/70 text-sm transition-colors hover:text-foreground"
+          className="text-sm font-medium text-muted-foreground transition-colors hover:text-accent hover:underline underline-offset-4"
           href="/design-system"
         >
-          Design System
+          {tNav("designSystem")}
         </Link>
         <span className="h-3.5 w-px bg-border" />
         <LanguageSwitcher />
