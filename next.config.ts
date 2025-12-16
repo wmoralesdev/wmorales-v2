@@ -32,6 +32,11 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  outputFileTracingIncludes: {
+    "/blog": ["./content/**/*"],
+    "/blog/*": ["./content/**/*"],
+    "/sitemap.xml": ["./content/**/*"],
+  },
 };
 
 export default withNextIntl(nextConfig);

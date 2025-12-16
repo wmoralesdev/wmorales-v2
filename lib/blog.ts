@@ -44,15 +44,6 @@ export type Post = {
   contentHtml: string;
 };
 
-function ensurePostsDirectory(): void {
-  if (!fs.existsSync(POSTS_DIRECTORY)) {
-    fs.mkdirSync(POSTS_DIRECTORY, { recursive: true });
-  }
-  if (!fs.existsSync(MDOC_POSTS_DIRECTORY)) {
-    fs.mkdirSync(MDOC_POSTS_DIRECTORY, { recursive: true });
-  }
-}
-
 function getSlugFromMdocFileName(fileName: string): string {
   // Handle both formats: "hello-world.mdoc" and "hello-world.en.mdoc"
   if (LOCALE_MDOC_FILE_REGEX.test(fileName)) {
@@ -742,8 +733,6 @@ async function renderMdocContent(content: string): Promise<string> {
 }
 
 export function getAllPosts(locale: string = DEFAULT_LOCALE): PostMeta[] {
-  ensurePostsDirectory();
-
   const posts: PostMeta[] = [];
 
   if (fs.existsSync(POSTS_DIRECTORY)) {
@@ -819,8 +808,6 @@ export async function getPostBySlug(
   slug: string,
   locale: string = DEFAULT_LOCALE,
 ): Promise<Post | null> {
-  ensurePostsDirectory();
-
   const fileInfo = findPostFile(slug, locale);
 
   if (!fileInfo) {
