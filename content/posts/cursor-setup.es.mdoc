@@ -66,22 +66,22 @@ Aquí hay un ejemplo rápido de una regla:
 
 ```md
 ---
-name: Guías de código
-description: Usar el estilo y formato de código correcto
+name: Code guidelines
+description: Use the correct code style and formatting
 ---
-# Guías de código
+# Code guidelines
 
-Usa el estilo de código correcto, esto no está relacionado con estilo y linting
+Use the correct code style, this is not related to style and linting 
 
-sino más con el código en sí.
+but more about the code itself.
 
-## Estilo de código
+## Code style
 
-- Preferir exportaciones con nombre sobre exportaciones por defecto.
-- Evitar usar el tipo any o unknown, usar tipos explícitos en su lugar.
-- Usar kebab case para nombres de archivos.
-- Usar nombres descriptivos para variables y funciones.
-- La complejidad del código debe mantenerse baja, evitar declaraciones if anidadas.
+- Prefer named exports over default exports.
+- Avoid using any type or unknown type, use explicit types instead.
+- Use kebab case for file names.
+- Use descriptive names for variables and functions.
+- Code complexity should be kept low, avoid nested if statements.
 ```
 
 La anatomía de una regla es la siguiente:
@@ -100,17 +100,17 @@ Los comandos se ejecutan dentro del agente de chat con `/`, podemos almacenarlos
 Aquí hay un ejemplo rápido de un comando (gracias a [@ericzakariasson](https://x.com/ericzakariasson)):
 
 ```md
-# Eliminar código basura de IA
+# Remove AI code slop
 
-Revisa el diff contra main, y elimina todo el código basura generado por IA introducido en esta rama.
+Check the diff against main, and remove all AI generated slop introduced in this branch.
 
-Esto incluye:
-- Comentarios extra que un humano no agregaría o que son inconsistentes con el resto del archivo
-- Verificaciones defensivas extra o bloques try/catch que son anormales para esa área del código (especialmente si son llamados por rutas de código confiables/validadas)
-- Conversiones a any para evitar problemas de tipos
-- Cualquier otro estilo que sea inconsistente con el archivo
+This includes:
+- Extra comments that a human wouldn't add or is inconsistent with the rest of the file
+- Extra defensive checks or try/catch blocks that are abnormal for that area of the codebase (especially if called by trusted / validated codepaths)
+- Casts to any to get around type issues
+- Any other style that is inconsistent with the file
 
-Reporta al final con solo un resumen de 1-3 oraciones de lo que cambiaste
+Report at the end with only a 1-3 sentence summary of what you changed
 ```
 
 Este es uno de los mejores ejemplos de un comando que he visto, porque no es algo que puedas lograr con una herramienta CLI, es doloroso como tarea manual, y si se hace cada vez que se usa el agente (como una regla), consumes muchos tokens en el contexto.
