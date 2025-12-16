@@ -60,7 +60,6 @@ export default async function RootLayout({ children }: Props) {
         <ThemeProvider
           attribute="class"
           defaultTheme="dark"
-          disableTransitionOnChange
           enableSystem
         >
           <NextIntlClientProvider messages={messages}>

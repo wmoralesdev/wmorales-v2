@@ -182,7 +182,6 @@ async function preprocessCodeBlocks(content: string): Promise<{ processedContent
         const codeMatch = highlighted.match(/<code[^>]*>([\s\S]*?)<\/code>/);
         const codeContent = codeMatch ? codeMatch[1] : highlighted;
         
-        const escapedCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
         const codeBase64 = Buffer.from(code, 'utf8').toString('base64');
         
         const codeBlockHtml = `<div class="group relative my-4">
@@ -215,6 +214,13 @@ async function preprocessCodeBlocks(content: string): Promise<{ processedContent
   return { processedContent, codeBlocks };
 }
 
+function renderChildren(children: Markdoc.Node[], config: Markdoc.Config): string {
+  const childrenRenderable = Markdoc.transform(children, config);
+  return Array.isArray(childrenRenderable)
+    ? childrenRenderable.map((child) => Markdoc.renderers.html(child)).join("")
+    : Markdoc.renderers.html(childrenRenderable);
+}
+
 async function renderMdocContent(content: string): Promise<string> {
   try {
     const { processedContent, codeBlocks } = await preprocessCodeBlocks(content);
@@ -233,7 +239,7 @@ async function renderMdocContent(content: string): Promise<string> {
             const type = node.attributes.type || "info";
             const title = node.attributes.title;
             const styles = getCalloutStyles(type);
-            const children = Markdoc.renderers.html(node.children, config);
+            const children = renderChildren(node.children, config);
             
             return `<div class="my-4 rounded-lg border border-border/60 ${styles.borderColor} bg-muted/30 p-4">
   <div class="flex gap-3">
@@ -258,7 +264,7 @@ async function renderMdocContent(content: string): Promise<string> {
             const description = node.attributes.description;
             const variant = node.attributes.variant || "default";
             const borderColor = getCardBorder(variant);
-            const children = Markdoc.renderers.html(node.children, config);
+            const children = renderChildren(node.children, config);
             
             return `<div class="my-4 rounded-lg border ${borderColor} bg-muted/20 p-4">
   ${title ? `<p class="font-display text-base font-medium text-foreground">${title}</p>` : ""}
@@ -306,7 +312,7 @@ async function renderMdocContent(content: string): Promise<string> {
         heading: {
           transform(node: Markdoc.Node, config: Markdoc.Config) {
             const level = node.attributes.level as number;
-            const text = Markdoc.renderers.html(node.children, config);
+            const text = renderChildren(node.children, config);
             const headingSlug = createSlug(text.replace(/<[^>]*>/g, ""));
             const headingId = headingSlug;
             

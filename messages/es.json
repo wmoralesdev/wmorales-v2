@@ -17,7 +17,65 @@
       "viewAll": "Ver todas →"
     },
     "experience": {
-      "title": "Experiencia"
+      "title": "Experiencia",
+      "items": [
+        {
+          "company": "SOUTHWORKS",
+          "role": "Senior Software Engineer",
+          "period": "Abril 2023 – Presente",
+          "tech": ".NET, React.js, AWS, Azure, ASP.NET, OpenAI",
+          "description": "Desarrollo de aplicaciones cloud escalables con Azure y AWS. Integración de IA y migraciones cloud.",
+          "current": true
+        },
+        {
+          "company": "Freelance",
+          "role": "Product Engineer",
+          "period": "Abril 2023 – Presente",
+          "tech": "Next.js, TypeScript, PostgreSQL, Docker, AWS, Azure, AI",
+          "description": "Desarrollo de software a la medida para clientes internacionales. Diseño de arquitectura y despliegue.",
+          "current": true
+        },
+        {
+          "company": "Ravn",
+          "role": "Senior Software Developer",
+          "period": "Enero 2023 – Marzo 2023",
+          "tech": ".NET, Rust, React.js, Node.js, TypeScript, JavaScript",
+          "description": "Migración de servicios de Rust a .NET. Liderazgo de equipos remotos y ejecución de proyectos.",
+          "current": false
+        },
+        {
+          "company": "Resultier",
+          "role": "Full Stack Engineer",
+          "period": "Mayo 2022 – Diciembre 2022",
+          "tech": "ASP.NET, React.js, Machine Learning, FHIR, LOINC",
+          "description": "Desarrollo de plataformas de análisis de salud con .NET y React. Modelos ML para análisis de datos médicos.",
+          "current": false
+        },
+        {
+          "company": "innRoad",
+          "role": ".NET & ReactJS FullStack Developer",
+          "period": "Mayo 2021 – Abril 2022",
+          "tech": ".NET, React.js, Full Stack Development",
+          "description": "Desarrollo de sistemas de reservas con .NET. Optimización de rendimiento y capacitación de equipos.",
+          "current": false
+        },
+        {
+          "company": "Elaniin",
+          "role": "JS + .NET Developer",
+          "period": "Noviembre 2020 – Enero 2022",
+          "tech": "ASP.NET, Blazor, TypeScript, Full Stack Development",
+          "description": "Desarrollo de aplicaciones ASP.NET y Blazor. Enfoque en sistemas de recolección de datos y optimización.",
+          "current": false
+        },
+        {
+          "company": "Vincu Hub",
+          "role": "Backend Developer",
+          "period": "Enero 2019 – Noviembre 2020",
+          "tech": "ASP.NET, React.js, Clean Architecture, CQRS, Backend Development",
+          "description": "Desarrollo de APIs .NET para sistemas de delivery. Implementación de Clean Architecture y CQRS.",
+          "current": false
+        }
+      ]
     },
     "stack": {
       "title": "Stack"

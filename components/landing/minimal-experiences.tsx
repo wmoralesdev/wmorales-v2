@@ -1,31 +1,15 @@
 import { getTranslations } from "next-intl/server";
 
-const experiences = [
-  {
-    company: "Applaudo Studios",
-    role: "Senior Software Engineer",
-    period: "2022 – Present",
-    tech: "React, Next.js, TypeScript, Node.js",
-    current: true,
-  },
-  {
-    company: "Grupo Cassa",
-    role: "Full Stack Developer",
-    period: "2021 – 2022",
-    tech: "Vue.js, .NET, SQL Server",
-    current: false,
-  },
-  {
-    company: "Freelance",
-    role: "Web Developer",
-    period: "2019 – 2021",
-    tech: "React, Node.js, PostgreSQL",
-    current: false,
-  },
-];
-
 export async function MinimalExperiences() {
   const t = await getTranslations("homepage.experience");
+  const experiences = t.raw("items") as Array<{
+    company: string;
+    role: string;
+    period: string;
+    tech: string;
+    description: string;
+    current: boolean;
+  }>;
 
   return (
     <section className="space-y-5">
@@ -50,6 +34,9 @@ export async function MinimalExperiences() {
               </span>
             </div>
             <p className="mt-0.5 text-sm text-muted-foreground">{exp.role}</p>
+            <p className="mt-1.5 text-sm text-muted-foreground/80">
+              {exp.description}
+            </p>
             <p className="mt-1.5 font-mono text-xs text-muted-foreground/60">
               {exp.tech}
             </p>

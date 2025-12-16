@@ -66,7 +66,52 @@
   }
 }
 
+/* Animation Keyframes */
+@keyframes wmReveal {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes wmThemePing {
+  0% {
+    transform: scale(0.9);
+    box-shadow: 0 0 0 0 color-mix(in oklch, var(--accent), transparent 30%);
+  }
+  70% {
+    transform: scale(1);
+    box-shadow: 0 0 0 10px color-mix(in oklch, var(--accent), transparent 100%);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 color-mix(in oklch, var(--accent), transparent 100%);
+  }
+}
+
 @layer utilities {
+  /* Animation Utilities with Reduced Motion Support */
+  @media (prefers-reduced-motion: no-preference) {
+    .wm-reveal {
+      animation: wmReveal 0.6s ease-out backwards;
+    }
+
+    .wm-theme-ping {
+      animation: wmThemePing 0.35s ease-out;
+    }
+
+    .theme-transition,
+    .theme-transition * {
+      transition-property: background-color, color, border-color, fill, stroke, box-shadow;
+      transition-duration: 250ms;
+      transition-timing-function: ease-out;
+    }
+  }
+
   /* Dark mode prose */
   .dark .prose-minimal {
     @apply prose prose-invert max-w-none;
