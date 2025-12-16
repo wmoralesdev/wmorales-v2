@@ -41,6 +41,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     post.meta.summary || `Read ${post.meta.title} by ${siteConfig.author.name}`;
 
   return {
+    metadataBase: new URL(siteConfig.url),
     title: `${post.meta.title} | ${siteConfig.shortTitle}`,
     description,
     alternates: {
@@ -51,6 +52,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: postUrl,
       type: "article",
+      siteName: siteConfig.name,
+      locale: siteConfig.locale,
       publishedTime: post.meta.date,
       authors: [siteConfig.author.name],
       tags: post.meta.tags,
@@ -59,6 +62,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary",
       title: post.meta.title,
       description,
+      site: "@wmoralesdev",
     },
     other: {
       "article:author": siteConfig.author.name,
