@@ -10,7 +10,7 @@ export async function GET() {
     if (!isHealthy) {
       return NextResponse.json(
         { status: "unhealthy", duration },
-        { status: 503 }
+        { status: 503 },
       );
     }
 
@@ -29,7 +29,7 @@ export async function GET() {
         error: error instanceof Error ? error.message : "Unknown error",
         timestamp: new Date().toISOString(),
       },
-      { status: 500 }
+      { status: 500 },
     );
   }
 }

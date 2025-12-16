@@ -48,7 +48,7 @@ type ImportGraph = Map<FilePath, Set<FilePath>>;
 
 function getAllTsFiles(
   dir: string,
-  baseDir: string = PROJECT_ROOT
+  baseDir: string = PROJECT_ROOT,
 ): FilePath[] {
   const files: FilePath[] = [];
   const entries = readdirSync(dir);
@@ -78,7 +78,7 @@ function getAllTsFiles(
 
 function resolveImportPath(
   importPath: string,
-  fromFile: FilePath
+  fromFile: FilePath,
 ): FilePath | null {
   // Skip external packages
   if (!(importPath.startsWith(".") || importPath.startsWith("@/"))) {
@@ -200,7 +200,7 @@ function processFileImports(
   file: FilePath,
   imports: FilePath[],
   graph: ImportGraph,
-  files: FilePath[]
+  files: FilePath[],
 ): void {
   if (!graph.has(file)) {
     graph.set(file, new Set());
@@ -233,7 +233,7 @@ function buildImportGraph(files: FilePath[]): ImportGraph {
 
 function findReachableFiles(
   graph: ImportGraph,
-  entryPoints: FilePath[]
+  entryPoints: FilePath[],
 ): Set<FilePath> {
   const visited = new Set<FilePath>();
   const queue: FilePath[] = [...entryPoints];
@@ -320,7 +320,7 @@ function main() {
   }
 
   console.log(
-    `\n🌐 Traversing import graph from ${entryPoints.length} entry points...`
+    `\n🌐 Traversing import graph from ${entryPoints.length} entry points...`,
   );
   const reachable = findReachableFiles(graph, entryPoints);
 

@@ -27,7 +27,7 @@ export function PostImage({ src, alt, caption }: PostImageProps) {
             alt={alt}
             className={cn(
               "h-full w-full object-cover transition-opacity duration-700",
-              isLoaded ? "opacity-100" : "opacity-0"
+              isLoaded ? "opacity-100" : "opacity-0",
             )}
             loading="lazy"
             src={src}
@@ -38,7 +38,7 @@ export function PostImage({ src, alt, caption }: PostImageProps) {
             alt={alt}
             className={cn(
               "object-cover transition-opacity duration-700",
-              isLoaded ? "opacity-100" : "opacity-0"
+              isLoaded ? "opacity-100" : "opacity-0",
             )}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"

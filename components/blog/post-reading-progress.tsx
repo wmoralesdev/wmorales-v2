@@ -18,7 +18,7 @@ export function PostReadingProgress() {
       const totalScrollable = articleHeight - windowHeight;
       const scrolled = Math.max(
         0,
-        Math.min(scrollTop - articleTop, totalScrollable)
+        Math.min(scrollTop - articleTop, totalScrollable),
       );
 
       const progressPercent =

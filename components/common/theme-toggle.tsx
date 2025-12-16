@@ -18,13 +18,13 @@ export function ThemeToggle() {
 
   const toggleTheme = () => {
     const isDark = theme === "dark";
-    
+
     // Add transition class to html element for smooth color change
     document.documentElement.classList.add("theme-transition");
-    
+
     // Trigger ping animation
     setPing(true);
-    
+
     // Switch theme
     setTheme(isDark ? "light" : "dark");
 
@@ -55,7 +55,7 @@ export function ThemeToggle() {
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
       className={cn(
         "relative rounded-full text-muted-foreground/70 transition-colors hover:text-foreground",
-        ping && "wm-theme-ping"
+        ping && "wm-theme-ping",
       )}
       onClick={toggleTheme}
     >

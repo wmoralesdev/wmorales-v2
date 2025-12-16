@@ -1,0 +1,128 @@
+---
+slug: cursor-setup
+title: Mi configuración de Cursor
+description: Mejora tu flujo de trabajo en Cursor con consejos y trucos que he aprendido y recopilado de la comunidad.
+publishedAt: 2025-12-15
+featured: true
+tags:
+  - cursor
+  - tutorial
+  - ai
+published: true
+---
+
+# Adáptate o quédate atrás
+
+Después de años construyendo aplicaciones y explorando nuevas tecnologías, me sorprendió cuánto ha cambiado mi experiencia como desarrollador con la llegada de las herramientas de IA.
+
+Una rápida autorreflexión fue un buen punto de partida. Me pregunté cuáles eran mis principales puntos de dolor al desarrollar software. ¿Estaba gastando demasiado tiempo en tareas repetitivas, o quizás me costaba encontrar las herramientas adecuadas para resolver un problema?
+
+## No hay talla única
+
+Como desarrollador, siempre he sido fanático del enfoque de que "no hay talla única". Creo que la mejor manera de desarrollar software es encontrar la forma más óptima de resolver un problema; no importa si es una tarea, un error o la forma en que programas, no siempre será igual.
+
+Con esa mentalidad, y después de explorar diferentes herramientas y flujos de trabajo, como persona técnica, Cursor es la herramienta perfecta para mí. No dependo de agentes de IA sin supervisión para que programen por mí, pero los uso para ayudarme con tareas mundanas, como generar código, escribir documentación o incluso encontrar las herramientas adecuadas para resolver un problema.
+
+Evolucionó hasta el punto en que usaba Cursor para escribir la mayor parte de mi código. Mi rol se convirtió más en el de un arquitecto de software, y pude enfocarme en los problemas más complejos y menos en tareas repetitivas.
+
+## (No) Desde cero
+
+No me enfocaré en la UI/UX de Cursor, ni en las funciones básicas (eso podría cubrirse en otras publicaciones), sino que compartiré mi flujo de trabajo y cómo uso Cursor para mejorar mi productividad.
+
+### Auto es tu mejor amigo, ¿o no?
+
+Cuando empiezas a usar Cursor, podrías sentirte abrumado por la cantidad de opciones disponibles para los modelos, así que podrías terminar eligiendo la opción ***"auto"***, y eso está totalmente bien. La mayoría de las veces, para las tareas más simples es suficiente y funcionará bien, pero podrías descubrir que cuando el contexto del chat se alarga, sigues viendo respuestas inconsistentes del modelo, tanto en el chat como en el editor de código.
+
+Dejé de usar la opción "auto" hace un tiempo. Solo como aviso, soy un poco "insensible al costo" cuando se trata de herramientas de IA, pero estoy seguro de que puedes encontrar un modelo que se ajuste a tus necesidades y tu presupuesto. Mis modelos preferidos son:
+
+- **Planificación:** `GPT-5.1` y `GPT-5.2 High`
+- **Programación:** `Composer 1` para las tareas más simples, `Opus 4.5` para la artillería pesada.
+- **UI/UX:** `Opus 4.5` si no estamos empezando desde cero, de lo contrario `Gemini 3.0` es mi opción para crear un sistema de diseño.
+- **Documentación:** `Sonnet 4 1M` porque tiene una de las ventanas de contexto más grandes, sino `Composer 1` o `Sonnet 4.5` son buenas opciones.
+- **Preguntas:** `Composer 1` puede responder cualquier cosa ya implementada, no he encontrado problemas con él todavía.
+- **Depuración:** Este es complicado, mayormente he usado `GPT-5.1` para depurar, pero los problemas relacionados con infraestructura se manejan mejor con `Opus 4.5`.
+
+{% callout type="info" title="Debug mode" %}
+[**Debug Mode**](https://cursor.com/blog/debug-mode) instrumenta tu código con registros en tiempo de ejecución, genera hipótesis sobre el error y luego te pide que reproduzcas el problema. Con datos concretos de ejecución, identifica la causa raíz y genera correcciones específicas, a menudo solo 2-3 líneas en lugar de cientos. Después de la verificación, elimina toda la instrumentación.
+{% /callout %}
+
+{% card title="Flujo de trabajo recomendado" variant="feature" %}
+1. **Comienza con [Plan Mode](https://cursor.com/blog/plan-mode)** - Define lo que quieres lograr
+2. **Itera sobre el plan** - Refina y divide en pasos más pequeños
+3. **Ejecuta** - Usa `Composer 1` para tareas simples u `Opus 4.5` para trabajo complejo
+{% /card %}
+
+## Comandos y reglas
+
+Las tareas repetidas son una parte inherente del desarrollo de software, y pueden ser difíciles de automatizar porque la mayoría de las veces no valen el esfuerzo, pero a veces sí lo valen, así que es difícil desarrollar una solución externa para ello. Por ejemplo, cuando trabajas con `TypeScript` quieres que tu proyecto compile exitosamente, podrías querer ejecutar `tsc` para verificar errores, pero también podrías querer ejecutar `tsc` con la bandera `noEmitOnError` para verificar errores y advertencias. ¿Qué pasa si tenemos eslint en un proyecto, pero biome en otro? Ahí es donde entran los comandos y las reglas.
+
+### Reglas
+
+Piensa en las reglas como una forma de guiar al modelo en la dirección correcta. Puedes usarlas para imponer cierto comportamiento o estilo de código. El agente intentará seguirlas y aplicarlas de manera inteligente, eso depende de tu configuración.
+
+La buena noticia es que no necesitas reinventar la rueda, ya hay algunas reglas excelentes en [Cursor Directory](https://cursor.directory/).
+
+Aquí hay un ejemplo rápido de una regla:
+
+```md
+---
+name: Guías de código
+description: Usar el estilo y formato de código correcto
+---
+# Guías de código
+
+Usa el estilo de código correcto, esto no está relacionado con estilo y linting
+
+sino más con el código en sí.
+
+## Estilo de código
+
+- Preferir exportaciones con nombre sobre exportaciones por defecto.
+- Evitar usar el tipo any o unknown, usar tipos explícitos en su lugar.
+- Usar kebab case para nombres de archivos.
+- Usar nombres descriptivos para variables y funciones.
+- La complejidad del código debe mantenerse baja, evitar declaraciones if anidadas.
+```
+
+La anatomía de una regla es la siguiente:
+1. **Encabezado de la regla**: 
+   - `name`: El nombre de la regla. Esto te ayuda a identificar su propósito.
+   - `description`: Una breve descripción de la regla. Esto ayuda al agente a entender cuándo y por qué aplicarla. Mantiene el contexto pequeño y enfocado.
+2. **Contenido de la regla**:
+   - El contenido de la regla. Esta es la regla en sí, es un bloque de markdown que el agente usará para aplicar la regla.
+
+### Comandos
+
+Entonces, ¿cuál es la diferencia entre una regla y un comando? En mi opinión, una regla es más sobre el código en sí, mientras que un comando es más sobre la tarea en cuestión. Una regla es una forma de guiar al modelo en la dirección correcta, mientras que un comando es una forma de ejecutar una tarea.
+
+Los comandos se ejecutan dentro del agente de chat con `/`, podemos almacenarlos en el directorio `.cursor`, o tenerlos disponibles a nivel de nuestra cuenta. Esta es una excelente manera de extender el agente con tus propias herramientas y flujos de trabajo.
+
+Aquí hay un ejemplo rápido de un comando (gracias a [@ericzakariasson](https://x.com/ericzakariasson)):
+
+```md
+# Eliminar código basura de IA
+
+Revisa el diff contra main, y elimina todo el código basura generado por IA introducido en esta rama.
+
+Esto incluye:
+- Comentarios extra que un humano no agregaría o que son inconsistentes con el resto del archivo
+- Verificaciones defensivas extra o bloques try/catch que son anormales para esa área del código (especialmente si son llamados por rutas de código confiables/validadas)
+- Conversiones a any para evitar problemas de tipos
+- Cualquier otro estilo que sea inconsistente con el archivo
+
+Reporta al final con solo un resumen de 1-3 oraciones de lo que cambiaste
+```
+
+Este es uno de los mejores ejemplos de un comando que he visto, porque no es algo que puedas lograr con una herramienta CLI, es doloroso como tarea manual, y si se hace cada vez que se usa el agente (como una regla), consumes muchos tokens en el contexto.
+
+### ¿Eso es todo?
+
+Sí, por ahora, al menos. Esto demuestra que algunos prompts simples e inteligentes pueden llegar muy lejos, y que no necesitas ser un genio para usar herramientas de IA a tu favor. Te dejo con un hilo de mis comandos más usados, que obtuve directamente del equipo de Cursor:
+
+{% tweet url="https://x.com/wmoralesdev/status/1984818609487511948?s=20" /%}
+
+Puedes aprender más sobre comandos y reglas en la [documentación de Cursor](https://docs.cursor.com/commands-and-rules).
+
+{% callout type="info" title="Idioma para agentes" %}
+Parecerá un poco raro, pero las interacciones con el agente (y cualquier IA en general) están mejor optimizadas si se habla en inglés. De igual manera, el uso de tokens es reducido si se habla en [inglés](https://arxiv.org/pdf/2305.15425).
+{% /callout %}

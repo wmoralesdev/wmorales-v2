@@ -1,7 +1,7 @@
-import Link from "next/link";
 import { getTranslations } from "next-intl/server";
 import { FaGithub, FaLinkedin, FaXTwitter } from "react-icons/fa6";
 import { LanguageSwitcher } from "@/components/common/language-switcher";
+import { NavLink } from "@/components/common/nav-link";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 
 const socialLinks = [
@@ -51,24 +51,11 @@ export async function MinimalHeader() {
           </a>
         ))}
         <span className="h-3.5 w-px bg-border" />
-        <Link
-          className="link-underline text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
-          href="/"
-        >
+        <NavLink href="/" exact>
           {tNav("home")}
-        </Link>
-        <Link
-          className="link-underline text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
-          href="/blog"
-        >
-          {tNav("blog")}
-        </Link>
-        <Link
-          className="link-underline text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
-          href="/design-system"
-        >
-          {tNav("designSystem")}
-        </Link>
+        </NavLink>
+        <NavLink href="/blog">{tNav("blog")}</NavLink>
+        <NavLink href="/design-system">{tNav("designSystem")}</NavLink>
         <span className="h-3.5 w-px bg-border" />
         <LanguageSwitcher />
         <ThemeToggle />

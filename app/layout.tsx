@@ -3,11 +3,11 @@ import "./globals.css";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { JetBrains_Mono, Poppins, Space_Grotesk } from "next/font/google";
-import { getLocale, getMessages } from "next-intl/server";
+import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
+import { getLocale, getMessages } from "next-intl/server";
 import { ThemeProvider } from "@/components/common/theme-provider";
 import { cn } from "@/lib/utils";
-import Script from "next/script";
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -54,14 +54,10 @@ export default async function RootLayout({ children }: Props) {
           spaceGrotesk.variable,
           poppins.variable,
           jetbrainsMono.variable,
-          "min-h-screen bg-background text-foreground antialiased"
+          "min-h-screen bg-background text-foreground antialiased",
         )}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="dark"
-          enableSystem
-        >
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <NextIntlClientProvider messages={messages}>
             {children}
           </NextIntlClientProvider>

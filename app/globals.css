@@ -106,7 +106,8 @@
 
     .theme-transition,
     .theme-transition * {
-      transition-property: background-color, color, border-color, fill, stroke, box-shadow;
+      transition-property:
+        background-color, color, border-color, fill, stroke, box-shadow;
       transition-duration: 250ms;
       transition-timing-function: ease-out;
     }
@@ -192,5 +193,20 @@
 
   .prose-minimal blockquote {
     @apply border-l-2 border-accent/50 pl-4 italic;
+  }
+
+  /* Twitter embed styling - center and force dark theme */
+  .twitter-tweet {
+    margin: 0 auto !important;
+  }
+
+  .twitter-tweet-rendered {
+    margin: 0 auto !important;
+  }
+
+  /* Force Twitter iframe to use transparent/dark background */
+  iframe[id^="twitter-widget"] {
+    border-radius: 12px !important;
+    color-scheme: dark !important;
   }
 }

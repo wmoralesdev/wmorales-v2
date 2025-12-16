@@ -62,21 +62,12 @@ export const baseMetadata: Metadata = {
     title: siteConfig.title,
     description: siteConfig.description,
     siteName: siteConfig.name,
-    images: [
-      {
-        url: siteConfig.ogImage,
-        width: 1200,
-        height: 630,
-        alt: siteConfig.title,
-      },
-    ],
   },
   twitter: {
-    card: "summary_large_image",
+    card: "summary",
     title: siteConfig.title,
     description: siteConfig.description,
-    creator: "@wmoralesdev", // Add your Twitter handle
-    images: [siteConfig.ogImage],
+    creator: "@wmoralesdev",
   },
   icons: {
     icon: "/wm.ico",
@@ -229,7 +220,7 @@ export function generateWebSiteStructuredData() {
 }
 
 export function generateBreadcrumbStructuredData(
-  items: { name: string; url: string }[]
+  items: { name: string; url: string }[],
 ) {
   return {
     "@context": "https://schema.org",

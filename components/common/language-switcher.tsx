@@ -1,9 +1,9 @@
 "use client";
 
-import { useLocale } from "next-intl";
 import { usePathname } from "next/navigation";
-import { Button } from "@/components/ui/button";
+import { useLocale } from "next-intl";
 import { setLocale } from "@/app/actions/locale";
+import { Button } from "@/components/ui/button";
 
 const locales = {
   en: "ES",
