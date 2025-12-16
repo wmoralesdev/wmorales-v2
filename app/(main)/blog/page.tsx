@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
+import { MinimalHeader } from "@/components/landing/minimal-header";
 import { formatDate, getAllPosts } from "@/lib/blog";
 
 export const metadata: Metadata = {
@@ -16,18 +17,7 @@ export default async function BlogPage() {
 
   return (
     <div className="space-y-12">
-      <header className="space-y-3">
-        <Link
-          className="inline-block font-mono text-xs text-accent transition-colors hover:text-accent/80"
-          href="/"
-        >
-          {t("backToHome")}
-        </Link>
-        <h1 className="font-display font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
-          {t("title")}
-        </h1>
-        <p className="text-sm text-muted-foreground">{t("description")}</p>
-      </header>
+      <MinimalHeader />
 
       <div className="space-y-0">
         {posts.length === 0 ? (

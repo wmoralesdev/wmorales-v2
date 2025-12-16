@@ -6,6 +6,9 @@ import { AttachmentList } from "@/components/blog/attachment-list";
 import { PostBody } from "@/components/blog/post-body";
 import { PostImage } from "@/components/blog/post-image";
 import { PostReadingProgress } from "@/components/blog/post-reading-progress";
+import { TweetEmbeds } from "@/components/blog/tweet-embeds";
+import { LanguageSwitcher } from "@/components/common/language-switcher";
+import { ScrollToTop } from "@/components/common/scroll-to-top";
 import { formatDate, getAllPosts, getPostBySlug } from "@/lib/blog";
 
 type Props = {
@@ -88,18 +91,47 @@ export default async function BlogPostPage({ params }: Props) {
 
   const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://wmorales.dev";
   const postUrl = `${siteUrl}/blog/${slug}`;
+  const hasTweets = post.contentHtml.includes("twitter-tweet");
+
+  // #region agent log
+  typeof fetch === "function" &&
+    fetch("http://127.0.0.1:7246/ingest/89777237-dfb8-4a58-b024-7c78b593ecbe", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        sessionId: "debug-session",
+        runId: "pre-fix",
+        hypothesisId: "A",
+        location: "app/(main)/blog/[slug]/page.tsx:hasTweets",
+        message: "Blog post tweet detection",
+        data: {
+          slug,
+          hasTweets,
+          contentHtmlLength: post.contentHtml.length,
+          tweetMarkerCount: (post.contentHtml.match(/twitter-tweet/g) || [])
+            .length,
+        },
+        timestamp: Date.now(),
+      }),
+    }).catch(() => {});
+  // #endregion
 
   return (
     <>
+      {hasTweets && <TweetEmbeds />}
       <PostReadingProgress />
+      <ScrollToTop />
       <article className="space-y-10" id="blog-post">
         <header className="space-y-4">
-          <Link
-            className="inline-block font-mono text-accent text-xs transition-colors hover:text-accent/80"
-            href="/blog"
-          >
-            {t("backToBlog")}
-          </Link>
+          <div className="flex items-center justify-between">
+            <Link
+              className="inline-block font-mono text-accent text-xs transition-colors hover:text-accent/80"
+              href="/blog"
+            >
+              {t("backToBlog")}
+            </Link>
+            <LanguageSwitcher />
+          </div>
           <h1 className="font-display font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
             {post.meta.title}
           </h1>

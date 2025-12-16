@@ -93,6 +93,148 @@
       "backToBlogFooter": "← Back to blog"
     }
   },
+  "designSystem": {
+    "metadata": {
+      "title": "Design System | Walter Morales",
+      "description": "Design system and UI guidelines for the portfolio website."
+    },
+    "overview": {
+      "title": "Overview",
+      "description": "This design system establishes the foundation for building consistent, accessible, and maintainable UI components. It defines typography scales, color palettes, spacing systems, and component patterns used throughout the site."
+    },
+    "typography": {
+      "title": "Typography",
+      "description": "Consistent typography creates hierarchy and improves readability.",
+      "scale": {
+        "title": "Typography Scale",
+        "description": "Use these canonical classes instead of arbitrary pixel values.",
+        "pageTitle": {
+          "name": "Page Title",
+          "description": "Main page headings. Use with <code>font-display</code>.",
+          "example": "Example Page Title"
+        },
+        "sectionTitle": {
+          "name": "Section Title",
+          "description": "Section headings within pages.",
+          "example": "Section Title"
+        },
+        "bodyText": {
+          "name": "Body Text",
+          "description": "Default body text, summaries, and descriptions. Replaces <code>text-[13px]</code>.",
+          "example": "This is body text used for summaries, descriptions, and general content. It provides good readability while maintaining a clean, minimal aesthetic."
+        },
+        "metaText": {
+          "name": "Meta Text",
+          "description": "Dates, tags, labels, and small metadata. Replaces <code>text-[11px]</code>.",
+          "exampleDate": "January 15, 2025",
+          "exampleTag": "#tag"
+        },
+        "smallHeading": {
+          "name": "Small Heading",
+          "description": "Small headings, card titles, and list item titles. Replaces <code>text-[15px]</code>.",
+          "example": "Small Heading Example"
+        }
+      },
+      "dosAndDonts": {
+        "do": {
+          "title": "Do",
+          "useCanonical": {
+            "title": "Use canonical classes:",
+            "classes": "text-xs font-mono\ntext-sm\ntext-base font-display"
+          },
+          "maintainConsistency": {
+            "title": "Maintain consistency:",
+            "description": "Use the same typography classes for the same semantic purpose across all pages."
+          }
+        },
+        "dont": {
+          "title": "Don't",
+          "avoidArbitrary": {
+            "title": "Avoid arbitrary sizes:",
+            "classes": "text-[11px]\ntext-[13px]\ntext-[15px]"
+          },
+          "dontMix": {
+            "title": "Don't mix patterns:",
+            "description": "Avoid using different font sizes for the same semantic role in different components."
+          }
+        }
+      }
+    },
+    "colors": {
+      "title": "Colors",
+      "description": "Semantic color tokens for consistent theming.",
+      "palette": {
+        "title": "Color Palette",
+        "description": "Use semantic color names, not raw color values.",
+        "accent": {
+          "name": "Accent",
+          "description": "Primary actions, links, highlights, and interactive elements."
+        },
+        "foreground": {
+          "name": "Foreground",
+          "description": "Primary text color, headings, and high-contrast elements."
+        },
+        "muted": {
+          "name": "Muted",
+          "description": "Backgrounds for cards, code blocks, and subtle UI elements."
+        },
+        "border": {
+          "name": "Border",
+          "description": "Borders, dividers, and subtle separators."
+        },
+        "mutedForeground": {
+          "name": "Muted Foreground",
+          "description": "Secondary text, descriptions, and less prominent content."
+        },
+        "background": {
+          "name": "Background",
+          "description": "Main page background color."
+        }
+      }
+    },
+    "spacing": {
+      "title": "Spacing",
+      "description": "Consistent spacing creates visual rhythm and hierarchy.",
+      "scale": {
+        "title": "Spacing Scale",
+        "description": "Use Tailwind's spacing scale for consistent gaps and padding.",
+        "commonValues": "Common Spacing Values"
+      },
+      "dosAndDonts": {
+        "do": {
+          "title": "Do",
+          "description": "Use consistent spacing tokens like <code>space-y-4</code>, <code>gap-6</code>, and <code>p-8</code>."
+        },
+        "dont": {
+          "title": "Don't",
+          "description": "Avoid arbitrary spacing values like <code>gap-[13px]</code> or <code>p-[17px]</code>."
+        }
+      }
+    },
+    "components": {
+      "title": "Components",
+      "description": "Reusable UI components built with shadcn/ui and Tailwind CSS.",
+      "button": {
+        "title": "Button",
+        "description": "Use Button component for all interactive actions.",
+        "variants": {
+          "default": "Default",
+          "outline": "Outline",
+          "ghost": "Ghost",
+          "link": "Link"
+        }
+      },
+      "badge": {
+        "title": "Badge",
+        "description": "Use Badge for tags, labels, and status indicators.",
+        "variants": {
+          "default": "Default",
+          "outline": "Outline",
+          "secondary": "Secondary"
+        }
+      }
+    }
+  },
   "common": {
     "locale": {
       "en": "EN",

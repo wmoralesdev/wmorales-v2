@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { getTranslations } from "next-intl/server";
+import { MinimalHeader } from "@/components/landing/minimal-header";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -7,47 +10,31 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 
-export const metadata: Metadata = {
-  title: "Design System | Walter Morales",
-  description: "Design system and UI guidelines for the portfolio website.",
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const t = await getTranslations("designSystem.metadata");
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
 export default async function DesignSystemPage() {
+  const t = await getTranslations("designSystem");
   return (
     <div className="space-y-16">
-      <header className="space-y-4">
-        <Link
-          href="/"
-          className="inline-block font-mono text-xs text-accent transition-colors hover:text-accent/80"
-        >
-          ← Home
-        </Link>
-        <div>
-          <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-            Design System
-          </h1>
-          <p className="mt-2 text-sm text-muted-foreground">
-            Guidelines and patterns for building consistent UI components.
-          </p>
-        </div>
-      </header>
+      <MinimalHeader />
 
       {/* Overview */}
       <section className="space-y-4">
         <h2 className="font-display text-xl font-semibold tracking-tight text-foreground">
-          Overview
+          {t("overview.title")}
         </h2>
         <Card>
           <CardContent className="pt-6">
             <p className="text-sm text-muted-foreground">
-              This design system establishes the foundation for building
-              consistent, accessible, and maintainable UI components. It defines
-              typography scales, color palettes, spacing systems, and component
-              patterns used throughout the site.
+              {t("overview.description")}
             </p>
           </CardContent>
         </Card>
@@ -57,18 +44,18 @@ export default async function DesignSystemPage() {
       <section className="space-y-6">
         <div>
           <h2 className="font-display text-xl font-semibold tracking-tight text-foreground">
-            Typography
+            {t("typography.title")}
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Consistent typography creates hierarchy and improves readability.
+            {t("typography.description")}
           </p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Typography Scale</CardTitle>
+            <CardTitle>{t("typography.scale.title")}</CardTitle>
             <CardDescription>
-              Use these canonical classes instead of arbitrary pixel values.
+              {t("typography.scale.description")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
@@ -76,19 +63,22 @@ export default async function DesignSystemPage() {
               <div className="space-y-2">
                 <div className="flex items-baseline justify-between">
                   <h3 className="font-display text-lg font-semibold text-foreground">
-                    Page Title
+                    {t("typography.scale.pageTitle.name")}
                   </h3>
                   <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
                     text-3xl sm:text-4xl
                   </code>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Main page headings. Use with{" "}
-                  <code className="font-mono text-xs">font-display</code>.
+                  {t.rich("typography.scale.pageTitle.description", {
+                    code: (chunks) => (
+                      <code className="font-mono text-xs">{chunks}</code>
+                    ),
+                  })}
                 </p>
                 <div className="border-l-2 border-accent/50 pl-4">
                   <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
-                    Example Page Title
+                    {t("typography.scale.pageTitle.example")}
                   </h1>
                 </div>
               </div>
@@ -98,18 +88,18 @@ export default async function DesignSystemPage() {
               <div className="space-y-2">
                 <div className="flex items-baseline justify-between">
                   <h3 className="font-display text-lg font-semibold text-foreground">
-                    Section Title
+                    {t("typography.scale.sectionTitle.name")}
                   </h3>
                   <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
                     text-xl
                   </code>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Section headings within pages.
+                  {t("typography.scale.sectionTitle.description")}
                 </p>
                 <div className="border-l-2 border-accent/50 pl-4">
                   <h2 className="font-display text-xl font-semibold tracking-tight text-foreground">
-                    Section Title
+                    {t("typography.scale.sectionTitle.example")}
                   </h2>
                 </div>
               </div>
@@ -119,21 +109,22 @@ export default async function DesignSystemPage() {
               <div className="space-y-2">
                 <div className="flex items-baseline justify-between">
                   <h3 className="font-display text-lg font-semibold text-foreground">
-                    Body Text
+                    {t("typography.scale.bodyText.name")}
                   </h3>
                   <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
                     text-sm
                   </code>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Default body text, summaries, and descriptions. Replaces{" "}
-                  <code className="font-mono text-xs">text-[13px]</code>.
+                  {t.rich("typography.scale.bodyText.description", {
+                    code: (chunks) => (
+                      <code className="font-mono text-xs">{chunks}</code>
+                    ),
+                  })}
                 </p>
                 <div className="border-l-2 border-accent/50 pl-4">
                   <p className="text-sm text-muted-foreground leading-relaxed">
-                    This is body text used for summaries, descriptions, and
-                    general content. It provides good readability while
-                    maintaining a clean, minimal aesthetic.
+                    {t("typography.scale.bodyText.example")}
                   </p>
                 </div>
               </div>
@@ -143,23 +134,26 @@ export default async function DesignSystemPage() {
               <div className="space-y-2">
                 <div className="flex items-baseline justify-between">
                   <h3 className="font-display text-lg font-semibold text-foreground">
-                    Meta Text
+                    {t("typography.scale.metaText.name")}
                   </h3>
                   <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
                     text-xs font-mono
                   </code>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Dates, tags, labels, and small metadata. Replaces{" "}
-                  <code className="font-mono text-xs">text-[11px]</code>.
+                  {t.rich("typography.scale.metaText.description", {
+                    code: (chunks) => (
+                      <code className="font-mono text-xs">{chunks}</code>
+                    ),
+                  })}
                 </p>
                 <div className="border-l-2 border-accent/50 pl-4">
                   <time className="font-mono text-xs text-muted-foreground">
-                    January 15, 2025
+                    {t("typography.scale.metaText.exampleDate")}
                   </time>
                   <div className="mt-2 flex gap-2">
                     <Badge variant="outline" className="font-mono text-xs">
-                      #tag
+                      {t("typography.scale.metaText.exampleTag")}
                     </Badge>
                   </div>
                 </div>
@@ -170,19 +164,22 @@ export default async function DesignSystemPage() {
               <div className="space-y-2">
                 <div className="flex items-baseline justify-between">
                   <h3 className="font-display text-lg font-semibold text-foreground">
-                    Small Heading
+                    {t("typography.scale.smallHeading.name")}
                   </h3>
                   <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
                     text-base font-display
                   </code>
                 </div>
                 <p className="text-sm text-muted-foreground">
-                  Small headings, card titles, and list item titles. Replaces{" "}
-                  <code className="font-mono text-xs">text-[15px]</code>.
+                  {t.rich("typography.scale.smallHeading.description", {
+                    code: (chunks) => (
+                      <code className="font-mono text-xs">{chunks}</code>
+                    ),
+                  })}
                 </p>
                 <div className="border-l-2 border-accent/50 pl-4">
                   <h3 className="font-display text-base font-medium text-foreground">
-                    Small Heading Example
+                    {t("typography.scale.smallHeading.example")}
                   </h3>
                 </div>
               </div>
@@ -194,28 +191,27 @@ export default async function DesignSystemPage() {
         <div className="grid gap-6 md:grid-cols-2">
           <Card className="border-green-500/20">
             <CardHeader>
-              <CardTitle className="text-green-500">Do</CardTitle>
+              <CardTitle className="text-green-500">
+                {t("typography.dosAndDonts.do.title")}
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div>
                 <p className="text-sm font-medium text-foreground">
-                  Use canonical classes:
+                  {t("typography.dosAndDonts.do.useCanonical.title")}
                 </p>
                 <code className="mt-1 block rounded bg-muted p-2 font-mono text-xs">
-                  text-xs font-mono
-                  <br />
-                  text-sm
-                  <br />
-                  text-base font-display
+                  {t("typography.dosAndDonts.do.useCanonical.classes")}
                 </code>
               </div>
               <div>
                 <p className="text-sm font-medium text-foreground">
-                  Maintain consistency:
+                  {t("typography.dosAndDonts.do.maintainConsistency.title")}
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Use the same typography classes for the same semantic purpose
-                  across all pages.
+                  {t(
+                    "typography.dosAndDonts.do.maintainConsistency.description",
+                  )}
                 </p>
               </div>
             </CardContent>
@@ -223,28 +219,25 @@ export default async function DesignSystemPage() {
 
           <Card className="border-red-500/20">
             <CardHeader>
-              <CardTitle className="text-red-500">Don&apos;t</CardTitle>
+              <CardTitle className="text-red-500">
+                {t("typography.dosAndDonts.dont.title")}
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               <div>
                 <p className="text-sm font-medium text-foreground">
-                  Avoid arbitrary sizes:
+                  {t("typography.dosAndDonts.dont.avoidArbitrary.title")}
                 </p>
                 <code className="mt-1 block rounded bg-muted p-2 font-mono text-xs text-red-500">
-                  text-[11px]
-                  <br />
-                  text-[13px]
-                  <br />
-                  text-[15px]
+                  {t("typography.dosAndDonts.dont.avoidArbitrary.classes")}
                 </code>
               </div>
               <div>
                 <p className="text-sm font-medium text-foreground">
-                  Don&apos;t mix patterns:
+                  {t("typography.dosAndDonts.dont.dontMix.title")}
                 </p>
                 <p className="mt-1 text-sm text-muted-foreground">
-                  Avoid using different font sizes for the same semantic role in
-                  different components.
+                  {t("typography.dosAndDonts.dont.dontMix.description")}
                 </p>
               </div>
             </CardContent>
@@ -256,19 +249,17 @@ export default async function DesignSystemPage() {
       <section className="space-y-6">
         <div>
           <h2 className="font-display text-xl font-semibold tracking-tight text-foreground">
-            Colors
+            {t("colors.title")}
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Semantic color tokens for consistent theming.
+            {t("colors.description")}
           </p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Color Palette</CardTitle>
-            <CardDescription>
-              Use semantic color names, not raw color values.
-            </CardDescription>
+            <CardTitle>{t("colors.palette.title")}</CardTitle>
+            <CardDescription>{t("colors.palette.description")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="grid gap-4 sm:grid-cols-2">
@@ -277,7 +268,7 @@ export default async function DesignSystemPage() {
                   <div className="h-8 w-8 rounded border border-border bg-accent" />
                   <div>
                     <p className="text-sm font-medium text-foreground">
-                      Accent
+                      {t("colors.palette.accent.name")}
                     </p>
                     <code className="font-mono text-xs text-muted-foreground">
                       bg-accent
@@ -285,7 +276,7 @@ export default async function DesignSystemPage() {
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Primary actions, links, highlights, and interactive elements.
+                  {t("colors.palette.accent.description")}
                 </p>
               </div>
 
@@ -294,7 +285,7 @@ export default async function DesignSystemPage() {
                   <div className="h-8 w-8 rounded border border-border bg-foreground" />
                   <div>
                     <p className="text-sm font-medium text-foreground">
-                      Foreground
+                      {t("colors.palette.foreground.name")}
                     </p>
                     <code className="font-mono text-xs text-muted-foreground">
                       text-foreground
@@ -302,7 +293,7 @@ export default async function DesignSystemPage() {
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Primary text color, headings, and high-contrast elements.
+                  {t("colors.palette.foreground.description")}
                 </p>
               </div>
 
@@ -310,14 +301,16 @@ export default async function DesignSystemPage() {
                 <div className="flex items-center gap-2">
                   <div className="h-8 w-8 rounded border border-border bg-muted" />
                   <div>
-                    <p className="text-sm font-medium text-foreground">Muted</p>
+                    <p className="text-sm font-medium text-foreground">
+                      {t("colors.palette.muted.name")}
+                    </p>
                     <code className="font-mono text-xs text-muted-foreground">
                       bg-muted
                     </code>
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Backgrounds for cards, code blocks, and subtle UI elements.
+                  {t("colors.palette.muted.description")}
                 </p>
               </div>
 
@@ -326,7 +319,7 @@ export default async function DesignSystemPage() {
                   <div className="h-8 w-8 rounded border border-border bg-border" />
                   <div>
                     <p className="text-sm font-medium text-foreground">
-                      Border
+                      {t("colors.palette.border.name")}
                     </p>
                     <code className="font-mono text-xs text-muted-foreground">
                       border-border
@@ -334,7 +327,7 @@ export default async function DesignSystemPage() {
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Borders, dividers, and subtle separators.
+                  {t("colors.palette.border.description")}
                 </p>
               </div>
 
@@ -343,7 +336,7 @@ export default async function DesignSystemPage() {
                   <div className="h-8 w-8 rounded border border-border bg-muted-foreground" />
                   <div>
                     <p className="text-sm font-medium text-foreground">
-                      Muted Foreground
+                      {t("colors.palette.mutedForeground.name")}
                     </p>
                     <code className="font-mono text-xs text-muted-foreground">
                       text-muted-foreground
@@ -351,7 +344,7 @@ export default async function DesignSystemPage() {
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Secondary text, descriptions, and less prominent content.
+                  {t("colors.palette.mutedForeground.description")}
                 </p>
               </div>
 
@@ -360,7 +353,7 @@ export default async function DesignSystemPage() {
                   <div className="h-8 w-8 rounded border border-border bg-background" />
                   <div>
                     <p className="text-sm font-medium text-foreground">
-                      Background
+                      {t("colors.palette.background.name")}
                     </p>
                     <code className="font-mono text-xs text-muted-foreground">
                       bg-background
@@ -368,7 +361,7 @@ export default async function DesignSystemPage() {
                   </div>
                 </div>
                 <p className="text-xs text-muted-foreground">
-                  Main page background color.
+                  {t("colors.palette.background.description")}
                 </p>
               </div>
             </div>
@@ -380,25 +373,23 @@ export default async function DesignSystemPage() {
       <section className="space-y-6">
         <div>
           <h2 className="font-display text-xl font-semibold tracking-tight text-foreground">
-            Spacing
+            {t("spacing.title")}
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Consistent spacing creates visual rhythm and hierarchy.
+            {t("spacing.description")}
           </p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Spacing Scale</CardTitle>
-            <CardDescription>
-              Use Tailwind&apos;s spacing scale for consistent gaps and padding.
-            </CardDescription>
+            <CardTitle>{t("spacing.scale.title")}</CardTitle>
+            <CardDescription>{t("spacing.scale.description")}</CardDescription>
           </CardHeader>
           <CardContent className="space-y-6">
             <div className="space-y-4">
               <div>
                 <p className="mb-2 text-sm font-medium text-foreground">
-                  Common Spacing Values
+                  {t("spacing.scale.commonValues")}
                 </p>
                 <div className="space-y-2">
                   {[2, 3, 4, 6, 8, 12, 16].map((size) => (
@@ -428,27 +419,34 @@ export default async function DesignSystemPage() {
         <div className="grid gap-6 md:grid-cols-2">
           <Card className="border-green-500/20">
             <CardHeader>
-              <CardTitle className="text-green-500">Do</CardTitle>
+              <CardTitle className="text-green-500">
+                {t("spacing.dosAndDonts.do.title")}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Use consistent spacing tokens like{" "}
-                <code className="font-mono text-xs">space-y-4</code>,{" "}
-                <code className="font-mono text-xs">gap-6</code>, and{" "}
-                <code className="font-mono text-xs">p-8</code>.
+                {t.rich("spacing.dosAndDonts.do.description", {
+                  code: (chunks) => (
+                    <code className="font-mono text-xs">{chunks}</code>
+                  ),
+                })}
               </p>
             </CardContent>
           </Card>
 
           <Card className="border-red-500/20">
             <CardHeader>
-              <CardTitle className="text-red-500">Don&apos;t</CardTitle>
+              <CardTitle className="text-red-500">
+                {t("spacing.dosAndDonts.dont.title")}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <p className="text-sm text-muted-foreground">
-                Avoid arbitrary spacing values like{" "}
-                <code className="font-mono text-xs">gap-[13px]</code> or{" "}
-                <code className="font-mono text-xs">p-[17px]</code>.
+                {t.rich("spacing.dosAndDonts.dont.description", {
+                  code: (chunks) => (
+                    <code className="font-mono text-xs">{chunks}</code>
+                  ),
+                })}
               </p>
             </CardContent>
           </Card>
@@ -459,42 +457,52 @@ export default async function DesignSystemPage() {
       <section className="space-y-6">
         <div>
           <h2 className="font-display text-xl font-semibold tracking-tight text-foreground">
-            Components
+            {t("components.title")}
           </h2>
           <p className="mt-2 text-sm text-muted-foreground">
-            Reusable UI components built with shadcn/ui and Tailwind CSS.
+            {t("components.description")}
           </p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Button</CardTitle>
+            <CardTitle>{t("components.button.title")}</CardTitle>
             <CardDescription>
-              Use Button component for all interactive actions.
+              {t("components.button.description")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex flex-wrap gap-2">
-              <Button>Default</Button>
-              <Button variant="outline">Outline</Button>
-              <Button variant="ghost">Ghost</Button>
-              <Button variant="link">Link</Button>
+              <Button>{t("components.button.variants.default")}</Button>
+              <Button variant="outline">
+                {t("components.button.variants.outline")}
+              </Button>
+              <Button variant="ghost">
+                {t("components.button.variants.ghost")}
+              </Button>
+              <Button variant="link">
+                {t("components.button.variants.link")}
+              </Button>
             </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle>Badge</CardTitle>
+            <CardTitle>{t("components.badge.title")}</CardTitle>
             <CardDescription>
-              Use Badge for tags, labels, and status indicators.
+              {t("components.badge.description")}
             </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex flex-wrap gap-2">
-              <Badge>Default</Badge>
-              <Badge variant="outline">Outline</Badge>
-              <Badge variant="secondary">Secondary</Badge>
+              <Badge>{t("components.badge.variants.default")}</Badge>
+              <Badge variant="outline">
+                {t("components.badge.variants.outline")}
+              </Badge>
+              <Badge variant="secondary">
+                {t("components.badge.variants.secondary")}
+              </Badge>
             </div>
           </CardContent>
         </Card>

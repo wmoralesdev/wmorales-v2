@@ -53,6 +53,12 @@ export async function MinimalHeader() {
         <span className="h-3.5 w-px bg-border" />
         <Link
           className="link-underline text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
+          href="/"
+        >
+          {tNav("home")}
+        </Link>
+        <Link
+          className="link-underline text-sm font-medium text-muted-foreground transition-colors hover:text-accent"
           href="/blog"
         >
           {tNav("blog")}

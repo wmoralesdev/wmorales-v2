@@ -93,6 +93,148 @@
       "backToBlogFooter": "← Volver al blog"
     }
   },
+  "designSystem": {
+    "metadata": {
+      "title": "Sistema de Diseño | Walter Morales",
+      "description": "Sistema de diseño y guías de UI para el sitio web del portafolio."
+    },
+    "overview": {
+      "title": "Resumen",
+      "description": "Este sistema de diseño establece la base para construir componentes de UI consistentes, accesibles y mantenibles. Define escalas de tipografía, paletas de colores, sistemas de espaciado y patrones de componentes utilizados en todo el sitio."
+    },
+    "typography": {
+      "title": "Tipografía",
+      "description": "La tipografía consistente crea jerarquía y mejora la legibilidad.",
+      "scale": {
+        "title": "Escala de Tipografía",
+        "description": "Usa estas clases canónicas en lugar de valores de píxeles arbitrarios.",
+        "pageTitle": {
+          "name": "Título de Página",
+          "description": "Encabezados principales de página. Usa con <code>font-display</code>.",
+          "example": "Ejemplo de Título de Página"
+        },
+        "sectionTitle": {
+          "name": "Título de Sección",
+          "description": "Encabezados de sección dentro de las páginas.",
+          "example": "Título de Sección"
+        },
+        "bodyText": {
+          "name": "Texto del Cuerpo",
+          "description": "Texto del cuerpo por defecto, resúmenes y descripciones. Reemplaza <code>text-[13px]</code>.",
+          "example": "Este es el texto del cuerpo usado para resúmenes, descripciones y contenido general. Proporciona buena legibilidad mientras mantiene una estética limpia y minimalista."
+        },
+        "metaText": {
+          "name": "Texto Meta",
+          "description": "Fechas, etiquetas, rótulos y metadatos pequeños. Reemplaza <code>text-[11px]</code>.",
+          "exampleDate": "15 de enero de 2025",
+          "exampleTag": "#etiqueta"
+        },
+        "smallHeading": {
+          "name": "Encabezado Pequeño",
+          "description": "Encabezados pequeños, títulos de tarjetas y títulos de elementos de lista. Reemplaza <code>text-[15px]</code>.",
+          "example": "Ejemplo de Encabezado Pequeño"
+        }
+      },
+      "dosAndDonts": {
+        "do": {
+          "title": "Hacer",
+          "useCanonical": {
+            "title": "Usa clases canónicas:",
+            "classes": "text-xs font-mono\ntext-sm\ntext-base font-display"
+          },
+          "maintainConsistency": {
+            "title": "Mantén la consistencia:",
+            "description": "Usa las mismas clases de tipografía para el mismo propósito semántico en todas las páginas."
+          }
+        },
+        "dont": {
+          "title": "No hacer",
+          "avoidArbitrary": {
+            "title": "Evita tamaños arbitrarios:",
+            "classes": "text-[11px]\ntext-[13px]\ntext-[15px]"
+          },
+          "dontMix": {
+            "title": "No mezcles patrones:",
+            "description": "Evita usar diferentes tamaños de fuente para el mismo rol semántico en diferentes componentes."
+          }
+        }
+      }
+    },
+    "colors": {
+      "title": "Colores",
+      "description": "Tokens de color semánticos para temas consistentes.",
+      "palette": {
+        "title": "Paleta de Colores",
+        "description": "Usa nombres de color semánticos, no valores de color crudos.",
+        "accent": {
+          "name": "Acento",
+          "description": "Acciones principales, enlaces, resaltados y elementos interactivos."
+        },
+        "foreground": {
+          "name": "Primer Plano",
+          "description": "Color de texto principal, encabezados y elementos de alto contraste."
+        },
+        "muted": {
+          "name": "Atenuado",
+          "description": "Fondos para tarjetas, bloques de código y elementos de UI sutiles."
+        },
+        "border": {
+          "name": "Borde",
+          "description": "Bordes, divisores y separadores sutiles."
+        },
+        "mutedForeground": {
+          "name": "Primer Plano Atenuado",
+          "description": "Texto secundario, descripciones y contenido menos prominente."
+        },
+        "background": {
+          "name": "Fondo",
+          "description": "Color de fondo principal de la página."
+        }
+      }
+    },
+    "spacing": {
+      "title": "Espaciado",
+      "description": "El espaciado consistente crea ritmo visual y jerarquía.",
+      "scale": {
+        "title": "Escala de Espaciado",
+        "description": "Usa la escala de espaciado de Tailwind para espacios y rellenos consistentes.",
+        "commonValues": "Valores de Espaciado Comunes"
+      },
+      "dosAndDonts": {
+        "do": {
+          "title": "Hacer",
+          "description": "Usa tokens de espaciado consistentes como <code>space-y-4</code>, <code>gap-6</code> y <code>p-8</code>."
+        },
+        "dont": {
+          "title": "No hacer",
+          "description": "Evita valores de espaciado arbitrarios como <code>gap-[13px]</code> o <code>p-[17px]</code>."
+        }
+      }
+    },
+    "components": {
+      "title": "Componentes",
+      "description": "Componentes de UI reutilizables construidos con shadcn/ui y Tailwind CSS.",
+      "button": {
+        "title": "Botón",
+        "description": "Usa el componente Button para todas las acciones interactivas.",
+        "variants": {
+          "default": "Por Defecto",
+          "outline": "Contorno",
+          "ghost": "Fantasma",
+          "link": "Enlace"
+        }
+      },
+      "badge": {
+        "title": "Insignia",
+        "description": "Usa Badge para etiquetas, rótulos e indicadores de estado.",
+        "variants": {
+          "default": "Por Defecto",
+          "outline": "Contorno",
+          "secondary": "Secundario"
+        }
+      }
+    }
+  },
   "common": {
     "locale": {
       "en": "EN",
