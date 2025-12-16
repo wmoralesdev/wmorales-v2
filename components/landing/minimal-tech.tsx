@@ -4,11 +4,20 @@ const technologies = [
   "TypeScript",
   "React",
   "Next.js",
-  "Node.js",
-  "PostgreSQL",
-  "Prisma",
   "Tailwind",
+  "Node.js",
+  "NestJS",
+  ".NET",
+  "PostgreSQL",
+  "MongoDB",
+  "SQL Server",
+  "Prisma",
+  "Docker",
+  "AWS",
+  "Azure",
   "Vercel",
+  "OpenAI",
+  "Cursor",
 ];
 
 export async function MinimalTech() {
