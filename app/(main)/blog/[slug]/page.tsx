@@ -12,7 +12,7 @@ import { LanguageSwitcher } from "@/components/common/language-switcher";
 import { ScrollToTop } from "@/components/common/scroll-to-top";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { formatDate, getAllPosts, getPostBySlug } from "@/lib/blog";
-import { siteConfig } from "@/lib/metadata";
+import { createMetadata, siteConfig } from "@/lib/metadata";
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -40,9 +40,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const description =
     post.meta.summary || `Read ${post.meta.title} by ${siteConfig.author.name}`;
 
-  return {
-    metadataBase: new URL(siteConfig.url),
-    title: `${post.meta.title} | ${siteConfig.shortTitle}`,
+  return createMetadata({
+    title: post.meta.title,
     description,
     alternates: {
       canonical: post.meta.canonicalUrl || postUrl,
@@ -52,8 +51,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description,
       url: postUrl,
       type: "article",
-      siteName: siteConfig.name,
-      locale: siteConfig.locale,
       publishedTime: post.meta.date,
       authors: [siteConfig.author.name],
       tags: post.meta.tags,
@@ -62,16 +59,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       card: "summary",
       title: post.meta.title,
       description,
-      site: "@wmoralesdev",
     },
-    other: {
-      "article:author": siteConfig.author.name,
-      "article:published_time": post.meta.date,
-      ...(post.meta.tags && {
-        "article:tag": post.meta.tags.join(", "),
-      }),
-    },
-  };
+  });
 }
 
 export default async function BlogPostPage({ params }: Props) {

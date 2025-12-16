@@ -7,6 +7,10 @@ const MAX_QUALITY = 100;
 const MIN_QUALITY = 75;
 
 const nextConfig: NextConfig = {
+  experimental: {
+    // Enable filesystem caching to reduce compile times and resource usage across dev restarts
+    turbopackFileSystemCacheForDev: true,
+  },
   images: {
     qualities: [MAX_QUALITY, MIN_QUALITY],
     remotePatterns: [

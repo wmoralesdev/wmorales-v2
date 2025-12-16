@@ -1,14 +1,29 @@
-import type { Metadata } from "next";
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { MinimalHeader } from "@/components/landing/minimal-header";
 import { formatDate, getAllPosts } from "@/lib/blog";
+import { createMetadata, siteConfig } from "@/lib/metadata";
 
-export const metadata: Metadata = {
-  title: "Blog | Walter Morales",
-  description:
-    "Thoughts on software engineering, web development, and technology.",
-};
+const blogDescription =
+  "Thoughts on software engineering, web development, and technology.";
+
+export const metadata = createMetadata({
+  title: "Blog",
+  description: blogDescription,
+  alternates: {
+    canonical: `${siteConfig.url}/blog`,
+  },
+  openGraph: {
+    title: "Blog | Walter Morales",
+    description: blogDescription,
+    url: `${siteConfig.url}/blog`,
+    type: "website",
+  },
+  twitter: {
+    title: "Blog | Walter Morales",
+    description: blogDescription,
+  },
+});
 
 export default async function BlogPage() {
   const locale = await getLocale();

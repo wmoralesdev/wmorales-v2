@@ -1,4 +1,3 @@
-/** biome-ignore lint/nursery/noNestedComponentDefinitions: shadcn convention */
 "use client";
 
 import {

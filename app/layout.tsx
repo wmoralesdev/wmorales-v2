@@ -7,7 +7,10 @@ import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
 import { ThemeProvider } from "@/components/common/theme-provider";
+import { baseMetadata } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
+
+export const metadata = baseMetadata;
 
 const spaceGrotesk = Space_Grotesk({
   subsets: ["latin"],

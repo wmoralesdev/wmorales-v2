@@ -111,8 +111,9 @@ function parseMdocMeta(filePath: string, slug: string): PostMeta | null {
     const fileContents = fs.readFileSync(filePath, "utf8");
     const { data, content } = matter(fileContents);
 
+    const rawDate = data.publishedAt || data.date || new Date();
     const publishedAt =
-      data.publishedAt || data.date || new Date().toISOString();
+      rawDate instanceof Date ? rawDate.toISOString() : String(rawDate);
     const readingTimeResult = readingTime(content);
 
     return {
@@ -756,10 +757,14 @@ export function getAllPosts(locale: string = DEFAULT_LOCALE): PostMeta[] {
         const { data, content } = matter(fileContents);
         const readingTimeResult = readingTime(content);
 
+        const rawDate = data.date || new Date();
+        const postDate =
+          rawDate instanceof Date ? rawDate.toISOString() : String(rawDate);
+
         posts.push({
           slug: data.slug || slug,
           title: data.title || slug,
-          date: data.date || new Date().toISOString(),
+          date: postDate,
           summary: data.summary,
           tags: data.tags,
           published: data.published ?? true,
@@ -834,7 +839,11 @@ export async function getPostBySlug(
     contentHtml = processedContent.toString();
   }
 
-  const publishedAt = data.publishedAt || data.date || new Date().toISOString();
+  const rawPublishedAt = data.publishedAt || data.date || new Date();
+  const publishedAt =
+    rawPublishedAt instanceof Date
+      ? rawPublishedAt.toISOString()
+      : String(rawPublishedAt);
 
   return {
     meta: {
