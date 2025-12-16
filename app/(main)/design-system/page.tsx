@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { setRequestLocale } from "next-intl/server";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -11,13 +10,7 @@ export const metadata: Metadata = {
   description: "Design system and UI guidelines for the portfolio website.",
 };
 
-type Props = {
-  params: Promise<{ locale: string }>;
-};
-
-export default async function DesignSystemPage({ params }: Props) {
-  const { locale } = await params;
-  setRequestLocale(locale);
+export default async function DesignSystemPage() {
 
   return (
     <div className="space-y-16">

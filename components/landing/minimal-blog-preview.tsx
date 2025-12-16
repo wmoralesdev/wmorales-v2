@@ -1,8 +1,10 @@
 import Link from "next/link";
+import { getLocale } from "next-intl/server";
 import { formatDate, getAllPosts } from "@/lib/blog";
 
 export async function MinimalBlogPreview() {
-  const posts = await getAllPosts();
+  const locale = await getLocale();
+  const posts = await getAllPosts(locale);
   const recentPosts = posts.slice(0, 3);
 
   if (recentPosts.length === 0) {
@@ -34,7 +36,7 @@ export async function MinimalBlogPreview() {
                   {post.title}
                 </h3>
                 <time className="font-mono text-xs text-muted-foreground/50">
-                  {formatDate(post.date)}
+                  {formatDate(post.date, locale)}
                 </time>
               </div>
               {post.summary && (
