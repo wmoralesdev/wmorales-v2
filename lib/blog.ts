@@ -68,7 +68,6 @@ function findPostFile(
   slug: string,
   locale: string
 ): { path: string; type: "md" | "mdoc" } | null {
-  // First try Markdown files in content/blog
   const localeFile = path.join(POSTS_DIRECTORY, `${slug}.${locale}.md`);
   if (fs.existsSync(localeFile)) {
     return { path: localeFile, type: "md" };
@@ -87,7 +86,6 @@ function findPostFile(
     return { path: legacyFile, type: "md" };
   }
 
-  // Then try Markdoc files in content/posts
   const mdocFile = path.join(MDOC_POSTS_DIRECTORY, `${slug}.mdoc`);
   if (fs.existsSync(mdocFile)) {
     return { path: mdocFile, type: "mdoc" };
@@ -101,7 +99,6 @@ function parseMdocMeta(filePath: string, slug: string): PostMeta | null {
     const fileContents = fs.readFileSync(filePath, "utf8");
     const { data, content } = matter(fileContents);
 
-    // Map Markdoc frontmatter to PostMeta format
     const publishedAt =
       data.publishedAt || data.date || new Date().toISOString();
     const readingTimeResult = readingTime(content);
@@ -119,13 +116,12 @@ function parseMdocMeta(filePath: string, slug: string): PostMeta | null {
       ogImage: data.ogImage,
       canonicalUrl: data.canonicalUrl,
       attachments: data.attachments,
-    } as PostMeta;
+    };
   } catch {
     return null;
   }
 }
 
-// Helper to get callout icon and colors
 function getCalloutStyles(type: string = "info") {
   const styles = {
     info: { icon: "ℹ️", borderColor: "border-l-accent", textColor: "text-accent" },
@@ -137,7 +133,6 @@ function getCalloutStyles(type: string = "info") {
   return styles[type as keyof typeof styles] || styles.info;
 }
 
-// Helper to get card border color
 function getCardBorder(variant: string = "default") {
   const borders = {
     default: "border-border/60",
@@ -148,7 +143,6 @@ function getCardBorder(variant: string = "default") {
   return borders[variant as keyof typeof borders] || borders.default;
 }
 
-// Helper to get separator spacing
 function getSeparatorSpacing(spacing: string = "normal") {
   const spacings = {
     small: "my-4",
@@ -158,17 +152,13 @@ function getSeparatorSpacing(spacing: string = "normal") {
   return spacings[spacing as keyof typeof spacings] || spacings.normal;
 }
 
-// Pre-process code blocks: extract and highlight with Shiki
 async function preprocessCodeBlocks(content: string): Promise<{ processedContent: string; codeBlocks: Map<string, string> }> {
   const codeBlocks = new Map<string, string>();
-  // Match code blocks with optional language identifier
-  // Handles: ```lang\ncode``` and ```\ncode```
   const codeBlockRegex = /```(\w+)?\n([\s\S]*?)```/g;
   const matches: Array<{ placeholder: string; lang: string; code: string; fullMatch: string }> = [];
   let match;
   let index = 0;
 
-  // Collect all matches first
   while ((match = codeBlockRegex.exec(content)) !== null) {
     const lang = match[1] || "text";
     const code = match[2];
@@ -182,7 +172,6 @@ async function preprocessCodeBlocks(content: string): Promise<{ processedContent
     index++;
   }
 
-  // Process all code blocks in parallel
   const processedBlocks = await Promise.all(
     matches.map(async ({ placeholder, lang, code }) => {
       try {
@@ -190,17 +179,12 @@ async function preprocessCodeBlocks(content: string): Promise<{ processedContent
           lang,
           theme: "github-dark",
         });
-        // Extract just the code content (Shiki wraps it in pre/code)
         const codeMatch = highlighted.match(/<code[^>]*>([\s\S]*?)<\/code>/);
         const codeContent = codeMatch ? codeMatch[1] : highlighted;
         
-        // Escape the code content for embedding in HTML
         const escapedCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
-        
-        // Escape code for data attribute (base64 encode to avoid issues)
         const codeBase64 = Buffer.from(code, 'utf8').toString('base64');
         
-        // Create wrapper with copy button
         const codeBlockHtml = `<div class="group relative my-4">
   <pre class="overflow-x-auto rounded-lg border border-border/60 bg-muted p-4"><code class="font-mono text-xs">${codeContent}</code></pre>
   <button class="absolute right-2 top-2 rounded border border-border/60 bg-background px-2 py-1 font-mono text-xs opacity-0 transition-opacity group-hover:opacity-100" data-code="${codeBase64}" onclick="const code = atob(this.dataset.code); navigator.clipboard.writeText(code); this.textContent='Copied!'; setTimeout(() => this.textContent='Copy', 2000);">Copy</button>
@@ -209,7 +193,6 @@ async function preprocessCodeBlocks(content: string): Promise<{ processedContent
         return { placeholder, html: codeBlockHtml };
       } catch (error) {
         console.error(`Error highlighting code block:`, error);
-        // Fallback: plain code block with escaped HTML
         const escapedCode = code.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#39;");
         const codeBase64 = Buffer.from(code, 'utf8').toString('base64');
         const fallbackHtml = `<div class="group relative my-4">
@@ -221,7 +204,6 @@ async function preprocessCodeBlocks(content: string): Promise<{ processedContent
     })
   );
 
-  // Build the map and replace in reverse order to preserve indices
   let processedContent = content;
   for (let i = matches.length - 1; i >= 0; i--) {
     const { placeholder, html } = processedBlocks[i];
@@ -235,12 +217,10 @@ async function preprocessCodeBlocks(content: string): Promise<{ processedContent
 
 async function renderMdocContent(content: string): Promise<string> {
   try {
-    // Pre-process code blocks with Shiki
     const { processedContent, codeBlocks } = await preprocessCodeBlocks(content);
     
     const ast = Markdoc.parse(processedContent);
     
-    // Config with custom renderers for styled HTML output
     const config = {
       tags: {
         callout: {
@@ -320,7 +300,6 @@ async function renderMdocContent(content: string): Promise<string> {
             filename: { type: String },
           },
           render: "CodeBlock",
-          // This will be handled by pre-processing, but we keep it for validation
         },
       },
       nodes: {
@@ -328,7 +307,7 @@ async function renderMdocContent(content: string): Promise<string> {
           transform(node: Markdoc.Node, config: Markdoc.Config) {
             const level = node.attributes.level as number;
             const text = Markdoc.renderers.html(node.children, config);
-            const headingSlug = createSlug(text.replace(/<[^>]*>/g, "")); // Remove HTML tags for slug
+            const headingSlug = createSlug(text.replace(/<[^>]*>/g, ""));
             const headingId = headingSlug;
             
             const headingClasses = {
@@ -347,7 +326,6 @@ async function renderMdocContent(content: string): Promise<string> {
           },
         },
         fence: {
-          // Code blocks are pre-processed, so this shouldn't be hit, but handle gracefully
           transform(node: Markdoc.Node) {
             const code = node.attributes.content || "";
             return `<div class="group relative my-4">
@@ -359,17 +337,14 @@ async function renderMdocContent(content: string): Promise<string> {
       },
     };
 
-    // Validate but don't block rendering
     const errors = Markdoc.validate(ast, config);
     if (errors.length > 0 && process.env.NODE_ENV === "development") {
       console.warn("Markdoc validation warnings (non-blocking):", errors.length, "issues found");
     }
 
-    // Transform and render
     const renderable = Markdoc.transform(ast, config);
     let html = Markdoc.renderers.html(renderable);
     
-    // Post-process: replace code block placeholders with highlighted versions
     for (const [placeholder, codeHtml] of codeBlocks.entries()) {
       html = html.replace(placeholder, codeHtml);
     }
@@ -377,7 +352,6 @@ async function renderMdocContent(content: string): Promise<string> {
     return html;
   } catch (error) {
     console.error("Error rendering Markdoc:", error);
-    // Fallback: return content as-is wrapped in a div
     return `<div class="prose-minimal">${content}</div>`;
   }
 }
@@ -387,7 +361,6 @@ export function getAllPosts(locale: string = DEFAULT_LOCALE): PostMeta[] {
 
   const posts: PostMeta[] = [];
 
-  // Read Markdown posts from content/blog
   if (fs.existsSync(POSTS_DIRECTORY)) {
     const fileNames = fs.readdirSync(POSTS_DIRECTORY);
     const slugSet = new Set<string>();
@@ -422,14 +395,12 @@ export function getAllPosts(locale: string = DEFAULT_LOCALE): PostMeta[] {
           ogImage: data.ogImage,
           canonicalUrl: data.canonicalUrl,
           attachments: data.attachments,
-        } as PostMeta);
+        });
       } catch {
-        // Skip files that can't be parsed
       }
     });
   }
 
-  // Read Markdoc posts from content/posts
   if (fs.existsSync(MDOC_POSTS_DIRECTORY)) {
     const mdocFileNames = fs.readdirSync(MDOC_POSTS_DIRECTORY);
 
@@ -470,10 +441,8 @@ export async function getPostBySlug(
   let contentHtml: string;
 
   if (fileInfo.type === "mdoc") {
-    // Render Markdoc content
     contentHtml = await renderMdocContent(content);
   } else {
-    // Render Markdown content with Remark
     const processedContent = await remark()
       .use(remarkRehype)
       .use(rehypePrettyCode, {
@@ -485,7 +454,6 @@ export async function getPostBySlug(
     contentHtml = processedContent.toString();
   }
 
-  // Normalize metadata (handle both .md and .mdoc formats)
   const publishedAt = data.publishedAt || data.date || new Date().toISOString();
 
   return {
