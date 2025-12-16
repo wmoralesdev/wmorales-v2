@@ -270,7 +270,7 @@ async function preprocessCodeBlocks(
 
         const codeBlockHtml = `<div class="group relative my-4">
   <pre class="overflow-x-auto rounded-lg border border-border/60 bg-muted p-4"><code class="font-mono text-xs">${codeContent}</code></pre>
-  <button class="absolute right-2 top-2 rounded border border-border/60 bg-background px-2 py-1 font-mono text-xs opacity-0 transition-opacity group-hover:opacity-100" data-code="${codeBase64}" onclick="const code = atob(this.dataset.code); navigator.clipboard.writeText(code); this.textContent='Copied!'; setTimeout(() => this.textContent='Copy', 2000);">Copy</button>
+  <button class="absolute right-2 top-2 rounded border border-border/60 bg-background text-foreground px-2 py-1 font-mono text-xs opacity-0 transition-opacity group-hover:opacity-100 hover:bg-muted" data-code="${codeBase64}" onclick="const code = atob(this.dataset.code); navigator.clipboard.writeText(code); this.textContent='Copied!'; setTimeout(() => this.textContent='Copy', 2000);">Copy</button>
 </div>`;
 
         return { placeholder, html: codeBlockHtml };
@@ -285,7 +285,7 @@ async function preprocessCodeBlocks(
         const codeBase64 = Buffer.from(code, "utf8").toString("base64");
         const fallbackHtml = `<div class="group relative my-4">
   <pre class="overflow-x-auto rounded-lg border border-border/60 bg-muted p-4"><code class="font-mono text-xs">${escapedCode}</code></pre>
-  <button class="absolute right-2 top-2 rounded border border-border/60 bg-background px-2 py-1 font-mono text-xs opacity-0 transition-opacity group-hover:opacity-100" data-code="${codeBase64}" onclick="const code = atob(this.dataset.code); navigator.clipboard.writeText(code); this.textContent='Copied!'; setTimeout(() => this.textContent='Copy', 2000);">Copy</button>
+  <button class="absolute right-2 top-2 rounded border border-border/60 bg-background text-foreground px-2 py-1 font-mono text-xs opacity-0 transition-opacity group-hover:opacity-100 hover:bg-muted" data-code="${codeBase64}" onclick="const code = atob(this.dataset.code); navigator.clipboard.writeText(code); this.textContent='Copied!'; setTimeout(() => this.textContent='Copy', 2000);">Copy</button>
 </div>`;
         return { placeholder, html: fallbackHtml };
       }
@@ -697,7 +697,7 @@ async function renderMdocContent(content: string): Promise<string> {
                 "button",
                 {
                   class:
-                    "absolute right-2 top-2 rounded border border-border/60 bg-background px-2 py-1 font-mono text-xs opacity-0 transition-opacity group-hover:opacity-100",
+                    "absolute right-2 top-2 rounded border border-border/60 bg-background text-foreground px-2 py-1 font-mono text-xs opacity-0 transition-opacity group-hover:opacity-100 hover:bg-muted",
                   onclick:
                     "navigator.clipboard.writeText(this.closest('.group').querySelector('code').textContent); this.textContent='Copied!'; setTimeout(() => this.textContent='Copy', 2000);",
                 },

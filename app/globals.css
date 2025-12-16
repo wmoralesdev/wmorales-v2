@@ -137,7 +137,7 @@
     --tw-prose-bold: oklch(0.15 0.01 280);
     --tw-prose-code: oklch(0.35 0.05 280);
     --tw-prose-pre-bg: oklch(0.96 0.005 280);
-    --tw-prose-pre-code: oklch(0.3 0.01 280);
+    --tw-prose-pre-code: oklch(0.15 0.01 280);
     --tw-prose-quotes: oklch(0.45 0.02 280);
     --tw-prose-quote-borders: oklch(0.55 0.25 280);
     --tw-prose-hr: oklch(0.88 0.01 280);
@@ -169,6 +169,20 @@
 
   .prose-minimal pre code {
     @apply bg-transparent p-0;
+  }
+
+  /* Light mode: Override Shiki dark theme colors for readability */
+  .prose-minimal pre code[style*="color"],
+  .prose-minimal pre code span[style*="color"] {
+    color: oklch(0.15 0.01 280) !important;
+  }
+
+  /* Dark mode: Use light/bright text for readability on dark background */
+  .dark .prose-minimal pre code,
+  .dark .prose-minimal pre code span,
+  .dark .prose-minimal pre code[style*="color"],
+  .dark .prose-minimal pre code span[style*="color"] {
+    color: oklch(0.9 0.01 280) !important;
   }
 
   .prose-minimal pre[data-theme*=" "] {
