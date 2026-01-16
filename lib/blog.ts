@@ -571,6 +571,94 @@ async function renderMdocContent(content: string): Promise<string> {
             );
           },
         },
+        "cursor-prompt": {
+          attributes: {
+            title: { type: String, required: true },
+            prompt: { type: String, required: true },
+          },
+          render: "CursorPrompt",
+          transform(node: Markdoc.Node) {
+            const titleRaw = node.attributes.title;
+            const promptRaw = node.attributes.prompt;
+
+            const title = typeof titleRaw === "string" ? titleRaw : "";
+            const prompt = typeof promptRaw === "string" ? promptRaw : "";
+
+            const encodedPrompt = encodeURIComponent(prompt);
+            const deepLink = `https://cursor.com/link/prompt?text=${encodedPrompt}`;
+
+            // Cursor logo SVG
+            const cursorIcon = new Markdoc.Tag(
+              "svg",
+              {
+                xmlns: "http://www.w3.org/2000/svg",
+                width: "16",
+                height: "16",
+                viewBox: "0 0 24 24",
+                fill: "none",
+                stroke: "currentColor",
+                "stroke-width": "2",
+                "stroke-linecap": "round",
+                "stroke-linejoin": "round",
+                class: "shrink-0",
+              },
+              [
+                new Markdoc.Tag("path", { d: "m4 4 7.07 17 2.51-7.39L21 11.07z" }, []),
+              ],
+            );
+
+            return new Markdoc.Tag(
+              "div",
+              {
+                class:
+                  "my-6 rounded-lg border border-accent/30 bg-accent/5 overflow-hidden",
+              },
+              [
+                // Header with title
+                new Markdoc.Tag(
+                  "div",
+                  {
+                    class:
+                      "flex items-center justify-between gap-3 border-b border-accent/20 bg-accent/10 px-4 py-3",
+                  },
+                  [
+                    new Markdoc.Tag(
+                      "span",
+                      {
+                        class: "font-display text-sm font-medium text-foreground",
+                      },
+                      [title],
+                    ),
+                    new Markdoc.Tag(
+                      "a",
+                      {
+                        href: deepLink,
+                        class:
+                          "inline-flex items-center gap-2 rounded-md bg-accent px-3 py-1.5 text-xs font-medium text-accent-foreground transition-colors hover:bg-accent/80 no-underline! decoration-transparent!",
+                      },
+                      [cursorIcon, "Open in Cursor"],
+                    ),
+                  ],
+                ),
+                // Prompt content
+                new Markdoc.Tag(
+                  "div",
+                  { class: "p-4" },
+                  [
+                    new Markdoc.Tag(
+                      "pre",
+                      {
+                        class:
+                          "whitespace-pre-wrap text-sm text-muted-foreground font-mono leading-relaxed",
+                      },
+                      [prompt],
+                    ),
+                  ],
+                ),
+              ],
+            );
+          },
+        },
         tweet: {
           selfClosing: true,
           attributes: {
