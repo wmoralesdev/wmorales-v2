@@ -1,0 +1,370 @@
+---
+slug: dev-environment-setup
+title: Setting Up Your Development Environment (For Non-Technical Users)
+description: A beginner-friendly guide to setting up your computer for web development. No prior experience required.
+publishedAt: 2026-01-16
+featured: true
+tags:
+  - tutorial
+  - beginner
+  - setup
+published: true
+---
+
+# Your First Steps Into Web Development
+
+If you've ever wanted to create websites or web applications but felt intimidated by all the technical jargon, you're in the right place. This guide will walk you through setting up your computer for web development, step by step.
+
+{% callout type="info" title="What We'll Cover" %}
+By the end of this guide, you'll have everything you need to start building web applications:
+- A **terminal** (command line) ready to use
+- **Node.js** installed via NVM (Node Version Manager)
+- A **code editor** to write your code
+{% /callout %}
+
+## Understanding the Basics
+
+Before we dive in, let's clarify some terms:
+
+- **Terminal / Command Line**: A text-based interface to interact with your computer. Instead of clicking on icons, you type commands.
+- **Node.js**: A runtime that allows you to run JavaScript (a programming language) outside of a web browser.
+- **NVM (Node Version Manager)**: A tool that lets you install and switch between different versions of Node.js easily.
+- **Code Editor**: An application where you write your code, similar to Microsoft Word but for programming.
+
+{% card title="Why NVM?" variant="feature" %}
+Using NVM instead of installing Node.js directly gives you:
+- Easy version switching between projects
+- No permission issues on macOS and Linux
+- Clean uninstalls and upgrades
+- Better compatibility with different projects
+{% /card %}
+
+## Choose Your Operating System
+
+Click on your operating system to see the specific instructions:
+
+---
+
+# macOS Setup
+
+## Step 1: Open Terminal
+
+1. Press `Cmd + Space` to open Spotlight Search
+2. Type `Terminal` and press Enter
+3. A window with a command line will open
+
+{% callout type="tip" title="Terminal Tip" %}
+You can also find Terminal in **Applications → Utilities → Terminal**
+{% /callout %}
+
+## Step 2: Install Homebrew (Package Manager)
+
+Homebrew makes it easy to install software on macOS. Copy and paste this command into Terminal and press Enter:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Follow the on-screen instructions. You may need to enter your Mac password (you won't see characters as you type – that's normal).
+
+## Step 3: Install NVM
+
+Once Homebrew is installed, run:
+
+```bash
+brew install nvm
+```
+
+After installation, you need to set up NVM. Run these commands one at a time:
+
+```bash
+mkdir ~/.nvm
+```
+
+Now add NVM to your shell configuration. Run this command:
+
+```bash
+echo 'export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"' >> ~/.zshrc
+```
+
+Close Terminal and open it again, or run:
+
+```bash
+source ~/.zshrc
+```
+
+## Step 4: Install Node.js
+
+Now install the latest LTS (Long Term Support) version of Node.js:
+
+```bash
+nvm install --lts
+```
+
+Verify the installation:
+
+```bash
+node --version
+npm --version
+```
+
+You should see version numbers printed (e.g., `v20.10.0` and `10.2.0`).
+
+---
+
+# Linux Setup (Ubuntu/Debian)
+
+## Step 1: Open Terminal
+
+1. Press `Ctrl + Alt + T` to open Terminal
+2. Or find Terminal in your applications menu
+
+## Step 2: Update Your System
+
+First, update your package list:
+
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+## Step 3: Install NVM
+
+Run this command to download and install NVM:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+```
+
+After installation, close and reopen Terminal, or run:
+
+```bash
+source ~/.bashrc
+```
+
+Verify NVM is installed:
+
+```bash
+nvm --version
+```
+
+## Step 4: Install Node.js
+
+Install the latest LTS version:
+
+```bash
+nvm install --lts
+```
+
+Verify the installation:
+
+```bash
+node --version
+npm --version
+```
+
+{% callout type="success" title="You're Done!" %}
+Your Linux system is now ready for web development!
+{% /callout %}
+
+---
+
+# Windows Setup
+
+Windows requires a few extra steps, but don't worry – we'll guide you through everything.
+
+## Step 1: Install Windows Terminal (Recommended)
+
+1. Open **Microsoft Store** from the Start menu
+2. Search for **Windows Terminal**
+3. Click **Get** or **Install**
+
+{% callout type="info" title="Alternative: PowerShell" %}
+If you don't want to install Windows Terminal, you can use PowerShell. Search for "PowerShell" in the Start menu and right-click to **Run as Administrator**.
+{% /callout %}
+
+## Step 2: Install NVM for Windows
+
+NVM for Windows is different from the Unix version but works similarly.
+
+1. Go to [NVM for Windows releases](https://github.com/coreybutler/nvm-windows/releases)
+2. Download the latest `nvm-setup.exe` file
+3. Run the installer and follow the prompts
+4. Accept the default options
+
+{% callout type="warning" title="Important" %}
+If you have Node.js already installed, the installer will ask if you want NVM to manage it. Select **Yes**.
+{% /callout %}
+
+## Step 3: Verify NVM Installation
+
+Open **Windows Terminal** or **PowerShell** and run:
+
+```bash
+nvm version
+```
+
+You should see a version number.
+
+## Step 4: Install Node.js
+
+Run these commands:
+
+```bash
+nvm install lts
+nvm use lts
+```
+
+Verify the installation:
+
+```bash
+node --version
+npm --version
+```
+
+---
+
+# Installing a Code Editor
+
+Now that you have Node.js installed, you need a place to write your code.
+
+## Option 1: Cursor (Recommended for Beginners)
+
+Cursor is an AI-powered code editor that helps you write code faster with built-in AI assistance.
+
+1. Go to [cursor.com](https://cursor.com)
+2. Download the version for your operating system
+3. Install and open it
+
+{% card title="Why Cursor?" variant="feature" %}
+Cursor is perfect for beginners because:
+- Built-in AI can explain code and help you learn
+- It can generate code from natural language descriptions
+- Excellent autocomplete suggestions
+- Based on VS Code, so it's familiar to many developers
+{% /card %}
+
+## Option 2: Visual Studio Code
+
+If you prefer a traditional editor without AI features:
+
+1. Go to [code.visualstudio.com](https://code.visualstudio.com)
+2. Download the version for your operating system
+3. Install and open it
+
+---
+
+# Testing Your Setup
+
+Let's create a simple project to verify everything works!
+
+## Step 1: Create a Project Folder
+
+Open your terminal and run:
+
+```bash
+mkdir my-first-project
+cd my-first-project
+```
+
+## Step 2: Initialize the Project
+
+```bash
+npm init -y
+```
+
+This creates a `package.json` file that tracks your project's dependencies.
+
+## Step 3: Create Your First File
+
+In your code editor, create a new file called `index.js` in the `my-first-project` folder with this content:
+
+```javascript
+console.log("Hello! Your development environment is working!");
+```
+
+## Step 4: Run Your Code
+
+In the terminal, make sure you're in the project folder and run:
+
+```bash
+node index.js
+```
+
+You should see: `Hello! Your development environment is working!`
+
+{% callout type="success" title="Congratulations!" %}
+You've successfully set up your development environment and run your first JavaScript code!
+{% /callout %}
+
+---
+
+# Common Issues and Solutions
+
+## "Command not found: nvm"
+
+This usually means NVM isn't loaded in your terminal session.
+
+**macOS/Linux**: Run `source ~/.bashrc` or `source ~/.zshrc` and try again.
+
+**Windows**: Close and reopen your terminal.
+
+## "Permission denied" errors
+
+**macOS/Linux**: Don't use `sudo` with npm. If you're getting permission errors, something might be wrong with your NVM installation. Try reinstalling NVM.
+
+**Windows**: Run your terminal as Administrator.
+
+## Node version not switching
+
+Make sure you're using the right command:
+- **macOS/Linux**: `nvm use <version>`
+- **Windows**: `nvm use <version>` (same command, but requires a full version number like `20.10.0`)
+
+---
+
+# What's Next?
+
+Now that your environment is ready, here are some paths you can explore:
+
+1. **Learn HTML/CSS**: The building blocks of web pages
+2. **Learn JavaScript**: The programming language of the web
+3. **Try a Framework**: React, Vue, or Next.js for building modern web apps
+4. **Use AI Assistance**: Tools like Cursor can help you learn faster
+
+{% card title="Keep Learning" variant="success" %}
+The setup is the hardest part – you've done it! Now the fun begins. Start with small projects and build your way up. Every expert was once a beginner.
+{% /card %}
+
+---
+
+# AI Follow-Up Prompt
+
+If you're using an AI assistant (like ChatGPT, Claude, or Cursor's AI) to help you continue learning, here's a prompt you can use:
+
+{% callout type="tip" title="Copy This Prompt" %}
+```
+I just set up my development environment with:
+- NVM (Node Version Manager)
+- Node.js LTS version
+- [Cursor / VS Code] as my code editor
+
+I'm a complete beginner with no programming experience. I want to learn web development.
+
+Please help me:
+1. Create a simple "Hello World" web page with HTML
+2. Add some basic CSS styling
+3. Explain each line of code as we go
+
+Keep explanations simple and avoid technical jargon. If you must use a technical term, explain what it means in plain English.
+
+After we complete the basic page, suggest a small improvement I can make to practice what I learned.
+```
+{% /callout %}
+
+This prompt gives the AI context about your setup and learning goals, helping it provide appropriate guidance for your skill level.
+
+{% separator spacing="large" %}
+
+Good luck on your development journey! Remember: everyone starts somewhere, and asking questions is how you learn.

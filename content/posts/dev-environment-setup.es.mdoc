@@ -1,0 +1,374 @@
+---
+slug: dev-environment-setup
+title: Configurando Tu Entorno de Desarrollo (Para Usuarios No Técnicos)
+description: Una guía amigable para principiantes sobre cómo configurar tu computadora para desarrollo web. No se requiere experiencia previa.
+publishedAt: 2026-01-16
+featured: true
+tags:
+  - tutorial
+  - principiante
+  - configuración
+published: true
+---
+
+# Tus Primeros Pasos en el Desarrollo Web
+
+Si alguna vez quisiste crear sitios web o aplicaciones web pero te sentiste intimidado por toda la jerga técnica, estás en el lugar correcto. Esta guía te llevará paso a paso para configurar tu computadora para desarrollo web.
+
+{% callout type="info" title="Lo Que Cubriremos" %}
+Al final de esta guía, tendrás todo lo necesario para comenzar a crear aplicaciones web:
+- Una **terminal** (línea de comandos) lista para usar
+- **Node.js** instalado mediante NVM (Node Version Manager)
+- Un **editor de código** para escribir tu código
+{% /callout %}
+
+## Entendiendo lo Básico
+
+Antes de comenzar, aclaremos algunos términos:
+
+- **Terminal / Línea de Comandos**: Una interfaz basada en texto para interactuar con tu computadora. En lugar de hacer clic en íconos, escribes comandos.
+- **Node.js**: Un entorno de ejecución que permite ejecutar JavaScript (un lenguaje de programación) fuera de un navegador web.
+- **NVM (Node Version Manager)**: Una herramienta que te permite instalar y cambiar entre diferentes versiones de Node.js fácilmente.
+- **Editor de Código**: Una aplicación donde escribes tu código, similar a Microsoft Word pero para programación.
+
+{% card title="¿Por Qué NVM?" variant="feature" %}
+Usar NVM en lugar de instalar Node.js directamente te da:
+- Cambio fácil de versiones entre proyectos
+- Sin problemas de permisos en macOS y Linux
+- Desinstalaciones y actualizaciones limpias
+- Mejor compatibilidad con diferentes proyectos
+{% /card %}
+
+## Elige Tu Sistema Operativo
+
+Haz clic en tu sistema operativo para ver las instrucciones específicas:
+
+---
+
+# Configuración en macOS
+
+## Paso 1: Abrir Terminal
+
+1. Presiona `Cmd + Espacio` para abrir Spotlight
+2. Escribe `Terminal` y presiona Enter
+3. Se abrirá una ventana con la línea de comandos
+
+{% callout type="tip" title="Consejo" %}
+También puedes encontrar Terminal en **Aplicaciones → Utilidades → Terminal**
+{% /callout %}
+
+## Paso 2: Instalar Homebrew (Gestor de Paquetes)
+
+Homebrew facilita la instalación de software en macOS. Copia y pega este comando en Terminal y presiona Enter:
+
+```bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+```
+
+Sigue las instrucciones en pantalla. Es posible que debas ingresar tu contraseña de Mac (no verás caracteres mientras escribes – eso es normal).
+
+## Paso 3: Instalar NVM
+
+Una vez que Homebrew esté instalado, ejecuta:
+
+```bash
+brew install nvm
+```
+
+Después de la instalación, necesitas configurar NVM. Ejecuta estos comandos uno a la vez:
+
+```bash
+mkdir ~/.nvm
+```
+
+Ahora agrega NVM a la configuración de tu terminal. Ejecuta este comando:
+
+```bash
+echo 'export NVM_DIR="$HOME/.nvm"
+[ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"
+[ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"' >> ~/.zshrc
+```
+
+Cierra Terminal y ábrela de nuevo, o ejecuta:
+
+```bash
+source ~/.zshrc
+```
+
+## Paso 4: Instalar Node.js
+
+Ahora instala la última versión LTS (Soporte a Largo Plazo) de Node.js:
+
+```bash
+nvm install --lts
+```
+
+Verifica la instalación:
+
+```bash
+node --version
+npm --version
+```
+
+Deberías ver números de versión impresos (por ejemplo, `v20.10.0` y `10.2.0`).
+
+---
+
+# Configuración en Linux (Ubuntu/Debian)
+
+## Paso 1: Abrir Terminal
+
+1. Presiona `Ctrl + Alt + T` para abrir Terminal
+2. O encuentra Terminal en tu menú de aplicaciones
+
+## Paso 2: Actualizar Tu Sistema
+
+Primero, actualiza tu lista de paquetes:
+
+```bash
+sudo apt update && sudo apt upgrade -y
+```
+
+## Paso 3: Instalar NVM
+
+Ejecuta este comando para descargar e instalar NVM:
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.1/install.sh | bash
+```
+
+Después de la instalación, cierra y vuelve a abrir Terminal, o ejecuta:
+
+```bash
+source ~/.bashrc
+```
+
+Verifica que NVM esté instalado:
+
+```bash
+nvm --version
+```
+
+## Paso 4: Instalar Node.js
+
+Instala la última versión LTS:
+
+```bash
+nvm install --lts
+```
+
+Verifica la instalación:
+
+```bash
+node --version
+npm --version
+```
+
+{% callout type="success" title="¡Listo!" %}
+¡Tu sistema Linux ya está listo para desarrollo web!
+{% /callout %}
+
+---
+
+# Configuración en Windows
+
+Windows requiere algunos pasos adicionales, pero no te preocupes – te guiaremos en todo.
+
+## Paso 1: Instalar Windows Terminal (Recomendado)
+
+1. Abre **Microsoft Store** desde el menú Inicio
+2. Busca **Windows Terminal**
+3. Haz clic en **Obtener** o **Instalar**
+
+{% callout type="info" title="Alternativa: PowerShell" %}
+Si no quieres instalar Windows Terminal, puedes usar PowerShell. Busca "PowerShell" en el menú Inicio y haz clic derecho para **Ejecutar como Administrador**.
+{% /callout %}
+
+## Paso 2: Instalar NVM para Windows
+
+NVM para Windows es diferente de la versión Unix pero funciona de manera similar.
+
+1. Ve a [Releases de NVM para Windows](https://github.com/coreybutler/nvm-windows/releases)
+2. Descarga el archivo `nvm-setup.exe` más reciente
+3. Ejecuta el instalador y sigue las indicaciones
+4. Acepta las opciones predeterminadas
+
+{% callout type="warning" title="Importante" %}
+Si ya tienes Node.js instalado, el instalador te preguntará si quieres que NVM lo administre. Selecciona **Sí**.
+{% /callout %}
+
+## Paso 3: Verificar la Instalación de NVM
+
+Abre **Windows Terminal** o **PowerShell** y ejecuta:
+
+```bash
+nvm version
+```
+
+Deberías ver un número de versión.
+
+## Paso 4: Instalar Node.js
+
+Ejecuta estos comandos:
+
+```bash
+nvm install lts
+nvm use lts
+```
+
+Verifica la instalación:
+
+```bash
+node --version
+npm --version
+```
+
+---
+
+# Instalando un Editor de Código
+
+Ahora que tienes Node.js instalado, necesitas un lugar para escribir tu código.
+
+## Opción 1: Cursor (Recomendado para Principiantes)
+
+Cursor es un editor de código potenciado por IA que te ayuda a escribir código más rápido con asistencia de IA integrada.
+
+1. Ve a [cursor.com](https://cursor.com)
+2. Descarga la versión para tu sistema operativo
+3. Instálalo y ábrelo
+
+{% card title="¿Por Qué Cursor?" variant="feature" %}
+Cursor es perfecto para principiantes porque:
+- La IA integrada puede explicar código y ayudarte a aprender
+- Puede generar código desde descripciones en lenguaje natural
+- Excelentes sugerencias de autocompletado
+- Basado en VS Code, así que es familiar para muchos desarrolladores
+{% /card %}
+
+## Opción 2: Visual Studio Code
+
+Si prefieres un editor tradicional sin funciones de IA:
+
+1. Ve a [code.visualstudio.com](https://code.visualstudio.com)
+2. Descarga la versión para tu sistema operativo
+3. Instálalo y ábrelo
+
+---
+
+# Probando Tu Configuración
+
+¡Creemos un proyecto simple para verificar que todo funciona!
+
+## Paso 1: Crear una Carpeta de Proyecto
+
+Abre tu terminal y ejecuta:
+
+```bash
+mkdir mi-primer-proyecto
+cd mi-primer-proyecto
+```
+
+## Paso 2: Inicializar el Proyecto
+
+```bash
+npm init -y
+```
+
+Esto crea un archivo `package.json` que registra las dependencias de tu proyecto.
+
+## Paso 3: Crear Tu Primer Archivo
+
+En tu editor de código, crea un nuevo archivo llamado `index.js` en la carpeta `mi-primer-proyecto` con este contenido:
+
+```javascript
+console.log("¡Hola! ¡Tu entorno de desarrollo está funcionando!");
+```
+
+## Paso 4: Ejecutar Tu Código
+
+En la terminal, asegúrate de estar en la carpeta del proyecto y ejecuta:
+
+```bash
+node index.js
+```
+
+Deberías ver: `¡Hola! ¡Tu entorno de desarrollo está funcionando!`
+
+{% callout type="success" title="¡Felicitaciones!" %}
+¡Has configurado exitosamente tu entorno de desarrollo y ejecutado tu primer código JavaScript!
+{% /callout %}
+
+---
+
+# Problemas Comunes y Soluciones
+
+## "Command not found: nvm" (Comando no encontrado: nvm)
+
+Esto generalmente significa que NVM no está cargado en tu sesión de terminal.
+
+**macOS/Linux**: Ejecuta `source ~/.bashrc` o `source ~/.zshrc` e intenta de nuevo.
+
+**Windows**: Cierra y vuelve a abrir tu terminal.
+
+## Errores de "Permission denied" (Permiso denegado)
+
+**macOS/Linux**: No uses `sudo` con npm. Si estás obteniendo errores de permisos, algo podría estar mal con tu instalación de NVM. Intenta reinstalar NVM.
+
+**Windows**: Ejecuta tu terminal como Administrador.
+
+## La versión de Node no cambia
+
+Asegúrate de usar el comando correcto:
+- **macOS/Linux**: `nvm use <versión>`
+- **Windows**: `nvm use <versión>` (mismo comando, pero requiere un número de versión completo como `20.10.0`)
+
+---
+
+# ¿Qué Sigue?
+
+Ahora que tu entorno está listo, aquí hay algunos caminos que puedes explorar:
+
+1. **Aprende HTML/CSS**: Los bloques de construcción de las páginas web
+2. **Aprende JavaScript**: El lenguaje de programación de la web
+3. **Prueba un Framework**: React, Vue o Next.js para crear aplicaciones web modernas
+4. **Usa Asistencia de IA**: Herramientas como Cursor pueden ayudarte a aprender más rápido
+
+{% card title="Sigue Aprendiendo" variant="success" %}
+La configuración es la parte más difícil – ¡ya lo lograste! Ahora comienza la diversión. Empieza con proyectos pequeños y ve avanzando. Todo experto fue alguna vez un principiante.
+{% /card %}
+
+---
+
+# Prompt de Seguimiento para IA
+
+Si estás usando un asistente de IA (como ChatGPT, Claude o la IA de Cursor) para ayudarte a continuar aprendiendo, aquí hay un prompt que puedes usar:
+
+{% callout type="tip" title="Copia Este Prompt" %}
+```
+Acabo de configurar mi entorno de desarrollo con:
+- NVM (Node Version Manager)
+- Node.js versión LTS
+- [Cursor / VS Code] como mi editor de código
+
+Soy un principiante completo sin experiencia en programación. Quiero aprender desarrollo web.
+
+Por favor ayúdame a:
+1. Crear una página web simple "Hola Mundo" con HTML
+2. Agregar algo de estilo CSS básico
+3. Explicar cada línea de código mientras avanzamos
+
+Mantén las explicaciones simples y evita la jerga técnica. Si debes usar un término técnico, explica qué significa en español simple.
+
+Después de completar la página básica, sugiere una pequeña mejora que pueda hacer para practicar lo que aprendí.
+```
+{% /callout %}
+
+Este prompt le da a la IA contexto sobre tu configuración y objetivos de aprendizaje, ayudándola a proporcionar orientación apropiada para tu nivel de habilidad.
+
+{% callout type="info" title="Idioma para Agentes de IA" %}
+Parecerá un poco raro, pero las interacciones con agentes de IA (y cualquier IA en general) están mejor optimizadas si se habla en inglés. De igual manera, el uso de tokens es reducido si se habla en [inglés](https://arxiv.org/pdf/2305.15425). Aún así, el prompt anterior funciona bien en español para la mayoría de los modelos modernos.
+{% /callout %}
+
+{% separator spacing="large" %}
+
+¡Buena suerte en tu viaje de desarrollo! Recuerda: todos empezaron en algún lugar, y hacer preguntas es cómo se aprende.
