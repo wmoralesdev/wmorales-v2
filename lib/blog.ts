@@ -619,7 +619,7 @@ async function renderMdocContent(content: string): Promise<string> {
                   "div",
                   {
                     class:
-                      "flex items-center justify-between gap-3 border-b border-accent/20 bg-accent/10 px-4 py-3",
+                      "flex flex-col gap-2 border-b border-accent/20 bg-accent/10 px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:gap-3",
                   },
                   [
                     new Markdoc.Tag(
@@ -634,7 +634,7 @@ async function renderMdocContent(content: string): Promise<string> {
                       {
                         href: deepLink,
                         class:
-                          "inline-flex items-center gap-2 rounded-md bg-accent px-3 py-1.5 text-xs font-medium text-accent-foreground transition-colors hover:bg-accent/80 no-underline! decoration-transparent!",
+                          "inline-flex w-fit items-center gap-2 rounded-md bg-accent px-3 py-1.5 text-xs font-medium text-accent-foreground transition-colors hover:bg-accent/80 no-underline! decoration-transparent!",
                       },
                       [cursorIcon, "Open in Cursor"],
                     ),
