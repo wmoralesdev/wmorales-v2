@@ -79,12 +79,10 @@
 }
 
 /* View Transitions */
-/* biome-ignore lint/correctness/noUnknownTypeSelector: valid CSS pseudo-element */
 ::view-transition-old(root) {
   animation: fadeOut 150ms ease-out;
 }
 
-/* biome-ignore lint/correctness/noUnknownTypeSelector: valid CSS pseudo-element */
 ::view-transition-new(root) {
   animation: fadeIn 150ms ease-in;
 }
