@@ -240,10 +240,10 @@ async function preprocessCodeBlocks(
     code: string;
     fullMatch: string;
   }> = [];
-  let match;
+  let match: RegExpExecArray | null = codeBlockRegex.exec(content);
   let index = 0;
 
-  while ((match = codeBlockRegex.exec(content)) !== null) {
+  while (match) {
     const lang = match[1] || "text";
     const code = match[2];
     // Use a token Markdoc won't treat as formatting (e.g. __bold__).
@@ -255,6 +255,7 @@ async function preprocessCodeBlocks(
       fullMatch: match[0],
     });
     index++;
+    match = codeBlockRegex.exec(content);
   }
 
   const processedBlocks = await Promise.all(
@@ -330,7 +331,23 @@ async function renderMdocContent(content: string): Promise<string> {
     const { processedContent, codeBlocks } =
       await preprocessCodeBlocks(content);
 
-    const ast = Markdoc.parse(processedContent);
+    // Markdoc doesn't parse multiline string attributes inside tags.
+    // Normalize `{% cursor-prompt ... prompt="...<newlines>..." /%}` into a single-line
+    // prompt string by encoding newlines as `\n` before parsing.
+    const cursorPromptMultilineRegex =
+      /{%\s*cursor-prompt\s+title="([^"]+)"\s+prompt="([\s\S]*?)"\s*\/%}/g;
+    const normalizedContent = processedContent.replace(
+      cursorPromptMultilineRegex,
+      (_match, title: string, promptRaw: string) => {
+        const promptNormalized = promptRaw
+          .replace(/\r\n/g, "\n")
+          .replace(/\n/g, "\\n")
+          .replace(/"/g, '\\"');
+        return `{% cursor-prompt title="${title}" prompt="${promptNormalized}" /%}`;
+      },
+    );
+
+    const ast = Markdoc.parse(normalizedContent);
 
     const config = {
       tags: {
@@ -582,80 +599,27 @@ async function renderMdocContent(content: string): Promise<string> {
             const promptRaw = node.attributes.prompt;
 
             const title = typeof titleRaw === "string" ? titleRaw : "";
-            const prompt = typeof promptRaw === "string" ? promptRaw : "";
+            const prompt =
+              typeof promptRaw === "string"
+                ? promptRaw.replace(/\r\n/g, "\n").replace(/\\n/g, "\n")
+                : "";
 
+            // Base64 encode the prompt to safely pass it as a data attribute
+            const promptBase64 = Buffer.from(prompt, "utf8").toString("base64");
             const encodedPrompt = encodeURIComponent(prompt);
             const deepLink = `https://cursor.com/link/prompt?text=${encodedPrompt}`;
 
-            // Cursor logo SVG
-            const cursorIcon = new Markdoc.Tag(
-              "svg",
-              {
-                xmlns: "http://www.w3.org/2000/svg",
-                width: "16",
-                height: "16",
-                viewBox: "0 0 24 24",
-                fill: "none",
-                stroke: "currentColor",
-                "stroke-width": "2",
-                "stroke-linecap": "round",
-                "stroke-linejoin": "round",
-                class: "shrink-0",
-              },
-              [
-                new Markdoc.Tag("path", { d: "m4 4 7.07 17 2.51-7.39L21 11.07z" }, []),
-              ],
-            );
-
+            // Render a placeholder div that will be hydrated by React
             return new Markdoc.Tag(
               "div",
               {
-                class:
-                  "my-6 rounded-lg border border-accent/30 bg-accent/5 overflow-hidden",
+                "data-cursor-prompt": "true",
+                "data-title": title,
+                "data-prompt": promptBase64,
+                "data-deeplink": deepLink,
+                class: "my-6",
               },
-              [
-                // Header with title
-                new Markdoc.Tag(
-                  "div",
-                  {
-                    class:
-                      "flex items-center justify-between gap-3 border-b border-accent/20 bg-accent/10 px-4 py-3",
-                  },
-                  [
-                    new Markdoc.Tag(
-                      "span",
-                      {
-                        class: "font-display text-sm font-medium text-foreground",
-                      },
-                      [title],
-                    ),
-                    new Markdoc.Tag(
-                      "a",
-                      {
-                        href: deepLink,
-                        class:
-                          "inline-flex items-center gap-2 rounded-md bg-accent px-3 py-1.5 text-xs font-medium text-accent-foreground transition-colors hover:bg-accent/80 no-underline! decoration-transparent!",
-                      },
-                      [cursorIcon, "Open in Cursor"],
-                    ),
-                  ],
-                ),
-                // Prompt content
-                new Markdoc.Tag(
-                  "div",
-                  { class: "p-4" },
-                  [
-                    new Markdoc.Tag(
-                      "pre",
-                      {
-                        class:
-                          "whitespace-pre-wrap text-sm text-muted-foreground font-mono leading-relaxed",
-                      },
-                      [prompt],
-                    ),
-                  ],
-                ),
-              ],
+              [],
             );
           },
         },

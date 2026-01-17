@@ -3,6 +3,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getLocale, getTranslations } from "next-intl/server";
 import { AttachmentList } from "@/components/blog/attachment-list";
+import { CursorPrompts } from "@/components/blog/cursor-prompt";
 import { PostBody } from "@/components/blog/post-body";
 import { PostImage } from "@/components/blog/post-image";
 import { PostReadingProgress } from "@/components/blog/post-reading-progress";
@@ -76,11 +77,13 @@ export default async function BlogPostPage({ params }: Props) {
   const postUrl = `${siteConfig.url}/blog/${slug}`;
   const contentHtml = ensureHeadingIds(post.contentHtml);
   const hasTweets = contentHtml.includes("twitter-tweet");
+  const hasCursorPrompts = contentHtml.includes("data-cursor-prompt");
   const postImage = post.meta.ogImage || post.meta.coverImage;
 
   return (
     <>
       {hasTweets && <TweetEmbeds />}
+      {hasCursorPrompts && <CursorPrompts />}
       <PostReadingProgress />
       <ScrollToTop />
       <PostToc contentHtml={contentHtml} />
