@@ -49,7 +49,7 @@ export default async function BlogPage() {
                     {post.title}
                   </h2>
                   <div className="flex items-center gap-2">
-                    <time className="font-mono text-xs text-muted-foreground/60">
+                    <time className="font-mono text-xs tabular-nums text-muted-foreground/60">
                       {formatDate(post.date, locale)}
                     </time>
                     {post.readingTimeText && (
@@ -63,7 +63,7 @@ export default async function BlogPage() {
                   </div>
                 </div>
                 {post.summary && (
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                  <p className="text-sm text-muted-foreground text-pretty leading-relaxed">
                     {post.summary}
                   </p>
                 )}

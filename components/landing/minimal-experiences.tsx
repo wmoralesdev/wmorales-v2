@@ -13,7 +13,7 @@ export async function MinimalExperiences() {
 
   return (
     <section className="space-y-5">
-      <h2 className="font-mono font-normal text-xs text-muted-foreground/60 uppercase tracking-[0.2em]">
+      <h2 className="font-mono font-normal text-xs text-muted-foreground/60 uppercase">
         {t("title")}
       </h2>
       <div className="space-y-0 wm-stagger-1">
@@ -26,15 +26,15 @@ export async function MinimalExperiences() {
               <h3 className="font-display font-medium text-base text-foreground">
                 {exp.company}
                 {exp.current && (
-                  <span className="ml-2 inline-block h-1.5 w-1.5 rounded-full bg-accent" />
+                  <span className="ml-2 inline-block size-1.5 rounded-full bg-accent" />
                 )}
               </h3>
               <span className="font-mono text-xs text-muted-foreground/50">
                 {exp.period}
               </span>
             </div>
-            <p className="mt-0.5 text-sm text-muted-foreground">{exp.role}</p>
-            <p className="mt-1.5 text-sm text-muted-foreground/80">
+            <p className="mt-0.5 text-sm text-muted-foreground text-pretty">{exp.role}</p>
+            <p className="mt-1.5 text-sm text-muted-foreground/80 text-pretty">
               {exp.description}
             </p>
             <p className="mt-1.5 font-mono text-xs text-muted-foreground/60">

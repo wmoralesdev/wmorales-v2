@@ -28,12 +28,12 @@ export default async function DesignSystemPage() {
 
       {/* Overview */}
       <section className="space-y-4">
-        <h2 className="font-display text-xl font-semibold tracking-tight text-foreground">
+        <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">
           {t("overview.title")}
         </h2>
         <Card>
           <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground">
+            <p className="text-sm text-muted-foreground text-pretty">
               {t("overview.description")}
             </p>
           </CardContent>
@@ -43,10 +43,10 @@ export default async function DesignSystemPage() {
       {/* Typography */}
       <section className="space-y-6">
         <div>
-          <h2 className="font-display text-xl font-semibold tracking-tight text-foreground">
+          <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">
             {t("typography.title")}
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground text-pretty">
             {t("typography.description")}
           </p>
         </div>
@@ -69,7 +69,7 @@ export default async function DesignSystemPage() {
                     text-3xl sm:text-4xl
                   </code>
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground text-pretty">
                   {t.rich("typography.scale.pageTitle.description", {
                     code: (chunks) => (
                       <code className="font-mono text-xs">{chunks}</code>
@@ -94,11 +94,11 @@ export default async function DesignSystemPage() {
                     text-xl
                   </code>
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground text-pretty">
                   {t("typography.scale.sectionTitle.description")}
                 </p>
                 <div className="border-l-2 border-accent/50 pl-4">
-                  <h2 className="font-display text-xl font-semibold tracking-tight text-foreground">
+                  <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">
                     {t("typography.scale.sectionTitle.example")}
                   </h2>
                 </div>
@@ -115,7 +115,7 @@ export default async function DesignSystemPage() {
                     text-sm
                   </code>
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground text-pretty">
                   {t.rich("typography.scale.bodyText.description", {
                     code: (chunks) => (
                       <code className="font-mono text-xs">{chunks}</code>
@@ -140,7 +140,7 @@ export default async function DesignSystemPage() {
                     text-xs font-mono
                   </code>
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground text-pretty">
                   {t.rich("typography.scale.metaText.description", {
                     code: (chunks) => (
                       <code className="font-mono text-xs">{chunks}</code>
@@ -170,7 +170,7 @@ export default async function DesignSystemPage() {
                     text-base font-display
                   </code>
                 </div>
-                <p className="text-sm text-muted-foreground">
+                <p className="text-sm text-muted-foreground text-pretty">
                   {t.rich("typography.scale.smallHeading.description", {
                     code: (chunks) => (
                       <code className="font-mono text-xs">{chunks}</code>
@@ -208,7 +208,7 @@ export default async function DesignSystemPage() {
                 <p className="text-sm font-medium text-foreground">
                   {t("typography.dosAndDonts.do.maintainConsistency.title")}
                 </p>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="mt-1 text-sm text-muted-foreground text-pretty">
                   {t(
                     "typography.dosAndDonts.do.maintainConsistency.description",
                   )}
@@ -236,7 +236,7 @@ export default async function DesignSystemPage() {
                 <p className="text-sm font-medium text-foreground">
                   {t("typography.dosAndDonts.dont.dontMix.title")}
                 </p>
-                <p className="mt-1 text-sm text-muted-foreground">
+                <p className="mt-1 text-sm text-muted-foreground text-pretty">
                   {t("typography.dosAndDonts.dont.dontMix.description")}
                 </p>
               </div>
@@ -248,10 +248,10 @@ export default async function DesignSystemPage() {
       {/* Colors */}
       <section className="space-y-6">
         <div>
-          <h2 className="font-display text-xl font-semibold tracking-tight text-foreground">
+          <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">
             {t("colors.title")}
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground text-pretty">
             {t("colors.description")}
           </p>
         </div>
@@ -265,7 +265,7 @@ export default async function DesignSystemPage() {
             <div className="grid gap-4 sm:grid-cols-2">
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded border border-border bg-accent" />
+                  <div className="size-8 rounded border border-border bg-accent" />
                   <div>
                     <p className="text-sm font-medium text-foreground">
                       {t("colors.palette.accent.name")}
@@ -275,14 +275,14 @@ export default async function DesignSystemPage() {
                     </code>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground text-pretty">
                   {t("colors.palette.accent.description")}
                 </p>
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded border border-border bg-foreground" />
+                  <div className="size-8 rounded border border-border bg-foreground" />
                   <div>
                     <p className="text-sm font-medium text-foreground">
                       {t("colors.palette.foreground.name")}
@@ -292,14 +292,14 @@ export default async function DesignSystemPage() {
                     </code>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground text-pretty">
                   {t("colors.palette.foreground.description")}
                 </p>
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded border border-border bg-muted" />
+                  <div className="size-8 rounded border border-border bg-muted" />
                   <div>
                     <p className="text-sm font-medium text-foreground">
                       {t("colors.palette.muted.name")}
@@ -309,14 +309,14 @@ export default async function DesignSystemPage() {
                     </code>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground text-pretty">
                   {t("colors.palette.muted.description")}
                 </p>
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded border border-border bg-border" />
+                  <div className="size-8 rounded border border-border bg-border" />
                   <div>
                     <p className="text-sm font-medium text-foreground">
                       {t("colors.palette.border.name")}
@@ -326,14 +326,14 @@ export default async function DesignSystemPage() {
                     </code>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground text-pretty">
                   {t("colors.palette.border.description")}
                 </p>
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded border border-border bg-muted-foreground" />
+                  <div className="size-8 rounded border border-border bg-muted-foreground" />
                   <div>
                     <p className="text-sm font-medium text-foreground">
                       {t("colors.palette.mutedForeground.name")}
@@ -343,14 +343,14 @@ export default async function DesignSystemPage() {
                     </code>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground text-pretty">
                   {t("colors.palette.mutedForeground.description")}
                 </p>
               </div>
 
               <div className="space-y-2">
                 <div className="flex items-center gap-2">
-                  <div className="h-8 w-8 rounded border border-border bg-background" />
+                  <div className="size-8 rounded border border-border bg-background" />
                   <div>
                     <p className="text-sm font-medium text-foreground">
                       {t("colors.palette.background.name")}
@@ -360,7 +360,7 @@ export default async function DesignSystemPage() {
                     </code>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground">
+                <p className="text-xs text-muted-foreground text-pretty">
                   {t("colors.palette.background.description")}
                 </p>
               </div>
@@ -372,10 +372,10 @@ export default async function DesignSystemPage() {
       {/* Spacing */}
       <section className="space-y-6">
         <div>
-          <h2 className="font-display text-xl font-semibold tracking-tight text-foreground">
+          <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">
             {t("spacing.title")}
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground text-pretty">
             {t("spacing.description")}
           </p>
         </div>
@@ -424,7 +424,7 @@ export default async function DesignSystemPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground text-pretty">
                 {t.rich("spacing.dosAndDonts.do.description", {
                   code: (chunks) => (
                     <code className="font-mono text-xs">{chunks}</code>
@@ -441,7 +441,7 @@ export default async function DesignSystemPage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground">
+              <p className="text-sm text-muted-foreground text-pretty">
                 {t.rich("spacing.dosAndDonts.dont.description", {
                   code: (chunks) => (
                     <code className="font-mono text-xs">{chunks}</code>
@@ -456,10 +456,10 @@ export default async function DesignSystemPage() {
       {/* Components */}
       <section className="space-y-6">
         <div>
-          <h2 className="font-display text-xl font-semibold tracking-tight text-foreground">
+          <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">
             {t("components.title")}
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground">
+          <p className="mt-2 text-sm text-muted-foreground text-pretty">
             {t("components.description")}
           </p>
         </div>

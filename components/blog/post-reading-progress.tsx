@@ -40,7 +40,7 @@ export function PostReadingProgress() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 z-50 h-0.5 w-full bg-border/30">
+    <div className="fixed top-0 left-0 right-0 z-50 h-0.5 bg-border/30 pt-safe">
       <div
         aria-hidden="true"
         className="h-full bg-accent transition-all duration-150"

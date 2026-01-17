@@ -14,7 +14,7 @@ export async function MinimalEventsMarquee() {
 
   return (
     <section className="space-y-5">
-      <h2 className="font-mono text-xs font-normal uppercase tracking-[0.2em] text-muted-foreground/60">
+      <h2 className="font-mono text-xs font-normal uppercase text-muted-foreground/60">
         {t("title")}
       </h2>
       <EventsCarousel>
@@ -49,13 +49,13 @@ function EventCard({
     >
       <Image
         alt={title}
-        className="object-cover transition-transform duration-300 group-hover:scale-105"
+        className="object-cover transition-transform duration-200 group-hover:scale-105"
         fill
         sizes="256px"
         src={coverImage}
       />
       {/* Overlay on hover/focus */}
-      <div className="absolute inset-0 flex items-end bg-gradient-to-t from-background/90 via-background/40 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100 group-focus-visible:opacity-100">
+      <div className="absolute inset-0 flex items-end bg-background/80 opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
         <span className="w-full truncate px-3 pb-3 font-display text-sm font-medium text-foreground">
           {title}
         </span>

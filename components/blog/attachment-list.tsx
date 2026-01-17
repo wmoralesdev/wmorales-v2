@@ -39,7 +39,7 @@ export function AttachmentList({ attachments }: AttachmentListProps) {
 
   return (
     <div className="space-y-3 border-border/60 border-t pt-8">
-      <h3 className="font-display font-medium text-foreground text-sm">
+      <h3 className="font-display font-medium text-foreground text-sm text-balance">
         Attachments
       </h3>
       <ul className="space-y-2">
@@ -56,7 +56,7 @@ export function AttachmentList({ attachments }: AttachmentListProps) {
                 rel="noopener noreferrer"
                 target="_blank"
               >
-                <Icon className="h-5 w-5 shrink-0 text-accent" />
+                <Icon className="size-5 shrink-0 text-accent" />
                 <div className="min-w-0 flex-1">
                   <div className="font-medium text-foreground group-hover:text-accent">
                     {attachment.title}

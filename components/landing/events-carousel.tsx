@@ -44,13 +44,13 @@ export function EventsCarousel({ children }: { children: ReactNode }) {
       {/* Left chevron */}
       <button
         aria-label="Scroll left"
-        className={`absolute -left-3 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-border/60 bg-background/90 text-muted-foreground backdrop-blur-sm transition-all hover:border-accent/50 hover:text-foreground ${
+        className={`absolute -left-3 top-1/2 z-20 flex size-8 -translate-y-1/2 items-center justify-center rounded-full border border-border/60 bg-background/90 text-muted-foreground backdrop-blur-sm transition-all hover:border-accent/50 hover:text-foreground ${
           canScrollLeft ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         onClick={() => scroll("left")}
         type="button"
       >
-        <FiChevronLeft className="h-4 w-4" />
+        <FiChevronLeft className="size-4" />
       </button>
 
       {/* Scrollable container */}
@@ -65,13 +65,13 @@ export function EventsCarousel({ children }: { children: ReactNode }) {
       {/* Right chevron */}
       <button
         aria-label="Scroll right"
-        className={`absolute -right-3 top-1/2 z-10 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full border border-border/60 bg-background/90 text-muted-foreground backdrop-blur-sm transition-all hover:border-accent/50 hover:text-foreground ${
+        className={`absolute -right-3 top-1/2 z-20 flex size-8 -translate-y-1/2 items-center justify-center rounded-full border border-border/60 bg-background/90 text-muted-foreground backdrop-blur-sm transition-all hover:border-accent/50 hover:text-foreground ${
           canScrollRight ? "opacity-100" : "pointer-events-none opacity-0"
         }`}
         onClick={() => scroll("right")}
         type="button"
       >
-        <FiChevronRight className="h-4 w-4" />
+        <FiChevronRight className="size-4" />
       </button>
     </div>
   );

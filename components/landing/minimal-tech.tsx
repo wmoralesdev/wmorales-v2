@@ -25,7 +25,7 @@ export async function MinimalTech() {
 
   return (
     <section className="space-y-4">
-      <h2 className="font-mono font-normal text-xs text-muted-foreground/60 uppercase tracking-[0.2em]">
+      <h2 className="font-mono font-normal text-xs text-muted-foreground/60 uppercase">
         {t("title")}
       </h2>
       <div className="flex flex-wrap gap-2">

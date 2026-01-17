@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 export type TocItem = {
   id: string;
   title: string;
+  level: 1 | 2;
 };
 
 type PostTocClientProps = {
@@ -56,18 +57,19 @@ export function PostTocClient({ items }: PostTocClientProps) {
   return (
     <nav
       aria-label="Table of contents"
-      className="hidden xl:block fixed right-8 top-32 w-56"
+      className="hidden xl:block fixed right-8 top-32 w-56 pr-safe"
     >
       <p className="mb-3 font-display text-sm font-medium text-muted-foreground">
         Content
       </p>
       <ul className="space-y-2">
         {items.map((item) => (
-          <li key={item.id}>
+          <li key={item.id} className={item.level === 2 ? "pl-3" : ""}>
             <a
               href={`#${item.id}`}
               className={cn(
                 "block text-sm transition-colors",
+                item.level === 2 && "text-xs",
                 activeId === item.id
                   ? "text-foreground"
                   : "text-muted-foreground hover:text-foreground/80",

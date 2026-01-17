@@ -101,11 +101,11 @@ export default async function BlogPostPage({ params }: Props) {
               <ThemeToggle />
             </div>
           </div>
-          <h1 className="font-display font-semibold text-3xl text-foreground tracking-tight sm:text-4xl">
+          <h1 className="font-display font-semibold text-3xl text-foreground text-balance tracking-tight sm:text-4xl">
             {post.meta.title}
           </h1>
           <div className="flex flex-wrap items-center gap-3">
-            <time className="font-mono text-muted-foreground text-xs">
+            <time className="font-mono text-muted-foreground text-xs tabular-nums">
               {formatDate(post.meta.date, locale)}
             </time>
             {post.meta.readingTimeText && (

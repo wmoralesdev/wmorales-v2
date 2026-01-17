@@ -17,7 +17,7 @@ export async function MinimalBlogPreview() {
   return (
     <section className="space-y-5">
       <div className="flex items-baseline justify-between">
-        <h2 className="font-mono text-xs font-normal uppercase tracking-[0.2em] text-muted-foreground/60">
+        <h2 className="font-mono text-xs font-normal uppercase text-muted-foreground/60">
           {t("title")}
         </h2>
         <Link
@@ -38,12 +38,12 @@ export async function MinimalBlogPreview() {
                 <h3 className="font-display text-base font-medium text-foreground transition-colors group-hover:text-accent">
                   {post.title}
                 </h3>
-                <time className="font-mono text-xs text-muted-foreground/50">
+                <time className="font-mono text-xs tabular-nums text-muted-foreground/50">
                   {formatDate(post.date, locale)}
                 </time>
               </div>
               {post.summary && (
-                <p className="text-sm leading-relaxed text-muted-foreground/70">
+                <p className="text-sm leading-relaxed text-muted-foreground/70 text-pretty">
                   {post.summary}
                 </p>
               )}

@@ -88,6 +88,8 @@ function CursorPromptButton({ deepLink }: CursorPromptButtonProps) {
   return (
     <a
       href={deepLink}
+      target="_blank"
+      rel="noopener noreferrer"
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
       onClick={(e) => e.stopPropagation()}
@@ -177,7 +179,7 @@ function CursorPrompt({ title, prompt, deepLink }: CursorPromptProps) {
         <CollapsibleTrigger className="shrink-0 rounded p-1 transition-colors hover:bg-accent/20 cursor-pointer">
           <ChevronDown
             className={cn(
-              "h-4 w-4 text-muted-foreground transition-transform duration-200",
+              "size-4 text-muted-foreground transition-transform duration-200",
               isOpen && "rotate-180",
             )}
           />

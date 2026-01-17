@@ -38,11 +38,11 @@ export function ScrollToTop() {
     <Button
       variant="outline"
       size="icon"
-      className="fixed bottom-6 right-6 z-50 h-10 w-10 rounded-full shadow-lg"
+      className="fixed bottom-6 right-6 z-50 size-10 rounded-full shadow-lg pb-safe"
       onClick={scrollToTop}
       aria-label="Scroll to top"
     >
-      <ArrowUp className="h-4 w-4" />
+      <ArrowUp className="size-4" />
     </Button>
   );
 }

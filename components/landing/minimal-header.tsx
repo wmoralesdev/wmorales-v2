@@ -21,7 +21,7 @@ export async function MinimalHeader() {
   return (
     <header className="space-y-6">
       <div className="space-y-4">
-        <h1 className="font-display font-semibold text-4xl text-foreground tracking-tight sm:text-5xl">
+        <h1 className="font-display font-semibold text-4xl text-foreground text-balance sm:text-5xl">
           {t("name")} <span className="text-accent">{t("nameAccent")}</span>
         </h1>
         <p className="text-lg text-muted-foreground leading-relaxed">
@@ -30,7 +30,7 @@ export async function MinimalHeader() {
           <span className="text-muted-foreground/80">{t("location")}</span>
         </p>
         <div className="flex items-center gap-2">
-          <span className="inline-block h-2 w-2 animate-pulse rounded-full bg-accent" />
+          <span className="inline-block size-2 animate-pulse rounded-full bg-accent" />
           <span className="font-medium font-mono text-accent text-sm">
             {t("ambassador")}
           </span>
@@ -47,7 +47,7 @@ export async function MinimalHeader() {
             rel="noopener noreferrer"
             target="_blank"
           >
-            <Icon className="h-[18px] w-[18px]" />
+            <Icon className="size-[18px]" />
           </a>
         ))}
         <span className="h-3.5 w-px bg-border" />
