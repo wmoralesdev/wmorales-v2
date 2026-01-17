@@ -236,7 +236,7 @@ Your computer is now set up for web development. Here are some project starters 
 
 {% cursor-prompt title="React + Vite + shadcn web app" prompt="I'm a complete beginner with no technical background. I just set up my development environment and I want to build a modern web app.
 
-Please help me create a React application using Vite and shadcn/ui. I want to build a simple task manager where I can:
+Please help me create a React application using Vite, TypeScript, Tailwind CSS v4, and shadcn/ui. I want to build a simple task manager where I can:
 - Add tasks with a title
 - Mark tasks as complete
 - Delete tasks
@@ -244,19 +244,23 @@ Please help me create a React application using Vite and shadcn/ui. I want to bu
 
 Before we start:
 1. Check my operating system and verify Node.js is working
-2. Explain what React, Vite, and shadcn/ui are in simple terms
+2. Explain what React, Vite, TypeScript, Tailwind CSS v4, and shadcn/ui are in simple terms
 
 Then guide me step by step:
-1. Create the project
-2. Install and set up shadcn/ui
-3. Build the task manager piece by piece
-4. Run it in my browser
+1. Create the project with Vite using the React + TypeScript template
+2. Install Tailwind CSS v4 (tailwindcss@^4 and @tailwindcss/postcss@^4)
+3. Configure Tailwind v4 using @import 'tailwindcss' in the CSS file (no tailwind.config.js needed)
+4. Install and set up shadcn/ui to work with Tailwind v4
+5. Build the task manager piece by piece using TypeScript (.tsx files)
+6. Run it in my browser
+
+IMPORTANT: If you encounter any npm/pnpm/yarn errors during installation, diagnose and fix the root cause. Don't manually create files to work around errors—keep iterating until the installation succeeds. Check Node.js version compatibility and verify the package manager is working correctly.
 
 After each major step, verify it worked before moving on. Explain everything like I've never coded before." /%}
 
 {% cursor-prompt title="Mobile app with Expo" prompt="I'm a non-technical person who wants to build a mobile app. I've never done this before and I'm not sure what I need.
 
-Please help me create a simple mobile app using Expo (React Native). I want to build a personal notes app where I can:
+Please help me create a simple mobile app using Expo (React Native) with TypeScript. I want to build a personal notes app where I can:
 - Write and save notes
 - See a list of my notes
 - Tap a note to read it
@@ -269,15 +273,17 @@ Before we start:
 
 Then guide me step by step:
 1. Install anything I'm missing
-2. Create the Expo project
-3. Build the notes app screen by screen
+2. Create the Expo project with TypeScript template (all files should use .ts or .tsx extensions)
+3. Build the notes app screen by screen using TypeScript
 4. Show me how to preview it on my phone or a simulator
+
+IMPORTANT: If you encounter any npm/pnpm/yarn errors during installation, diagnose and fix the root cause. Don't manually create files to work around errors—keep iterating until the installation succeeds. Check Node.js version compatibility and verify the package manager is working correctly.
 
 Go slow, explain everything in plain English, and check with me after each step." /%}
 
 {% cursor-prompt title="Full-stack app with Next.js" prompt="I'm a complete beginner and I want to understand how 'full-stack' apps work—where the website can save and retrieve data.
 
-Please help me create a simple guestbook app using Next.js where visitors can:
+Please help me create a simple guestbook app using Next.js with TypeScript, Tailwind CSS v4, and shadcn/ui where visitors can:
 - See messages from other visitors
 - Leave their own message with their name
 - Messages persist (don't disappear when I refresh)
@@ -287,17 +293,21 @@ Before we start:
 2. Explain what 'full-stack' means and what Next.js does
 
 Then guide me step by step:
-1. Create a Next.js project with the App Router
-2. Set up shadcn/ui for nice styling
-3. Create a simple way to store messages (can be a JSON file to start)
-4. Build the guestbook page
-5. Show me how it all connects
+1. Create a Next.js project with the App Router and TypeScript (all files should use .ts or .tsx extensions)
+2. Install Tailwind CSS v4 (tailwindcss@^4 and @tailwindcss/postcss@^4)
+3. Configure Tailwind v4 using @import 'tailwindcss' in the CSS file (no tailwind.config.js needed)
+4. Set up shadcn/ui to work with Tailwind v4
+5. Create a simple way to store messages (can be a JSON file to start)
+6. Build the guestbook page
+7. Show me how it all connects
+
+IMPORTANT: If you encounter any npm/pnpm/yarn errors during installation, diagnose and fix the root cause. Don't manually create files to work around errors—keep iterating until the installation succeeds. Check Node.js version compatibility and verify the package manager is working correctly.
 
 Explain the 'frontend' and 'backend' parts as we go. I want to understand, not just copy commands." /%}
 
 {% cursor-prompt title="Static portfolio site" prompt="I'm not technical but I want to create a personal portfolio website to showcase my work. I want it to look professional and modern.
 
-Please help me build a portfolio site that has:
+Please help me build a portfolio site using React, Vite, TypeScript, and Tailwind CSS v4 that has:
 - A hero section with my name and what I do
 - An about section
 - A place to showcase 3-4 projects or work samples
@@ -309,11 +319,14 @@ Before we start:
 2. Explain what tools we'll use and why
 
 Then guide me step by step:
-1. Create the project with React and Vite
-2. Set up Tailwind CSS for styling
-3. Build each section one at a time
-4. Make it responsive
-5. Show me how I could put this online when I'm ready
+1. Create the project with React and Vite using the React + TypeScript template (all files should use .ts or .tsx extensions)
+2. Install Tailwind CSS v4 (tailwindcss@^4 and @tailwindcss/postcss@^4)
+3. Configure Tailwind v4 using @import 'tailwindcss' in the CSS file (no tailwind.config.js needed)
+4. Build each section one at a time using TypeScript
+5. Make it responsive
+6. Show me how I could put this online when I'm ready
+
+IMPORTANT: If you encounter any npm/pnpm/yarn errors during installation, diagnose and fix the root cause. Don't manually create files to work around errors—keep iterating until the installation succeeds. Check Node.js version compatibility and verify the package manager is working correctly.
 
 Keep explanations simple. After each section is done, let me see it in my browser before moving on." /%}
 

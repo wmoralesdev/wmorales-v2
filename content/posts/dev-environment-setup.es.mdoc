@@ -236,7 +236,7 @@ Tu computadora ya está lista para desarrollo web. Aquí tienes algunos proyecto
 
 {% cursor-prompt title="App web con React + Vite + shadcn" prompt="Soy un principiante total sin conocimientos técnicos. Acabo de configurar mi entorno de desarrollo y quiero construir una app web moderna.
 
-Por favor ayúdame a crear una aplicación con React usando Vite y shadcn/ui. Quiero construir un administrador de tareas simple donde pueda:
+Por favor ayúdame a crear una aplicación con React usando Vite, TypeScript, Tailwind CSS v4 y shadcn/ui. Quiero construir un administrador de tareas simple donde pueda:
 - Agregar tareas con un título
 - Marcar tareas como completadas
 - Eliminar tareas
@@ -244,19 +244,23 @@ Por favor ayúdame a crear una aplicación con React usando Vite y shadcn/ui. Qu
 
 Antes de empezar:
 1. Revisa mi sistema operativo y verifica que Node.js está funcionando
-2. Explícame qué son React, Vite y shadcn/ui en términos simples
+2. Explícame qué son React, Vite, TypeScript, Tailwind CSS v4 y shadcn/ui en términos simples
 
 Luego guíame paso a paso:
-1. Crear el proyecto
-2. Instalar y configurar shadcn/ui
-3. Construir el administrador de tareas pieza por pieza
-4. Ejecutarlo en mi navegador
+1. Crear el proyecto con Vite usando la plantilla React + TypeScript
+2. Instalar Tailwind CSS v4 (tailwindcss@^4 y @tailwindcss/postcss@^4)
+3. Configurar Tailwind v4 usando @import 'tailwindcss' en el archivo CSS (no se necesita tailwind.config.js)
+4. Instalar y configurar shadcn/ui para que funcione con Tailwind v4
+5. Construir el administrador de tareas pieza por pieza usando TypeScript (archivos .tsx)
+6. Ejecutarlo en mi navegador
+
+IMPORTANTE: Si encuentras errores de npm/pnpm/yarn durante la instalación, diagnostica y arregla la causa raíz. No crees archivos manualmente para evitar errores—sigue iterando hasta que la instalación tenga éxito. Verifica la compatibilidad de la versión de Node.js y confirma que el gestor de paquetes está funcionando correctamente.
 
 Después de cada paso importante, verifica que funcionó antes de seguir. Explícame todo como si nunca hubiera programado." /%}
 
 {% cursor-prompt title="App móvil con Expo" prompt="Soy una persona sin conocimientos técnicos que quiere construir una app móvil. Nunca he hecho esto y no sé qué necesito.
 
-Por favor ayúdame a crear una app móvil simple usando Expo (React Native). Quiero construir una app de notas personales donde pueda:
+Por favor ayúdame a crear una app móvil simple usando Expo (React Native) con TypeScript. Quiero construir una app de notas personales donde pueda:
 - Escribir y guardar notas
 - Ver una lista de mis notas
 - Tocar una nota para leerla
@@ -269,15 +273,17 @@ Antes de empezar:
 
 Luego guíame paso a paso:
 1. Instalar lo que me falte
-2. Crear el proyecto de Expo
-3. Construir la app de notas pantalla por pantalla
+2. Crear el proyecto de Expo con la plantilla de TypeScript (todos los archivos deben usar extensiones .ts o .tsx)
+3. Construir la app de notas pantalla por pantalla usando TypeScript
 4. Mostrarme cómo verla en mi teléfono o en un simulador
+
+IMPORTANTE: Si encuentras errores de npm/pnpm/yarn durante la instalación, diagnostica y arregla la causa raíz. No crees archivos manualmente para evitar errores—sigue iterando hasta que la instalación tenga éxito. Verifica la compatibilidad de la versión de Node.js y confirma que el gestor de paquetes está funcionando correctamente.
 
 Ve despacio, explica todo en español simple, y pregúntame después de cada paso." /%}
 
 {% cursor-prompt title="App full-stack con Next.js" prompt="Soy un principiante total y quiero entender cómo funcionan las apps 'full-stack'—donde el sitio web puede guardar y recuperar datos.
 
-Por favor ayúdame a crear una app simple de libro de visitas usando Next.js donde los visitantes puedan:
+Por favor ayúdame a crear una app simple de libro de visitas usando Next.js con TypeScript, Tailwind CSS v4 y shadcn/ui donde los visitantes puedan:
 - Ver mensajes de otros visitantes
 - Dejar su propio mensaje con su nombre
 - Los mensajes persisten (no desaparecen cuando recargo la página)
@@ -287,17 +293,21 @@ Antes de empezar:
 2. Explícame qué significa 'full-stack' y qué hace Next.js
 
 Luego guíame paso a paso:
-1. Crear un proyecto de Next.js con el App Router
-2. Configurar shadcn/ui para que se vea bonito
-3. Crear una forma simple de guardar mensajes (puede ser un archivo JSON para empezar)
-4. Construir la página del libro de visitas
-5. Mostrarme cómo se conecta todo
+1. Crear un proyecto de Next.js con el App Router y TypeScript (todos los archivos deben usar extensiones .ts o .tsx)
+2. Instalar Tailwind CSS v4 (tailwindcss@^4 y @tailwindcss/postcss@^4)
+3. Configurar Tailwind v4 usando @import 'tailwindcss' en el archivo CSS (no se necesita tailwind.config.js)
+4. Configurar shadcn/ui para que funcione con Tailwind v4
+5. Crear una forma simple de guardar mensajes (puede ser un archivo JSON para empezar)
+6. Construir la página del libro de visitas
+7. Mostrarme cómo se conecta todo
+
+IMPORTANTE: Si encuentras errores de npm/pnpm/yarn durante la instalación, diagnostica y arregla la causa raíz. No crees archivos manualmente para evitar errores—sigue iterando hasta que la instalación tenga éxito. Verifica la compatibilidad de la versión de Node.js y confirma que el gestor de paquetes está funcionando correctamente.
 
 Explícame las partes de 'frontend' y 'backend' mientras avanzamos. Quiero entender, no solo copiar comandos." /%}
 
 {% cursor-prompt title="Sitio de portafolio" prompt="No soy técnico pero quiero crear un sitio web de portafolio personal para mostrar mi trabajo. Quiero que se vea profesional y moderno.
 
-Por favor ayúdame a construir un sitio de portafolio que tenga:
+Por favor ayúdame a construir un sitio de portafolio usando React, Vite, TypeScript y Tailwind CSS v4 que tenga:
 - Una sección hero con mi nombre y lo que hago
 - Una sección de 'sobre mí'
 - Un lugar para mostrar 3-4 proyectos o muestras de trabajo
@@ -309,11 +319,14 @@ Antes de empezar:
 2. Explícame qué herramientas vamos a usar y por qué
 
 Luego guíame paso a paso:
-1. Crear el proyecto con React y Vite
-2. Configurar Tailwind CSS para los estilos
-3. Construir cada sección una a la vez
-4. Hacerlo responsive
-5. Mostrarme cómo podría ponerlo en línea cuando esté listo
+1. Crear el proyecto con React y Vite usando la plantilla React + TypeScript (todos los archivos deben usar extensiones .ts o .tsx)
+2. Instalar Tailwind CSS v4 (tailwindcss@^4 y @tailwindcss/postcss@^4)
+3. Configurar Tailwind v4 usando @import 'tailwindcss' en el archivo CSS (no se necesita tailwind.config.js)
+4. Construir cada sección una a la vez usando TypeScript
+5. Hacerlo responsive
+6. Mostrarme cómo podría ponerlo en línea cuando esté listo
+
+IMPORTANTE: Si encuentras errores de npm/pnpm/yarn durante la instalación, diagnostica y arregla la causa raíz. No crees archivos manualmente para evitar errores—sigue iterando hasta que la instalación tenga éxito. Verifica la compatibilidad de la versión de Node.js y confirma que el gestor de paquetes está funcionando correctamente.
 
 Mantén las explicaciones simples. Después de que cada sección esté lista, déjame verla en mi navegador antes de seguir." /%}
 
