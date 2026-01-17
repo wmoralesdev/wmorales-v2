@@ -1,6 +1,6 @@
 ---
 slug: token-efficiency
-title: Por Qué el Inglés es Uno de los Idiomas Más Eficientes en Tokens para IA
+title: Por qué el inglés es uno de los idiomas más eficientes en tokens para IA
 description: Entendiendo la tokenización y por qué tu elección de idioma impacta los costos de IA, límites de contexto y calidad de respuestas.
 publishedAt: 2026-01-17
 featured: true
@@ -12,11 +12,11 @@ tags:
 published: true
 ---
 
-# El Costo Oculto del Idioma
+# El costo oculto del idioma
 
 Cada vez que interactúas con un modelo de IA, tu texto se descompone en tokens. Estos tokens son las unidades fundamentales que los modelos procesan, y afectan directamente tus costos, límites de ventana de contexto e incluso la calidad de las respuestas. Lo que muchos no saben es que el idioma que usas afecta significativamente cuántos tokens consume tu mensaje.
 
-## ¿Qué Son los Tokens?
+## ¿Qué son los tokens?
 
 Los tokens no son palabras, caracteres ni sílabas; son unidades de subpalabras creadas por algoritmos de tokenización. La mayoría de los LLMs modernos usan variantes de Byte-Pair Encoding (BPE), que aprende secuencias comunes de caracteres de los datos de entrenamiento.
 
@@ -25,15 +25,15 @@ Para texto en inglés, aproximadamente:
 - 1 token ≈ 0.75 palabras
 - 100 tokens ≈ 75 palabras
 
-{% callout type="info" title="Estimación Rápida" %}
+{% callout type="info" title="Estimación rápida" %}
 Para texto en inglés, una buena regla es que 1,000 tokens equivalen aproximadamente a 750 palabras. Esto varía significativamente para otros idiomas.
 {% /callout %}
 
-## La Ventaja del Inglés
+## La ventaja del inglés
 
 El inglés se beneficia de varios factores que lo hacen eficiente en tokens:
 
-### 1. Dominancia en Datos de Entrenamiento
+### 1. Dominancia en datos de entrenamiento
 
 La gran mayoría del texto usado para entrenar LLMs está en inglés. Esto significa que el tokenizador ha visto patrones en inglés millones de veces y ha optimizado su vocabulario en consecuencia. Las palabras comunes en inglés a menudo obtienen su propio token dedicado.
 
@@ -44,15 +44,15 @@ Chino: "你好，你怎么样？" → 8-12 tokens
 Árabe: "مرحبا، كيف حالك؟" → 10-15 tokens
 ```
 
-### 2. Conjunto de Caracteres ASCII
+### 2. Conjunto de caracteres ASCII
 
 El inglés usa el conjunto de caracteres ASCII básico, que los tokenizadores manejan muy eficientemente. Los idiomas con caracteres especiales, diacríticos o scripts no latinos requieren más bytes por carácter, lo que resulta en más tokens.
 
-### 3. Simplicidad Morfológica
+### 3. Simplicidad morfológica
 
 El inglés tiene una morfología relativamente simple comparado con idiomas como el finlandés, húngaro o turco. Los idiomas aglutinantes empaquetan más significado en palabras individuales a través de prefijos y sufijos, pero estas palabras complejas a menudo se dividen en muchos tokens.
 
-{% card title="Comparación de Eficiencia de Tokens" variant="feature" %}
+{% card title="Comparación de eficiencia de tokens" variant="feature" %}
 Investigación de [Language Model Tokenizers Introduce Unfairness](https://arxiv.org/abs/2305.15425) muestra:
 - **Inglés**: Línea base (1.0x)
 - **Español/Francés**: ~1.2-1.3x más tokens
@@ -61,27 +61,27 @@ Investigación de [Language Model Tokenizers Introduce Unfairness](https://arxiv
 - **Birmano/Amárico**: ~5-10x más tokens
 {% /card %}
 
-## Por Qué Esto Importa
+## Por qué esto importa
 
-### Implicaciones de Costo
+### Implicaciones de costo
 
 La mayoría de las APIs de IA cobran por token. Si estás construyendo aplicaciones que sirven a usuarios multilingües, la misma funcionalidad cuesta más para hablantes no ingleses. Un usuario hispanohablante podría pagar 20-30% más por la misma conversación.
 
-### Límites de Ventana de Contexto
+### Límites de ventana de contexto
 
 Los modelos modernos tienen límites de contexto (128K, 200K tokens). Si tu idioma usa 2x más tokens para el mismo contenido, efectivamente tienes la mitad de la ventana de contexto disponible.
 
-{% callout type="warning" title="Impacto Práctico" %}
+{% callout type="warning" title="Impacto práctico" %}
 Una ventana de contexto de 128K que puede contener ~300 páginas de texto en inglés podría solo contener ~150 páginas de texto en chino. Esto afecta cuánto código, documentación o historial de conversación puedes incluir en un solo prompt.
 {% /callout %}
 
-### Calidad de Respuesta
+### Calidad de respuesta
 
 Las secuencias de tokens más largas pueden impactar la atención y el razonamiento del modelo. Aunque los modelos modernos manejan esto bien, el texto extremadamente ineficiente en tokens puede ver una degradación sutil de calidad en contextos muy largos.
 
-## Optimizando Tu Uso de Tokens
+## Optimizando tu uso de tokens
 
-### 1. Usa Inglés para Prompts Técnicos
+### 1. Usa inglés para prompts técnicos
 
 Cuando trabajes con asistentes de código IA, considera usar inglés para:
 - System prompts y reglas
@@ -93,7 +93,7 @@ En lugar de: "Por favor, crea una función que valide el correo electrónico del
 Considera: "Create a function that validates user email"
 ```
 
-### 2. Sé Conciso
+### 2. Sé conciso
 
 Sin importar el idioma, la concisión ahorra tokens:
 
@@ -103,7 +103,7 @@ Verboso: "Me gustaría que por favor me ayudaras a crear una función que pueda 
 Conciso: "Crea una función que verifique si un número es primo"
 ```
 
-### 3. Aprovecha los Formatos Estructurados
+### 3. Aprovecha los formatos estructurados
 
 JSON y datos estructurados a menudo se tokenizan eficientemente:
 
@@ -115,15 +115,15 @@ JSON y datos estructurados a menudo se tokenizan eficientemente:
 }
 ```
 
-### 4. Sabe Cuándo el Idioma No Importa
+### 4. Sabe cuándo el idioma no importa
 
 Para escritura creativa, contenido cultural o cuando la precisión en un idioma específico es crucial, siempre usa el idioma apropiado. El sobrecosto en tokens vale la mejora en calidad.
 
-{% callout type="tip" title="Enfoque Balanceado" %}
+{% callout type="tip" title="Enfoque balanceado" %}
 Usa inglés para interacciones técnicas con IA donde la precisión importa. Usa tu idioma nativo cuando el contexto cultural, los matices o la terminología específica sean importantes.
 {% /callout %}
 
-## El Panorama General
+## El panorama general
 
 La brecha de eficiencia en tokens representa un problema real de equidad en la accesibilidad de IA. Investigadores y empresas están trabajando en:
 
@@ -135,7 +135,7 @@ Hasta que lleguen estas mejoras, entender la tokenización te ayuda a tomar deci
 
 {% separator spacing="large" %}
 
-## Puntos Clave
+## Puntos clave
 
 {% card title="Recuerda" variant="success" %}
 1. **Tokens ≠ Palabras**: La tokenización es compleja y depende del idioma
