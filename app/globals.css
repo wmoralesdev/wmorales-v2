@@ -78,24 +78,47 @@
   }
 }
 
-/* View Transitions */
-::view-transition-old(root) {
-  animation: fadeOut 150ms ease-out;
-}
-
+/* View Transitions - disable root animation to prevent page-wide flash */
+::view-transition-old(root),
 ::view-transition-new(root) {
-  animation: fadeIn 150ms ease-in;
+  animation: none;
 }
 
-@keyframes fadeOut {
+/* Horizontal slide transitions */
+::view-transition-old(slide) {
+  animation: slide-out-left 300ms ease-out both;
+}
+
+::view-transition-new(slide) {
+  animation: slide-in-right 300ms ease-out both;
+}
+
+@keyframes slide-out-left {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
   to {
     opacity: 0;
+    transform: translateX(-20px);
   }
 }
 
-@keyframes fadeIn {
+@keyframes slide-in-right {
   from {
     opacity: 0;
+    transform: translateX(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(slide),
+  ::view-transition-new(slide) {
+    animation: none;
   }
 }
 

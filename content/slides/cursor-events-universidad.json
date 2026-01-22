@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Cursor Events en tu Universidad",
+    "title": "Cursor en tu Universidad",
     "author": "Ing. Walter Morales",
     "theme": "dark",
     "accentColor": "#7C3AED",
@@ -9,7 +9,7 @@
   "slides": [
     {
       "type": "cover",
-      "headline": "Cursor Events\nen tu Universidad",
+      "headline": "Cursor\nen tu Universidad",
       "subline": "Una propuesta de colaboración",
       "author": {
         "name": "Ing. Walter Morales",
@@ -69,43 +69,52 @@
       "headline": "Lo que hemos construido",
       "events": [
         {
-          "title": "Café Cursor",
-          "description": "Eventos mensuales presenciales",
-          "metric": "120+ asistentes"
+          "title": "6 eventos en 2025",
+          "description": "Meetups, Cafés, Workshops",
+          "metric": "450+ asistentes IRL"
         },
         {
-          "title": "Workshop UES",
-          "description": "Demo en vivo de Cursor + Supabase",
-          "metric": "47 estudiantes"
+          "title": "Comunidad activa",
+          "description": "Asistencia a eventos presenciales",
+          "metric": "400+ builders"
         },
         {
-          "title": "Hackathon Regional",
-          "description": "Builders de toda Centroamérica",
+          "title": "Hackathon 2026",
+          "description": "Organizando evento regional de builders",
           "metric": "Enero 2026"
         }
       ]
     },
     {
+      "type": "statement",
+      "headline": "Cursor Lab",
+      "items": [
+        "Sesiones guiadas de 3 horas con proyecto funcional al final",
+        "Para cualquier nivel técnico — incluso principiantes",
+        "Guiado por un Cursor Ambassador con 6+ años de experiencia"
+      ]
+    },
+    {
       "type": "cards",
-      "headline": "Eventos Prácticos\nAdaptados a tu Facultad",
+      "headline": "Tres tracks,\nmúltiples posibilidades",
       "cards": [
         {
-          "title": "Intro a Cursor",
-          "subtitle": "2 horas",
-          "description": "Setup + primer proyecto funcional"
-        },
-        {
-          "title": "Beyond Vibecoding",
+          "title": "Web Apps",
           "subtitle": "3 horas",
-          "description": "Uso profesional de IA en desarrollo"
+          "description": "Landing pages, dashboards y apps con Next.js + Supabase"
         },
         {
-          "title": "Full Stack Express",
-          "subtitle": "4 horas",
-          "description": "Cursor + Supabase + Deploy"
+          "title": "Mobile Apps",
+          "subtitle": "3 horas",
+          "description": "Apps nativas con React Native o Flutter"
+        },
+        {
+          "title": "Chatbots & IA",
+          "subtitle": "3 horas",
+          "description": "Asistentes inteligentes con APIs de OpenAI o Claude"
         }
       ],
-      "footnote": "Todos los eventos incluyen repo con recursos para los estudiantes"
+      "footnote": "Contenido adaptable a las necesidades de cada facultad"
     },
     {
       "type": "statement",
@@ -115,7 +124,7 @@
         { "label": "Código en vivo", "value": 70 },
         { "label": "Q&A y networking", "value": 10 }
       ],
-      "quote": "Los estudiantes aprenden más en 2 horas de live coding que en un semestre de teoría"
+      "quote": "La práctica guiada complementa la teoría y acelera la curva de aprendizaje"
     },
     {
       "type": "two-column",
@@ -142,19 +151,19 @@
       "headline": "Nos adaptamos a ustedes",
       "cards": [
         {
-          "title": "Evento único",
-          "description": "Sesión puntual de 2-4 horas en sus instalaciones"
+          "title": "Lab único",
+          "description": "Una sesión de 3 horas para probar el formato"
         },
         {
-          "title": "Serie semestral",
-          "description": "2-3 eventos progresivos durante el ciclo"
+          "title": "Serie de Labs",
+          "description": "2-3 sesiones progresivas durante el ciclo"
         },
         {
-          "title": "Co-creación",
-          "description": "Diseñamos juntos contenido específico para su pensum"
+          "title": "Lab personalizado",
+          "description": "Diseñamos el proyecto según su pensum o cátedra"
         }
       ],
-      "footnote": "Sin costo para la universidad — los eventos son parte de la iniciativa Cursor Ambassadors"
+      "footnote": "Sin costo para la universidad — parte de la iniciativa Cursor Ambassadors"
     },
     {
       "type": "cta",

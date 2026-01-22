@@ -32,9 +32,19 @@ export function SlideNavigation({
   const goToSlide = useCallback(
     (index: number) => {
       const clampedIndex = Math.max(0, Math.min(index, totalSlides - 1));
-      router.push(`/slides/${deckSlug}?slide=${clampedIndex}`);
+
+      if (clampedIndex === currentSlide) return;
+
+      const navigate = () =>
+        router.push(`/slides/${deckSlug}?slide=${clampedIndex}`);
+
+      if (document.startViewTransition) {
+        document.startViewTransition(navigate);
+      } else {
+        navigate();
+      }
     },
-    [deckSlug, totalSlides, router],
+    [deckSlug, totalSlides, router, currentSlide],
   );
 
   const goNext = useCallback(() => {
@@ -55,10 +65,8 @@ export function SlideNavigation({
     }
   }, []);
 
-  // Keyboard navigation
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Don't handle if user is typing in an input
       if (
         e.target instanceof HTMLInputElement ||
         e.target instanceof HTMLTextAreaElement
@@ -94,9 +102,6 @@ export function SlideNavigation({
           }
           break;
         case "Escape":
-          if (isFullscreen) {
-            // Escape already handled by browser for fullscreen
-          }
           break;
       }
     };

@@ -33,11 +33,9 @@ export function Deck({
   const { meta, slides } = presentation;
   const themeTokens = generateSlideTheme(meta);
 
-  // Apply theme class based on presentation meta
   const themeClass = meta.theme === "dark" ? "dark" : "";
 
   if (printMode) {
-    // Print mode: render all slides stacked with page breaks
     return (
       <div
         className={cn(themeClass, className)}
@@ -54,7 +52,6 @@ export function Deck({
     );
   }
 
-  // Preview mode: render single slide
   const slideIndex = Math.max(0, Math.min(currentSlide, slides.length - 1));
   const slide = slides[slideIndex];
 

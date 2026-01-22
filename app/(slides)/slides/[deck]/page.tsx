@@ -44,12 +44,10 @@ export default async function DeckPreviewPage({
   const result = loadDeck(deckSlug);
 
   if (!result.success) {
-    // Check if deck exists but has validation errors
     if (result.errors.some((e) => e.path === "file")) {
       notFound();
     }
 
-    // Show validation errors
     return (
       <div className="mx-auto max-w-2xl px-6 py-16">
         <Alert variant="destructive">
@@ -92,13 +90,15 @@ export default async function DeckPreviewPage({
     <LandscapeEnforcer>
       <div className="flex min-h-dvh flex-col">
         {/* Slide viewer */}
-        <div className="flex flex-1 items-center justify-center bg-muted/30 p-4 md:p-8">
+        <div className="flex flex-1 items-center justify-center bg-muted/90 p-4 md:p-8">
           <div className="w-full max-w-6xl overflow-hidden rounded-lg shadow-lg">
-            <Deck
-              presentation={presentation}
-              currentSlide={currentSlide}
-              printMode={false}
-            />
+            <div style={{ viewTransitionName: "slide" }}>
+              <Deck
+                presentation={presentation}
+                currentSlide={currentSlide}
+                printMode={false}
+              />
+            </div>
           </div>
         </div>
 
