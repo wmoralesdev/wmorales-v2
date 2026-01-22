@@ -1,0 +1,176 @@
+{
+  "meta": {
+    "title": "Cursor Events en tu Universidad",
+    "author": "Ing. Walter Morales",
+    "theme": "dark",
+    "accentColor": "#7C3AED",
+    "language": "es-SV"
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "headline": "Cursor Events\nen tu Universidad",
+      "subline": "Una propuesta de colaboración",
+      "author": {
+        "name": "Ing. Walter Morales",
+        "title": "Cursor Ambassador · El Salvador"
+      },
+      "logos": ["/cursor-dark.png"]
+    },
+    {
+      "type": "statement",
+      "headline": "El talento centroamericano\ncompite con desventaja",
+      "items": [
+        "Las herramientas modernas llegan tarde a la academia",
+        "La brecha entre lo que se enseña y lo que el mercado pide crece",
+        "Los estudiantes aprenden teoría sin flujos de trabajo reales"
+      ]
+    },
+    {
+      "type": "statement",
+      "headline": "Las herramientas están,\nfalta practicarlas",
+      "body": "Los IDEs con IA ya son el estándar en equipos profesionales. Mientras más temprano los estudiantes los dominen, mejor preparados estarán para el mercado."
+    },
+    {
+      "type": "profile",
+      "headline": "Ing. Walter Morales",
+      "subtitle": "Ingeniero de Software · Cursor Ambassador El Salvador",
+      "bio": "Ingeniero con 6+ años de experiencia en desarrollo de software, actualmente en SOUTHWORKS (partners de AWS y Microsoft).",
+      "credentials": [
+        {
+          "category": "Experiencia",
+          "items": [
+            "6+ años en desarrollo",
+            "SOUTHWORKS (AWS/Microsoft)",
+            ".NET, React, Cloud"
+          ]
+        },
+        {
+          "category": "Comunidad",
+          "items": [
+            "400+ devs en Cursor SV",
+            "Eventos mensuales presenciales",
+            "Colaboración con UES y UCA"
+          ]
+        },
+        {
+          "category": "Educación",
+          "items": [
+            "Ing. Informática — UCA",
+            "Certificado Facebook Dev Circles",
+            "Frontend Developer Program"
+          ]
+        }
+      ],
+      "image": "/me.jpeg"
+    },
+    {
+      "type": "timeline",
+      "headline": "Lo que hemos construido",
+      "events": [
+        {
+          "title": "Café Cursor",
+          "description": "Eventos mensuales presenciales",
+          "metric": "120+ asistentes"
+        },
+        {
+          "title": "Workshop UES",
+          "description": "Demo en vivo de Cursor + Supabase",
+          "metric": "47 estudiantes"
+        },
+        {
+          "title": "Hackathon Regional",
+          "description": "Builders de toda Centroamérica",
+          "metric": "Enero 2026"
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "headline": "Eventos Prácticos\nAdaptados a tu Facultad",
+      "cards": [
+        {
+          "title": "Intro a Cursor",
+          "subtitle": "2 horas",
+          "description": "Setup + primer proyecto funcional"
+        },
+        {
+          "title": "Beyond Vibecoding",
+          "subtitle": "3 horas",
+          "description": "Uso profesional de IA en desarrollo"
+        },
+        {
+          "title": "Full Stack Express",
+          "subtitle": "4 horas",
+          "description": "Cursor + Supabase + Deploy"
+        }
+      ],
+      "footnote": "Todos los eventos incluyen repo con recursos para los estudiantes"
+    },
+    {
+      "type": "statement",
+      "headline": "Menos slides,\nmás código",
+      "breakdown": [
+        { "label": "Contexto y setup", "value": 20 },
+        { "label": "Código en vivo", "value": 70 },
+        { "label": "Q&A y networking", "value": 10 }
+      ],
+      "quote": "Los estudiantes aprenden más en 2 horas de live coding que en un semestre de teoría"
+    },
+    {
+      "type": "two-column",
+      "headline": "Ganamos todos",
+      "left": {
+        "title": "Para la Universidad",
+        "items": [
+          "Contenido actualizado sin modificar pensum",
+          "Exposición a comunidad tech activa (+400 devs)",
+          "Estudiantes con herramientas que el mercado pide"
+        ]
+      },
+      "right": {
+        "title": "Para la Comunidad Cursor",
+        "items": [
+          "Acceso a talento fresco",
+          "Espacios para eventos de calidad",
+          "Alianzas de largo plazo con academia"
+        ]
+      }
+    },
+    {
+      "type": "cards",
+      "headline": "Nos adaptamos a ustedes",
+      "cards": [
+        {
+          "title": "Evento único",
+          "description": "Sesión puntual de 2-4 horas en sus instalaciones"
+        },
+        {
+          "title": "Serie semestral",
+          "description": "2-3 eventos progresivos durante el ciclo"
+        },
+        {
+          "title": "Co-creación",
+          "description": "Diseñamos juntos contenido específico para su pensum"
+        }
+      ],
+      "footnote": "Sin costo para la universidad — los eventos son parte de la iniciativa Cursor Ambassadors"
+    },
+    {
+      "type": "cta",
+      "headline": "¿Coordinamos?",
+      "steps": [
+        "Platicamos 15 minutos para conocer sus necesidades",
+        "Definimos fecha y formato juntos",
+        "Ejecutamos el primer evento"
+      ],
+      "contact": {
+        "name": "Ing. Walter Morales",
+        "email": "hello@wmorales.dev",
+        "website": "https://wmorales.dev",
+        "phone": "(+503) 7132-0261"
+      },
+      "qr": "https://cal.com/wmorales"
+    }
+  ]
+}

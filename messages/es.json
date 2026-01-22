@@ -236,6 +236,38 @@
           "secondary": "Secundario"
         }
       }
+    },
+    "slides": {
+      "title": "Diapositivas",
+      "description": "Primitivos de diapositivas para el motor de presentaciones JSON. Estos componentes están diseñados para legibilidad a distancia de presentación y exportación PDF.",
+      "frame": {
+        "title": "Marco de Diapositiva",
+        "description": "El contenedor de relación de aspecto 16:9 para diapositivas. Usa CSS aspect-ratio para tamaño responsivo en vista previa, y dimensiones fijas para exportación PDF."
+      },
+      "typography": {
+        "title": "Tipografía de Diapositivas",
+        "description": "Escala tipográfica optimizada para diapositivas de presentación.",
+        "headline": "Titular (4xl-6xl)",
+        "subline": "Subtítulo (xl-2xl)",
+        "body": "Texto del cuerpo (lg-xl)",
+        "footnote": "Nota al pie (sm)"
+      },
+      "list": {
+        "title": "Lista de Diapositiva",
+        "description": "Viñetas y listas numeradas. Máximo 5 elementos recomendado para legibilidad."
+      },
+      "breakdown": {
+        "title": "Desglose de Diapositiva",
+        "description": "Desgloses de porcentaje/valor renderizados como barras horizontales o tarjetas de estadísticas. CSS puro para compatibilidad con PDF."
+      },
+      "cardGrid": {
+        "title": "Cuadrícula de Tarjetas",
+        "description": "Cuadrícula de tarjetas de contenido. 2 tarjetas = 50/50, 3 tarjetas = 33/33/33, 4+ tarjetas = cuadrícula 2x2."
+      },
+      "timeline": {
+        "title": "Línea de Tiempo",
+        "description": "Eventos secuenciales o hitos. Máximo 4 eventos recomendado. Soporta diseños horizontales y verticales."
+      }
     }
   },
   "common": {

@@ -17,10 +17,10 @@ export async function MinimalExperiences() {
         {t("title")}
       </h2>
       <div className="space-y-0 wm-stagger-1">
-        {experiences.map((exp, idx) => (
+        {experiences.map((exp) => (
           <div
             className="group wm-reveal border-border/60 border-t py-4 first:border-t-0 first:pt-0"
-            key={idx}
+            key={`${exp.company}-${exp.role}-${exp.period}`}
           >
             <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
               <h3 className="font-display font-medium text-base text-foreground">
@@ -33,7 +33,9 @@ export async function MinimalExperiences() {
                 {exp.period}
               </span>
             </div>
-            <p className="mt-0.5 text-sm text-muted-foreground text-pretty">{exp.role}</p>
+            <p className="mt-0.5 text-sm text-muted-foreground text-pretty">
+              {exp.role}
+            </p>
             <p className="mt-1.5 text-sm text-muted-foreground/80 text-pretty">
               {exp.description}
             </p>

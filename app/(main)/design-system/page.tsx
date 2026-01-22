@@ -1,6 +1,17 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import { MinimalHeader } from "@/components/landing/minimal-header";
+import {
+  SlideBody,
+  SlideBreakdown,
+  SlideCardGrid,
+  SlideFootnote,
+  SlideFrame,
+  SlideHeadline,
+  SlideList,
+  SlideSubline,
+  SlideTimeline,
+} from "@/components/slides";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -503,6 +514,273 @@ export default async function DesignSystemPage() {
               <Badge variant="secondary">
                 {t("components.badge.variants.secondary")}
               </Badge>
+            </div>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Slides */}
+      <section className="space-y-6">
+        <div>
+          <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">
+            {t("slides.title")}
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground text-pretty">
+            {t("slides.description")}
+          </p>
+        </div>
+
+        {/* Slide Frame */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("slides.frame.title")}</CardTitle>
+            <CardDescription>{t("slides.frame.description")}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="overflow-hidden rounded-lg border border-border">
+              <SlideFrame className="max-h-64">
+                <div className="flex flex-col gap-4">
+                  <SlideHeadline>Example Slide</SlideHeadline>
+                  <SlideSubline>16:9 aspect ratio canvas</SlideSubline>
+                </div>
+              </SlideFrame>
+            </div>
+            <code className="mt-4 block rounded bg-muted px-3 py-2 font-mono text-xs text-muted-foreground">
+              {"<SlideFrame>...</SlideFrame>"}
+            </code>
+          </CardContent>
+        </Card>
+
+        {/* Slide Typography */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("slides.typography.title")}</CardTitle>
+            <CardDescription>
+              {t("slides.typography.description")}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <div className="flex items-baseline justify-between">
+                  <span className="text-sm font-medium text-foreground">
+                    {t("slides.typography.headline")}
+                  </span>
+                  <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
+                    SlideHeadline
+                  </code>
+                </div>
+                <div className="border-l-2 border-accent/50 pl-4">
+                  <SlideHeadline className="text-2xl md:text-3xl">
+                    Bold Statement Here
+                  </SlideHeadline>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-2">
+                <div className="flex items-baseline justify-between">
+                  <span className="text-sm font-medium text-foreground">
+                    {t("slides.typography.subline")}
+                  </span>
+                  <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
+                    SlideSubline
+                  </code>
+                </div>
+                <div className="border-l-2 border-accent/50 pl-4">
+                  <SlideSubline className="text-lg">
+                    Supporting tagline or subtitle
+                  </SlideSubline>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-2">
+                <div className="flex items-baseline justify-between">
+                  <span className="text-sm font-medium text-foreground">
+                    {t("slides.typography.body")}
+                  </span>
+                  <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
+                    SlideBody
+                  </code>
+                </div>
+                <div className="border-l-2 border-accent/50 pl-4">
+                  <SlideBody className="text-base">
+                    Body text for supporting paragraphs, readable at
+                    presentation distance.
+                  </SlideBody>
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="space-y-2">
+                <div className="flex items-baseline justify-between">
+                  <span className="text-sm font-medium text-foreground">
+                    {t("slides.typography.footnote")}
+                  </span>
+                  <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
+                    SlideFootnote
+                  </code>
+                </div>
+                <div className="border-l-2 border-accent/50 pl-4">
+                  <SlideFootnote className="mt-0 pt-0">
+                    Source: Example citation or footnote
+                  </SlideFootnote>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Slide List */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("slides.list.title")}</CardTitle>
+            <CardDescription>{t("slides.list.description")}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <SlideList
+              items={[
+                "First bullet point with important info",
+                "Second point explaining a concept",
+                "Third point with actionable item",
+                "Fourth point wrapping up the list",
+              ]}
+              className="text-base"
+            />
+            <code className="mt-4 block rounded bg-muted px-3 py-2 font-mono text-xs text-muted-foreground">
+              {'<SlideList items={["Item 1", "Item 2"]} />'}
+            </code>
+          </CardContent>
+        </Card>
+
+        {/* Slide Breakdown */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("slides.breakdown.title")}</CardTitle>
+            <CardDescription>
+              {t("slides.breakdown.description")}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div>
+              <p className="mb-3 text-sm font-medium text-foreground">
+                Bars variant:
+              </p>
+              <SlideBreakdown
+                items={[
+                  { label: "Category A", value: 75 },
+                  { label: "Category B", value: 45 },
+                  { label: "Category C", value: 90 },
+                ]}
+                variant="bars"
+              />
+            </div>
+            <Separator />
+            <div>
+              <p className="mb-3 text-sm font-medium text-foreground">
+                Stats variant:
+              </p>
+              <SlideBreakdown
+                items={[
+                  { label: "Metric A", value: 85 },
+                  { label: "Metric B", value: 62 },
+                  { label: "Metric C", value: 94 },
+                ]}
+                variant="stats"
+              />
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Card Grid */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("slides.cardGrid.title")}</CardTitle>
+            <CardDescription>
+              {t("slides.cardGrid.description")}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <SlideCardGrid
+              cards={[
+                {
+                  title: "Feature One",
+                  subtitle: "2024",
+                  description: "Short description of the first feature.",
+                },
+                {
+                  title: "Feature Two",
+                  subtitle: "2025",
+                  items: ["Sub-item A", "Sub-item B", "Sub-item C"],
+                },
+                {
+                  title: "Feature Three",
+                  description: "Another feature with a brief explanation.",
+                },
+              ]}
+            />
+          </CardContent>
+        </Card>
+
+        {/* Timeline */}
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("slides.timeline.title")}</CardTitle>
+            <CardDescription>
+              {t("slides.timeline.description")}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div>
+              <p className="mb-3 text-sm font-medium text-foreground">
+                Horizontal:
+              </p>
+              <SlideTimeline
+                events={[
+                  {
+                    title: "Phase 1",
+                    description: "Initial setup",
+                    metric: "Q1",
+                  },
+                  {
+                    title: "Phase 2",
+                    description: "Development",
+                    metric: "Q2",
+                  },
+                  { title: "Phase 3", description: "Launch", metric: "Q3" },
+                ]}
+                direction="horizontal"
+              />
+            </div>
+            <Separator />
+            <div>
+              <p className="mb-3 text-sm font-medium text-foreground">
+                Vertical:
+              </p>
+              <SlideTimeline
+                events={[
+                  {
+                    title: "Step 1",
+                    description: "Define the problem",
+                    metric: "Week 1",
+                  },
+                  {
+                    title: "Step 2",
+                    description: "Research solutions",
+                    metric: "Week 2",
+                  },
+                  {
+                    title: "Step 3",
+                    description: "Implement and test",
+                    metric: "Week 3",
+                  },
+                ]}
+                direction="vertical"
+              />
             </div>
           </CardContent>
         </Card>

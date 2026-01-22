@@ -41,6 +41,8 @@ const nextConfig: NextConfig = {
     "/blog": ["./content/**/*"],
     "/blog/*": ["./content/**/*"],
     "/sitemap.xml": ["./content/**/*"],
+    "/slides": ["./content/slides/**/*"],
+    "/slides/*": ["./content/slides/**/*"],
   },
 };
 

@@ -236,6 +236,38 @@
           "secondary": "Secondary"
         }
       }
+    },
+    "slides": {
+      "title": "Slides",
+      "description": "Presentation slide primitives for the JSON-driven slides engine. These components are designed for readability at presentation distance and PDF export.",
+      "frame": {
+        "title": "Slide Frame",
+        "description": "The 16:9 aspect ratio canvas wrapper for slides. Uses CSS aspect-ratio for responsive sizing in preview, and fixed dimensions for PDF export."
+      },
+      "typography": {
+        "title": "Slide Typography",
+        "description": "Typography scale optimized for presentation slides.",
+        "headline": "Headline (4xl-6xl)",
+        "subline": "Subline (xl-2xl)",
+        "body": "Body text (lg-xl)",
+        "footnote": "Footnote (sm)"
+      },
+      "list": {
+        "title": "Slide List",
+        "description": "Bullet points and numbered lists. Max 5 items recommended for readability."
+      },
+      "breakdown": {
+        "title": "Slide Breakdown",
+        "description": "Percentage/value breakdowns rendered as horizontal bars or stat cards. Pure CSS for PDF compatibility."
+      },
+      "cardGrid": {
+        "title": "Card Grid",
+        "description": "Grid of content cards. 2 cards = 50/50, 3 cards = 33/33/33, 4+ cards = 2x2 grid."
+      },
+      "timeline": {
+        "title": "Timeline",
+        "description": "Sequential events or milestones. Max 4 events recommended. Supports horizontal and vertical layouts."
+      }
     }
   },
   "common": {

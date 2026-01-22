@@ -1,0 +1,187 @@
+{
+  "meta": {
+    "title": "Introduction to AI-Powered Development",
+    "author": "Walter Morales",
+    "theme": "dark",
+    "accentColor": "#7C3AED",
+    "language": "en"
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "headline": "AI-Powered Development\nThe Future is Now",
+      "subline": "How Cursor and modern AI tools are transforming software engineering",
+      "author": {
+        "name": "Walter Morales",
+        "title": "Software Engineer & Cursor Ambassador"
+      },
+      "logos": ["/cursor-dark.png"]
+    },
+    {
+      "type": "statement",
+      "headline": "80% of developers will use AI assistants by 2026",
+      "body": "AI coding assistants are rapidly becoming essential tools in the modern developer's toolkit, fundamentally changing how we write, review, and maintain code.",
+      "footnote": "Source: Industry research and projections"
+    },
+    {
+      "type": "bullets",
+      "headline": "Key Benefits of AI-Assisted Coding",
+      "items": [
+        "Faster code completion and generation",
+        "Reduced context switching and documentation lookup",
+        "Improved code quality through instant suggestions",
+        "Accelerated learning curve for new technologies",
+        "More time for architecture and design decisions"
+      ]
+    },
+    {
+      "type": "profile",
+      "headline": "Walter Morales",
+      "subtitle": "Software Engineer & Cursor Ambassador",
+      "bio": "Building impactful digital solutions with 5+ years of experience in .NET, JavaScript, TypeScript, React, and cloud technologies. First Cursor Ambassador from El Salvador.",
+      "credentials": [
+        {
+          "category": "Experience",
+          "items": [
+            "5+ years in software development",
+            "Senior Engineer at Southworks",
+            "Freelance Product Engineer"
+          ]
+        },
+        {
+          "category": "Technologies",
+          "items": [
+            ".NET Core & ASP.NET",
+            "React & Next.js",
+            "AWS & Azure",
+            "AI/ML Integration"
+          ]
+        },
+        {
+          "category": "Community",
+          "items": [
+            "Cursor Ambassador",
+            "Tech Meetup Organizer",
+            "Open Source Contributor"
+          ]
+        }
+      ],
+      "image": "/me.jpeg"
+    },
+    {
+      "type": "timeline",
+      "headline": "The Evolution of AI in Development",
+      "events": [
+        {
+          "title": "Code Completion",
+          "description": "Basic autocomplete and syntax suggestions",
+          "metric": "2020"
+        },
+        {
+          "title": "AI Assistants",
+          "description": "Context-aware code generation",
+          "metric": "2022"
+        },
+        {
+          "title": "Agentic Coding",
+          "description": "Multi-file changes and complex refactoring",
+          "metric": "2024"
+        },
+        {
+          "title": "Autonomous Dev",
+          "description": "Full feature implementation from specs",
+          "metric": "2025+"
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "headline": "AI Development Tools Comparison",
+      "cards": [
+        {
+          "title": "Cursor",
+          "subtitle": "IDE-First Approach",
+          "items": [
+            "Native VS Code fork",
+            "Tab completion",
+            "Agent mode",
+            "Multi-file context"
+          ]
+        },
+        {
+          "title": "GitHub Copilot",
+          "subtitle": "Extension-Based",
+          "items": [
+            "Works in any editor",
+            "Chat interface",
+            "Code review",
+            "Enterprise features"
+          ]
+        },
+        {
+          "title": "Claude/ChatGPT",
+          "subtitle": "Chat-First",
+          "items": [
+            "Broad knowledge base",
+            "Explanation focused",
+            "Web-based access",
+            "Code artifacts"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "two-column",
+      "headline": "Traditional vs AI-Assisted Development",
+      "left": {
+        "title": "Traditional Workflow",
+        "items": [
+          "Manual code writing line by line",
+          "Frequent documentation lookups",
+          "Copy-paste from Stack Overflow",
+          "Slow context switching"
+        ]
+      },
+      "right": {
+        "title": "AI-Assisted Workflow",
+        "items": [
+          "Intent-based code generation",
+          "Inline documentation and suggestions",
+          "Context-aware completions",
+          "Seamless multi-file operations"
+        ]
+      }
+    },
+    {
+      "type": "statement",
+      "headline": "The Cursor Advantage",
+      "items": [
+        "Purpose-built IDE for AI development",
+        "Deep codebase understanding",
+        "Intelligent multi-file editing",
+        "Background agents for complex tasks"
+      ],
+      "breakdown": [
+        { "label": "Productivity Increase", "value": 40 },
+        { "label": "Time Saved on Boilerplate", "value": 60 },
+        { "label": "Faster Onboarding", "value": 50 }
+      ]
+    },
+    {
+      "type": "cta",
+      "headline": "Ready to transform\nyour development workflow?",
+      "steps": [
+        "Download Cursor from cursor.com",
+        "Import your VS Code settings",
+        "Start with simple completions",
+        "Gradually explore agent mode"
+      ],
+      "contact": {
+        "name": "Walter Morales",
+        "email": "walterrafael26@gmail.com",
+        "website": "https://wmorales.dev"
+      },
+      "qr": "https://cursor.com"
+    }
+  ]
+}

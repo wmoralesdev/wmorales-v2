@@ -43,12 +43,12 @@ export function AttachmentList({ attachments }: AttachmentListProps) {
         Attachments
       </h3>
       <ul className="space-y-2">
-        {attachments.map((attachment, index) => {
+        {attachments.map((attachment) => {
           const Icon = getAttachmentIcon(attachment.type);
           const label = getAttachmentLabel(attachment.type);
 
           return (
-            <li key={index}>
+            <li key={attachment.url}>
               <Link
                 aria-label={`Open ${attachment.title} (${label})`}
                 className="group flex items-center gap-3 rounded-md border border-border/50 bg-muted/30 p-3 transition-colors hover:border-accent/50 hover:bg-muted/50"
