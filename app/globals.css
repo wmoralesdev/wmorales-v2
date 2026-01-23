@@ -78,42 +78,6 @@
   }
 }
 
-/* View Transitions - disable root animation to prevent page-wide flash */
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation: none;
-}
-
-/* Horizontal slide transitions */
-::view-transition-old(slide) {
-  animation: slide-fade-out 150ms ease-out both;
-}
-
-::view-transition-new(slide) {
-  animation: slide-fade-in 150ms ease-out 50ms both;
-}
-
-@keyframes slide-fade-out {
-  to {
-    opacity: 0;
-    transform: translateX(-8px);
-  }
-}
-
-@keyframes slide-fade-in {
-  from {
-    opacity: 0;
-    transform: translateX(8px);
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  ::view-transition-old(slide),
-  ::view-transition-new(slide) {
-    animation: none;
-  }
-}
-
 @keyframes wmThemePing {
   0% {
     transform: scale(0.9);

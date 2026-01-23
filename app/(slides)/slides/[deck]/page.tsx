@@ -92,13 +92,11 @@ export default async function DeckPreviewPage({
         {/* Slide viewer */}
         <div className="flex flex-1 items-center justify-center bg-muted/90 p-4 md:p-8">
           <div className="w-full max-w-6xl overflow-hidden rounded-lg shadow-lg">
-            <div style={{ viewTransitionName: "slide" }}>
-              <Deck
-                presentation={presentation}
-                currentSlide={currentSlide}
-                printMode={false}
-              />
-            </div>
+            <Deck
+              presentation={presentation}
+              currentSlide={currentSlide}
+              printMode={false}
+            />
           </div>
         </div>
 

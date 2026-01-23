@@ -32,17 +32,8 @@ export function SlideNavigation({
   const goToSlide = useCallback(
     (index: number) => {
       const clampedIndex = Math.max(0, Math.min(index, totalSlides - 1));
-
       if (clampedIndex === currentSlide) return;
-
-      const navigate = () =>
-        router.push(`/slides/${deckSlug}?slide=${clampedIndex}`);
-
-      if (document.startViewTransition) {
-        document.startViewTransition(navigate);
-      } else {
-        navigate();
-      }
+      router.push(`/slides/${deckSlug}?slide=${clampedIndex}`);
     },
     [deckSlug, totalSlides, router, currentSlide],
   );
@@ -117,7 +108,7 @@ export function SlideNavigation({
       window.removeEventListener("keydown", handleKeyDown);
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
     };
-  }, [goNext, goPrev, goToSlide, totalSlides, toggleFullscreen, isFullscreen]);
+  }, [goNext, goPrev, goToSlide, totalSlides, toggleFullscreen]);
 
   return (
     <div
