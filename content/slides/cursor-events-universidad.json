@@ -4,7 +4,12 @@
     "author": "Ing. Walter Morales",
     "theme": "dark",
     "accentColor": "#7C3AED",
-    "language": "es-SV"
+    "language": "es-SV",
+    "seo": {
+      "title": "Cursor en tu Universidad | Walter Morales",
+      "description": "Propuesta de colaboración para universidades centroamericanas. Cursor Lab: sesiones prácticas guiadas para estudiantes.",
+      "image": "https://wmorales.dev/og-image.png"
+    }
   },
   "slides": [
     {

@@ -33,7 +33,7 @@ export function SlideNavigation({
     (index: number) => {
       const clampedIndex = Math.max(0, Math.min(index, totalSlides - 1));
       if (clampedIndex === currentSlide) return;
-      router.push(`/slides/${deckSlug}?slide=${clampedIndex}`);
+      router.push(`/slides/${deckSlug}/${clampedIndex}`);
     },
     [deckSlug, totalSlides, router, currentSlide],
   );

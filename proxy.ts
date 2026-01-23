@@ -67,12 +67,13 @@ export const config = {
      * Match all request paths except for the ones starting with:
      * - api (API routes)
      * - r (redirect routes)
+     * - slides (presentation routes - not localized, fully static)
      * - _next/static (static files)
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      * - manifest.json (PWA manifest)
      * - public folder files (images, videos, etc.)
      */
-    "/((?!api|r/|_next/static|_next/image|favicon.ico|manifest.json|.*\\.(?:svg|png|jpg|jpeg|gif|webp|webm|mp4|mp3|ogg|pdf|zip)$).*)",
+    "/((?!api|r/|slides|_next/static|_next/image|favicon.ico|manifest.json|.*\\.(?:svg|png|jpg|jpeg|gif|webp|webm|mp4|mp3|ogg|pdf|zip)$).*)",
   ],
 };

@@ -1,9 +1,16 @@
 import { notFound } from "next/navigation";
 import { Deck } from "@/components/slides";
-import { loadDeck } from "@/lib/slides";
+import { listDeckSlugs, loadDeck } from "@/lib/slides";
+
+export const dynamicParams = false;
 
 interface PageProps {
   params: Promise<{ deck: string }>;
+}
+
+export async function generateStaticParams() {
+  const slugs = listDeckSlugs();
+  return slugs.map((deck) => ({ deck }));
 }
 
 /**

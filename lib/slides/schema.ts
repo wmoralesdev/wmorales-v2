@@ -81,12 +81,19 @@ const itemsArraySchema = z
 // Presentation Meta
 // =============================================================================
 
+const seoSchema = z.object({
+  title: z.string().max(60, "SEO title should be 60 characters or less").optional(),
+  description: z.string().max(160, "SEO description should be 160 characters or less").optional(),
+  image: z.string().url("SEO image must be a valid URL").optional(),
+});
+
 export const presentationMetaSchema = z.object({
   title: z.string().min(1, "Title is required"),
   author: z.string().min(1, "Author is required"),
   theme: z.enum(["dark", "light"]),
   accentColor: hexColorSchema,
   language: z.string().optional(),
+  seo: seoSchema.optional(),
 });
 
 export type PresentationMeta = z.infer<typeof presentationMetaSchema>;
