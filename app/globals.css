@@ -86,32 +86,24 @@
 
 /* Horizontal slide transitions */
 ::view-transition-old(slide) {
-  animation: slide-out-left 300ms ease-out both;
+  animation: slide-fade-out 150ms ease-out both;
 }
 
 ::view-transition-new(slide) {
-  animation: slide-in-right 300ms ease-out both;
+  animation: slide-fade-in 150ms ease-out 50ms both;
 }
 
-@keyframes slide-out-left {
-  from {
-    opacity: 1;
-    transform: translateX(0);
-  }
+@keyframes slide-fade-out {
   to {
     opacity: 0;
-    transform: translateX(-20px);
+    transform: translateX(-8px);
   }
 }
 
-@keyframes slide-in-right {
+@keyframes slide-fade-in {
   from {
     opacity: 0;
-    transform: translateX(20px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
+    transform: translateX(8px);
   }
 }
 

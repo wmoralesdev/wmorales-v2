@@ -259,6 +259,11 @@ const contactInfoSchema = z.object({
   phone: z.string().optional(),
 });
 
+const qrSchema = z.object({
+  url: z.string().url("QR url must be a valid URL"),
+  label: z.string().optional(),
+});
+
 export const ctaSlideSchema = z.object({
   type: z.literal("cta"),
   headline: headlineSchema,
@@ -269,7 +274,7 @@ export const ctaSlideSchema = z.object({
       `CTA steps must be ${TEXT_LIMITS.ctaSteps} or less`,
     ),
   contact: contactInfoSchema,
-  qr: z.string().url("QR must be a valid URL").optional(),
+  qr: qrSchema.optional(),
 });
 
 export type CtaSlide = z.infer<typeof ctaSlideSchema>;

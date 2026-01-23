@@ -179,7 +179,10 @@
         "website": "https://wmorales.dev",
         "phone": "(+503) 7132-0261"
       },
-      "qr": "https://cal.com/wmorales"
+      "qr": {
+        "url": "https://calendar.app.google/kxFN4oL8aiMCWDN46",
+        "label": "Agendar reunión"
+      }
     }
   ]
 }

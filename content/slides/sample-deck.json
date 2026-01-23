@@ -181,7 +181,10 @@
         "email": "walterrafael26@gmail.com",
         "website": "https://wmorales.dev"
       },
-      "qr": "https://cursor.com"
+      "qr": {
+        "url": "https://cursor.com",
+        "label": "cursor.com"
+      }
     }
   ]
 }

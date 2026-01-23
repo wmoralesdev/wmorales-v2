@@ -34,7 +34,7 @@ export function CtaSlideView({ slide, printMode = false }: CtaSlideViewProps) {
             <div className="flex shrink-0 flex-col items-center gap-3">
               <div className="overflow-hidden rounded-xl border-2 border-accent/30 bg-white p-4 shadow-lg shadow-accent/10">
                 <QRCode
-                  value={slide.qr}
+                  value={slide.qr.url}
                   size={140}
                   level="M"
                   bgColor="#ffffff"
@@ -42,7 +42,7 @@ export function CtaSlideView({ slide, printMode = false }: CtaSlideViewProps) {
                 />
               </div>
               <p className="max-w-[160px] truncate text-center text-xs text-muted-foreground">
-                {slide.qr}
+                {slide.qr.label ?? slide.qr.url}
               </p>
             </div>
           )}
