@@ -1,0 +1,206 @@
+---
+slug: getting-ready-for-cursor-hackathon-san-salvador-2026
+title: Getting ready for Cursor hackathon San Salvador 2026
+description: A practical checklist to install Cursor, create your accounts, prepare your environment, and show up ready to demo.
+publishedAt: 2026-01-28
+tags:
+  - hackathon
+  - cursor
+  - setup
+  - planning
+  - beginner
+published: true
+---
+
+This post is a short, practical checklist so you can arrive ready to build. The main goal is simple: **create the accounts you'll need, install Cursor, and prepare your environment before the event**.
+
+{% callout type="info" title="Want a step-by-step environment guide?" %}
+If you're completely new to development, check out [Start building web apps today (no technical background needed)](/blog/dev-environment-setup). It walks through installing Cursor, Node.js, Git, and the basics in detail.
+{% /callout %}
+
+{% separator /%}
+
+## How a hackathon works (quick version)
+
+A hackathon is a short, intense "build sprint" where teams turn an idea into a prototype and then demo it.
+
+Typical flow:
+
+- **Kickoff**: theme/rules, team formation, quick ideation
+- **Build time**: research, design, implementation, testing, iteration
+- **Demo**: you show what you built and why it matters
+- **Judging**: evaluators score projects against a rubric
+
+Good hackathons reward **clarity, teamwork, and learning**. A production-ready product is not required (and usually not the point).
+
+{% separator /%}
+
+## What makes a Cursor hackathon different?
+
+A Cursor hackathon follows the same structure as any hackathon, but with a key difference: **AI-assisted development changes how teams work**.
+
+### Faster iteration cycles
+
+With Cursor, teams can prototype ideas faster. What might take hours of manual coding can become minutes of collaborative planning and execution. This means:
+
+- **More time for testing and refinement** instead of fighting syntax errors
+- **Faster pivots** when you discover a better approach mid-event
+- **More ambitious prototypes** that would be unrealistic in a traditional hackathon
+
+### Broader participation
+
+Cursor makes hackathons more accessible. Non-technical teammates can:
+
+- Write user stories, documentation, and pitch materials using Cursor
+- Contribute to product decisions and design without waiting for developers
+- Learn basic coding concepts by watching Cursor generate and explain code
+
+### Focus shifts from "can we build it?" to "should we build it?"
+
+When implementation speed increases, the bottleneck moves from technical execution to product thinking. Teams that succeed focus on:
+
+- **Clear problem definition** before writing code
+- **User validation** through quick prototypes and demos
+- **Thoughtful scope** that tells a compelling story
+
+The best Cursor hackathon projects aren't the ones with the most features—they're the ones that solve real problems with clarity and purpose.
+
+{% separator /%}
+
+## Your pre-hackathon checklist (do this at home)
+
+{% card title="Essential accounts" variant="feature" %}
+1. **Create a Cursor account** at [cursor.com](https://cursor.com) and make sure you can sign in.
+2. **Install Cursor** on your laptop and open it at least once.
+3. **Log in inside Cursor** (so you don't lose time on Wi‑Fi/auth issues at the venue).
+4. **Create a GitHub account** at [github.com](https://github.com) (or confirm you can log in). Most teams use GitHub to share code, and you'll need it to deploy your project.
+5. **Create a hosting account** (choose one):
+   - **[Vercel](https://vercel.com)** — best for Next.js, React, and static sites (recommended for most web projects)
+   - **[Netlify](https://netlify.com)** — great alternative with similar features
+   - Make sure to verify your email and enable 2FA if available
+6. **Update your system** (OS updates, browser updates) and restart your laptop the day before.
+{% /card %}
+
+{% callout type="tip" title="If you're not a programmer" %}
+Still do the checklist. You can use Cursor for writing your pitch, user stories, UI copy, and documentation. Your contribution matters.
+{% /callout %}
+
+### Prepare your build environment (choose what fits your project)
+
+You don't need everything. Pick the option closest to what your team plans to build.
+
+{% card title="Option A: Web app (most common)" variant="default" %}
+- Install **Node.js LTS** (recommended via NVM).
+- Install **Git**.
+- Make sure you can run `node -v`, `npm -v`, and `git --version` in a terminal.
+{% /card %}
+
+{% card title="Option B: Mobile app (Expo / React Native)" variant="default" %}
+- Install **Node.js LTS**.
+- Install the **Expo** tooling (your team can decide between Expo Go vs. native builds).
+- If you plan to build native: install **Android Studio** and/or **Xcode** ahead of time (these downloads are big).
+{% /card %}
+
+{% card title="Option C: Data / automation / scripting" variant="default" %}
+- Install **Python 3** (and confirm `python --version` or `python3 --version` works).
+- Install **Git**.
+{% /card %}
+
+{% card title="Option D: Design / research / storytelling" variant="default" %}
+- Have **Figma** access (or your preferred design tool).
+- Bring a notes tool (Notion/Google Docs) for requirements and the demo script.
+{% /card %}
+
+{% callout type="warning" title="Avoid day-of installs" %}
+Big downloads (Xcode, Android Studio, Docker) can burn hours during a hackathon. If you might need them, install them the day before.
+{% /callout %}
+
+{% separator /%}
+
+## Plan your product requirements (fast, but real)
+
+The best hackathon teams don't "build features." They build **a clear solution to a specific problem**.
+
+Use this lightweight structure:
+
+- **Problem**: what pain exists and for whom?
+- **Target user**: who is this for (be specific)?
+- **Proposed solution**: what are you building?
+- **Must-haves**: the smallest set needed for a demo
+- **Nice-to-haves**: only if time allows
+- **Non-goals**: what you are intentionally not doing
+- **Demo story**: what will you show in 2–3 minutes?
+
+{% cursor-prompt title="Prompt: Define requirements and a demo plan" prompt="We are participating in Cursor Hackathon San Salvador 2026. Help our team create a simple, clear product spec and demo plan.
+
+Context:
+- Team skills (technical + non-technical): [fill in]
+- Time available: [fill in]
+- Idea in one sentence: [fill in]
+
+Please produce:
+1) Problem statement (who, what pain, why now)
+2) Target user + 2-3 key user stories (plain language)
+3) Success criteria for the demo (what must work during the presentation)
+4) Must-haves vs. nice-to-haves vs. non-goals
+5) Risks/unknowns + quick experiments to de-risk them
+6) A 2-3 minute demo script outline (hook → problem → solution → live demo → next steps)
+
+Keep it short, and prioritize clarity over completeness." /%}
+
+{% separator /%}
+
+## Use Cursor effectively during the hackathon
+
+Cursor is most powerful when you treat it like a teammate that helps you plan, execute, and iterate.
+
+{% card title="High-leverage habits" variant="success" %}
+- **Start in plan mode**: ask for a plan before writing code, then execute the plan in small chunks.
+- **Keep context small and focused**: one task per prompt (feature, bug, refactor, doc).
+- **Ask for tradeoffs**: "fastest approach vs. cleanest approach" to match hackathon time.
+- **Commit early and often**: small commits make it easier to collaborate and recover.
+- **Write the demo script early**: it forces a realistic scope and highlights missing pieces.
+{% /card %}
+
+{% cursor-prompt title="Prompt: Split work into tasks for the team" prompt="We have a hackathon project with both technical and non-technical teammates.
+
+Here is our idea and must-haves: [paste]
+
+Please:
+1) Break the work into 8-15 small tasks (each 30-90 minutes)
+2) Label each task as: engineering, design, research, copywriting, or demo
+3) Identify dependencies
+4) Suggest an order of execution that maximizes our chance of having a solid demo
+
+Output as a simple checklist." /%}
+
+{% separator /%}
+
+## A judging rubric that works for mixed teams
+
+Not everyone is a programmer, and a hackathon is not a production launch. Judges should prioritize impact and learning over "how complete" the code is.
+
+Suggested criteria:
+
+- **Problem clarity and user empathy**: is the problem real, specific, and well understood?
+- **Solution fit**: does the prototype actually address the problem for the target user?
+- **Creativity and originality**: is there a fresh angle, insight, or clever approach?
+- **Collaboration and roles**: did the team divide work well, including non-technical contributions?
+- **Iteration and learning**: did the team test assumptions, adapt, and improve during the event?
+- **Demo and storytelling**: is the demo clear, honest, and easy to follow for a general audience?
+- **Feasibility and next steps**: can you explain what would be needed to make it real after the hackathon?
+- **Accessibility and inclusion**: does the solution consider different users and constraints?
+- **Responsible tool use**: if AI was used, is it used thoughtfully and transparently?
+
+{% callout type="success" title="A great demo beats a big scope" %}
+If your demo tells a clear story and your prototype supports it, you're doing hackathons the right way.
+{% /callout %}
+
+{% separator /%}
+
+## Last-minute "don't forget" list
+
+- Laptop charger (and a backup if you have one)
+- Headphones (for focused work)
+- A short team intro (who you are, what each person is doing)
+- A link you can share fast (GitHub repo, slides, or a short doc)

@@ -1,0 +1,206 @@
+---
+slug: getting-ready-for-cursor-hackathon-san-salvador-2026
+title: Prepárate para Cursor hackathon San Salvador 2026
+description: Un checklist práctico para instalar Cursor, crear tus cuentas, preparar tu entorno y llegar listo para hacer demo.
+publishedAt: 2026-01-28
+tags:
+  - hackathon
+  - cursor
+  - setup
+  - planning
+  - principiante
+published: true
+---
+
+Este post es un checklist corto y práctico para que llegues listo a construir. El objetivo principal es simple: **crear las cuentas que vas a necesitar, instalar Cursor y preparar tu entorno antes del evento**.
+
+{% callout type="info" title="¿Quieres una guía paso a paso para configurar tu entorno?" %}
+Si eres completamente nuevo en desarrollo, revisa [Empieza a crear aplicaciones web hoy (sin conocimientos técnicos)](/blog/dev-environment-setup). Te guía para instalar Cursor, Node.js, Git y lo básico en detalle.
+{% /callout %}
+
+{% separator /%}
+
+## Cómo funciona un hackathon (versión rápida)
+
+Un hackathon es un "sprint" corto e intenso donde los equipos convierten una idea en un prototipo y luego hacen una demo.
+
+Flujo típico:
+
+- **Inicio**: tema/reglas, formación de equipos, ideación rápida
+- **Tiempo de construcción**: investigación, diseño, implementación, pruebas, iteración
+- **Demo**: muestras qué construiste y por qué importa
+- **Evaluación**: los jueces califican usando una rúbrica
+
+Los buenos hackathons premian **claridad, colaboración y aprendizaje**. No se requiere un producto listo para producción (y casi nunca es el objetivo).
+
+{% separator /%}
+
+## ¿Qué hace diferente un hackathon de Cursor?
+
+Un hackathon de Cursor sigue la misma estructura que cualquier hackathon, pero con una diferencia clave: **el desarrollo asistido por IA cambia cómo trabajan los equipos**.
+
+### Ciclos de iteración más rápidos
+
+Con Cursor, los equipos pueden prototipar ideas más rápido. Lo que podría tomar horas de código manual puede convertirse en minutos de planificación y ejecución colaborativa. Esto significa:
+
+- **Más tiempo para pruebas y refinamiento** en lugar de pelear con errores de sintaxis
+- **Pivots más rápidos** cuando descubres un mejor enfoque a mitad del evento
+- **Prototipos más ambiciosos** que serían poco realistas en un hackathon tradicional
+
+### Participación más amplia
+
+Cursor hace los hackathons más accesibles. Los compañeros no técnicos pueden:
+
+- Escribir historias de usuario, documentación y materiales de pitch usando Cursor
+- Contribuir a decisiones de producto y diseño sin esperar a los desarrolladores
+- Aprender conceptos básicos de código viendo a Cursor generar y explicar código
+
+### El enfoque cambia de "¿podemos construirlo?" a "¿deberíamos construirlo?"
+
+Cuando la velocidad de implementación aumenta, el cuello de botella se mueve de la ejecución técnica al pensamiento de producto. Los equipos que tienen éxito se enfocan en:
+
+- **Definición clara del problema** antes de escribir código
+- **Validación de usuarios** a través de prototipos rápidos y demos
+- **Alcance reflexivo** que cuenta una historia convincente
+
+Los mejores proyectos de hackathon de Cursor no son los que tienen más features—son los que resuelven problemas reales con claridad y propósito.
+
+{% separator /%}
+
+## Checklist previo al hackathon (haz esto en casa)
+
+{% card title="Cuentas esenciales" variant="feature" %}
+1. **Crea una cuenta de Cursor** en [cursor.com](https://cursor.com) y verifica que puedas iniciar sesión.
+2. **Instala Cursor** en tu laptop y ábrelo al menos una vez.
+3. **Inicia sesión dentro de Cursor** (para no perder tiempo con Wi‑Fi/autenticación en el evento).
+4. **Crea una cuenta de GitHub** en [github.com](https://github.com) (o confirma que puedes iniciar sesión). La mayoría de equipos usan GitHub para compartir código, y lo necesitarás para desplegar tu proyecto.
+5. **Crea una cuenta de hosting** (elige una):
+   - **[Vercel](https://vercel.com)** — mejor para Next.js, React y sitios estáticos (recomendado para la mayoría de proyectos web)
+   - **[Netlify](https://netlify.com)** — gran alternativa con características similares
+   - Asegúrate de verificar tu email y habilitar 2FA si está disponible
+6. **Actualiza tu sistema** (OS, navegador) y reinicia tu laptop el día anterior.
+{% /card %}
+
+{% callout type="tip" title="Si no eres programador" %}
+Igual haz el checklist. Puedes usar Cursor para escribir tu pitch, historias de usuario, copy de UI y documentación. Tu aporte importa.
+{% /callout %}
+
+### Prepara tu entorno de trabajo (elige lo que aplique)
+
+No necesitas instalarlo todo. Elige la opción más cercana a lo que tu equipo quiere construir.
+
+{% card title="Opción A: App web (lo más común)" variant="default" %}
+- Instala **Node.js LTS** (recomendado con NVM).
+- Instala **Git**.
+- Verifica que puedas ejecutar `node -v`, `npm -v` y `git --version` en una terminal.
+{% /card %}
+
+{% card title="Opción B: App móvil (Expo / React Native)" variant="default" %}
+- Instala **Node.js LTS**.
+- Instala herramientas de **Expo** (tu equipo puede decidir entre Expo Go vs. builds nativos).
+- Si planeas build nativo: instala **Android Studio** y/o **Xcode** con tiempo (son descargas grandes).
+{% /card %}
+
+{% card title="Opción C: Datos / automatización / scripts" variant="default" %}
+- Instala **Python 3** (y verifica `python --version` o `python3 --version`).
+- Instala **Git**.
+{% /card %}
+
+{% card title="Opción D: Diseño / investigación / storytelling" variant="default" %}
+- Ten acceso a **Figma** (o tu herramienta de diseño preferida).
+- Usa una herramienta de notas (Notion/Google Docs) para requisitos y el guion de la demo.
+{% /card %}
+
+{% callout type="warning" title="Evita instalaciones el mismo día" %}
+Descargas grandes (Xcode, Android Studio, Docker) pueden comerse horas durante el hackathon. Si crees que los necesitas, instálalos el día anterior.
+{% /callout %}
+
+{% separator /%}
+
+## Planifica requisitos del producto (rápido, pero de verdad)
+
+Los mejores equipos no "construyen features". Construyen **una solución clara a un problema específico**.
+
+Usa esta estructura ligera:
+
+- **Problema**: qué dolor existe y para quién
+- **Usuario objetivo**: para quién es (sé específico)
+- **Solución propuesta**: qué van a construir
+- **Imprescindibles**: el mínimo necesario para una demo
+- **Deseables**: solo si hay tiempo
+- **No objetivos**: lo que decidieron no hacer
+- **Historia de la demo**: qué mostrarán en 2–3 minutos
+
+{% cursor-prompt title="Prompt: Definir requisitos y plan de demo" prompt="Estamos participando en Cursor Hackathon San Salvador 2026. Ayuda a nuestro equipo a crear una especificación simple y clara del producto y un plan de demo.
+
+Contexto:
+- Habilidades del equipo (técnicas y no técnicas): [completar]
+- Tiempo disponible: [completar]
+- Idea en una frase: [completar]
+
+Por favor produce:
+1) Declaración del problema (quién, qué dolor, por qué ahora)
+2) Usuario objetivo + 2-3 historias de usuario (lenguaje simple)
+3) Criterios de éxito para la demo (qué debe funcionar en la presentación)
+4) Imprescindibles vs. deseables vs. no objetivos
+5) Riesgos/incógnitas + experimentos rápidos para reducir riesgo
+6) Guion de demo de 2-3 minutos (gancho → problema → solución → demo → próximos pasos)
+
+Manténlo corto y prioriza claridad sobre completitud." /%}
+
+{% separator /%}
+
+## Usa Cursor efectivamente durante el hackathon
+
+Cursor es más útil cuando lo tratas como un compañero que te ayuda a planear, ejecutar e iterar.
+
+{% card title="Hábitos de alto impacto" variant="success" %}
+- **Empieza en modo plan**: pide un plan antes de escribir código, luego ejecútalo en bloques pequeños.
+- **Mantén el contexto enfocado**: una tarea por prompt (feature, bug, refactor, doc).
+- **Pide tradeoffs**: "la forma más rápida vs. la más limpia" según el tiempo del hackathon.
+- **Haz commits seguido**: commits pequeños facilitan colaboración y recuperación.
+- **Escribe el guion de la demo temprano**: te obliga a tener un alcance realista y revela lo que falta.
+{% /card %}
+
+{% cursor-prompt title="Prompt: Dividir el trabajo por tareas para el equipo" prompt="Tenemos un proyecto de hackathon con compañeros técnicos y no técnicos.
+
+Aquí está nuestra idea e imprescindibles: [pegar]
+
+Por favor:
+1) Divide el trabajo en 8-15 tareas pequeñas (cada una 30-90 minutos)
+2) Etiqueta cada tarea como: ingeniería, diseño, investigación, copywriting o demo
+3) Identifica dependencias
+4) Sugiere un orden de ejecución que maximice nuestra probabilidad de tener una buena demo
+
+Salida como checklist simple." /%}
+
+{% separator /%}
+
+## Una rúbrica de evaluación que funcione con equipos mixtos
+
+No todos son programadores, y un hackathon no es un lanzamiento a producción. Los jueces deberían priorizar impacto y aprendizaje sobre "qué tan completo" está el código.
+
+Criterios sugeridos:
+
+- **Claridad del problema y empatía con el usuario**: ¿el problema es real, específico y entendido?
+- **Encaje de la solución**: ¿el prototipo realmente resuelve el problema para el usuario objetivo?
+- **Creatividad y originalidad**: ¿hay un ángulo nuevo, un insight o un enfoque inteligente?
+- **Colaboración y roles**: ¿el equipo se organizó bien, incluyendo aportes no técnicos?
+- **Iteración y aprendizaje**: ¿probaron supuestos, se adaptaron y mejoraron durante el evento?
+- **Demo y storytelling**: ¿la demo es clara, honesta y fácil de entender para una audiencia general?
+- **Viabilidad y próximos pasos**: ¿pueden explicar qué haría falta para volverlo real después del hackathon?
+- **Accesibilidad e inclusión**: ¿considera distintos tipos de usuarios y limitaciones?
+- **Uso responsable de herramientas**: si usaron IA, ¿la usaron con criterio y transparencia?
+
+{% callout type="success" title="Una gran demo vale más que un alcance enorme" %}
+Si tu demo cuenta una historia clara y tu prototipo la respalda, estás haciendo hackathons de la manera correcta.
+{% /callout %}
+
+{% separator /%}
+
+## Lista de "no se te olvide" de última hora
+
+- Cargador de laptop (y respaldo si tienes)
+- Audífonos (para concentrarte)
+- Una intro corta del equipo (quiénes son y qué está haciendo cada persona)
+- Un link fácil de compartir (repo en GitHub, slides o un doc corto)

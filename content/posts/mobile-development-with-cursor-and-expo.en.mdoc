@@ -1,0 +1,320 @@
+---
+slug: mobile-development-with-cursor-and-expo
+title: Mobile development with Cursor + Expo (guide outline)
+description: A practical outline for building an Expo app with Cursor, starting on your phone (Expo Go) and then moving to simulators, with a clear Expo Router entry structure.
+publishedAt: 2026-02-03
+tags:
+  - expo
+  - react-native
+  - mobile
+  - cursor
+  - tutorial
+published: true
+---
+
+# Mobile development with Cursor + Expo (guide outline)
+
+This entry is intentionally written as an **outline you can follow**. It’s optimized for a mobile-first workflow (Expo Go on a real phone), then expands to iOS/Android simulators.
+
+{% callout type="info" title="What you’ll get out of this guide" %}
+- A small, real Expo app that runs on **your phone** and **a simulator/emulator**
+- A clear mental model of the Expo development loop
+- A clear explanation of **Expo Router’s entry structure** (`app/_layout.tsx`, `index.tsx`, route groups)
+- A set of reusable **Cursor prompts** to move faster and debug confidently
+{% /callout %}
+
+{% separator /%}
+
+## 1) What you’ll build (small, real app)
+
+Build a tiny coffee app to keep scope tight and make navigation real:
+
+- Recipes list (brew methods)
+- Recipe detail (ratio + steps)
+- Brew timer (countdown, optional step cues)
+- Optional: brew history (stored locally)
+
+“Done” for this stage: you can open a recipe, start a timer, and complete a brew on your phone.
+
+{% separator /%}
+
+## 2) The development loop (Expo mental model)
+
+Expo’s mental model is simple:
+
+1. You run a dev server (Metro)
+2. You open the app (Expo Go or a simulator)
+3. You edit code in Cursor
+4. The app reloads, you verify, you repeat
+
+### Expo Go vs simulator/emulator (practical definition)
+
+- **Expo Go**: fastest path to test on a real device, great for camera, GPS, real performance feel.
+- **Simulator/emulator**: great for repeatable testing, different device sizes, and platform-specific behavior.
+
+{% callout type="info" title="Expo Go vs development builds" %}
+Expo Go is the fastest starting point, but it has limits. When you need native modules or deeper native integration, you’ll move to development builds.\n\nReference: `https://expo.dev/blog/expo-go-vs-development-builds`
+{% /callout %}
+
+{% callout type="tip" title="Default workflow" %}
+Start with **Expo Go** until your core flow works, then add simulators to catch platform quirks.
+{% /callout %}
+
+{% separator /%}
+
+## 3) Prerequisites (link, don’t repeat)
+
+This guide assumes you already have Cursor, Node.js, and Git installed.
+
+- If you don’t, follow `/blog/dev-environment-setup` first (Cursor + Node.js LTS + Git).
+
+You’ll also need:
+
+- A phone with **Expo Go** installed
+- For simulators/emulators:
+  - **iOS Simulator**: requires macOS + Xcode
+  - **Android Emulator**: requires Android Studio
+
+{% card title="Cursor prompt: check Expo readiness" variant="feature" %}
+Use this to avoid “it works on my machine” surprises before you start.
+
+{% cursor-prompt title="Prompt: Check my Expo setup (phone + simulators)" prompt="Help me set up my computer for Expo (React Native) development using Cursor.
+
+Goals:
+- I want to run an Expo app on my real phone with Expo Go.
+- I also want to run it on iOS Simulator and Android Emulator if possible.
+
+Please:
+1) Check my OS and Node.js version.
+2) Verify I can run npx and install packages.
+3) Check if Expo tooling is available (and install the recommended way if not).
+4) If I’m on macOS, check for Xcode and iOS Simulator availability.
+5) Check for Android Studio / Android SDK / emulator availability.
+6) Summarize what’s missing and the fastest path to get running today.
+
+Keep it concise. Run commands and explain results." /%}
+{% /card %}
+
+{% separator /%}
+
+## 4) Project creation (baseline commands)
+
+Use the official Expo project generator, then iterate inside Cursor.
+
+Typical flow:
+
+```bash
+npx create-expo-app@latest my-coffee-timer
+cd my-coffee-timer
+npx expo start
+```
+
+Your exact steps can vary by Expo version and template. The important part is: **use TypeScript** and **use Expo Router** (recommended for file-based navigation).
+
+{% cursor-prompt title="Prompt: Create an Expo Router TypeScript app" prompt="Create a new Expo app for me with these constraints:
+- Use TypeScript
+- Use Expo Router for navigation (file-based routes)
+- Project name: my-coffee-timer
+
+Steps:
+1) Pick the correct create-expo-app command for the current Expo version.
+2) Create the project and install dependencies.
+3) Explain where the routes live and what file is the entry point.
+4) Start the dev server and tell me how to open it in Expo Go and in a simulator.
+
+If anything fails, diagnose and fix the root cause (don’t handwave). Keep explanations short." /%}
+
+{% separator /%}
+
+## 5) Expo app entry structure (required section, Expo Router)
+
+This section prevents the most common beginner problem in Expo Router: “I don’t know which file runs first.”
+
+### If using Expo Router (recommended)
+
+Key ideas:
+
+- **`app/_layout.tsx`** renders before any route. It’s the root layout for your app.
+- The **initial route** is the first matching **`index.tsx`** for `/` (often `app/index.tsx`).
+- **Route groups** use parentheses (example: `app/(tabs)/...`). The group name doesn’t become part of the URL.
+
+References (Expo):
+
+- Expo Router root layout (`app/_layout.tsx`): `https://docs.expo.dev/router/basics/layout/#root-layout`
+- Initial route via first matching `index.tsx`: `https://docs.expo.dev/router/basics/`
+- Route groups notation (`(group)`): `https://docs.expo.dev/router/basics/notation/`
+
+Example structure:
+
+```text
+my-coffee-timer/
+  app/
+    _layout.tsx
+    index.tsx
+    recipes/
+      [id].tsx
+    timer.tsx
+    history.tsx
+    (tabs)/
+      _layout.tsx
+      index.tsx
+```
+
+“Done” for this stage: you can point at your repo and explain which files control:
+
+- the app root (`app/_layout.tsx`)
+- the first screen (`app/index.tsx` or a grouped `index.tsx`)
+- a detail route (`app/recipes/[id].tsx`)
+- a focused flow screen (example: `app/timer.tsx`)
+
+### If not using Expo Router (brief contrast)
+
+Classic React Native apps often start at **`App.tsx`**. Advanced setups can use a custom `main` entry in `package.json` and `registerRootComponent`, but this guide stays focused on Expo Router.
+
+{% separator /%}
+
+## 6) Navigation and screens
+
+Map the outline to routes/screens:
+
+- Recipes list → `app/index.tsx` (or `app/recipes/index.tsx` if you prefer)
+- Recipe detail → `app/recipes/[id].tsx`
+- Timer → `app/timer.tsx`
+- Optional: History → `app/history.tsx`
+
+“Done” for this stage: you can open a recipe, navigate to the timer, and return back to the recipe list.
+
+{% cursor-prompt title="Prompt: Add routes for recipes + timer" prompt="I have an Expo Router app. Help me implement a small coffee timer app with these routes:
+- app/index.tsx: recipes list (brew methods)
+- app/recipes/[id].tsx: recipe detail (ratio + steps)
+- app/timer.tsx: brew timer (countdown + start/pause/reset)
+- (optional) app/history.tsx: brew history list
+
+Requirements:
+- Use TypeScript everywhere.
+- Keep components small and readable.
+- Add basic navigation links between screens.
+
+After each file change, tell me how to verify it works in Expo Go and in a simulator." /%}
+
+{% cursor-prompt title="Prompt: Implement the brew timer" prompt="Help me implement a brew timer screen in Expo (React Native) with TypeScript.
+
+Requirements:
+- Countdown timer with start/pause/reset
+- A clear, large remaining time display (mobile-first)
+- Optional: step cues (for example: bloom → pour → wait) driven by an array of steps
+- Make it resilient: if the app hot reloads, it should not get into a broken state
+
+Tell me how to test it quickly in Expo Go." /%}
+
+{% separator /%}
+
+## 7) Data & state (minimal)
+
+Start with local state (current recipe, timer state). If you want persistence, make it an optional step:\n\n- Save a `brewHistory[]` list locally (example: AsyncStorage)\n- Each entry can store: recipe id, brew method, timestamp, and total time
+
+“Done” for this stage: your timer flow works end-to-end, and optional history persists after app restart.
+
+{% separator /%}
+
+## 8) Styling & UI basics (mobile UX checklist)
+
+Keep UI minimal and readable. Mobile UX basics that matter:
+
+- Tap targets large enough
+- Safe area respected
+- Keyboard doesn’t hide inputs
+- Lists scroll smoothly
+
+{% card title="Mobile UI checklist" variant="default" %}
+- Use padding and consistent spacing
+- Use a readable font size and good contrast
+- Make primary actions obvious (Start/Pause/Reset)
+- Test with the keyboard open
+- Test on at least two screen sizes (phone + simulator)
+{% /card %}
+
+{% separator /%}
+
+## 9) Running on a phone (Expo Go)
+
+Outcome: open the project in Expo Go on a real phone and use it as your primary development loop.
+
+What to do (practical flow):
+
+1. Start Metro from Cursor’s terminal (`npx expo start`)\n2. Open the Expo Go app\n3. Scan the QR code (or use the URL)\n4. Make a small UI edit and confirm it reloads
+
+Common pitfalls and quick fixes:
+
+- Phone and computer on different networks
+- QR code scanning issues
+- “Stuck” bundler cache
+
+{% cursor-prompt title="Prompt: Get me running in Expo Go today" prompt="I have an Expo project and I want to run it on my phone using Expo Go.\n\nPlease:\n1) Start the dev server (Metro) with the best command for my project.\n2) Tell me how to open it in Expo Go (QR or URL).\n3) If my phone can’t connect, diagnose the likely cause (LAN vs tunnel, firewall, network mismatch) and give the fastest workaround.\n4) If Metro seems stuck, show me safe cache-reset steps.\n\nKeep it practical and step-by-step." /%}
+
+{% separator /%}
+
+## 10) Running on simulators/emulators
+
+Simulators are for repeatability. Use them after your flow works on your phone.
+
+Outcome: run the same app in:
+
+- iOS Simulator (macOS + Xcode)
+- Android Emulator (Android Studio)
+
+### iOS Simulator setup (macOS only)
+
+Requirements: macOS + Xcode.\n\nSteps:\n- Confirm Xcode is installed\n- Confirm you can open iOS Simulator\n- Run the Expo app on the simulator\n\nCommon issues:\n- Xcode command line tools missing\n- Simulator fails to boot\n
+
+{% cursor-prompt title="Prompt: Set up iOS Simulator and run my Expo app" prompt="I’m on macOS and I want to run my Expo app on iOS Simulator.\n\nPlease:\n1) Check if Xcode is installed and whether iOS Simulator is available.\n2) If something is missing, tell me the minimal steps to install/fix it.\n3) Start my Expo project and run it on iOS Simulator.\n4) If it fails, diagnose using logs and propose the smallest fix.\n\nKeep it concise and verify each step." /%}
+
+### Android Emulator setup (Windows/macOS/Linux)
+
+Requirements: Android Studio, Android SDK, and an AVD (emulator device).\n\nSteps:\n- Confirm Android Studio + SDK tools are installed\n- Create an AVD\n- Boot the emulator\n- Run the Expo app on Android\n\nCommon issues:\n- Missing SDK / environment variables\n- Emulator networking (app can’t reach `localhost`)\n
+
+{% cursor-prompt title="Prompt: Set up Android Emulator (AVD) and run my Expo app" prompt="I want to run my Expo app on an Android Emulator (AVD).\n\nPlease:\n1) Check whether Android Studio and Android SDK tools are installed.\n2) Help me create an AVD (pick a sensible device + API level).\n3) Boot the emulator and run my Expo app on it.\n4) If it can’t connect to Metro, explain the likely networking issue and the fastest fix.\n\nKeep it practical and verify each step." /%}
+
+{% separator /%}
+
+## 11) Troubleshooting (reusable Cursor prompt)
+
+{% cursor-prompt title="Prompt: Debug my Expo issue" prompt="I’m building an Expo app and I’m stuck.
+
+Here’s what I expected:
+[describe expected behavior]
+
+Here’s what happened:
+[describe actual behavior]
+
+Here are the logs (Metro, device, simulator, etc):
+[paste logs verbatim]
+
+Please:
+1) Generate 3-5 likely root causes (ranked).
+2) For the top cause, give me exact steps to verify it.
+3) Then give me the smallest fix.
+4) Tell me how to confirm the fix worked on both Expo Go and a simulator.
+
+Keep it practical and short." /%}
+
+{% separator /%}
+
+## 12) How to use Cursor effectively for mobile dev
+
+High-leverage habits:
+
+- Start in Plan Mode: ask for a small plan, then execute one step at a time.
+- Keep prompts scoped: one feature or one bug per prompt.
+- Paste logs exactly, don’t summarize errors.
+- Verify after each change on **phone first**, then simulators.
+
+{% separator /%}
+
+## 13) Next steps
+
+Keep the next steps honest and small:
+
+- Learn about dev clients and EAS builds (store-ready workflow), when you actually need them
+- Add authentication and a backend later (for example, Supabase), once navigation and the core loop are solid
+
