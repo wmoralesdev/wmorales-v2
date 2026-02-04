@@ -217,10 +217,12 @@ export function CursorPrompts() {
       const promptBase64 = el.dataset.prompt || "";
       const deepLink = el.dataset.deeplink || "";
 
-      // Decode the base64 prompt
+      // Decode the base64 prompt (must use TextDecoder for proper UTF-8)
       let prompt = "";
       try {
-        prompt = atob(promptBase64);
+        const binaryString = atob(promptBase64);
+        const bytes = Uint8Array.from(binaryString, (c) => c.charCodeAt(0));
+        prompt = new TextDecoder("utf-8").decode(bytes);
       } catch {
         prompt = promptBase64;
       }

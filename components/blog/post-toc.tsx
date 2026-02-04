@@ -6,6 +6,24 @@ type PostTocProps = {
 };
 
 /**
+ * Decode common HTML entities to their character equivalents.
+ */
+function decodeHtmlEntities(text: string): string {
+  return text
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&#x27;/g, "'")
+    .replace(/&#(\d+);/g, (_, dec) => String.fromCharCode(Number(dec)))
+    .replace(/&#x([0-9a-fA-F]+);/g, (_, hex) =>
+      String.fromCharCode(Number.parseInt(hex, 16)),
+    );
+}
+
+/**
  * Extract H1 and H2 headings from rendered HTML and return TOC items.
  * Also ensures each heading has an id (adds one if missing).
  * Skips the first H1 (typically the post intro title).
@@ -60,10 +78,12 @@ function extractTocItems(html: string): {
   let htmlWithIds = html;
 
   for (const heading of filteredHeadings) {
-    const textContent = heading.content
-      .replace(/<[^>]*>/g, "")
-      .replace(/#$/, "")
-      .trim();
+    const textContent = decodeHtmlEntities(
+      heading.content
+        .replace(/<[^>]*>/g, "")
+        .replace(/#$/, "")
+        .trim(),
+    );
     if (!textContent) continue;
 
     // Check if id already exists

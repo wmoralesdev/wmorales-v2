@@ -331,12 +331,16 @@ async function renderMdocContent(content: string): Promise<string> {
     const { processedContent, codeBlocks } =
       await preprocessCodeBlocks(content);
 
+    // Convert literal \n escape sequences to actual newlines in regular content.
+    // This must happen before cursor-prompt normalization (which re-encodes them).
+    const contentWithNewlines = processedContent.replace(/\\n/g, "\n");
+
     // Markdoc doesn't parse multiline string attributes inside tags.
     // Normalize `{% cursor-prompt ... prompt="...<newlines>..." /%}` into a single-line
     // prompt string by encoding newlines as `\n` before parsing.
     const cursorPromptMultilineRegex =
       /{%\s*cursor-prompt\s+title="([^"]+)"\s+prompt="([\s\S]*?)"\s*\/%}/g;
-    const normalizedContent = processedContent.replace(
+    const normalizedContent = contentWithNewlines.replace(
       cursorPromptMultilineRegex,
       (_match, title: string, promptRaw: string) => {
         const promptNormalized = promptRaw
@@ -924,7 +928,7 @@ export function formatDate(
     locale === "es" ? "es-ES" : "en-US",
     {
       year: "numeric",
-      month: "long",
+      month: "short",
       day: "numeric",
     },
   );
