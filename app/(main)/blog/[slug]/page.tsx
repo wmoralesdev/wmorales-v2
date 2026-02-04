@@ -8,6 +8,7 @@ import { PostBody } from "@/components/blog/post-body";
 import { PostImage } from "@/components/blog/post-image";
 import { PostReadingProgress } from "@/components/blog/post-reading-progress";
 import { ensureHeadingIds, PostToc } from "@/components/blog/post-toc";
+import { PostViewCount } from "@/components/blog/post-view-count";
 import { TweetEmbeds } from "@/components/blog/tweet-embeds";
 import { LanguageSwitcher } from "@/components/common/language-switcher";
 import { ScrollToTop } from "@/components/common/scroll-to-top";
@@ -116,6 +117,10 @@ export default async function BlogPostPage({ params }: Props) {
                 </span>
               </>
             )}
+            <>
+              <span className="h-3 w-px bg-border" />
+              <PostViewCount locale={locale} slug={post.meta.slug} />
+            </>
             {post.meta.tags && post.meta.tags.length > 0 && (
               <>
                 <span className="h-3 w-px bg-border" />
