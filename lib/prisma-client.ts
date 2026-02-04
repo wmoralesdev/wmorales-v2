@@ -1,6 +1,6 @@
 import "server-only";
 
-import { PrismaClient } from "../lib/generated/prisma/client.js";
+import { PrismaClient } from "../lib/generated/prisma/client";
 import { PrismaNeonHttp } from "@prisma/adapter-neon";
 
 const globalForPrisma = globalThis as typeof globalThis & {
