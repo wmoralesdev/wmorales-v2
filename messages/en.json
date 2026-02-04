@@ -274,6 +274,10 @@
     "locale": {
       "en": "EN",
       "es": "ES"
+    },
+    "cookieNotice": {
+      "message": "We use essential cookies to measure unique post views.",
+      "dismiss": "Dismiss"
     }
   }
 }

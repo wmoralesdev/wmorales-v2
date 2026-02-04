@@ -6,7 +6,9 @@ import { JetBrains_Mono, Poppins, Space_Grotesk } from "next/font/google";
 import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
+import { CookieNotice } from "@/components/common/cookie-notice";
 import { ThemeProvider } from "@/components/common/theme-provider";
+import { Toaster } from "@/components/ui/sonner";
 import { baseMetadata } from "@/lib/metadata";
 import { cn } from "@/lib/utils";
 
@@ -63,7 +65,9 @@ export default async function RootLayout({ children }: Props) {
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <NextIntlClientProvider messages={messages}>
             {children}
+            <CookieNotice />
           </NextIntlClientProvider>
+          <Toaster position="bottom-center" />
         </ThemeProvider>
         <Analytics />
         <SpeedInsights />
