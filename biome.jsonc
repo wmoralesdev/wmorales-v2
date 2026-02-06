@@ -12,7 +12,9 @@
       "!!**/node_modules",
       "!!**/.next",
       "!!**/out",
-      "!!**/public"
+      "!!**/public",
+      "!!**/components/ui",
+      "!!**/lib/generated/prisma"
     ]
   },
   "formatter": {

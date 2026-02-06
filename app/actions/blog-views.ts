@@ -1,8 +1,11 @@
 "use server";
 
-import { cookies } from "next/headers";
 import { nanoid } from "nanoid";
-import { prisma } from "@/lib/prisma-client";
+import { cookies } from "next/headers";
+import {
+  getBlogViewCount as getBlogViewCountDb,
+  registerBlogView as registerBlogViewDb,
+} from "@/lib/db/blog-views";
 
 const SESSION_COOKIE = "wm_blog_session";
 const SESSION_MAX_AGE = 60 * 60 * 24 * 7;
@@ -27,35 +30,10 @@ async function getOrCreateSessionId(): Promise<string> {
 }
 
 export async function registerBlogView(slug: string): Promise<number> {
-  const safeSlug = slug.trim();
-  if (!safeSlug) return 0;
-
   const sessionId = await getOrCreateSessionId();
-
-  const [, count] = await prisma.$transaction([
-    prisma.blogView.upsert({
-      where: {
-        slug_sessionId: { slug: safeSlug, sessionId },
-      },
-      update: {},
-      create: {
-        slug: safeSlug,
-        sessionId,
-      },
-    }),
-    prisma.blogView.count({
-      where: { slug: safeSlug },
-    }),
-  ]);
-
-  return count;
+  return registerBlogViewDb(slug, sessionId);
 }
 
 export async function getBlogViewCount(slug: string): Promise<number> {
-  const safeSlug = slug.trim();
-  if (!safeSlug) return 0;
-
-  return prisma.blogView.count({
-    where: { slug: safeSlug },
-  });
+  return getBlogViewCountDb(slug);
 }

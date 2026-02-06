@@ -1,0 +1,142 @@
+[
+  {
+    "slug": "atomic-commits",
+    "name": "Atomic Commits & Push",
+    "category": "skills",
+    "description": "Groups local git changes into logical atomic commits with git-flow commit messages, then optionally pushes upstream.",
+    "installPath": ".cursor/skills/atomic-commits-and-push/SKILL.md",
+    "body": "Use when the user asks to \"split into commits\", \"make atomic commits\", \"create a series of commits\", \"write commit messages\", or \"commit and push\".\n\nThe skill analyzes staged and unstaged changes, groups them by logical scope (feature, fix, refactor), and creates well-formed git-flow commit messages like:\n\n  feat(auth): add OAuth2 provider integration\n  fix(api): handle null response in user endpoint\n  refactor(utils): extract date formatting helpers",
+    "examples": [
+      "split my changes into atomic commits",
+      "commit and push with proper git-flow messages",
+      "create a series of commits for these changes"
+    ],
+    "tags": ["git", "commits", "workflow"]
+  },
+  {
+    "slug": "create-rule",
+    "name": "Create Cursor Rule",
+    "category": "skills",
+    "description": "Create Cursor rules for persistent AI guidance. Coding standards, project conventions, and file-specific patterns.",
+    "installPath": ".cursor/skills/create-rule/SKILL.md",
+    "body": "Use when you want to create a rule, add coding standards, set up project conventions, configure file-specific patterns, or create RULE.md files.\n\nRules persist across sessions and guide the AI to follow your team's conventions automatically. They can be scoped to specific file types, directories, or the entire project.",
+    "examples": [
+      "create a rule for consistent naming conventions",
+      "add coding standards for our React components",
+      "set up a rule for API endpoint patterns"
+    ],
+    "tags": ["rules", "conventions", "ai-guidance"]
+  },
+  {
+    "slug": "create-skill",
+    "name": "Create Cursor Skill",
+    "category": "skills",
+    "description": "Guides through creating effective Agent Skills for Cursor with best practices and SKILL.md format.",
+    "installPath": ".cursor/skills/create-skill/SKILL.md",
+    "body": "Use when you want to create, write, or author a new skill, or learn about skill structure and best practices.\n\nSkills are reusable instructions that teach the AI agent how to perform specific tasks. They include trigger conditions, step-by-step procedures, and expected outcomes.",
+    "examples": [
+      "create a skill for database migrations",
+      "write a skill for deploying to production",
+      "author a new skill for API testing"
+    ],
+    "tags": ["skills", "authoring", "ai-agent"]
+  },
+  {
+    "slug": "prisma-v7-migration",
+    "name": "Prisma ORM v7 Migration",
+    "category": "skills",
+    "description": "Guidelines for migrating an application to Prisma ORM v7 with all breaking changes and new patterns.",
+    "installPath": ".cursor/skills/prisma/SKILL.md",
+    "body": "Covers the full migration path from Prisma v6 to v7:\n\n- New client generation approach\n- Updated adapter patterns (Neon, PlanetScale)\n- Breaking changes in query API\n- Migration file format updates\n- TypeScript strict mode compatibility",
+    "examples": [
+      "migrate my project to Prisma v7",
+      "update Prisma client to v7 patterns",
+      "fix Prisma v7 breaking changes"
+    ],
+    "tags": ["prisma", "database", "migration"]
+  },
+  {
+    "slug": "next-intl",
+    "name": "next-intl Setup",
+    "category": "tools",
+    "description": "Internationalization setup with next-intl for Next.js App Router with locale detection and message loading.",
+    "body": "Pattern used in this project for i18n:\n\n- Locale detection via cookies (app/actions/locale.ts)\n- Message files in messages/ directory (en.json, es.json)\n- Server-side locale resolution in i18n/request.ts\n- NextIntlClientProvider in root layout\n- useTranslations() hook in components\n\nSupports dynamic locale switching without page reload.",
+    "examples": [
+      "how does i18n work in this project?",
+      "add a new translation key",
+      "switch language at runtime"
+    ],
+    "tags": ["i18n", "next-intl", "localization"]
+  },
+  {
+    "slug": "shadcn-ui",
+    "name": "shadcn/ui Components",
+    "category": "tools",
+    "description": "Component library built on Radix UI primitives with Tailwind CSS. New York style variant with neutral base color.",
+    "body": "Configuration (components.json):\n- Style: new-york\n- RSC: enabled\n- CSS variables: enabled\n- Icon library: lucide\n\nComponents live in components/ui/ and are added via:\n  npx shadcn@latest add <component>\n\nAll components support dark mode via CSS custom properties and the .dark class.",
+    "examples": [
+      "add a new shadcn component",
+      "customize the button component",
+      "check available shadcn components"
+    ],
+    "tags": ["ui", "components", "radix", "tailwind"]
+  },
+  {
+    "slug": "neon-prisma",
+    "name": "Neon + Prisma Adapter",
+    "category": "tools",
+    "description": "Serverless PostgreSQL via Neon with the Prisma Neon HTTP adapter for edge-compatible database access.",
+    "body": "Stack:\n- Neon serverless PostgreSQL\n- @prisma/adapter-neon for HTTP-based queries\n- Connection string via DATABASE_URL env var\n- Global singleton pattern for dev (avoids connection exhaustion)\n\nThe adapter uses HTTP instead of TCP, making it compatible with edge runtimes and serverless functions.",
+    "examples": [
+      "how is the database connected?",
+      "check the Prisma client setup",
+      "add a new database model"
+    ],
+    "tags": ["database", "neon", "prisma", "serverless"]
+  },
+  {
+    "slug": "slides-engine",
+    "name": "Slides Presentation Engine",
+    "category": "tools",
+    "description": "JSON-driven presentation engine with Zod validation, theming, and print-to-PDF support.",
+    "body": "Architecture:\n- Deck definitions in content/slides/*.json\n- Zod schema validation (lib/slides/schema.ts)\n- Dynamic theming per deck (lib/slides/theme.ts)\n- Multiple slide types: cover, bullets, cards, timeline, two-column, statement, profile, CTA\n- Print mode with custom @page CSS for PDF export\n- Keyboard navigation and slide counter\n\nAdd a new presentation by creating a JSON file in content/slides/.",
+    "examples": [
+      "create a new slide deck",
+      "add a slide type to the engine",
+      "how does the slides system work?"
+    ],
+    "tags": ["slides", "presentations", "content"]
+  },
+  {
+    "slug": "git-flow-commits",
+    "name": "Git Flow Commit Convention",
+    "category": "rules",
+    "description": "All commit messages follow git-flow standard: type(scope): description.",
+    "body": "Convention:\n  feat(scope): new feature\n  fix(scope): bug fix\n  refactor(scope): code restructuring\n  docs(scope): documentation changes\n  chore(scope): maintenance tasks\n  style(scope): formatting, no code change\n  test(scope): adding or updating tests\n  perf(scope): performance improvement\n\nScope should identify the module or area affected (e.g., auth, api, ui, blog).",
+    "tags": ["git", "conventions", "commits"]
+  },
+  {
+    "slug": "kebab-case-files",
+    "name": "Kebab-case File Naming",
+    "category": "rules",
+    "description": "All JS/TS files and related extensions (HTML, CSS) must use kebab-case naming.",
+    "body": "Examples:\n  activity-calendar.tsx    (correct)\n  ActivityCalendar.tsx     (incorrect)\n  post-reading-progress.tsx (correct)\n  PostReadingProgress.tsx   (incorrect)\n\nApplies to all files in the project: components, pages, utilities, hooks, and content files.",
+    "tags": ["naming", "conventions", "files"]
+  },
+  {
+    "slug": "concise-replies",
+    "name": "Concise AI Replies",
+    "category": "rules",
+    "description": "AI assistant should reply concisely, avoiding unnecessary repetition or filler language.",
+    "body": "The AI assistant is configured to:\n- Keep responses focused and to the point\n- Avoid restating what the user already said\n- Skip filler phrases like \"Sure, I'd be happy to...\"\n- Provide actionable output over explanation\n- Use code blocks over lengthy descriptions when appropriate",
+    "tags": ["ai", "style", "communication"]
+  },
+  {
+    "slug": "vercel-analytics",
+    "name": "Vercel Analytics & Speed Insights",
+    "category": "tools",
+    "description": "Built-in analytics and performance monitoring via Vercel's first-party packages.",
+    "body": "Packages:\n- @vercel/analytics: Page view and custom event tracking\n- @vercel/speed-insights: Core Web Vitals monitoring\n\nBoth are included in the root layout and work automatically in production on Vercel. Zero-config setup with no external scripts.",
+    "tags": ["analytics", "performance", "vercel"]
+  }
+]

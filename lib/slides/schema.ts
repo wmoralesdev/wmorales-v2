@@ -82,8 +82,14 @@ const itemsArraySchema = z
 // =============================================================================
 
 const seoSchema = z.object({
-  title: z.string().max(60, "SEO title should be 60 characters or less").optional(),
-  description: z.string().max(160, "SEO description should be 160 characters or less").optional(),
+  title: z
+    .string()
+    .max(60, "SEO title should be 60 characters or less")
+    .optional(),
+  description: z
+    .string()
+    .max(160, "SEO description should be 160 characters or less")
+    .optional(),
   image: z.string().url("SEO image must be a valid URL").optional(),
 });
 

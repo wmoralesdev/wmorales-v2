@@ -47,8 +47,7 @@ export async function generateMetadata({
   const slide = slides[slideIndex];
   const isFirstSlide = slideIndex === 0;
 
-  const seoTitle =
-    meta.seo?.title ?? `${meta.title} | ${meta.author}`;
+  const seoTitle = meta.seo?.title ?? `${meta.title} | ${meta.author}`;
   const seoDescription =
     meta.seo?.description ?? `Slide ${slideIndex + 1}: ${slide.headline}`;
   const seoImage = meta.seo?.image;

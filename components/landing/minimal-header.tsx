@@ -35,26 +35,32 @@ export async function MinimalHeader() {
             {t("ambassador")}
           </span>
         </div>
+
+        {/* Social links — part of the identity block */}
+        <div className="flex items-center gap-3 pt-1">
+          {socialLinks.map(({ href, icon: Icon, label }) => (
+            <a
+              aria-label={label}
+              className="text-muted-foreground/70 transition-colors hover:text-foreground"
+              href={href}
+              key={label}
+              rel="noopener noreferrer"
+              target="_blank"
+            >
+              <Icon className="size-[18px]" />
+            </a>
+          ))}
+        </div>
       </div>
 
-      <nav className="flex items-center gap-5">
-        {socialLinks.map(({ href, icon: Icon, label }) => (
-          <a
-            aria-label={label}
-            className="text-muted-foreground/70 transition-colors hover:text-foreground"
-            href={href}
-            key={label}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            <Icon className="size-[18px]" />
-          </a>
-        ))}
-        <span className="h-3.5 w-px bg-border" />
+      {/* Navigation — page links + controls on their own row */}
+      <nav className="flex flex-wrap items-center gap-4">
         <NavLink href="/" exact>
           {tNav("home")}
         </NavLink>
         <NavLink href="/blog">{tNav("blog")}</NavLink>
+        <NavLink href="/activities">{tNav("activities")}</NavLink>
+        <NavLink href="/resources">{tNav("resources")}</NavLink>
         <NavLink href="/design-system">{tNav("designSystem")}</NavLink>
         <span className="h-3.5 w-px bg-border" />
         <LanguageSwitcher />

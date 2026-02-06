@@ -2,6 +2,8 @@
   "navigation": {
     "home": "Inicio",
     "blog": "Blog",
+    "activities": "Actividades",
+    "resources": "Recursos",
     "designSystem": "Design System"
   },
   "homepage": {
