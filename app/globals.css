@@ -54,6 +54,7 @@
 
   html {
     @apply scroll-smooth;
+    view-transition-name: root;
   }
 
   body {
@@ -63,6 +64,38 @@
 
   ::selection {
     @apply bg-accent/30 text-foreground;
+  }
+}
+
+/* Theme circle reveal (View Transitions API) */
+@keyframes wmThemeCircleReveal {
+  from {
+    clip-path: circle(0px at var(--wm-theme-x, 50vw) var(--wm-theme-y, 50vh));
+  }
+  to {
+    clip-path: circle(
+      var(--wm-theme-r, 150vmax) at var(--wm-theme-x, 50vw) var(--wm-theme-y, 50vh)
+    );
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+  }
+
+  ::view-transition-new(root) {
+    /* cubic-bezier with slight overshoot for bouncy feel */
+    /* ease-in: starts slow, accelerates toward the end */
+    animation: wmThemeCircleReveal 500ms cubic-bezier(0.55, 0, 1, 0.45) both;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
   }
 }
 

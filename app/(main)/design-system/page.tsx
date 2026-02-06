@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { MinimalHeader } from "@/components/landing/minimal-header";
 import {
   SlideBody,
   SlideBreakdown,
@@ -35,8 +34,6 @@ export default async function DesignSystemPage() {
   const t = await getTranslations("designSystem");
   return (
     <div className="space-y-16">
-      <MinimalHeader />
-
       {/* Overview */}
       <section className="space-y-4">
         <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">

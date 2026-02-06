@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { ActivityAdminCreateDialog } from "@/components/activities/activity-admin-create-dialog";
 import { ActivityCalendar } from "@/components/activities/activity-calendar";
 import { NextActivityBanner } from "@/components/activities/next-activity-banner";
-import { MinimalHeader } from "@/components/landing/minimal-header";
 import {
   getAllActivities,
   getUpcomingActivities,
@@ -22,7 +21,6 @@ export default async function ActivitiesPage() {
 
   return (
     <div className="space-y-12">
-      <MinimalHeader />
       <NextActivityBanner
         activities={JSON.parse(JSON.stringify(upcomingActivities))}
       />

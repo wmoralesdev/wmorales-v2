@@ -24,15 +24,15 @@ export function NavLink({
     <Link
       href={href}
       className={cn(
-        "relative text-sm font-medium transition-colors",
-        isActive ? "text-accent" : "text-muted-foreground hover:text-accent",
+        "relative rounded-md px-2 py-1 text-sm font-medium transition-colors",
+        "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
+        isActive
+          ? "bg-accent/10 text-accent"
+          : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
         className,
       )}
     >
       {children}
-      {isActive && (
-        <span className="absolute -bottom-1 left-0 h-px w-full bg-accent" />
-      )}
     </Link>
   );
 }

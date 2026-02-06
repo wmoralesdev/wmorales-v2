@@ -9,6 +9,8 @@ import { Card, CardContent } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import type { Resource, ResourceCategory } from "@/lib/resources";
 
+type CSSVars = React.CSSProperties & Record<`--${string}`, number | string>;
+
 interface ResourceLayoutProps {
   resources: Resource[];
   categories: ResourceCategory[];
@@ -35,15 +37,25 @@ export function ResourceLayout({ resources, categories }: ResourceLayoutProps) {
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
 
   const filtered = resources.filter((r) => r.category === activeCategory);
+  const activeIndex = Math.max(0, categories.indexOf(activeCategory));
 
   return (
     <div className="space-y-6">
       {/* Category tabs */}
       <div
-        className="flex flex-wrap gap-2"
+        className="relative inline-grid w-full grid-flow-col auto-cols-fr items-stretch rounded-lg bg-muted/20 p-1"
         role="tablist"
         aria-label="Resource categories"
+        style={{ "--wm-tab-count": categories.length } as CSSVars}
       >
+        <span
+          aria-hidden="true"
+          className="pointer-events-none absolute left-1 top-1 h-[calc(100%-0.5rem)] rounded-md bg-accent/20 transition-transform duration-200 ease-out motion-reduce:transition-none"
+          style={{
+            width: `calc((100% - 0.5rem) / var(--wm-tab-count))`,
+            transform: `translateX(${activeIndex * 100}%)`,
+          }}
+        />
         {categories.map((cat) => (
           <button
             key={cat}
@@ -56,10 +68,11 @@ export function ResourceLayout({ resources, categories }: ResourceLayoutProps) {
               setExpandedSlug(null);
             }}
             className={cn(
-              "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
+              "relative z-10 rounded-md px-3 py-1 text-sm font-medium transition-colors",
+              "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
               activeCategory === cat
-                ? "bg-accent/10 text-accent"
-                : "text-muted-foreground hover:bg-muted/50 hover:text-foreground",
+                ? "text-accent"
+                : "text-muted-foreground hover:text-foreground",
             )}
           >
             {CATEGORY_LABELS[cat]}

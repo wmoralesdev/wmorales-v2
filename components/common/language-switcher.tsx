@@ -24,7 +24,7 @@ export function LanguageSwitcher() {
     <Button
       variant="ghost"
       size="sm"
-      className="h-8 px-2 font-mono text-xs"
+      className="h-8 px-2 font-mono text-xs transition-transform duration-200 hover:-translate-y-0.5"
       onClick={handleToggle}
       aria-label={`Switch to ${otherLocale === "en" ? "English" : "Español"}`}
     >

@@ -11,7 +11,7 @@
       "name": "Walter",
       "nameAccent": "Morales",
       "role": "Software Engineer building products with modern web technologies.",
-      "location": "Based in El Salvador.",
+      "location": "Based in El Salvador",
       "ambassador": "Cursor Ambassador for El Salvador"
     },
     "blogPreview": {
@@ -278,7 +278,7 @@
       "es": "ES"
     },
     "cookieNotice": {
-      "message": "We use essential cookies to measure unique post views.",
+      "message": "This site uses cookies.",
       "dismiss": "Dismiss"
     }
   }

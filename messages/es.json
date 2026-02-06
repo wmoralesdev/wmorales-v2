@@ -11,7 +11,7 @@
       "name": "Walter",
       "nameAccent": "Morales",
       "role": "Ingeniero de Software construyendo productos con tecnologías web modernas.",
-      "location": "Con sede en El Salvador.",
+      "location": "Con sede en El Salvador",
       "ambassador": "Embajador de Cursor para El Salvador"
     },
     "blogPreview": {
@@ -278,7 +278,7 @@
       "es": "ES"
     },
     "cookieNotice": {
-      "message": "Usamos cookies esenciales para medir vistas únicas de publicaciones.",
+      "message": "Este sitio usa cookies.",
       "dismiss": "Entendido"
     }
   }

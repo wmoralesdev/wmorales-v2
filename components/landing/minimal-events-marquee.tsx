@@ -42,7 +42,7 @@ function EventCard({
 }) {
   return (
     <a
-      className="group relative block h-40 w-64 shrink-0 overflow-hidden rounded-md border border-border/60 transition-colors hover:border-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
+      className="group relative block h-48 w-80 shrink-0 overflow-hidden rounded-md border border-border/60 transition-colors hover:border-accent/50 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent"
       href={link}
       rel="noopener noreferrer"
       target="_blank"
@@ -51,7 +51,7 @@ function EventCard({
         alt={title}
         className="object-cover transition-transform duration-200 group-hover:scale-105"
         fill
-        sizes="256px"
+        sizes="320px"
         src={coverImage}
       />
       {/* Overlay on hover/focus */}
