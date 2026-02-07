@@ -237,6 +237,38 @@
           "outline": "Contorno",
           "secondary": "Secundario"
         }
+      },
+      "copyButton": {
+        "title": "Botón de Copiar",
+        "description": "Primitivo para copiar al portapapeles con feedback sutil de éxito."
+      },
+      "emptyState": {
+        "title": "Estado Vacío",
+        "description": "Layout estándar para momentos sin datos (listas vacías, filtros sin resultados, secciones tipo 404).",
+        "example": {
+          "title": "Aún no hay nada",
+          "description": "Crea tu primer elemento, o ajusta tus filtros para ver resultados.",
+          "primaryAction": "Crear elemento",
+          "secondaryAction": "Restablecer filtros"
+        }
+      }
+    },
+    "animations": {
+      "title": "Animaciones",
+      "description": "Utilidades de movimiento solo con CSS para micro-interacciones sutiles y consistentes. Todas respetan la preferencia de reducir movimiento.",
+      "utilities": {
+        "title": "Utilidades de movimiento (CSS)",
+        "description": "Usa estas utilidades para estados de entrada y carga livianos.",
+        "fadeIn": "Aparición suave para UI pequeña y no intrusiva.",
+        "fadeUp": "Aparición + leve elevación para tarjetas y bloques de contenido.",
+        "scaleIn": "Escala + aparición para popovers, diálogos y menús.",
+        "shimmer": "Efecto shimmer para placeholders de carga."
+      },
+      "notes": {
+        "title": "Guías",
+        "reducedMotion": "Por defecto, prioriza una experiencia legible con movimiento reducido.",
+        "radixStates": "Para primitivas Radix, prefiere clases guiadas por estado (ej. data-[state=open]:animate-in).",
+        "keepSubtle": "Manténlo sutil: ~200–300ms y transformaciones pequeñas."
       }
     },
     "slides": {

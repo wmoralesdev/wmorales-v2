@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { InboxIcon } from "lucide-react";
 import {
   SlideBody,
   SlideBreakdown,
@@ -11,6 +12,7 @@ import {
   SlideSubline,
   SlideTimeline,
 } from "@/components/slides";
+import { CopyButton } from "@/components/ui/copy-button";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -20,7 +22,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  EmptyState,
+  EmptyStateActions,
+  EmptyStateDescription,
+  EmptyStateIcon,
+  EmptyStateTitle,
+} from "@/components/ui/empty-state";
 import { Separator } from "@/components/ui/separator";
+import { Skeleton } from "@/components/ui/skeleton";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("designSystem.metadata");
@@ -511,6 +521,112 @@ export default async function DesignSystemPage() {
               <Badge variant="secondary">
                 {t("components.badge.variants.secondary")}
               </Badge>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("components.copyButton.title")}</CardTitle>
+            <CardDescription>{t("components.copyButton.description")}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex flex-wrap gap-2">
+              <CopyButton value="pnpm lint" />
+              <CopyButton value="pnpm typecheck" variant="ghost" />
+            </div>
+            <code className="block rounded bg-muted px-3 py-2 font-mono text-xs text-muted-foreground">
+              {'<CopyButton value="pnpm lint" />'}
+            </code>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("components.emptyState.title")}</CardTitle>
+            <CardDescription>{t("components.emptyState.description")}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <EmptyState className="wm-fade-up">
+              <EmptyStateIcon>
+                <InboxIcon className="size-5" aria-hidden="true" />
+              </EmptyStateIcon>
+              <EmptyStateTitle>{t("components.emptyState.example.title")}</EmptyStateTitle>
+              <EmptyStateDescription>
+                {t("components.emptyState.example.description")}
+              </EmptyStateDescription>
+              <EmptyStateActions>
+                <Button size="sm">
+                  {t("components.emptyState.example.primaryAction")}
+                </Button>
+                <Button size="sm" variant="outline">
+                  {t("components.emptyState.example.secondaryAction")}
+                </Button>
+              </EmptyStateActions>
+            </EmptyState>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Animations */}
+      <section className="space-y-6">
+        <div>
+          <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">
+            {t("animations.title")}
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground text-pretty">
+            {t("animations.description")}
+          </p>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("animations.utilities.title")}</CardTitle>
+            <CardDescription>{t("animations.utilities.description")}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <div className="grid gap-4 sm:grid-cols-2">
+              <div className="rounded-lg border border-border bg-background p-4 wm-fade-in">
+                <p className="font-mono text-xs text-muted-foreground">.wm-fade-in</p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {t("animations.utilities.fadeIn")}
+                </p>
+              </div>
+              <div className="rounded-lg border border-border bg-background p-4 wm-fade-up">
+                <p className="font-mono text-xs text-muted-foreground">.wm-fade-up</p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {t("animations.utilities.fadeUp")}
+                </p>
+              </div>
+              <div className="rounded-lg border border-border bg-background p-4 wm-scale-in">
+                <p className="font-mono text-xs text-muted-foreground">.wm-scale-in</p>
+                <p className="mt-2 text-sm text-muted-foreground">
+                  {t("animations.utilities.scaleIn")}
+                </p>
+              </div>
+              <div className="rounded-lg border border-border bg-background p-4">
+                <p className="font-mono text-xs text-muted-foreground">.wm-shimmer</p>
+                <div className="mt-3 space-y-2">
+                  <Skeleton className="h-4 w-3/5 wm-shimmer" />
+                  <Skeleton className="h-4 w-4/5 wm-shimmer" />
+                </div>
+                <p className="mt-3 text-sm text-muted-foreground">
+                  {t("animations.utilities.shimmer")}
+                </p>
+              </div>
+            </div>
+
+            <Separator />
+
+            <div className="space-y-2">
+              <p className="text-sm font-medium text-foreground">
+                {t("animations.notes.title")}
+              </p>
+              <ul className="list-disc space-y-1 pl-5 text-sm text-muted-foreground">
+                <li>{t("animations.notes.reducedMotion")}</li>
+                <li>{t("animations.notes.radixStates")}</li>
+                <li>{t("animations.notes.keepSubtle")}</li>
+              </ul>
             </div>
           </CardContent>
         </Card>
