@@ -1,6 +1,6 @@
+import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { FaGithub, FaLinkedin, FaXTwitter } from "react-icons/fa6";
-import Image from "next/image";
 import { ElSalvadorTime } from "@/components/common/el-salvador-time";
 import { LanguageSwitcher } from "@/components/common/language-switcher";
 import { NavLink } from "@/components/common/nav-link";
@@ -32,14 +32,16 @@ export async function MinimalHeader() {
           <h1 className="font-display font-semibold text-4xl text-foreground text-balance sm:text-5xl">
             {t("name")} <span className="text-accent">{t("nameAccent")}</span>
           </h1>
-          
+
           <div className="space-y-3">
             <p className="text-lg text-muted-foreground leading-relaxed text-pretty">
               {t("role")}
             </p>
             <div className="flex items-center gap-2 font-mono text-muted-foreground/80 text-sm">
               <span>{t("location")}</span>
-              <span className="text-muted-foreground/40" aria-hidden="true">•</span>
+              <span className="text-muted-foreground/40" aria-hidden="true">
+                •
+              </span>
               <ElSalvadorTime />
             </div>
           </div>
@@ -83,7 +85,10 @@ export async function MinimalHeader() {
               ))}
             </div>
 
-            <span className="h-3.5 w-px shrink-0 bg-border" aria-hidden="true" />
+            <span
+              className="h-3.5 w-px shrink-0 bg-border"
+              aria-hidden="true"
+            />
             <LanguageSwitcher />
             <ThemeToggle />
           </div>
@@ -92,7 +97,11 @@ export async function MinimalHeader() {
         {/* Avatar */}
         <div className="self-start">
           <Avatar className="size-24 rounded-2xl transition-transform duration-200 hover:-rotate-2 hover:scale-105 md:size-32">
-            <AvatarImage src="/me.jpeg" alt="Walter Morales" className="object-cover" />
+            <AvatarImage
+              src="/me.jpeg"
+              alt="Walter Morales"
+              className="object-cover"
+            />
             <AvatarFallback>WM</AvatarFallback>
           </Avatar>
         </div>

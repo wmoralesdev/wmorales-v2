@@ -74,7 +74,8 @@
   }
   to {
     clip-path: circle(
-      var(--wm-theme-r, 150vmax) at var(--wm-theme-x, 50vw) var(--wm-theme-y, 50vh)
+      var(--wm-theme-r, 150vmax) at var(--wm-theme-x, 50vw)
+        var(--wm-theme-y, 50vh)
     );
   }
 }
@@ -135,11 +136,80 @@
   }
 }
 
+@keyframes wmFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes wmFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes wmScaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes wmPop {
+  0% {
+    transform: scale(1);
+  }
+  45% {
+    transform: scale(1.02);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+@keyframes wmShimmer {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
 @layer utilities {
   /* Animation Utilities with Reduced Motion Support */
   @media (prefers-reduced-motion: no-preference) {
     .wm-reveal {
       animation: wmReveal 0.6s ease-out backwards;
+    }
+
+    .wm-fade-in {
+      animation: wmFadeIn 220ms ease-out backwards;
+    }
+
+    .wm-fade-up {
+      animation: wmFadeUp 260ms ease-out backwards;
+    }
+
+    .wm-scale-in {
+      animation: wmScaleIn 220ms ease-out backwards;
+    }
+
+    .wm-pop {
+      animation: wmPop 220ms ease-out;
+      will-change: transform;
     }
 
     .wm-theme-ping {
@@ -164,6 +234,27 @@
     .wm-marquee-pausable:focus-within {
       animation-play-state: paused;
     }
+
+    /* Shimmer overlay (use on Skeleton/placeholder surfaces) */
+    .wm-shimmer {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .wm-shimmer::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      transform: translateX(-100%);
+      background-image: linear-gradient(
+        90deg,
+        transparent,
+        color-mix(in oklch, var(--foreground), transparent 92%),
+        transparent
+      );
+      animation: wmShimmer 1.35s ease-in-out infinite;
+      pointer-events: none;
+    }
   }
 
   /* Reduced motion: hide duplicate and allow scroll */
@@ -183,6 +274,10 @@
 
     .wm-marquee-container > * {
       scroll-snap-align: start;
+    }
+
+    .wm-shimmer::after {
+      display: none;
     }
   }
 

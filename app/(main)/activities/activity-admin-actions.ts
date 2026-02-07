@@ -11,7 +11,13 @@ const createActivitySchema = z.object({
   date: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format"),
   time: z.string().trim().min(1).max(100).optional().or(z.literal("")),
   location: z.string().trim().min(1).max(200).optional().or(z.literal("")),
-  shortDescription: z.string().trim().min(1).max(280).optional().or(z.literal("")),
+  shortDescription: z
+    .string()
+    .trim()
+    .min(1)
+    .max(280)
+    .optional()
+    .or(z.literal("")),
   description: z.string().min(1, "Description is required").max(20_000),
   lumaUrl: z.string().trim().url().optional().or(z.literal("")),
 });
@@ -96,4 +102,3 @@ export async function createActivity(
   revalidatePath("/activities");
   return { ok: true };
 }
-
