@@ -29,8 +29,12 @@ export function ThemeToggle() {
       window.matchMedia?.("(prefers-reduced-motion: reduce)")?.matches;
 
     const buttonRect = buttonRef.current?.getBoundingClientRect();
-    const x = buttonRect ? buttonRect.left + buttonRect.width / 2 : window.innerWidth / 2;
-    const y = buttonRect ? buttonRect.top + buttonRect.height / 2 : window.innerHeight / 2;
+    const x = buttonRect
+      ? buttonRect.left + buttonRect.width / 2
+      : window.innerWidth / 2;
+    const y = buttonRect
+      ? buttonRect.top + buttonRect.height / 2
+      : window.innerHeight / 2;
     const maxX = Math.max(x, window.innerWidth - x);
     const maxY = Math.max(y, window.innerHeight - y);
     const r = Math.hypot(maxX, maxY);
