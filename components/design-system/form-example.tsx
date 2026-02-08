@@ -1,13 +1,13 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { toast } from "sonner";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import { z } from "zod";
 
-import { CopyButton } from "@/components/ui/copy-button";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import { CopyButton } from "@/components/ui/copy-button";
 import {
   Form,
   FormControl,
@@ -25,7 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 const schema = z.object({
   title: z.string().trim().min(1, "Title is required").max(80),
   prompt: z.string().trim().min(1, "Prompt is required").max(5000),
-  includeContext: z.boolean().default(true),
+  includeContext: z.boolean(),
 });
 
 type Values = z.infer<typeof schema>;
@@ -124,7 +124,7 @@ function FormExample({
                 />
               </FormControl>
               <FormDescription>
-                {strings.helper} <MonoText>{'font-mono'}</MonoText>
+                {strings.helper} <MonoText>{"font-mono"}</MonoText>
               </FormDescription>
               <FormMessage />
             </FormItem>

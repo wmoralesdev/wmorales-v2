@@ -574,7 +574,9 @@ export default async function DesignSystemPage() {
         <Card>
           <CardHeader>
             <CardTitle>{t("components.monoText.title")}</CardTitle>
-            <CardDescription>{t("components.monoText.description")}</CardDescription>
+            <CardDescription>
+              {t("components.monoText.description")}
+            </CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <p className="text-sm text-muted-foreground">
