@@ -237,6 +237,72 @@
           "outline": "Outline",
           "secondary": "Secondary"
         }
+      },
+      "copyButton": {
+        "title": "Copy Button",
+        "description": "Copy-to-clipboard primitive with subtle success feedback."
+      },
+      "openWithCursor": {
+        "title": "Open with Cursor",
+        "description": "Deep link a prompt into Cursor via cursor.com prompt links."
+      },
+      "monoText": {
+        "title": "Monospaced Text",
+        "description": "For commands, tokens, and short technical snippets.",
+        "inlineExample": "Use <code>MonoText</code> for inline code and small labels."
+      },
+      "emptyState": {
+        "title": "Empty State",
+        "description": "Standard layout for zero-data moments (empty lists, filtered states, 404-like sections).",
+        "example": {
+          "title": "Nothing here yet",
+          "description": "Create your first item, or adjust your filters to see results.",
+          "primaryAction": "Create item",
+          "secondaryAction": "Reset filters"
+        }
+      }
+    },
+    "forms": {
+      "title": "Forms",
+      "description": "Accessible form patterns using react-hook-form and the Form primitives.",
+      "example": {
+        "title": "Form Example",
+        "description": "A minimal prompt builder with validation and actions.",
+        "fields": {
+          "title": {
+            "label": "Title",
+            "placeholder": "e.g. Refactor this component"
+          },
+          "prompt": {
+            "label": "Prompt",
+            "placeholder": "Write your prompt..."
+          },
+          "includeContext": {
+            "label": "Include title as context",
+            "description": "When enabled, the title is prepended to the prompt before copying/opening."
+          }
+        },
+        "helper": "Tip: for prompts, a monospaced textarea improves scanability:",
+        "submit": "Submit",
+        "submitted": "Submitted"
+      }
+    },
+    "animations": {
+      "title": "Animations",
+      "description": "CSS-only motion utilities for subtle, consistent micro-interactions. All utilities respect reduced-motion preferences.",
+      "utilities": {
+        "title": "CSS motion utilities",
+        "description": "Use these utilities for lightweight entrance and loading states.",
+        "fadeIn": "Fade in for small, non-blocking UI.",
+        "fadeUp": "Fade + slight lift for cards and content blocks.",
+        "scaleIn": "Scale + fade for popovers, dialogs, and menus.",
+        "shimmer": "Shimmer overlay for loading placeholders."
+      },
+      "notes": {
+        "title": "Guidelines",
+        "reducedMotion": "Always default to a readable experience with reduced motion.",
+        "radixStates": "For Radix primitives, prefer state-driven classes (e.g. data-[state=open]:animate-in).",
+        "keepSubtle": "Keep it subtle: ~200–300ms duration and small transforms."
       }
     },
     "slides": {

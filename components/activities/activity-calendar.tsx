@@ -79,9 +79,7 @@ export function ActivityCalendar({
     () =>
       activities.filter((a) => {
         const d = new Date(a.date);
-        return (
-          d.getUTCFullYear() === year && d.getUTCMonth() + 1 === month
-        );
+        return d.getUTCFullYear() === year && d.getUTCMonth() + 1 === month;
       }),
     [activities, year, month],
   );

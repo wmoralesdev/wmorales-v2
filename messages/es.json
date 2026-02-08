@@ -237,6 +237,72 @@
           "outline": "Contorno",
           "secondary": "Secundario"
         }
+      },
+      "copyButton": {
+        "title": "Botón de Copiar",
+        "description": "Primitivo para copiar al portapapeles con feedback sutil de éxito."
+      },
+      "openWithCursor": {
+        "title": "Abrir con Cursor",
+        "description": "Deep link de un prompt a Cursor usando enlaces de prompt de cursor.com."
+      },
+      "monoText": {
+        "title": "Texto Monoespaciado",
+        "description": "Para comandos, tokens y snippets técnicos cortos.",
+        "inlineExample": "Usa <code>MonoText</code> para código inline y etiquetas pequeñas."
+      },
+      "emptyState": {
+        "title": "Estado Vacío",
+        "description": "Layout estándar para momentos sin datos (listas vacías, filtros sin resultados, secciones tipo 404).",
+        "example": {
+          "title": "Aún no hay nada",
+          "description": "Crea tu primer elemento, o ajusta tus filtros para ver resultados.",
+          "primaryAction": "Crear elemento",
+          "secondaryAction": "Restablecer filtros"
+        }
+      }
+    },
+    "forms": {
+      "title": "Formularios",
+      "description": "Patrones de formularios accesibles usando react-hook-form y los primitivos de Form.",
+      "example": {
+        "title": "Ejemplo de Formulario",
+        "description": "Un constructor de prompts mínimo con validación y acciones.",
+        "fields": {
+          "title": {
+            "label": "Título",
+            "placeholder": "p. ej. Refactoriza este componente"
+          },
+          "prompt": {
+            "label": "Prompt",
+            "placeholder": "Escribe tu prompt..."
+          },
+          "includeContext": {
+            "label": "Incluir el título como contexto",
+            "description": "Cuando está habilitado, el título se antepone al prompt antes de copiar/abrir."
+          }
+        },
+        "helper": "Tip: para prompts, un textarea monoespaciado mejora la lectura rápida:",
+        "submit": "Enviar",
+        "submitted": "Enviado"
+      }
+    },
+    "animations": {
+      "title": "Animaciones",
+      "description": "Utilidades de movimiento solo con CSS para micro-interacciones sutiles y consistentes. Todas respetan la preferencia de reducir movimiento.",
+      "utilities": {
+        "title": "Utilidades de movimiento (CSS)",
+        "description": "Usa estas utilidades para estados de entrada y carga livianos.",
+        "fadeIn": "Aparición suave para UI pequeña y no intrusiva.",
+        "fadeUp": "Aparición + leve elevación para tarjetas y bloques de contenido.",
+        "scaleIn": "Escala + aparición para popovers, diálogos y menús.",
+        "shimmer": "Efecto shimmer para placeholders de carga."
+      },
+      "notes": {
+        "title": "Guías",
+        "reducedMotion": "Por defecto, prioriza una experiencia legible con movimiento reducido.",
+        "radixStates": "Para primitivas Radix, prefiere clases guiadas por estado (ej. data-[state=open]:animate-in).",
+        "keepSubtle": "Manténlo sutil: ~200–300ms y transformaciones pequeñas."
       }
     },
     "slides": {

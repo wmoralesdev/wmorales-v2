@@ -1,14 +1,22 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
+import {
+  createActivity,
+  verifyActivitiesAdminPassword,
+} from "@/app/(main)/activities/activity-admin-actions";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { createActivity, verifyActivitiesAdminPassword } from "@/app/(main)/activities/activity-admin-actions";
 
 type FormState = {
   title: string;
@@ -28,7 +36,9 @@ function isEditableTarget(target: EventTarget | null): boolean {
 
   if (target.isContentEditable) return true;
 
-  return Boolean(target.closest('input, textarea, select, [contenteditable="true"]'));
+  return Boolean(
+    target.closest('input, textarea, select, [contenteditable="true"]'),
+  );
 }
 
 function isShortcut(e: KeyboardEvent): boolean {
@@ -174,10 +184,17 @@ export function ActivityAdminCreateDialog() {
               />
             </div>
             <div className="flex items-center justify-end gap-2">
-              <Button variant="secondary" onClick={() => handleOpenChange(false)} disabled={busy}>
+              <Button
+                variant="secondary"
+                onClick={() => handleOpenChange(false)}
+                disabled={busy}
+              >
                 Cancel
               </Button>
-              <Button onClick={handleUnlock} disabled={busy || password.trim().length === 0}>
+              <Button
+                onClick={handleUnlock}
+                disabled={busy || password.trim().length === 0}
+              >
                 Unlock
               </Button>
             </div>
@@ -190,7 +207,9 @@ export function ActivityAdminCreateDialog() {
                 <Input
                   id="activity-title"
                   value={form.title}
-                  onChange={(e) => setForm((s) => ({ ...s, title: e.target.value }))}
+                  onChange={(e) =>
+                    setForm((s) => ({ ...s, title: e.target.value }))
+                  }
                   placeholder="Event title"
                 />
               </div>
@@ -201,7 +220,9 @@ export function ActivityAdminCreateDialog() {
                   id="activity-date"
                   type="date"
                   value={form.date}
-                  onChange={(e) => setForm((s) => ({ ...s, date: e.target.value }))}
+                  onChange={(e) =>
+                    setForm((s) => ({ ...s, date: e.target.value }))
+                  }
                 />
               </div>
 
@@ -210,7 +231,9 @@ export function ActivityAdminCreateDialog() {
                 <Input
                   id="activity-time"
                   value={form.time}
-                  onChange={(e) => setForm((s) => ({ ...s, time: e.target.value }))}
+                  onChange={(e) =>
+                    setForm((s) => ({ ...s, time: e.target.value }))
+                  }
                   placeholder='e.g. "6:30 PM"'
                 />
               </div>
@@ -220,13 +243,17 @@ export function ActivityAdminCreateDialog() {
                 <Input
                   id="activity-location"
                   value={form.location}
-                  onChange={(e) => setForm((s) => ({ ...s, location: e.target.value }))}
+                  onChange={(e) =>
+                    setForm((s) => ({ ...s, location: e.target.value }))
+                  }
                   placeholder="e.g. Miami, FL"
                 />
               </div>
 
               <div className="space-y-2 sm:col-span-2">
-                <Label htmlFor="activity-short-description">Short description (optional)</Label>
+                <Label htmlFor="activity-short-description">
+                  Short description (optional)
+                </Label>
                 <Input
                   id="activity-short-description"
                   value={form.shortDescription}
@@ -242,7 +269,9 @@ export function ActivityAdminCreateDialog() {
                 <Textarea
                   id="activity-description"
                   value={form.description}
-                  onChange={(e) => setForm((s) => ({ ...s, description: e.target.value }))}
+                  onChange={(e) =>
+                    setForm((s) => ({ ...s, description: e.target.value }))
+                  }
                   placeholder="Full event details"
                 />
               </div>
@@ -252,14 +281,20 @@ export function ActivityAdminCreateDialog() {
                 <Input
                   id="activity-luma-url"
                   value={form.lumaUrl}
-                  onChange={(e) => setForm((s) => ({ ...s, lumaUrl: e.target.value }))}
+                  onChange={(e) =>
+                    setForm((s) => ({ ...s, lumaUrl: e.target.value }))
+                  }
                   placeholder="https://lu.ma/..."
                 />
               </div>
             </div>
 
             <div className="flex items-center justify-end gap-2">
-              <Button variant="secondary" onClick={() => handleOpenChange(false)} disabled={busy}>
+              <Button
+                variant="secondary"
+                onClick={() => handleOpenChange(false)}
+                disabled={busy}
+              >
                 Cancel
               </Button>
               <Button
@@ -280,4 +315,3 @@ export function ActivityAdminCreateDialog() {
     </Dialog>
   );
 }
-
