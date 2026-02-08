@@ -242,6 +242,15 @@
         "title": "Botón de Copiar",
         "description": "Primitivo para copiar al portapapeles con feedback sutil de éxito."
       },
+      "openWithCursor": {
+        "title": "Abrir con Cursor",
+        "description": "Deep link de un prompt a Cursor usando enlaces de prompt de cursor.com."
+      },
+      "monoText": {
+        "title": "Texto Monoespaciado",
+        "description": "Para comandos, tokens y snippets técnicos cortos.",
+        "inlineExample": "Usa <code>MonoText</code> para código inline y etiquetas pequeñas."
+      },
       "emptyState": {
         "title": "Estado Vacío",
         "description": "Layout estándar para momentos sin datos (listas vacías, filtros sin resultados, secciones tipo 404).",
@@ -251,6 +260,31 @@
           "primaryAction": "Crear elemento",
           "secondaryAction": "Restablecer filtros"
         }
+      }
+    },
+    "forms": {
+      "title": "Formularios",
+      "description": "Patrones de formularios accesibles usando react-hook-form y los primitivos de Form.",
+      "example": {
+        "title": "Ejemplo de Formulario",
+        "description": "Un constructor de prompts mínimo con validación y acciones.",
+        "fields": {
+          "title": {
+            "label": "Título",
+            "placeholder": "p. ej. Refactoriza este componente"
+          },
+          "prompt": {
+            "label": "Prompt",
+            "placeholder": "Escribe tu prompt..."
+          },
+          "includeContext": {
+            "label": "Incluir el título como contexto",
+            "description": "Cuando está habilitado, el título se antepone al prompt antes de copiar/abrir."
+          }
+        },
+        "helper": "Tip: para prompts, un textarea monoespaciado mejora la lectura rápida:",
+        "submit": "Enviar",
+        "submitted": "Enviado"
       }
     },
     "animations": {

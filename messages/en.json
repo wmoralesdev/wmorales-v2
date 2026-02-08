@@ -242,6 +242,15 @@
         "title": "Copy Button",
         "description": "Copy-to-clipboard primitive with subtle success feedback."
       },
+      "openWithCursor": {
+        "title": "Open with Cursor",
+        "description": "Deep link a prompt into Cursor via cursor.com prompt links."
+      },
+      "monoText": {
+        "title": "Monospaced Text",
+        "description": "For commands, tokens, and short technical snippets.",
+        "inlineExample": "Use <code>MonoText</code> for inline code and small labels."
+      },
       "emptyState": {
         "title": "Empty State",
         "description": "Standard layout for zero-data moments (empty lists, filtered states, 404-like sections).",
@@ -251,6 +260,31 @@
           "primaryAction": "Create item",
           "secondaryAction": "Reset filters"
         }
+      }
+    },
+    "forms": {
+      "title": "Forms",
+      "description": "Accessible form patterns using react-hook-form and the Form primitives.",
+      "example": {
+        "title": "Form Example",
+        "description": "A minimal prompt builder with validation and actions.",
+        "fields": {
+          "title": {
+            "label": "Title",
+            "placeholder": "e.g. Refactor this component"
+          },
+          "prompt": {
+            "label": "Prompt",
+            "placeholder": "Write your prompt..."
+          },
+          "includeContext": {
+            "label": "Include title as context",
+            "description": "When enabled, the title is prepended to the prompt before copying/opening."
+          }
+        },
+        "helper": "Tip: for prompts, a monospaced textarea improves scanability:",
+        "submit": "Submit",
+        "submitted": "Submitted"
       }
     },
     "animations": {

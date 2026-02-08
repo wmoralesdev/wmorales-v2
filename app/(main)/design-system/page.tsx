@@ -1,6 +1,7 @@
 import { InboxIcon } from "lucide-react";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
+import { FormExample } from "@/components/design-system/form-example";
 import {
   SlideBody,
   SlideBreakdown,
@@ -29,6 +30,8 @@ import {
   EmptyStateIcon,
   EmptyStateTitle,
 } from "@/components/ui/empty-state";
+import { MonoText } from "@/components/ui/mono-text";
+import { OpenWithCursorButton } from "@/components/ui/open-with-cursor-button";
 import { Separator } from "@/components/ui/separator";
 import { Skeleton } from "@/components/ui/skeleton";
 
@@ -545,6 +548,48 @@ export default async function DesignSystemPage() {
 
         <Card>
           <CardHeader>
+            <CardTitle>{t("components.openWithCursor.title")}</CardTitle>
+            <CardDescription>
+              {t("components.openWithCursor.description")}
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <div className="flex flex-wrap gap-2">
+              <OpenWithCursorButton
+                title="Improve this UI"
+                prompt="Make this design more consistent with the design system. Keep changes minimal."
+              />
+              <OpenWithCursorButton
+                title="Generate tests"
+                prompt="Add unit tests for this function. Cover edge cases."
+                variant="ghost"
+              />
+            </div>
+            <code className="block rounded bg-muted px-3 py-2 font-mono text-xs text-muted-foreground">
+              {'<OpenWithCursorButton title="..." prompt="..." />'}
+            </code>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("components.monoText.title")}</CardTitle>
+            <CardDescription>{t("components.monoText.description")}</CardDescription>
+          </CardHeader>
+          <CardContent className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              {t.rich("components.monoText.inlineExample", {
+                code: (chunks) => <MonoText>{chunks}</MonoText>,
+              })}
+            </p>
+            <MonoText variant="block">
+              pnpm lint{"\n"}pnpm typecheck{"\n"}pnpm build
+            </MonoText>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
             <CardTitle>{t("components.emptyState.title")}</CardTitle>
             <CardDescription>
               {t("components.emptyState.description")}
@@ -570,6 +615,44 @@ export default async function DesignSystemPage() {
                 </Button>
               </EmptyStateActions>
             </EmptyState>
+          </CardContent>
+        </Card>
+      </section>
+
+      {/* Forms */}
+      <section className="space-y-6">
+        <div>
+          <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">
+            {t("forms.title")}
+          </h2>
+          <p className="mt-2 text-sm text-muted-foreground text-pretty">
+            {t("forms.description")}
+          </p>
+        </div>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("forms.example.title")}</CardTitle>
+            <CardDescription>{t("forms.example.description")}</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <FormExample
+              strings={{
+                titleLabel: t("forms.example.fields.title.label"),
+                titlePlaceholder: t("forms.example.fields.title.placeholder"),
+                promptLabel: t("forms.example.fields.prompt.label"),
+                promptPlaceholder: t("forms.example.fields.prompt.placeholder"),
+                includeContextLabel: t(
+                  "forms.example.fields.includeContext.label",
+                ),
+                includeContextDescription: t(
+                  "forms.example.fields.includeContext.description",
+                ),
+                submit: t("forms.example.submit"),
+                submitted: t("forms.example.submitted"),
+                helper: t("forms.example.helper"),
+              }}
+            />
           </CardContent>
         </Card>
       </section>
