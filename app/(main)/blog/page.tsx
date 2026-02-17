@@ -54,11 +54,7 @@ export default async function BlogPage() {
                       <span className="h-2.5 w-px bg-border/60" />
                     </>
                   )}
-                  <PostViewCount
-                    locale={locale}
-                    mode="read"
-                    slug={post.slug}
-                  />
+                  <PostViewCount locale={locale} mode="read" slug={post.slug} />
                 </div>
               </div>
               {post.summary && (

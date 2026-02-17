@@ -27,6 +27,7 @@ export {
   CoverSlideView,
   CtaSlideView,
   ProfileSlideView,
+  PromptSlideView,
   StatementSlideView,
   TimelineSlideView,
   TwoColumnSlideView,

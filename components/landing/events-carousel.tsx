@@ -1,9 +1,9 @@
 "use client";
 
 import {
-  type ReactNode,
   Children,
   type MouseEvent as ReactMouseEvent,
+  type ReactNode,
   type PointerEvent as ReactPointerEvent,
   useCallback,
   useEffect,
@@ -65,9 +65,7 @@ export function EventsCarousel({ children }: { children: ReactNode }) {
   const getItems = useCallback(() => {
     const el = scrollRef.current;
     if (!el) return [];
-    return Array.from(
-      el.querySelectorAll<HTMLElement>("[data-carousel-item]"),
-    );
+    return Array.from(el.querySelectorAll<HTMLElement>("[data-carousel-item]"));
   }, []);
 
   const getNearestIndex = useCallback(() => {
@@ -110,8 +108,7 @@ export function EventsCarousel({ children }: { children: ReactNode }) {
       if (items.length === 0) return;
 
       const currentIdx = getNearestIndex();
-      const nextIdx =
-        direction === "left" ? currentIdx - 1 : currentIdx + 1;
+      const nextIdx = direction === "left" ? currentIdx - 1 : currentIdx + 1;
       scrollToIndex(nextIdx);
     },
     [getItems, getNearestIndex, scrollToIndex],
@@ -252,23 +249,26 @@ export function EventsCarousel({ children }: { children: ReactNode }) {
     [],
   );
 
-  const handlePointerMove = useCallback((e: ReactPointerEvent<HTMLDivElement>) => {
-    if (e.pointerType !== "mouse") return;
+  const handlePointerMove = useCallback(
+    (e: ReactPointerEvent<HTMLDivElement>) => {
+      if (e.pointerType !== "mouse") return;
 
-    const el = scrollRef.current;
-    const state = dragStateRef.current;
-    if (!el) return;
-    if (state.pointerId == null) return;
-    if (state.pointerId !== e.pointerId) return;
+      const el = scrollRef.current;
+      const state = dragStateRef.current;
+      if (!el) return;
+      if (state.pointerId == null) return;
+      if (state.pointerId !== e.pointerId) return;
 
-    const deltaX = e.clientX - state.startClientX;
-    const nextLeft = state.startScrollLeft - deltaX;
-    el.scrollLeft = nextLeft;
+      const deltaX = e.clientX - state.startClientX;
+      const nextLeft = state.startScrollLeft - deltaX;
+      el.scrollLeft = nextLeft;
 
-    if (!state.dragged && Math.abs(deltaX) >= 6) {
-      state.dragged = true;
-    }
-  }, []);
+      if (!state.dragged && Math.abs(deltaX) >= 6) {
+        state.dragged = true;
+      }
+    },
+    [],
+  );
 
   const endPointerDrag = useCallback((e: ReactPointerEvent<HTMLDivElement>) => {
     setIsPointerDown(false);

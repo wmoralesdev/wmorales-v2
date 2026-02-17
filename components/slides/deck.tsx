@@ -1,3 +1,7 @@
+"use client";
+
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 import type { Presentation } from "@/lib/slides/schema";
 import {
   generateSlideTheme,
@@ -30,10 +34,23 @@ export function Deck({
   currentSlide = 0,
   className,
 }: DeckProps) {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const { meta, slides } = presentation;
-  const themeTokens = generateSlideTheme(meta);
 
-  const themeClass = meta.theme === "dark" ? "dark" : "";
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const effectiveTheme = printMode
+    ? meta.theme
+    : mounted
+      ? (resolvedTheme ?? meta.theme) === "dark"
+        ? "dark"
+        : "light"
+      : meta.theme;
+  const themeTokens = generateSlideTheme(meta, effectiveTheme);
+  const themeClass = effectiveTheme === "dark" ? "dark" : "";
 
   if (printMode) {
     return (

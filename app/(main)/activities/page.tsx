@@ -2,10 +2,7 @@ import type { Metadata } from "next";
 import { ActivityAdminCreateDialog } from "@/components/activities/activity-admin-create-dialog";
 import { ActivityCalendar } from "@/components/activities/activity-calendar";
 import { NextActivityBanner } from "@/components/activities/next-activity-banner";
-import {
-  getAllActivities,
-  getUpcomingActivities,
-} from "@/lib/activities";
+import { getAllActivities, getUpcomingActivities } from "@/lib/activities";
 
 export const metadata: Metadata = {
   title: "Activities | Walter Morales",

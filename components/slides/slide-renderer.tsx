@@ -4,6 +4,7 @@ import type {
   CoverSlide,
   CtaSlide,
   ProfileSlide,
+  PromptSlide,
   Slide,
   StatementSlide,
   TimelineSlide,
@@ -15,6 +16,7 @@ import {
   CoverSlideView,
   CtaSlideView,
   ProfileSlideView,
+  PromptSlideView,
   StatementSlideView,
   TimelineSlideView,
   TwoColumnSlideView,
@@ -73,6 +75,10 @@ export function SlideRenderer({
       );
     case "cta":
       return <CtaSlideView slide={slide as CtaSlide} printMode={printMode} />;
+    case "prompt":
+      return (
+        <PromptSlideView slide={slide as PromptSlide} printMode={printMode} />
+      );
     default:
       // Unknown slide type - render nothing
       return null;

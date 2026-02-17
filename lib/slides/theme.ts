@@ -89,9 +89,14 @@ export type SlideThemeTokens = Record<string, string>;
 
 /**
  * Generate CSS variable tokens for a presentation based on its meta.
+ * @param themeOverride - When provided, overrides meta.theme for token selection.
  */
-export function generateSlideTheme(meta: PresentationMeta): SlideThemeTokens {
-  const baseTokens = meta.theme === "dark" ? DARK_TOKENS : LIGHT_TOKENS;
+export function generateSlideTheme(
+  meta: PresentationMeta,
+  themeOverride?: "light" | "dark",
+): SlideThemeTokens {
+  const theme = themeOverride ?? meta.theme;
+  const baseTokens = theme === "dark" ? DARK_TOKENS : LIGHT_TOKENS;
 
   return {
     ...baseTokens,

@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { ThemeToggle } from "@/components/common/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -155,6 +156,7 @@ export function SlideNavigation({
 
       {/* Right: Actions */}
       <div className="flex items-center gap-2">
+        <ThemeToggle />
         <Button
           variant="outline"
           size="icon"

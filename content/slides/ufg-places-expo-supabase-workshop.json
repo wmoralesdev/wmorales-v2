@@ -1,0 +1,172 @@
+{
+  "meta": {
+    "title": "UFG Places Workshop (Expo + Supabase)",
+    "author": "Walter Morales",
+    "theme": "dark",
+    "accentColor": "#7C3AED",
+    "language": "en",
+    "seo": {
+      "title": "UFG Places Workshop | Expo + Supabase",
+      "description": "Self-paced workshop deck: build a places recommender with Expo, NativeWind, and Supabase (GitHub OAuth).",
+      "image": "https://wmorales.dev/og-image.png"
+    }
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "headline": "UFG Places\nWorkshop",
+      "subline": "Expo + NativeWind + Supabase (GitHub OAuth)",
+      "author": {
+        "name": "Walter Morales",
+        "title": "Software Engineer · Instructor"
+      },
+      "logos": ["/cursor-dark.png"]
+    },
+    {
+      "type": "statement",
+      "headline": "What we’re building",
+      "items": [
+        "Browse student-recommended places near UFG",
+        "Open place details (map link, hours, tags)",
+        "Save favorites (per user)",
+        "Sign in with GitHub (Supabase Auth)",
+        "Runs on your phone (Expo Go)"
+      ]
+    },
+    {
+      "type": "two-column",
+      "headline": "Simple stack (fast to ship)",
+      "left": {
+        "title": "App",
+        "items": [
+          "Expo + Expo Router",
+          "NativeWind for styling",
+          "Phone-first testing (Expo Go)",
+          "Small components, fast iteration"
+        ]
+      },
+      "right": {
+        "title": "Backend",
+        "items": [
+          "Supabase Postgres",
+          "Supabase Auth (GitHub OAuth)",
+          "Row Level Security (RLS)",
+          "Simple queries, real data"
+        ]
+      }
+    },
+    {
+      "type": "bullets",
+      "headline": "Expo dev loop (mental model)",
+      "items": [
+        "Start Metro (dev server)",
+        "Open in Expo Go (phone)",
+        "Edit in Cursor",
+        "App reloads → verify → repeat",
+        "Use simulators after core flow works"
+      ]
+    },
+    {
+      "type": "prompt",
+      "headline": "Prompt: Check Expo readiness",
+      "title": "Copy into Cursor Chat (run commands, verify each step).",
+      "prompt": "Help me set up my computer for Expo (React Native) development using Cursor.\n\nGoals:\n- I want to run an Expo app on my real phone with Expo Go.\n- I also want to run it on iOS Simulator and Android Emulator if possible.\n\nPlease:\n1) Check my OS and Node.js version.\n2) Verify I can run npx and install packages.\n3) Check if Expo tooling is available (and install the recommended way if not).\n4) If I’m on macOS, check for Xcode and iOS Simulator availability.\n5) Check for Android Studio / Android SDK / emulator availability.\n6) Summarize what’s missing and the fastest path to get running today.\n\nKeep it concise. Run commands and explain results.",
+      "footnote": "Goal: get Expo Go working first, then simulators."
+    },
+    {
+      "type": "prompt",
+      "headline": "Prompt: Create the Expo app",
+      "title": "Expo Router + TypeScript + a clean project baseline.",
+      "prompt": "Create a new Expo app for me with these constraints:\n- Use TypeScript\n- Use Expo Router for navigation (file-based routes)\n- Project name: ufg-places\n\nSteps:\n1) Pick the correct create-expo-app command for the current Expo version.\n2) Create the project and install dependencies.\n3) Explain where the routes live and what file is the entry point.\n4) Start the dev server and tell me how to open it in Expo Go.\n\nIf anything fails, diagnose and fix the root cause (don’t handwave). Keep explanations short.",
+      "footnote": "Keep the scope tight: one screen first, then iterate."
+    },
+    {
+      "type": "bullets",
+      "headline": "Expo Router entry points",
+      "items": [
+        "Root layout: app/_layout.tsx (wraps all routes)",
+        "Initial route: first matching index.tsx for /",
+        "Route groups: app/(tabs)/... (group not in URL)",
+        "Dynamic routes: app/places/[id].tsx",
+        "Keep routes small: UI + data + navigation"
+      ],
+      "footnote": "If you’re lost: start at app/_layout.tsx, then app/index.tsx."
+    },
+    {
+      "type": "prompt",
+      "headline": "Prompt: Add NativeWind",
+      "title": "Install and verify styling works on device.",
+      "prompt": "I have an Expo Router + TypeScript app named \"ufg-places\".\n\nHelp me add NativeWind with the simplest working setup.\n\nRequirements:\n- Configure Tailwind + NativeWind so I can use className on React Native components.\n- Add a tiny demo on app/index.tsx:\n  - A screen with a title, a subtitle, and a primary button\n  - Use safe area\n  - Make it look clean and readable\n\nAfter setup:\n1) Tell me how to verify styles are applied in Expo Go.\n2) If styles don’t apply, diagnose the root cause and fix it.\n\nKeep explanations short and command-driven.",
+      "footnote": "Target: consistent spacing, readable typography, safe area."
+    },
+    {
+      "type": "cards",
+      "headline": "Minimal data model",
+      "cards": [
+        {
+          "title": "places",
+          "subtitle": "The core table",
+          "description": "id, name, category_id, campus_area, address, maps_url, hours_text, tags, created_at"
+        },
+        {
+          "title": "categories",
+          "subtitle": "Simple filtering",
+          "description": "id, name (e.g., Coffee, Study, Food, Outdoors)"
+        },
+        {
+          "title": "favorites",
+          "subtitle": "Per-user saves",
+          "description": "user_id + place_id (unique), created_at (protected by RLS)"
+        }
+      ],
+      "footnote": "We’ll keep this minimal so you can ship today."
+    },
+    {
+      "type": "prompt",
+      "headline": "Prompt: Set up Supabase data",
+      "title": "Create project, tables, seed, and safe RLS defaults.",
+      "prompt": "I’m building a mobile app called \"UFG Places\" with Expo + Supabase.\n\nHelp me do the Supabase setup end-to-end:\n\n1) Create a new Supabase project and give it a clear name.\n2) Create these tables: categories, places, favorites.\n3) Seed categories and at least 10 example places.\n4) Enable Row Level Security (RLS).\n5) Add simple policies:\n   - Anyone can read categories + places.\n   - Only signed-in users can insert/delete their own favorites.\n\nThen:\n- Tell me how to verify the data with 2-3 SQL queries.\n- Give me a checklist of what values I need in my Expo env config (URL + anon key).\n\nKeep it practical: minimal schema, minimal policies, real data.",
+      "footnote": "We’ll keep places public, favorites private."
+    },
+    {
+      "type": "prompt",
+      "headline": "Prompt: GitHub login (Supabase)",
+      "title": "Enable GitHub OAuth and wire it into Expo.",
+      "prompt": "I need GitHub OAuth sign-in in an Expo app using Supabase Auth.\n\nContext:\n- Project: Expo Router + TypeScript\n- Backend: Supabase\n- Auth provider: GitHub\n- Target: Works in Expo Go + a development build\n\nPlease:\n1) In Supabase, enable the GitHub provider and explain what callback/redirect URLs I must configure for Expo.\n2) In my Expo app, add Supabase client setup using env vars.\n3) Implement:\n   - Sign in with GitHub button\n   - Handle redirect back to the app\n   - Persist session and show signed-in state\n   - Sign out\n4) Keep the UI minimal and clear (NativeWind).\n5) If there are platform-specific issues (Expo Go vs dev build), explain the smallest workable path for today.\n\nBe explicit and step-by-step. Include quick verification steps after each major change.",
+      "footnote": "Goal: you can sign in, see your profile state, and sign out."
+    },
+    {
+      "type": "prompt",
+      "headline": "Prompt: Build the screens",
+      "title": "Routes, queries, and a shippable UX.",
+      "prompt": "Help me implement the core screens for \"UFG Places\" using Expo Router + TypeScript.\n\nRoutes:\n- app/(tabs)/_layout.tsx: tabs for Home, Favorites, Profile\n- app/(tabs)/index.tsx: places list\n- app/places/[id].tsx: place detail\n- app/(tabs)/favorites.tsx: my favorites list\n- app/(tabs)/profile.tsx: auth state + sign in/out\n\nData:\n- Fetch places + categories from Supabase.\n- Favorites should be per-user (requires auth).\n\nUX requirements:\n- Search on the places list\n- Filter by category\n- Tap a place to open details\n- Favorite/unfavorite from list and detail\n- Show loading + error states (simple)\n\nKeep components small, prioritize readability, and tell me how to test each screen quickly in Expo Go.",
+      "footnote": "Scope: ship the core flow before polishing."
+    },
+    {
+      "type": "prompt",
+      "headline": "Prompt: Debug Expo/Supabase issues",
+      "title": "Use this any time you get stuck (paste logs verbatim).",
+      "prompt": "I’m building an Expo app with Supabase and I’m stuck.\n\nHere’s what I expected:\n[describe expected behavior]\n\nHere’s what happened:\n[describe actual behavior]\n\nHere are the logs (Metro, device, emulator, Supabase errors):\n[paste logs verbatim]\n\nPlease:\n1) Generate 3-5 likely root causes (ranked).\n2) For the top cause, give me exact steps to verify it.\n3) Then give me the smallest fix.\n4) Tell me how to confirm the fix worked on both Expo Go and a simulator.\n\nKeep it practical and short.",
+      "footnote": "Rule: don’t summarize errors—paste them exactly."
+    },
+    {
+      "type": "cta",
+      "headline": "Next steps after class",
+      "steps": [
+        "Add a “Submit a place” flow + moderation",
+        "Add a map view + distance sorting",
+        "Ship a dev build (EAS) and test OAuth deeply",
+        "Polish UI + performance (lists, caching)"
+      ],
+      "contact": {
+        "name": "Walter Morales",
+        "email": "hello@wmorales.dev",
+        "website": "https://wmorales.dev"
+      },
+      "qr": {
+        "url": "https://wmorales.dev",
+        "label": "wmorales.dev"
+      }
+    }
+  ]
+}

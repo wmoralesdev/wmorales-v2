@@ -6,10 +6,13 @@ import { JetBrains_Mono, Poppins, Space_Grotesk } from "next/font/google";
 import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
+import { CommandPalette } from "@/components/common/command-palette";
 import { CookieNotice } from "@/components/common/cookie-notice";
 import { ThemeProvider } from "@/components/common/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import { getAllPosts } from "@/lib/blog";
 import { baseMetadata } from "@/lib/metadata";
+import { listDecks } from "@/lib/slides";
 import { cn } from "@/lib/utils";
 
 export const metadata = baseMetadata;
@@ -39,6 +42,8 @@ type Props = {
 export default async function RootLayout({ children }: Props) {
   const locale = await getLocale();
   const messages = await getMessages();
+  const posts = getAllPosts(locale);
+  const decks = listDecks();
 
   return (
     <html lang={locale} suppressHydrationWarning>
@@ -65,6 +70,7 @@ export default async function RootLayout({ children }: Props) {
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <NextIntlClientProvider messages={messages}>
             {children}
+            <CommandPalette posts={posts} decks={decks} />
             <CookieNotice />
           </NextIntlClientProvider>
           <Toaster position="bottom-center" />

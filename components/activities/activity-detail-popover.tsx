@@ -2,8 +2,8 @@
 
 import { Clock, MapPin, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Badge } from "@/components/ui/badge";
 import { ActivityDetailsDialog } from "@/components/activities/activity-details-dialog";
+import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { ActivityRecord } from "@/lib/activities";
 

@@ -74,7 +74,8 @@
   }
   to {
     clip-path: circle(
-      var(--wm-theme-r, 150vmax) at var(--wm-theme-x, 50vw) var(--wm-theme-y, 50vh)
+      var(--wm-theme-r, 150vmax) at var(--wm-theme-x, 50vw)
+        var(--wm-theme-y, 50vh)
     );
   }
 }

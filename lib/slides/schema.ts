@@ -17,6 +17,8 @@ const TEXT_LIMITS = {
   credentialGroups: 3,
   columnItems: 4,
   ctaSteps: 4,
+  promptTitle: 80,
+  prompt: 6000,
 } as const;
 
 // =============================================================================
@@ -293,6 +295,31 @@ export const ctaSlideSchema = z.object({
 export type CtaSlide = z.infer<typeof ctaSlideSchema>;
 
 // =============================================================================
+// Slide: Prompt
+// =============================================================================
+
+export const promptSlideSchema = z.object({
+  type: z.literal("prompt"),
+  headline: headlineSchema,
+  title: z
+    .string()
+    .max(
+      TEXT_LIMITS.promptTitle,
+      `Prompt title must be ${TEXT_LIMITS.promptTitle} characters or less`,
+    )
+    .optional(),
+  prompt: z
+    .string()
+    .max(
+      TEXT_LIMITS.prompt,
+      `Prompt must be ${TEXT_LIMITS.prompt} characters or less`,
+    ),
+  footnote: z.string().optional(),
+});
+
+export type PromptSlide = z.infer<typeof promptSlideSchema>;
+
+// =============================================================================
 // Discriminated union of all slide types
 // =============================================================================
 
@@ -305,6 +332,7 @@ export const slideSchema = z.discriminatedUnion("type", [
   cardsSlideSchema,
   twoColumnSlideSchema,
   ctaSlideSchema,
+  promptSlideSchema,
 ]);
 
 export type Slide = z.infer<typeof slideSchema>;

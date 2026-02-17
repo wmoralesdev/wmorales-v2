@@ -6,8 +6,8 @@ import { useCallback, useState } from "react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
 import type { Resource, ResourceCategory } from "@/lib/resources";
+import { cn } from "@/lib/utils";
 
 type CSSVars = React.CSSProperties & Record<`--${string}`, number | string>;
 
