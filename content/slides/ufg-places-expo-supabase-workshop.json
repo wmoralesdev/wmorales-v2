@@ -24,6 +24,167 @@
     },
     {
       "type": "statement",
+      "headline": "Before we code: mobile basics",
+      "items": [
+        "Expo vs React Native (what they are)",
+        "How a mobile app runs (lifecycle)",
+        "Expo Go setup (fastest path today)",
+        "Hybrid vs native (what it means)",
+        "Why we avoid Swift/Kotlin at first"
+      ]
+    },
+    {
+      "type": "bullets",
+      "headline": "What is React Native?",
+      "items": [
+        "Build iOS + Android apps with JavaScript/TypeScript + React",
+        "UI is native components (not a web page)",
+        "Runs JS in a JS engine (Hermes/JavaScriptCore)",
+        "Uses native modules for device features (camera, maps, etc.)",
+        "Metro bundles code and enables fast reload in dev"
+      ],
+      "footnote": "React Native uses different components than React for web."
+    },
+    {
+      "type": "timeline",
+      "headline": "Where did it come from?",
+      "events": [
+        {
+          "title": "React (web)",
+          "description": "Component model for building user interfaces on the web.",
+          "metric": "2013"
+        },
+        {
+          "title": "React Native",
+          "description": "Same React ideas, but renders to iOS/Android native UI.",
+          "metric": "2015"
+        },
+        {
+          "title": "Expo",
+          "description": "Tooling + SDK to make React Native development easier.",
+          "metric": "2016+"
+        },
+        {
+          "title": "Modern Expo",
+          "description": "Router, EAS build/updates, config plugins, and more modules.",
+          "metric": "Today"
+        }
+      ]
+    },
+    {
+      "type": "statement",
+      "headline": "What is Expo?",
+      "body": "Expo is a toolkit and SDK on top of React Native that helps you start fast, test on a real phone, and use common device features without heavy native setup.",
+      "items": [
+        "Create apps with create-expo-app",
+        "Expo Go: run projects on your phone quickly",
+        "Expo SDK: camera, notifications, location, etc.",
+        "EAS: build and ship to the app stores",
+        "Add native code later if you need it"
+      ]
+    },
+    {
+      "type": "two-column",
+      "headline": "React Native + Expo (how they fit)",
+      "left": {
+        "title": "React Native",
+        "items": [
+          "Framework for native iOS/Android UI",
+          "JS/TS code + React components",
+          "Native modules for platform features",
+          "Needs native tools to build binaries"
+        ]
+      },
+      "right": {
+        "title": "Expo",
+        "items": [
+          "CLI, SDK, and good defaults",
+          "Expo Go for quick device testing",
+          "EAS Build/Update for shipping",
+          "Config plugins for native setup"
+        ]
+      }
+    },
+    {
+      "type": "cards",
+      "headline": "App types (web, native, hybrid)",
+      "cards": [
+        {
+          "title": "Web app",
+          "subtitle": "Runs in a browser",
+          "description": "One codebase, easiest to share, but limited access to device features."
+        },
+        {
+          "title": "Native app",
+          "subtitle": "Swift / Kotlin",
+          "description": "Best platform access and performance, but you maintain iOS and Android separately."
+        },
+        {
+          "title": "Hybrid (React Native)",
+          "subtitle": "One app, two platforms",
+          "description": "Single UI codebase that renders native components on both iOS and Android."
+        }
+      ],
+      "footnote": "React Native is “hybrid” in codebase, but the UI is native."
+    },
+    {
+      "type": "statement",
+      "headline": "Why not Swift/Kotlin first?",
+      "items": [
+        "Two codebases (iOS + Android) doubles effort",
+        "Harder setup (Xcode/Android Studio on day 1)",
+        "Slower iteration for UI changes",
+        "Expo/RN keeps focus on one language (JS/TS)",
+        "You can still go native later when needed"
+      ]
+    },
+    {
+      "type": "bullets",
+      "headline": "Mobile app lifecycle (simplified)",
+      "items": [
+        "Install → open the app",
+        "Launch → app starts and loads the JS bundle",
+        "Foreground → user interacts",
+        "Background → user switches apps (pause some work)",
+        "Terminated → OS closes the app; next open is a fresh launch"
+      ]
+    },
+    {
+      "type": "two-column",
+      "headline": "Install Expo Go (first success path)",
+      "left": {
+        "title": "iOS",
+        "items": [
+          "Install Expo Go from the App Store",
+          "Open it and allow camera access",
+          "Run npx expo start on your computer",
+          "Scan the QR code with Expo Go"
+        ]
+      },
+      "right": {
+        "title": "Android",
+        "items": [
+          "Install Expo Go from Google Play",
+          "Open it and allow camera permissions",
+          "Run npx expo start on your computer",
+          "Scan the QR code inside Expo Go"
+        ]
+      }
+    },
+    {
+      "type": "statement",
+      "headline": "If Expo Go won’t connect (quick fixes)",
+      "items": [
+        "Phone + computer on the same Wi‑Fi network",
+        "Disable VPN/firewall, or use tunnel mode",
+        "Try: npx expo start --tunnel",
+        "Confirm Metro is running and QR is current",
+        "If scanning fails, paste the link manually"
+      ],
+      "footnote": "Rule of thumb: get Expo Go working first, then simulators."
+    },
+    {
+      "type": "statement",
       "headline": "What we’re building",
       "items": [
         "Browse student-recommended places near UFG",
