@@ -1,0 +1,21 @@
+{
+  "meta": {
+    "title": "Invalid Example",
+    "author": "Walter Morales",
+    "theme": "dark",
+    "accentColor": "#7C3AED",
+    "date": "2026-02-17"
+  },
+  "slides": [
+    {
+      "type": "statement",
+      "headline": "This slide has both body and items (mutual exclusivity violation)",
+      "body": "This is the body text.",
+      "items": ["Item one", "Item two"]
+    },
+    {
+      "type": "unknown-type",
+      "headline": "This slide type does not exist"
+    }
+  ]
+}

@@ -46,8 +46,10 @@ export function StatementSlideView({
         {/* Pull quote */}
         {slide.quote && <SlideQuote>{slide.quote}</SlideQuote>}
 
-        {/* Footnote */}
-        {slide.footnote && <SlideFootnote>{slide.footnote}</SlideFootnote>}
+        {/* Footnote — only in print; extras panel shows it for screen readers */}
+        {printMode && slide.footnote && (
+          <SlideFootnote>{slide.footnote}</SlideFootnote>
+        )}
       </SlideCanvas>
     </SlideFrame>
   );

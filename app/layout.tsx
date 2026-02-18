@@ -12,7 +12,7 @@ import { ThemeProvider } from "@/components/common/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { getAllPosts } from "@/lib/blog";
 import { baseMetadata } from "@/lib/metadata";
-import { listDecks } from "@/lib/slides";
+import { type DeckMeta, listDecks } from "@/lib/slides";
 import { cn } from "@/lib/utils";
 
 export const metadata = baseMetadata;
@@ -43,7 +43,8 @@ export default async function RootLayout({ children }: Props) {
   const locale = await getLocale();
   const messages = await getMessages();
   const posts = getAllPosts(locale);
-  const decks = listDecks();
+  const allDecks = listDecks(locale);
+  const decks = allDecks.filter((d): d is DeckMeta => !d.invalid);
 
   return (
     <html lang={locale} suppressHydrationWarning>

@@ -22,7 +22,9 @@ export function BulletsSlideView({
 
         <SlideList items={slide.items} />
 
-        {slide.footnote && <SlideFootnote>{slide.footnote}</SlideFootnote>}
+        {printMode && slide.footnote && (
+          <SlideFootnote>{slide.footnote}</SlideFootnote>
+        )}
       </SlideCanvas>
     </SlideFrame>
   );

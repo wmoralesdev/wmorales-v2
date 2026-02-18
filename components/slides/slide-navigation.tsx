@@ -8,7 +8,7 @@ import {
   Printer,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect } from "react";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -17,18 +17,18 @@ interface SlideNavigationProps {
   deckSlug: string;
   currentSlide: number;
   totalSlides: number;
+  isFullscreen: boolean;
+  onToggleFullscreen: () => void;
 }
 
-/**
- * Client-side navigation controls for slide preview.
- */
 export function SlideNavigation({
   deckSlug,
   currentSlide,
   totalSlides,
+  isFullscreen,
+  onToggleFullscreen,
 }: SlideNavigationProps) {
   const router = useRouter();
-  const [isFullscreen, setIsFullscreen] = useState(false);
 
   const goToSlide = useCallback(
     (index: number) => {
@@ -46,16 +46,6 @@ export function SlideNavigation({
   const goPrev = useCallback(() => {
     goToSlide(currentSlide - 1);
   }, [currentSlide, goToSlide]);
-
-  const toggleFullscreen = useCallback(async () => {
-    if (!document.fullscreenElement) {
-      await document.documentElement.requestFullscreen();
-      setIsFullscreen(true);
-    } else {
-      await document.exitFullscreen();
-      setIsFullscreen(false);
-    }
-  }, []);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -90,7 +80,7 @@ export function SlideNavigation({
         case "F":
           if (!e.ctrlKey && !e.metaKey) {
             e.preventDefault();
-            toggleFullscreen();
+            onToggleFullscreen();
           }
           break;
         case "Escape":
@@ -98,18 +88,11 @@ export function SlideNavigation({
       }
     };
 
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-
     window.addEventListener("keydown", handleKeyDown);
-    document.addEventListener("fullscreenchange", handleFullscreenChange);
-
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
-      document.removeEventListener("fullscreenchange", handleFullscreenChange);
     };
-  }, [goNext, goPrev, goToSlide, totalSlides, toggleFullscreen]);
+  }, [goNext, goPrev, goToSlide, totalSlides, onToggleFullscreen]);
 
   return (
     <div
@@ -118,14 +101,12 @@ export function SlideNavigation({
         isFullscreen && "fixed inset-x-0 bottom-0 z-50",
       )}
     >
-      {/* Left: Back link */}
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="sm" asChild>
           <a href="/slides">← All Decks</a>
         </Button>
       </div>
 
-      {/* Center: Navigation */}
       <div className="flex items-center gap-2">
         <Button
           variant="outline"
@@ -154,13 +135,12 @@ export function SlideNavigation({
         </Button>
       </div>
 
-      {/* Right: Actions */}
       <div className="flex items-center gap-2">
         <ThemeToggle />
         <Button
           variant="outline"
           size="icon"
-          onClick={toggleFullscreen}
+          onClick={onToggleFullscreen}
           aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
         >
           {isFullscreen ? (

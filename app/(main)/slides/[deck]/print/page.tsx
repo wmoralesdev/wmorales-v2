@@ -1,4 +1,5 @@
 import { notFound } from "next/navigation";
+import { getLocale } from "next-intl/server";
 import { Deck } from "@/components/slides";
 import { listDeckSlugs, loadDeck } from "@/lib/slides";
 
@@ -22,7 +23,8 @@ export async function generateStaticParams() {
  */
 export default async function DeckPrintPage({ params }: PageProps) {
   const { deck: deckSlug } = await params;
-  const result = loadDeck(deckSlug);
+  const locale = await getLocale();
+  const result = loadDeck(deckSlug, locale);
 
   if (!result.success) {
     notFound();

@@ -1,0 +1,191 @@
+{
+  "meta": {
+    "title": "Introducción al Desarrollo con IA",
+    "author": "Walter Morales",
+    "theme": "dark",
+    "accentColor": "#7C3AED",
+    "language": "es",
+    "date": "2026-01-31"
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "headline": "Desarrollo con IA\nEl Futuro es Ahora",
+      "subline": "Cómo Cursor y las herramientas de IA modernas están transformando la ingeniería de software",
+      "author": {
+        "name": "Walter Morales",
+        "title": "Ingeniero de Software & Cursor Ambassador"
+      },
+      "logos": ["/cursor-dark.png"]
+    },
+    {
+      "type": "statement",
+      "headline": "El 80% de los desarrolladores usará asistentes de IA para 2026",
+      "body": "Los asistentes de código con IA se están convirtiendo rápidamente en herramientas esenciales para el desarrollador moderno, cambiando fundamentalmente cómo escribimos, revisamos y mantenemos código.",
+      "footnote": "Fuente: Investigación y proyecciones de la industria"
+    },
+    {
+      "type": "bullets",
+      "headline": "Beneficios clave del código asistido por IA",
+      "items": [
+        "Completado y generación de código más rápidos",
+        "Menos cambios de contexto y búsquedas en documentación",
+        "Mejor calidad de código mediante sugerencias instantáneas",
+        "Curva de aprendizaje acelerada para nuevas tecnologías",
+        "Más tiempo para arquitectura y decisiones de diseño"
+      ]
+    },
+    {
+      "type": "profile",
+      "headline": "Walter Morales",
+      "subtitle": "Ingeniero de Software & Cursor Ambassador",
+      "bio": "Construyendo soluciones digitales de impacto con 5+ años de experiencia en .NET, JavaScript, TypeScript, React y tecnologías cloud. Primer Cursor Ambassador de El Salvador.",
+      "credentials": [
+        {
+          "category": "Experiencia",
+          "items": [
+            "5+ años en desarrollo de software",
+            "Ingeniero Senior en Southworks",
+            "Ingeniero de Producto Freelance"
+          ]
+        },
+        {
+          "category": "Tecnologías",
+          "items": [
+            ".NET Core & ASP.NET",
+            "React & Next.js",
+            "AWS & Azure",
+            "Integración AI/ML"
+          ]
+        },
+        {
+          "category": "Comunidad",
+          "items": [
+            "Cursor Ambassador",
+            "Organizador de Meetups Tech",
+            "Contribuidor Open Source"
+          ]
+        }
+      ],
+      "image": "/me.jpeg"
+    },
+    {
+      "type": "timeline",
+      "headline": "La evolución de la IA en el desarrollo",
+      "events": [
+        {
+          "title": "Completado de código",
+          "description": "Autocompletado básico y sugerencias de sintaxis",
+          "metric": "2020"
+        },
+        {
+          "title": "Asistentes de IA",
+          "description": "Generación de código consciente del contexto",
+          "metric": "2022"
+        },
+        {
+          "title": "Codificación agéntica",
+          "description": "Cambios multi-archivo y refactorización compleja",
+          "metric": "2024"
+        },
+        {
+          "title": "Desarrollo autónomo",
+          "description": "Implementación completa de features desde specs",
+          "metric": "2025+"
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "headline": "Comparativa de herramientas de IA para desarrollo",
+      "cards": [
+        {
+          "title": "Cursor",
+          "subtitle": "Enfoque IDE primero",
+          "items": [
+            "Fork nativo de VS Code",
+            "Completado por Tab",
+            "Modo agente",
+            "Contexto multi-archivo"
+          ]
+        },
+        {
+          "title": "GitHub Copilot",
+          "subtitle": "Basado en extensión",
+          "items": [
+            "Funciona en cualquier editor",
+            "Interfaz de chat",
+            "Revisión de código",
+            "Funciones enterprise"
+          ]
+        },
+        {
+          "title": "Claude/ChatGPT",
+          "subtitle": "Chat primero",
+          "items": [
+            "Amplia base de conocimiento",
+            "Enfocado en explicaciones",
+            "Acceso web",
+            "Artefactos de código"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "two-column",
+      "headline": "Desarrollo tradicional vs. asistido por IA",
+      "left": {
+        "title": "Flujo tradicional",
+        "items": [
+          "Escritura manual línea por línea",
+          "Consultas frecuentes a documentación",
+          "Copiar y pegar de Stack Overflow",
+          "Cambios de contexto lentos"
+        ]
+      },
+      "right": {
+        "title": "Flujo asistido por IA",
+        "items": [
+          "Generación de código basada en intención",
+          "Documentación y sugerencias en línea",
+          "Completados conscientes del contexto",
+          "Operaciones multi-archivo fluidas"
+        ]
+      }
+    },
+    {
+      "type": "statement",
+      "headline": "La ventaja de Cursor",
+      "items": [
+        "IDE diseñado específicamente para desarrollo con IA",
+        "Comprensión profunda del codebase",
+        "Edición multi-archivo inteligente",
+        "Agentes en segundo plano para tareas complejas"
+      ],
+      "breakdown": [
+        { "label": "Aumento de productividad", "value": 40 },
+        { "label": "Tiempo ahorrado en boilerplate", "value": 60 },
+        { "label": "Onboarding más rápido", "value": 50 }
+      ]
+    },
+    {
+      "type": "cta",
+      "headline": "¿Listo para transformar\ntu flujo de trabajo?",
+      "steps": [
+        "Descarga Cursor desde cursor.com",
+        "Importa tu configuración de VS Code",
+        "Empieza con completados simples",
+        "Explora gradualmente el modo agente"
+      ],
+      "contact": {
+        "name": "Walter Morales",
+        "email": "walterrafael26@gmail.com",
+        "website": "https://wmorales.dev"
+      },
+      "qr": {
+        "url": "https://cursor.com",
+        "label": "cursor.com"
+      }
+    }
+  ]
+}

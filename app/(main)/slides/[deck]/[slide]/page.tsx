@@ -2,8 +2,9 @@ import { AlertCircle } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { Deck, LandscapeEnforcer } from "@/components/slides";
-import { SlideNavigation } from "@/components/slides/slide-navigation";
+import { getLocale } from "next-intl/server";
+import { LandscapeEnforcer } from "@/components/slides";
+import { SlidePlayer } from "@/components/slides/slide-player";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { listDeckSlugs, loadDeck } from "@/lib/slides";
 
@@ -33,7 +34,8 @@ export async function generateMetadata({
   params,
 }: PageProps): Promise<Metadata> {
   const { deck: deckSlug, slide: slideParam } = await params;
-  const result = loadDeck(deckSlug);
+  const locale = await getLocale();
+  const result = loadDeck(deckSlug, locale);
 
   if (!result.success) {
     return { title: "Deck Not Found" };
@@ -72,7 +74,8 @@ export async function generateMetadata({
 
 export default async function SlideViewPage({ params }: PageProps) {
   const { deck: deckSlug, slide: slideParam } = await params;
-  const result = loadDeck(deckSlug);
+  const locale = await getLocale();
+  const result = loadDeck(deckSlug, locale);
 
   if (!result.success) {
     if (result.errors.some((e) => e.path === "file")) {
@@ -118,24 +121,14 @@ export default async function SlideViewPage({ params }: PageProps) {
   );
 
   return (
-    <LandscapeEnforcer>
-      <div className="flex min-h-dvh flex-col">
-        <div className="flex flex-1 items-center justify-center bg-muted/90 p-4 md:p-8">
-          <div className="w-full max-w-6xl overflow-hidden rounded-lg shadow-lg">
-            <Deck
-              presentation={presentation}
-              currentSlide={currentSlide}
-              printMode={false}
-            />
-          </div>
-        </div>
-
-        <SlideNavigation
+    <div className="relative ml-[calc(-50vw+50%)] w-screen">
+      <LandscapeEnforcer>
+        <SlidePlayer
+          presentation={presentation}
           deckSlug={deckSlug}
           currentSlide={currentSlide}
-          totalSlides={presentation.slides.length}
         />
-      </div>
-    </LandscapeEnforcer>
+      </LandscapeEnforcer>
+    </div>
   );
 }

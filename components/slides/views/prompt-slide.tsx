@@ -87,7 +87,9 @@ export function PromptSlideView({
           </pre>
         </div>
 
-        {slide.footnote && <SlideFootnote>{slide.footnote}</SlideFootnote>}
+        {printMode && slide.footnote && (
+          <SlideFootnote>{slide.footnote}</SlideFootnote>
+        )}
       </SlideCanvas>
     </SlideFrame>
   );

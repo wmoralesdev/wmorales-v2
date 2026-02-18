@@ -1,0 +1,194 @@
+{
+  "meta": {
+    "title": "Cursor at Your University",
+    "author": "Walter Morales",
+    "theme": "dark",
+    "accentColor": "#7C3AED",
+    "language": "en",
+    "date": "2026-01-15",
+    "seo": {
+      "title": "Cursor at Your University | Walter Morales",
+      "description": "A collaboration proposal for Central American universities. Cursor Lab: guided hands-on sessions for students.",
+      "image": "https://wmorales.dev/og-image.png"
+    }
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "headline": "Cursor\nat Your University",
+      "subline": "A collaboration proposal",
+      "author": {
+        "name": "Walter Morales",
+        "title": "Cursor Ambassador · El Salvador"
+      },
+      "logos": ["/cursor-dark.png"]
+    },
+    {
+      "type": "statement",
+      "headline": "Central American talent\ncompetes at a disadvantage",
+      "items": [
+        "Modern tools reach academia late",
+        "The gap between what is taught and what the market demands keeps growing",
+        "Students learn theory without real-world workflows"
+      ]
+    },
+    {
+      "type": "statement",
+      "headline": "The tools exist —\npractice is what's missing",
+      "body": "AI-powered IDEs are already the standard in professional teams. The earlier students master them, the better prepared they will be for the job market."
+    },
+    {
+      "type": "profile",
+      "headline": "Walter Morales",
+      "subtitle": "Software Engineer · Cursor Ambassador El Salvador",
+      "bio": "Engineer with 6+ years of experience in software development, currently at SOUTHWORKS (AWS and Microsoft partners).",
+      "credentials": [
+        {
+          "category": "Experience",
+          "items": [
+            "6+ years in development",
+            "SOUTHWORKS (AWS/Microsoft)",
+            ".NET, React, Cloud"
+          ]
+        },
+        {
+          "category": "Community",
+          "items": [
+            "400+ devs in Cursor SV",
+            "Monthly in-person events",
+            "Collaboration with UES and UCA"
+          ]
+        },
+        {
+          "category": "Education",
+          "items": [
+            "B.Sc. Computer Science — UCA",
+            "Facebook Dev Circles Certificate",
+            "Frontend Developer Program"
+          ]
+        }
+      ],
+      "image": "/me.jpeg"
+    },
+    {
+      "type": "timeline",
+      "headline": "What we have built",
+      "events": [
+        {
+          "title": "6 events in 2025",
+          "description": "Meetups, Cafés, Workshops",
+          "metric": "450+ in-person attendees"
+        },
+        {
+          "title": "Active community",
+          "description": "In-person event attendance",
+          "metric": "400+ builders"
+        },
+        {
+          "title": "Hackathon 2026",
+          "description": "Organizing a regional builders event",
+          "metric": "January 2026"
+        }
+      ]
+    },
+    {
+      "type": "statement",
+      "headline": "Cursor Lab",
+      "items": [
+        "Guided 3-hour sessions with a working project at the end",
+        "For any technical level — even beginners",
+        "Led by a Cursor Ambassador with 6+ years of experience"
+      ]
+    },
+    {
+      "type": "cards",
+      "headline": "Three tracks,\nmany possibilities",
+      "cards": [
+        {
+          "title": "Web Apps",
+          "subtitle": "3 hours",
+          "description": "Landing pages, dashboards, and apps with Next.js + Supabase"
+        },
+        {
+          "title": "Mobile Apps",
+          "subtitle": "3 hours",
+          "description": "Native apps with React Native or Flutter"
+        },
+        {
+          "title": "Chatbots & AI",
+          "subtitle": "3 hours",
+          "description": "Intelligent assistants using OpenAI or Claude APIs"
+        }
+      ],
+      "footnote": "Content adaptable to the needs of each faculty"
+    },
+    {
+      "type": "statement",
+      "headline": "Less slides,\nmore code",
+      "breakdown": [
+        { "label": "Context and setup", "value": 20 },
+        { "label": "Live coding", "value": 70 },
+        { "label": "Q&A and networking", "value": 10 }
+      ],
+      "quote": "Guided practice complements theory and accelerates the learning curve"
+    },
+    {
+      "type": "two-column",
+      "headline": "Everyone wins",
+      "left": {
+        "title": "For the University",
+        "items": [
+          "Up-to-date content without changing the curriculum",
+          "Exposure to an active tech community (400+ devs)",
+          "Students equipped with market-ready tools"
+        ]
+      },
+      "right": {
+        "title": "For the Cursor Community",
+        "items": [
+          "Access to fresh talent",
+          "Quality venues for events",
+          "Long-term alliances with academia"
+        ]
+      }
+    },
+    {
+      "type": "cards",
+      "headline": "We adapt to you",
+      "cards": [
+        {
+          "title": "Single Lab",
+          "description": "One 3-hour session to try the format"
+        },
+        {
+          "title": "Lab Series",
+          "description": "2–3 progressive sessions throughout the semester"
+        },
+        {
+          "title": "Custom Lab",
+          "description": "We design the project around your curriculum or course"
+        }
+      ],
+      "footnote": "No cost to the university — part of the Cursor Ambassadors initiative"
+    },
+    {
+      "type": "cta",
+      "headline": "Shall we coordinate?",
+      "steps": [
+        "15-minute call to understand your needs",
+        "Define the date and format together",
+        "Run the first event"
+      ],
+      "contact": {
+        "name": "Walter Morales",
+        "email": "hello@wmorales.dev",
+        "website": "https://wmorales.dev",
+        "phone": "(+503) 7132-0261"
+      },
+      "qr": {
+        "url": "https://calendar.app.google/kxFN4oL8aiMCWDN46",
+        "label": "Schedule a meeting"
+      }
+    }
+  ]
+}

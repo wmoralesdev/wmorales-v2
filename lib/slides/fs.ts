@@ -9,6 +9,8 @@ import { validatePresentation } from "./validate";
 
 const SLIDES_DIRECTORY = path.join(process.cwd(), "content/slides");
 const JSON_FILE_REGEX = /\.json$/;
+const LOCALE_JSON_FILE_REGEX = /\.(en|es)\.json$/;
+const DEFAULT_LOCALE = "en";
 
 // =============================================================================
 // Types
@@ -21,6 +23,14 @@ export type DeckMeta = {
   theme: "dark" | "light";
   accentColor: string;
   slideCount: number;
+  date?: string;
+  invalid?: false;
+};
+
+export type InvalidDeckMeta = {
+  slug: string;
+  invalid: true;
+  errors: { path: string; message: string }[];
 };
 
 export type LoadDeckResult =
@@ -46,14 +56,19 @@ export function getSlidesDir(): string {
 }
 
 /**
- * Get the slug from a JSON filename.
+ * Extract the base slug from a filename, stripping locale suffix and extension.
+ * Handles: slug.en.json, slug.es.json, slug.json
  */
 function getSlugFromFileName(fileName: string): string {
+  if (LOCALE_JSON_FILE_REGEX.test(fileName)) {
+    return fileName.replace(LOCALE_JSON_FILE_REGEX, "");
+  }
   return fileName.replace(JSON_FILE_REGEX, "");
 }
 
 /**
- * List all available deck slugs from the content/slides directory.
+ * List all unique base deck slugs from the content/slides directory.
+ * Deduplicates locale variants (e.g. slug.en.json + slug.es.json → slug).
  */
 export function listDeckSlugs(): string[] {
   if (!slidesDirExists()) {
@@ -61,50 +76,50 @@ export function listDeckSlugs(): string[] {
   }
 
   const files = fs.readdirSync(SLIDES_DIRECTORY);
-  return files
-    .filter((file) => JSON_FILE_REGEX.test(file))
-    .map(getSlugFromFileName);
-}
+  const slugSet = new Set<string>();
 
-/**
- * List all available decks with basic metadata.
- * Only includes decks that pass validation.
- */
-export function listDecks(): DeckMeta[] {
-  const slugs = listDeckSlugs();
-  const decks: DeckMeta[] = [];
-
-  for (const slug of slugs) {
-    const result = loadDeck(slug);
-    if (result.success) {
-      const { meta, slides } = result.presentation;
-      decks.push({
-        slug,
-        title: meta.title,
-        author: meta.author,
-        theme: meta.theme,
-        accentColor: meta.accentColor,
-        slideCount: slides.length,
-      });
+  for (const file of files) {
+    if (JSON_FILE_REGEX.test(file)) {
+      slugSet.add(getSlugFromFileName(file));
     }
   }
 
-  return decks;
+  return Array.from(slugSet);
 }
 
 /**
- * Get the file path for a deck by slug.
+ * Resolve the actual file path for a deck slug + locale.
+ * Priority: slug.{locale}.json → slug.en.json (default) → slug.json (legacy)
  */
-export function getDeckPath(slug: string): string | null {
-  const filePath = path.join(SLIDES_DIRECTORY, `${slug}.json`);
-  return fs.existsSync(filePath) ? filePath : null;
+export function getDeckPath(
+  slug: string,
+  locale = DEFAULT_LOCALE,
+): string | null {
+  const localePath = path.join(SLIDES_DIRECTORY, `${slug}.${locale}.json`);
+  if (fs.existsSync(localePath)) return localePath;
+
+  if (locale !== DEFAULT_LOCALE) {
+    const defaultPath = path.join(
+      SLIDES_DIRECTORY,
+      `${slug}.${DEFAULT_LOCALE}.json`,
+    );
+    if (fs.existsSync(defaultPath)) return defaultPath;
+  }
+
+  const legacyPath = path.join(SLIDES_DIRECTORY, `${slug}.json`);
+  if (fs.existsSync(legacyPath)) return legacyPath;
+
+  return null;
 }
 
 /**
- * Load and validate a deck by slug.
+ * Load and validate a deck by slug and optional locale.
  */
-export function loadDeck(slug: string): LoadDeckResult {
-  const filePath = getDeckPath(slug);
+export function loadDeck(
+  slug: string,
+  locale = DEFAULT_LOCALE,
+): LoadDeckResult {
+  const filePath = getDeckPath(slug, locale);
 
   if (!filePath) {
     return {
@@ -158,11 +173,45 @@ export function loadDeck(slug: string): LoadDeckResult {
 }
 
 /**
+ * List all available decks with basic metadata for a given locale.
+ * Invalid decks are included with their errors instead of being silently dropped.
+ */
+export function listDecks(
+  locale = DEFAULT_LOCALE,
+): (DeckMeta | InvalidDeckMeta)[] {
+  const slugs = listDeckSlugs();
+  const decks: (DeckMeta | InvalidDeckMeta)[] = [];
+
+  for (const slug of slugs) {
+    const result = loadDeck(slug, locale);
+    if (result.success) {
+      const { meta, slides } = result.presentation;
+      decks.push({
+        slug,
+        title: meta.title,
+        author: meta.author,
+        theme: meta.theme,
+        accentColor: meta.accentColor,
+        slideCount: slides.length,
+        date: meta.date,
+      });
+    } else {
+      decks.push({ slug, invalid: true, errors: result.errors });
+    }
+  }
+
+  return decks;
+}
+
+/**
  * Load raw JSON data for a deck (without validation).
  * Useful for debugging or when you want to handle validation separately.
  */
-export function loadDeckRaw(slug: string): unknown | null {
-  const filePath = getDeckPath(slug);
+export function loadDeckRaw(
+  slug: string,
+  locale = DEFAULT_LOCALE,
+): unknown | null {
+  const filePath = getDeckPath(slug, locale);
 
   if (!filePath) {
     return null;

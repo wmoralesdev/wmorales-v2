@@ -22,7 +22,9 @@ export function CardsSlideView({
 
         <SlideCardGrid cards={slide.cards} />
 
-        {slide.footnote && <SlideFootnote>{slide.footnote}</SlideFootnote>}
+        {printMode && slide.footnote && (
+          <SlideFootnote>{slide.footnote}</SlideFootnote>
+        )}
       </SlideCanvas>
     </SlideFrame>
   );

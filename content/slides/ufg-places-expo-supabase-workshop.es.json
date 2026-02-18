@@ -1,0 +1,327 @@
+{
+  "meta": {
+    "title": "Workshop UFG Places (Expo + Supabase)",
+    "author": "Walter Morales",
+    "theme": "dark",
+    "accentColor": "#7C3AED",
+    "language": "es",
+    "date": "2026-02-17",
+    "seo": {
+      "title": "Workshop UFG Places | Expo + Supabase",
+      "description": "Workshop autoguiado: construye un recomendador de lugares con Expo, NativeWind y Supabase (GitHub OAuth).",
+      "image": "https://wmorales.dev/og-image.png"
+    }
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "headline": "UFG Places\nWorkshop",
+      "subline": "Expo + NativeWind + Supabase (GitHub OAuth)",
+      "author": {
+        "name": "Walter Morales",
+        "title": "Ingeniero de Software · Instructor"
+      },
+      "logos": ["/cursor-dark.png"]
+    },
+    {
+      "type": "statement",
+      "headline": "Antes de codificar: conceptos móviles",
+      "items": [
+        "Expo vs React Native (qué son)",
+        "Cómo corre una app móvil (ciclo de vida)",
+        "Configuración de Expo Go (el camino más rápido hoy)",
+        "Híbrido vs nativo (qué significa)",
+        "Por qué evitamos Swift/Kotlin al inicio"
+      ]
+    },
+    {
+      "type": "bullets",
+      "headline": "¿Qué es React Native?",
+      "items": [
+        "Construye apps iOS + Android con JavaScript/TypeScript + React",
+        "La UI son componentes nativos (no una página web)",
+        "Corre JS en un motor JS (Hermes/JavaScriptCore)",
+        "Usa módulos nativos para funciones del dispositivo (cámara, mapas, etc.)",
+        "Metro empaqueta el código y habilita recarga rápida en dev"
+      ],
+      "footnote": "React Native usa componentes distintos a los de React para web."
+    },
+    {
+      "type": "timeline",
+      "headline": "¿De dónde viene?",
+      "events": [
+        {
+          "title": "React (web)",
+          "description": "Modelo de componentes para construir interfaces en la web.",
+          "metric": "2013"
+        },
+        {
+          "title": "React Native",
+          "description": "Las mismas ideas de React, pero renderiza UI nativa en iOS/Android.",
+          "metric": "2015"
+        },
+        {
+          "title": "Expo",
+          "description": "Tooling + SDK para facilitar el desarrollo con React Native.",
+          "metric": "2016+"
+        },
+        {
+          "title": "Expo moderno",
+          "description": "Router, EAS build/updates, config plugins y más módulos.",
+          "metric": "Hoy"
+        }
+      ]
+    },
+    {
+      "type": "statement",
+      "headline": "¿Qué es Expo?",
+      "body": "Expo es un toolkit y SDK sobre React Native que te ayuda a arrancar rápido, probar en un teléfono real y usar funciones comunes del dispositivo sin configuración nativa compleja."
+    },
+    {
+      "type": "two-column",
+      "headline": "React Native + Expo (cómo encajan)",
+      "left": {
+        "title": "React Native",
+        "items": [
+          "Framework para UI nativa iOS/Android",
+          "Código JS/TS + componentes React",
+          "Módulos nativos para funciones de plataforma",
+          "Necesita herramientas nativas para compilar binarios"
+        ]
+      },
+      "right": {
+        "title": "Expo",
+        "items": [
+          "CLI, SDK y buenos valores por defecto",
+          "Expo Go para pruebas rápidas en dispositivo",
+          "EAS Build/Update para publicar",
+          "Config plugins para setup nativo"
+        ]
+      }
+    },
+    {
+      "type": "cards",
+      "headline": "Tipos de app (web, nativa, híbrida)",
+      "cards": [
+        {
+          "title": "App web",
+          "subtitle": "Corre en un navegador",
+          "description": "Un solo codebase, fácil de compartir, pero acceso limitado a funciones del dispositivo."
+        },
+        {
+          "title": "App nativa",
+          "subtitle": "Swift / Kotlin",
+          "description": "Mejor acceso a plataforma y rendimiento, pero mantienes iOS y Android por separado."
+        },
+        {
+          "title": "Híbrida (React Native)",
+          "subtitle": "Una app, dos plataformas",
+          "description": "Un solo codebase de UI que renderiza componentes nativos en iOS y Android."
+        }
+      ],
+      "footnote": "React Native es 'híbrida' en codebase, pero la UI es nativa."
+    },
+    {
+      "type": "statement",
+      "headline": "¿Por qué no Swift/Kotlin primero?",
+      "items": [
+        "Dos codebases (iOS + Android) duplica el esfuerzo",
+        "Setup más difícil (Xcode/Android Studio desde el día 1)",
+        "Iteración más lenta para cambios de UI",
+        "Expo/RN mantiene el foco en un solo lenguaje (JS/TS)",
+        "Puedes ir nativo después cuando lo necesites"
+      ]
+    },
+    {
+      "type": "bullets",
+      "headline": "Ciclo de vida de una app móvil (simplificado)",
+      "items": [
+        "Instalar → abrir la app",
+        "Lanzar → la app inicia y carga el bundle JS",
+        "Primer plano → el usuario interactúa",
+        "Segundo plano → el usuario cambia de app (pausar trabajo)",
+        "Terminada → el OS cierra la app; la próxima apertura es un lanzamiento nuevo"
+      ]
+    },
+    {
+      "type": "two-column",
+      "headline": "Instalar Expo Go (primer camino al éxito)",
+      "left": {
+        "title": "iOS",
+        "items": [
+          "Instala Expo Go desde el App Store",
+          "Ábrelo y permite acceso a la cámara",
+          "Ejecuta npx expo start en tu computadora",
+          "Escanea el código QR con Expo Go"
+        ]
+      },
+      "right": {
+        "title": "Android",
+        "items": [
+          "Instala Expo Go desde Google Play",
+          "Ábrelo y permite permisos de cámara",
+          "Ejecuta npx expo start en tu computadora",
+          "Escanea el código QR dentro de Expo Go"
+        ]
+      }
+    },
+    {
+      "type": "statement",
+      "headline": "Si Expo Go no conecta (soluciones rápidas)",
+      "items": [
+        "Teléfono y computadora en la misma red Wi‑Fi",
+        "Desactiva VPN/firewall, o usa modo tunnel",
+        "Intenta: npx expo start --tunnel",
+        "Confirma que Metro está corriendo y el QR es actual",
+        "Si el escaneo falla, pega el enlace manualmente"
+      ],
+      "footnote": "Regla: primero logra que Expo Go funcione, luego los simuladores."
+    },
+    {
+      "type": "statement",
+      "headline": "Qué vamos a construir",
+      "items": [
+        "Explorar lugares recomendados por estudiantes cerca de UFG",
+        "Ver detalles del lugar (enlace de mapa, horarios, etiquetas)",
+        "Guardar favoritos (por usuario)",
+        "Iniciar sesión con GitHub (Supabase Auth)",
+        "Corre en tu teléfono (Expo Go)"
+      ]
+    },
+    {
+      "type": "two-column",
+      "headline": "Stack simple (rápido para publicar)",
+      "left": {
+        "title": "App",
+        "items": [
+          "Expo + Expo Router",
+          "NativeWind para estilos",
+          "Testing primero en teléfono (Expo Go)",
+          "Componentes pequeños, iteración rápida"
+        ]
+      },
+      "right": {
+        "title": "Backend",
+        "items": [
+          "Supabase Postgres",
+          "Supabase Auth (GitHub OAuth)",
+          "Row Level Security (RLS)",
+          "Queries simples, datos reales"
+        ]
+      }
+    },
+    {
+      "type": "bullets",
+      "headline": "Loop de desarrollo en Expo (modelo mental)",
+      "items": [
+        "Iniciar Metro (servidor de dev)",
+        "Abrir en Expo Go (teléfono)",
+        "Editar en Cursor",
+        "La app recarga → verifica → repite",
+        "Usa simuladores después de que el flujo principal funcione"
+      ]
+    },
+    {
+      "type": "prompt",
+      "headline": "Prompt: Verificar preparación con Expo",
+      "title": "Pega en Cursor Chat (ejecuta comandos, verifica cada paso).",
+      "prompt": "Help me set up my computer for Expo (React Native) development using Cursor.\n\nGoals:\n- I want to run an Expo app on my real phone with Expo Go.\n- I also want to run it on iOS Simulator and Android Emulator if possible.\n\nPlease:\n1) Check my OS and Node.js version.\n2) Verify I can run npx and install packages.\n3) Check if Expo tooling is available (and install the recommended way if not).\n4) If I'm on macOS, check for Xcode and iOS Simulator availability.\n5) Check for Android Studio / Android SDK / emulator availability.\n6) Summarize what's missing and the fastest path to get running today.\n\nKeep it concise. Run commands and explain results.",
+      "footnote": "Meta: primero logra que Expo Go funcione, luego los simuladores."
+    },
+    {
+      "type": "prompt",
+      "headline": "Prompt: Crear la app Expo",
+      "title": "Expo Router + TypeScript + base de proyecto limpia.",
+      "prompt": "Create a new Expo app for me with these constraints:\n- Use TypeScript\n- Use Expo Router for navigation (file-based routes)\n- Project name: ufg-places\n\nSteps:\n1) Pick the correct create-expo-app command for the current Expo version.\n2) Create the project and install dependencies.\n3) Explain where the routes live and what file is the entry point.\n4) Start the dev server and tell me how to open it in Expo Go.\n\nIf anything fails, diagnose and fix the root cause (don't handwave). Keep explanations short.",
+      "footnote": "Mantén el alcance acotado: una pantalla primero, luego itera."
+    },
+    {
+      "type": "bullets",
+      "headline": "Puntos de entrada de Expo Router",
+      "items": [
+        "Layout raíz: app/_layout.tsx (envuelve todas las rutas)",
+        "Ruta inicial: primer index.tsx que coincide con /",
+        "Grupos de rutas: app/(tabs)/... (grupo no aparece en URL)",
+        "Rutas dinámicas: app/places/[id].tsx",
+        "Mantén las rutas pequeñas: UI + datos + navegación"
+      ],
+      "footnote": "Si te pierdes: empieza en app/_layout.tsx, luego app/index.tsx."
+    },
+    {
+      "type": "prompt",
+      "headline": "Prompt: Agregar NativeWind",
+      "title": "Instalar y verificar que los estilos funcionen en el dispositivo.",
+      "prompt": "I have an Expo Router + TypeScript app named \"ufg-places\".\n\nHelp me add NativeWind with the simplest working setup.\n\nRequirements:\n- Configure Tailwind + NativeWind so I can use className on React Native components.\n- Add a tiny demo on app/index.tsx:\n  - A screen with a title, a subtitle, and a primary button\n  - Use safe area\n  - Make it look clean and readable\n\nAfter setup:\n1) Tell me how to verify styles are applied in Expo Go.\n2) If styles don't apply, diagnose the root cause and fix it.\n\nKeep explanations short and command-driven.",
+      "footnote": "Meta: espaciado consistente, tipografía legible, safe area."
+    },
+    {
+      "type": "cards",
+      "headline": "Modelo de datos mínimo",
+      "cards": [
+        {
+          "title": "places",
+          "subtitle": "La tabla principal",
+          "description": "id, name, category_id, campus_area, address, maps_url, hours_text, tags, created_at"
+        },
+        {
+          "title": "categories",
+          "subtitle": "Filtrado simple",
+          "description": "id, name (p.ej. Café, Estudio, Comida, Al aire libre)"
+        },
+        {
+          "title": "favorites",
+          "subtitle": "Guardados por usuario",
+          "description": "user_id + place_id (único), created_at (protegido por RLS)"
+        }
+      ],
+      "footnote": "Mantendemos esto mínimo para poder publicar hoy."
+    },
+    {
+      "type": "prompt",
+      "headline": "Prompt: Configurar datos en Supabase",
+      "title": "Crear proyecto, tablas, seed y políticas RLS seguras.",
+      "prompt": "I'm building a mobile app called \"UFG Places\" with Expo + Supabase.\n\nHelp me do the Supabase setup end-to-end:\n\n1) Create a new Supabase project and give it a clear name.\n2) Create these tables: categories, places, favorites.\n3) Seed categories and at least 10 example places.\n4) Enable Row Level Security (RLS).\n5) Add simple policies:\n   - Anyone can read categories + places.\n   - Only signed-in users can insert/delete their own favorites.\n\nThen:\n- Tell me how to verify the data with 2-3 SQL queries.\n- Give me a checklist of what values I need in my Expo env config (URL + anon key).\n\nKeep it practical: minimal schema, minimal policies, real data.",
+      "footnote": "Places serán públicos, favoritos privados."
+    },
+    {
+      "type": "prompt",
+      "headline": "Prompt: Login con GitHub (Supabase)",
+      "title": "Habilitar GitHub OAuth e integrarlo en Expo.",
+      "prompt": "I need GitHub OAuth sign-in in an Expo app using Supabase Auth.\n\nContext:\n- Project: Expo Router + TypeScript\n- Backend: Supabase\n- Auth provider: GitHub\n- Target: Works in Expo Go + a development build\n\nPlease:\n1) In Supabase, enable the GitHub provider and explain what callback/redirect URLs I must configure for Expo.\n2) In my Expo app, add Supabase client setup using env vars.\n3) Implement:\n   - Sign in with GitHub button\n   - Handle redirect back to the app\n   - Persist session and show signed-in state\n   - Sign out\n4) Keep the UI minimal and clear (NativeWind).\n5) If there are platform-specific issues (Expo Go vs dev build), explain the smallest workable path for today.\n\nBe explicit and step-by-step. Include quick verification steps after each major change.",
+      "footnote": "Meta: puedes iniciar sesión, ver tu estado de perfil y cerrar sesión."
+    },
+    {
+      "type": "prompt",
+      "headline": "Prompt: Construir las pantallas",
+      "title": "Rutas, queries y UX lista para publicar.",
+      "prompt": "Help me implement the core screens for \"UFG Places\" using Expo Router + TypeScript.\n\nRoutes:\n- app/(tabs)/_layout.tsx: tabs for Home, Favorites, Profile\n- app/(tabs)/index.tsx: places list\n- app/places/[id].tsx: place detail\n- app/(tabs)/favorites.tsx: my favorites list\n- app/(tabs)/profile.tsx: auth state + sign in/out\n\nData:\n- Fetch places + categories from Supabase.\n- Favorites should be per-user (requires auth).\n\nUX requirements:\n- Search on the places list\n- Filter by category\n- Tap a place to open details\n- Favorite/unfavorite from list and detail\n- Show loading + error states (simple)\n\nKeep components small, prioritize readability, and tell me how to test each screen quickly in Expo Go.",
+      "footnote": "Alcance: publica el flujo principal antes de pulir."
+    },
+    {
+      "type": "prompt",
+      "headline": "Prompt: Depurar problemas Expo/Supabase",
+      "title": "Úsalo cuando te quedes atascado (pega los logs literalmente).",
+      "prompt": "I'm building an Expo app with Supabase and I'm stuck.\n\nHere's what I expected:\n[describe expected behavior]\n\nHere's what happened:\n[describe actual behavior]\n\nHere are the logs (Metro, device, emulator, Supabase errors):\n[paste logs verbatim]\n\nPlease:\n1) Generate 3-5 likely root causes (ranked).\n2) For the top cause, give me exact steps to verify it.\n3) Then give me the smallest fix.\n4) Tell me how to confirm the fix worked on both Expo Go and a simulator.\n\nKeep it practical and short.",
+      "footnote": "Regla: no resumas los errores — pégalos exactamente."
+    },
+    {
+      "type": "cta",
+      "headline": "Próximos pasos después de clase",
+      "steps": [
+        "Agregar flujo de 'Enviar un lugar' + moderación",
+        "Agregar vista de mapa + ordenamiento por distancia",
+        "Publicar un dev build (EAS) y probar OAuth a fondo",
+        "Pulir UI + rendimiento (listas, caché)"
+      ],
+      "contact": {
+        "name": "Walter Morales",
+        "email": "hello@wmorales.dev",
+        "website": "https://wmorales.dev"
+      },
+      "qr": {
+        "url": "https://wmorales.dev",
+        "label": "wmorales.dev"
+      }
+    }
+  ]
+}

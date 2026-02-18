@@ -79,6 +79,19 @@ const itemsArraySchema = z
     `Items array must have ${TEXT_LIMITS.itemsArray} items or less`,
   );
 
+const resourceSchema = z.object({
+  label: z.string().min(1, "Resource label is required"),
+  url: z.string().url("Resource URL must be a valid URL"),
+});
+
+export const slideExtrasSchema = z.object({
+  footnotes: z.array(z.string()).optional(),
+  resources: z.array(resourceSchema).optional(),
+});
+
+export type SlideExtras = z.infer<typeof slideExtrasSchema>;
+export type SlideResource = z.infer<typeof resourceSchema>;
+
 // =============================================================================
 // Presentation Meta
 // =============================================================================
@@ -101,6 +114,10 @@ export const presentationMetaSchema = z.object({
   theme: z.enum(["dark", "light"]),
   accentColor: hexColorSchema,
   language: z.string().optional(),
+  date: z
+    .string()
+    .regex(/^\d{4}-\d{2}-\d{2}$/, "Date must be in YYYY-MM-DD format")
+    .optional(),
   seo: seoSchema.optional(),
 });
 
@@ -324,15 +341,15 @@ export type PromptSlide = z.infer<typeof promptSlideSchema>;
 // =============================================================================
 
 export const slideSchema = z.discriminatedUnion("type", [
-  coverSlideSchema,
-  statementSlideSchema,
-  bulletsSlideSchema,
-  profileSlideSchema,
-  timelineSlideSchema,
-  cardsSlideSchema,
-  twoColumnSlideSchema,
-  ctaSlideSchema,
-  promptSlideSchema,
+  coverSlideSchema.merge(slideExtrasSchema),
+  statementSlideSchema.merge(slideExtrasSchema),
+  bulletsSlideSchema.merge(slideExtrasSchema),
+  profileSlideSchema.merge(slideExtrasSchema),
+  timelineSlideSchema.merge(slideExtrasSchema),
+  cardsSlideSchema.merge(slideExtrasSchema),
+  twoColumnSlideSchema.merge(slideExtrasSchema),
+  ctaSlideSchema.merge(slideExtrasSchema),
+  promptSlideSchema.merge(slideExtrasSchema),
 ]);
 
 export type Slide = z.infer<typeof slideSchema>;
