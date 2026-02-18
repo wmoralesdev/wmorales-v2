@@ -6,6 +6,7 @@ import { JetBrains_Mono, Poppins, Space_Grotesk } from "next/font/google";
 import Script from "next/script";
 import { NextIntlClientProvider } from "next-intl";
 import { getLocale, getMessages } from "next-intl/server";
+import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { CommandPalette } from "@/components/common/command-palette";
 import { CookieNotice } from "@/components/common/cookie-notice";
 import { ThemeProvider } from "@/components/common/theme-provider";
@@ -69,11 +70,13 @@ export default async function RootLayout({ children }: Props) {
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+          <NuqsAdapter>
           <NextIntlClientProvider messages={messages}>
             {children}
             <CommandPalette posts={posts} decks={decks} />
             <CookieNotice />
           </NextIntlClientProvider>
+          </NuqsAdapter>
           <Toaster position="bottom-center" />
         </ThemeProvider>
         <Analytics />

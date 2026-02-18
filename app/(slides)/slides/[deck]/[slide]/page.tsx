@@ -121,7 +121,7 @@ export default async function SlideViewPage({ params }: PageProps) {
   );
 
   return (
-    <div className="relative ml-[calc(-50vw+50%)] w-screen">
+    <div>
       <LandscapeEnforcer>
         <SlidePlayer
           presentation={presentation}

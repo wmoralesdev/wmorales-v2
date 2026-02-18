@@ -39,6 +39,8 @@ export default async function DeckPrintPage({ params }: PageProps) {
         // biome-ignore lint/security/noDangerouslySetInnerHtml: Print CSS must be inline
         dangerouslySetInnerHTML={{
           __html: `
+            header { display: none !important; }
+
             @media print {
               @page {
                 size: 13.333in 7.5in;

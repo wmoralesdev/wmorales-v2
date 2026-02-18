@@ -1,6 +1,7 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useQueryState } from "nuqs";
+import { useCallback } from "react";
 import type { Presentation } from "@/lib/slides/schema";
 import { cn } from "@/lib/utils";
 import { Deck } from "./deck";
@@ -18,27 +19,15 @@ export function SlidePlayer({
   deckSlug,
   currentSlide,
 }: SlidePlayerProps) {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [isFullscreen, setIsFullscreen] = useState(false);
+  const [fsParam, setFsParam] = useQueryState("fs", {
+    defaultValue: "",
+    shallow: true,
+  });
+  const isFullscreen = fsParam === "1";
 
-  const toggleFullscreen = useCallback(async () => {
-    if (!document.fullscreenElement) {
-      await containerRef.current?.requestFullscreen();
-    } else {
-      await document.exitFullscreen();
-    }
-  }, []);
-
-  useEffect(() => {
-    const handleFullscreenChange = () => {
-      setIsFullscreen(!!document.fullscreenElement);
-    };
-
-    document.addEventListener("fullscreenchange", handleFullscreenChange);
-    return () => {
-      document.removeEventListener("fullscreenchange", handleFullscreenChange);
-    };
-  }, []);
+  const toggleFullscreen = useCallback(() => {
+    setFsParam(isFullscreen ? null : "1");
+  }, [isFullscreen, setFsParam]);
 
   const slideIndex = Math.max(
     0,
@@ -51,18 +40,19 @@ export function SlidePlayer({
 
   return (
     <div
-      ref={containerRef}
       className={cn(
         "flex flex-col bg-background",
-        isFullscreen ? "h-dvh w-dvw" : "min-h-[calc(100dvh-6rem)]",
+        isFullscreen
+          ? "fixed inset-0 z-50 h-dvh w-dvw"
+          : "min-h-[calc(100dvh-3rem)]",
       )}
     >
       <div
         className={cn(
-          "relative flex flex-1 gap-6",
+          "relative flex min-h-0 flex-1 gap-6",
           isFullscreen
             ? "items-center justify-center bg-black"
-            : "items-start justify-center bg-muted/90 p-4 md:p-8",
+            : "items-center justify-center bg-muted/90 p-4 md:p-8",
         )}
       >
         <div
@@ -70,11 +60,11 @@ export function SlidePlayer({
             "overflow-hidden",
             isFullscreen
               ? "flex h-full w-full items-center justify-center"
-              : "w-full max-w-5xl rounded-lg shadow-lg",
+              : "w-full max-w-5xl self-center rounded-lg shadow-lg",
           )}
         >
           {isFullscreen ? (
-            <div className="aspect-video max-h-[calc(100dvh-3.5rem)] w-full max-w-full">
+            <div className="aspect-video max-h-dvh w-full max-w-full">
               <Deck
                 presentation={presentation}
                 currentSlide={currentSlide}
