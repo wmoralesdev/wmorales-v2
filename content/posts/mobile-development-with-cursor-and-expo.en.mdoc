@@ -240,6 +240,19 @@ Keep UI minimal and readable. Mobile UX basics that matter:
 
 Outcome: open the project in Expo Go on a real phone and use it as your primary development loop.
 
+### How Expo Go works (quick mental model)
+
+- **Expo Go is a pre-built client app** that already includes the Expo SDK (camera, notifications, etc.).
+- When you scan the QR code / open the dev URL, Expo Go opens an “experience” that points to your dev server.
+- Your phone downloads the **JavaScript bundle + assets** from Metro and runs them inside Expo Go.
+- Because Expo Go is pre-built, it can only use native capabilities that ship with Expo Go. If you need custom native modules, switch to a **development build** (see the note earlier in this guide).
+
+### Download & setup Expo Go (first time)
+
+1. Install **Expo Go** from the App Store (iOS) or Google Play (Android).
+2. Open it once and grant **Camera** permission (for QR scanning).
+3. Make sure your phone and computer are on the **same network**. If LAN is blocked (hotel/corporate Wi‑Fi), use **Tunnel** mode in the Expo dev server UI.
+
 What to do (practical flow):
 
 1. Start Metro from Cursor’s terminal (`npx expo start`)\n2. Open the Expo Go app\n3. Scan the QR code (or use the URL)\n4. Make a small UI edit and confirm it reloads
