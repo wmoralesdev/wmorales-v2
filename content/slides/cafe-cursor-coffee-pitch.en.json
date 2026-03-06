@@ -1,0 +1,292 @@
+{
+  "meta": {
+    "title": "Cafe Cursor para Coffee Shops",
+    "author": "Walter Morales",
+    "theme": "dark",
+    "accentColor": "#7C3AED",
+    "language": "es-SV",
+    "date": "2026-03-05",
+    "seo": {
+      "title": "Cafe Cursor para Coffee Shops | Walter Morales",
+      "description": "Propuesta para coffee shops: qué es Cafe Cursor, por qué funciona y cómo se vería una alianza.",
+      "image": "https://wmorales.dev/og-image.png"
+    }
+  },
+  "slides": [
+    {
+      "type": "cover",
+      "headline": "Cafe Cursor\npara Coffee Shops",
+      "subline": "Una comunidad que trabaja, conecta y vuelve",
+      "author": {
+        "name": "Walter Morales",
+        "title": "Cursor Ambassador · El Salvador"
+      },
+      "brandMarks": [
+        {
+          "src": "/cube-2d-light.svg",
+          "lightSrc": "/cube-2d-light.svg",
+          "darkSrc": "/cube-2d-dark.svg",
+          "alt": "Cube 2D",
+          "size": "lg"
+        },
+        {
+          "src": "/ailabs-lockup-horizontal.svg",
+          "alt": "Ai /abs",
+          "size": "xl"
+        }
+      ]
+    },
+    {
+      "type": "profile",
+      "headline": "¿Quién impulsa Cafe Cursor?",
+      "subtitle": "Walter Morales · Founder de Ai /abs · Cursor Ambassador",
+      "bio": "Cafe Cursor es impulsado por Walter Morales, Founder de Ai /abs y Cursor Ambassador en El Salvador, con 6+ años creando software, comunidad y espacios donde la gente correcta se encuentra.",
+      "credentials": [
+        {
+          "category": "Experiencia",
+          "items": [
+            "6+ años en desarrollo",
+            "SOUTHWORKS (AWS/Microsoft)",
+            ".NET, React, Cloud"
+          ]
+        },
+        {
+          "category": "Comunidad",
+          "items": [
+            "550+ miembros en Cursor SV",
+            "Eventos mensuales presenciales",
+            "Base en SV, expansión en GT"
+          ]
+        }
+      ],
+      "image": "/me.jpeg",
+      "brandMarks": [
+        {
+          "src": "/ailabs-lockup-horizontal.svg",
+          "alt": "Ai /abs",
+          "label": "Founder, Ai /abs",
+          "size": "lg"
+        }
+      ],
+      "visibleResources": [
+        {
+          "label": "wmorales.dev",
+          "url": "https://wmorales.dev"
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "headline": "¿Quiénes llegan\ny por qué importa?",
+      "cards": [
+        {
+          "title": "Programadores",
+          "subtitle": "Builders técnicos",
+          "description": "Llegan a trabajar, compartir ideas y conocer gente con intereses similares."
+        },
+        {
+          "title": "Diseñadores",
+          "subtitle": "Producto y UX",
+          "description": "Aportan visión visual y de producto a conversaciones que no se quedan solo en código."
+        },
+        {
+          "title": "Marketing",
+          "subtitle": "Growth y marca",
+          "description": "Suman contexto real de audiencias, posicionamiento y distribución."
+        },
+        {
+          "title": "Founders",
+          "subtitle": "Conector natural",
+          "description": "La mezcla de perfiles hace que el networking sea parte central del valor."
+        }
+      ],
+      "footnote": "No es solo coworking: es una mesa compartida entre perfiles que se complementan."
+    },
+    {
+      "type": "timeline",
+      "headline": "La comunidad que hemos\nconstruido",
+      "events": [
+        {
+          "title": "6 eventos en 2025",
+          "description": "Meetups, cafés y workshops presenciales en San Salvador.",
+          "metric": "450+ asistentes"
+        },
+        {
+          "title": "Comunidad activa",
+          "description": "Perfiles distintos que llegan, conectan y regresan.",
+          "metric": "550+ miembros"
+        },
+        {
+          "title": "Alcance centroamericano",
+          "description": "En SV: UCA, UES y UFG. En GT: Tec y UVG.",
+          "metric": "SV + GT"
+        },
+        {
+          "title": "Hackathon 2026",
+          "description": "Evento regional de builders ya en planificación.",
+          "metric": "2026"
+        }
+      ],
+      "visibleResources": [
+        {
+          "label": "Cursor Community",
+          "url": "https://cursor.com/community"
+        },
+        {
+          "label": "Comunidad en WhatsApp",
+          "url": "https://chat.whatsapp.com/Ga8mG1fqDM9C0ryxAw1eIj",
+          "kind": "community"
+        }
+      ]
+    },
+    {
+      "type": "statement",
+      "headline": "¿Qué es Cafe Cursor?",
+      "items": [
+        "Una tarde para trabajar, conocer gente afín y compartir ideas",
+        "Charlas cortas y demos prácticas cada hora",
+        "Networking natural entre perfiles técnicos y creativos",
+        "Formato flexible: evento completo, media jornada o solo pasar"
+      ],
+      "footnote": "La mezcla de asistentes hace que las conversaciones también sean parte del valor."
+    },
+    {
+      "type": "timeline",
+      "headline": "Resultados de las\nediciones anteriores",
+      "events": [
+        {
+          "title": "108 asistentes",
+          "description": "Charlas por hora, demos en vivo y mesas de trabajo colaborativo.",
+          "metric": "1ª edición"
+        },
+        {
+          "title": "114 asistentes",
+          "description": "Mentorías personalizadas, speakers invitados y rifas.",
+          "metric": "2ª edición"
+        },
+        {
+          "title": "93 asistentes",
+          "description": "Enfoque en desarrollo móvil, pitches cortos y networking.",
+          "metric": "3ª edición"
+        },
+        {
+          "title": "45 registrados",
+          "description": "La próxima fecha ya genera interés, incluso sin venue confirmado.",
+          "metric": "Próxima"
+        }
+      ],
+      "visibleResources": [
+        {
+          "label": "Próximo evento en Luma",
+          "url": "https://luma.com/kclz7ga6",
+          "kind": "event"
+        },
+        {
+          "label": "Álbum 3ª edición",
+          "url": "https://photos.app.goo.gl/X4gF3SAVKAG665gb9",
+          "kind": "photos"
+        },
+        {
+          "label": "Álbum 2ª edición",
+          "url": "https://photos.app.goo.gl/AFHgh6CAZzCq6jm79",
+          "kind": "photos"
+        },
+        {
+          "label": "Álbum 1ª edición",
+          "url": "https://photos.app.goo.gl/WHd8v7hVQ9vBGTvFA",
+          "kind": "photos"
+        }
+      ]
+    },
+    {
+      "type": "cards",
+      "headline": "¿Qué vive la gente\nen Cafe Cursor?",
+      "cards": [
+        {
+          "title": "Trabajo real",
+          "subtitle": "2-6 horas",
+          "description": "Llegan con laptop, avanzan en sus proyectos y consumen café mientras trabajan."
+        },
+        {
+          "title": "Networking útil",
+          "subtitle": "Entre sesiones",
+          "description": "Conocen personas con otros perfiles y de ahí salen ideas, colaboraciones y referidos."
+        },
+        {
+          "title": "Mentoría",
+          "subtitle": "1:1 y grupal",
+          "description": "Expertos ayudan a resolver dudas técnicas y desbloquear proyectos."
+        },
+        {
+          "title": "Ambiente correcto",
+          "subtitle": "Curado",
+          "description": "La gente llega a trabajar, conversar y cuidar el espacio. Eso cambia la calidad del evento."
+        }
+      ]
+    },
+    {
+      "type": "two-column",
+      "headline": "¿Por qué le conviene\na tu coffee shop?",
+      "left": {
+        "title": "Lo que gana tu negocio",
+        "items": [
+          "Atrae personas que llegan a trabajar, conversar y consumir",
+          "Asocia tu marca con innovación y comunidad local",
+          "Puede repetirse mensual o en ediciones especiales",
+          "Se adapta a tu capacidad, horario y estilo"
+        ]
+      },
+      "right": {
+        "title": "Cómo cuidamos la operación",
+        "items": [
+          "Registro con aprobación para controlar aforo",
+          "Bloques por horario: completo, media jornada o solo pasar",
+          "Agenda clara: trabajo, charlas y networking",
+          "Coordinación previa con tu equipo"
+        ]
+      }
+    },
+    {
+      "type": "cards",
+      "headline": "¿Cómo trabajaríamos\njuntos?",
+      "cards": [
+        {
+          "title": "Piloto",
+          "subtitle": "3-4 horas",
+          "description": "Una primera edición para validar aforo, dinámica y respuesta de la gente."
+        },
+        {
+          "title": "Recurrente",
+          "subtitle": "Mensual",
+          "description": "Si funciona, se convierte en una cita fija con identidad compartida."
+        },
+        {
+          "title": "Ediciones especiales",
+          "subtitle": "Con invitados",
+          "description": "Sumamos speakers, patrocinadores o temas como móvil, IA o talleres."
+        }
+      ],
+      "footnote": "Formato probado en 3 ediciones con más de 300 asistentes."
+    },
+    {
+      "type": "cta",
+      "headline": "Hagamos una edición piloto",
+      "steps": [
+        "Platicamos 15 minutos para conocer tu espacio",
+        "Definimos fecha, horario y capacidad juntos",
+        "Publicamos el registro y coordinamos la operación",
+        "Medimos resultados para decidir si repetimos"
+      ],
+      "contact": {
+        "name": "Walter Morales",
+        "email": "hello@wmorales.dev",
+        "website": "https://wmorales.dev",
+        "phone": "(+503) 7132-0261"
+      },
+      "qr": {
+        "url": "https://calendar.app.google/kxFN4oL8aiMCWDN46",
+        "label": "Agendar llamada"
+      }
+    }
+  ]
+}

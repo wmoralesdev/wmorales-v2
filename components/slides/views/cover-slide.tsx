@@ -1,5 +1,5 @@
-import Image from "next/image";
 import type { CoverSlide } from "@/lib/slides/schema";
+import { SlideBrandMarks } from "../slide-brand-marks";
 import { SlideCanvas, SlideFrame } from "../slide-frame";
 import { SlideHeadline, SlideSubline } from "../slide-typography";
 
@@ -16,6 +16,15 @@ export function CoverSlideView({
   slide,
   printMode = false,
 }: CoverSlideViewProps) {
+  const marks =
+    slide.brandMarks && slide.brandMarks.length > 0
+      ? slide.brandMarks
+      : (slide.logos?.map((logo) => ({
+          src: logo,
+          alt: `Logo ${logo}`,
+          size: "lg" as const,
+        })) ?? []);
+
   return (
     <SlideFrame printMode={printMode}>
       {/* Accent bar at top */}
@@ -42,28 +51,8 @@ export function CoverSlideView({
           </div>
 
           {/* Logos */}
-          {slide.logos && slide.logos.length > 0 && (
-            <div className="flex items-center gap-6">
-              {slide.logos.map((logo) => (
-                <div
-                  key={logo}
-                  className="relative size-16 overflow-hidden opacity-80 transition-opacity hover:opacity-100"
-                >
-                  {logo.startsWith("http") || logo.startsWith("/") ? (
-                    <Image
-                      src={logo}
-                      alt={`Logo ${logo}`}
-                      fill
-                      className="object-contain"
-                    />
-                  ) : (
-                    <span className="flex size-full items-center justify-center rounded-lg bg-muted text-xs text-muted-foreground">
-                      {logo}
-                    </span>
-                  )}
-                </div>
-              ))}
-            </div>
+          {marks.length > 0 && (
+            <SlideBrandMarks marks={marks} className="justify-end" />
           )}
         </div>
       </SlideCanvas>

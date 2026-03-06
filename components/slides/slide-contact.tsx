@@ -12,50 +12,66 @@ interface ContactInfo {
 interface SlideContactProps {
   contact: ContactInfo;
   className?: string;
+  compact?: boolean;
 }
 
 /**
  * SlideContact renders contact information in a card format.
  * Used in CTA slides.
  */
-export function SlideContact({ contact, className }: SlideContactProps) {
+export function SlideContact({
+  contact,
+  className,
+  compact = false,
+}: SlideContactProps) {
   return (
     <Card className={cn("border-border/60 bg-muted/20", className)}>
-      <CardContent className="space-y-3 p-6">
+      <CardContent className={cn(compact ? "space-y-2.5 p-4" : "space-y-3 p-6")}>
         {contact.name && (
-          <div className="flex items-center gap-3">
-            <User className="size-4 text-muted-foreground" />
-            <span className="font-medium text-foreground">{contact.name}</span>
+          <div className={cn("flex items-center", compact ? "gap-2.5" : "gap-3")}>
+            <User className={cn("text-muted-foreground", compact ? "size-3.5" : "size-4")} />
+            <span className={cn("text-foreground", compact ? "text-sm font-medium" : "font-medium")}>
+              {contact.name}
+            </span>
           </div>
         )}
-        <div className="flex items-center gap-3">
-          <Mail className="size-4 text-muted-foreground" />
+        <div className={cn("flex items-center", compact ? "gap-2.5" : "gap-3")}>
+          <Mail className={cn("text-muted-foreground", compact ? "size-3.5" : "size-4")} />
           <a
             href={`mailto:${contact.email}`}
-            className="text-accent underline-offset-2 hover:underline"
+            className={cn(
+              "text-accent underline-offset-2 hover:underline",
+              compact && "text-sm",
+            )}
           >
             {contact.email}
           </a>
         </div>
         {contact.website && (
-          <div className="flex items-center gap-3">
-            <Globe className="size-4 text-muted-foreground" />
+          <div className={cn("flex items-center", compact ? "gap-2.5" : "gap-3")}>
+            <Globe className={cn("text-muted-foreground", compact ? "size-3.5" : "size-4")} />
             <a
               href={contact.website}
               target="_blank"
               rel="noopener noreferrer"
-              className="text-accent underline-offset-2 hover:underline"
+              className={cn(
+                "text-accent underline-offset-2 hover:underline",
+                compact && "text-sm",
+              )}
             >
               {contact.website}
             </a>
           </div>
         )}
         {contact.phone && (
-          <div className="flex items-center gap-3">
-            <Phone className="size-4 text-muted-foreground" />
+          <div className={cn("flex items-center", compact ? "gap-2.5" : "gap-3")}>
+            <Phone className={cn("text-muted-foreground", compact ? "size-3.5" : "size-4")} />
             <a
               href={`tel:${contact.phone}`}
-              className="text-accent underline-offset-2 hover:underline"
+              className={cn(
+                "text-accent underline-offset-2 hover:underline",
+                compact && "text-sm",
+              )}
             >
               {contact.phone}
             </a>

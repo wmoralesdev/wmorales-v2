@@ -10,6 +10,7 @@ const TEXT_LIMITS = {
   description: 120,
   itemsArray: 5,
   itemString: 80,
+  chipLabel: 32,
   timelineEvents: 4,
   cardsMin: 2,
   cardsMax: 4,
@@ -17,6 +18,9 @@ const TEXT_LIMITS = {
   credentialGroups: 3,
   columnItems: 4,
   ctaSteps: 4,
+  visibleResources: 5,
+  brandMarks: 3,
+  chips: 8,
   promptTitle: 80,
   prompt: 6000,
 } as const;
@@ -84,13 +88,55 @@ const resourceSchema = z.object({
   url: z.string().url("Resource URL must be a valid URL"),
 });
 
+const visibleResourceSchema = resourceSchema.extend({
+  kind: z.enum(["default", "event", "photos", "community"]).optional(),
+});
+
+const brandMarkSchema = z.object({
+  src: z.string().min(1, "Brand mark src is required"),
+  lightSrc: z.string().optional(),
+  darkSrc: z.string().optional(),
+  alt: z.string().min(1, "Brand mark alt is required"),
+  href: z.string().url("Brand mark href must be a valid URL").optional(),
+  label: z.string().optional(),
+  size: z.enum(["sm", "md", "lg", "xl"]).optional(),
+});
+
+const chipSchema = z
+  .string()
+  .min(1, "Chip label is required")
+  .max(
+    TEXT_LIMITS.chipLabel,
+    `Chip label must be ${TEXT_LIMITS.chipLabel} characters or less`,
+  );
+
 export const slideExtrasSchema = z.object({
   footnotes: z.array(z.string()).optional(),
   resources: z.array(resourceSchema).optional(),
+  visibleResources: z
+    .array(visibleResourceSchema)
+    .max(
+      TEXT_LIMITS.visibleResources,
+      `Visible resources must be ${TEXT_LIMITS.visibleResources} or less`,
+    )
+    .optional(),
+  brandMarks: z
+    .array(brandMarkSchema)
+    .max(
+      TEXT_LIMITS.brandMarks,
+      `Brand marks must be ${TEXT_LIMITS.brandMarks} or less`,
+    )
+    .optional(),
+  chips: z
+    .array(chipSchema)
+    .max(TEXT_LIMITS.chips, `Chips must be ${TEXT_LIMITS.chips} or less`)
+    .optional(),
 });
 
 export type SlideExtras = z.infer<typeof slideExtrasSchema>;
 export type SlideResource = z.infer<typeof resourceSchema>;
+export type SlideVisibleResource = z.infer<typeof visibleResourceSchema>;
+export type SlideBrandMark = z.infer<typeof brandMarkSchema>;
 
 // =============================================================================
 // Presentation Meta
@@ -138,7 +184,7 @@ export const coverSlideSchema = z.object({
   logos: z.array(z.string()).optional(),
 });
 
-export type CoverSlide = z.infer<typeof coverSlideSchema>;
+export type CoverSlide = z.infer<typeof coverSlideSchema> & SlideExtras;
 
 // =============================================================================
 // Slide: Statement
@@ -159,7 +205,7 @@ export const statementSlideSchema = z.object({
   footnote: z.string().optional(),
 });
 
-export type StatementSlide = z.infer<typeof statementSlideSchema>;
+export type StatementSlide = z.infer<typeof statementSlideSchema> & SlideExtras;
 
 // =============================================================================
 // Slide: Bullets
@@ -172,7 +218,7 @@ export const bulletsSlideSchema = z.object({
   footnote: z.string().optional(),
 });
 
-export type BulletsSlide = z.infer<typeof bulletsSlideSchema>;
+export type BulletsSlide = z.infer<typeof bulletsSlideSchema> & SlideExtras;
 
 // =============================================================================
 // Slide: Profile
@@ -202,7 +248,7 @@ export const profileSlideSchema = z.object({
   image: z.string().optional(),
 });
 
-export type ProfileSlide = z.infer<typeof profileSlideSchema>;
+export type ProfileSlide = z.infer<typeof profileSlideSchema> & SlideExtras;
 
 // =============================================================================
 // Slide: Timeline
@@ -226,7 +272,7 @@ export const timelineSlideSchema = z.object({
     ),
 });
 
-export type TimelineSlide = z.infer<typeof timelineSlideSchema>;
+export type TimelineSlide = z.infer<typeof timelineSlideSchema> & SlideExtras;
 
 // =============================================================================
 // Slide: Cards
@@ -255,7 +301,7 @@ export const cardsSlideSchema = z.object({
   footnote: z.string().optional(),
 });
 
-export type CardsSlide = z.infer<typeof cardsSlideSchema>;
+export type CardsSlide = z.infer<typeof cardsSlideSchema> & SlideExtras;
 
 // =============================================================================
 // Slide: Two-Column
@@ -278,7 +324,7 @@ export const twoColumnSlideSchema = z.object({
   right: columnContentSchema,
 });
 
-export type TwoColumnSlide = z.infer<typeof twoColumnSlideSchema>;
+export type TwoColumnSlide = z.infer<typeof twoColumnSlideSchema> & SlideExtras;
 
 // =============================================================================
 // Slide: CTA (Call-to-Action)
@@ -309,7 +355,7 @@ export const ctaSlideSchema = z.object({
   qr: qrSchema.optional(),
 });
 
-export type CtaSlide = z.infer<typeof ctaSlideSchema>;
+export type CtaSlide = z.infer<typeof ctaSlideSchema> & SlideExtras;
 
 // =============================================================================
 // Slide: Prompt
@@ -334,7 +380,7 @@ export const promptSlideSchema = z.object({
   footnote: z.string().optional(),
 });
 
-export type PromptSlide = z.infer<typeof promptSlideSchema>;
+export type PromptSlide = z.infer<typeof promptSlideSchema> & SlideExtras;
 
 // =============================================================================
 // Discriminated union of all slide types
