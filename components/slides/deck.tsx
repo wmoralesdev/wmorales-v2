@@ -39,7 +39,7 @@ export function Deck({
   const { meta, slides } = presentation;
 
   const effectiveTheme = printMode
-    ? printThemeOverride ?? meta.theme
+    ? (printThemeOverride ?? meta.theme)
     : (resolvedTheme ?? meta.theme) === "dark"
       ? "dark"
       : "light";

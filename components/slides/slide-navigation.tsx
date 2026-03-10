@@ -154,9 +154,7 @@ export function SlideNavigation({
   }
 
   return (
-    <div
-      className="flex h-12 shrink-0 items-center justify-between gap-4 border-t border-border bg-background px-4"
-    >
+    <div className="flex h-12 shrink-0 items-center justify-between gap-4 border-t border-border bg-background px-4">
       <div className="flex items-center gap-2">
         <Button
           variant="outline"

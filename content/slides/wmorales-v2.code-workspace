@@ -1,12 +1,12 @@
 {
-	"folders": [
-		{
-			"path": "../.."
-		},
-		{
-			"path": "../../../Cursor"
-		}
-	],
+  "folders": [
+    {
+      "path": "../.."
+    },
+    {
+      "path": "../../../Cursor"
+    }
+  ],
   "settings": {
     "files.associations": {
       "*.mdoc": "markdown"
