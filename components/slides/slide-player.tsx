@@ -52,7 +52,7 @@ export function SlidePlayer({
           "relative flex min-h-0 flex-1 gap-6",
           isFullscreen
             ? "items-center justify-center bg-black"
-            : "items-center justify-center bg-muted/90 p-4 md:p-8",
+            : "items-center justify-center bg-muted/90 p-3 md:p-5 lg:p-6",
         )}
       >
         <div
@@ -60,7 +60,7 @@ export function SlidePlayer({
             "overflow-hidden",
             isFullscreen
               ? "flex h-full w-full items-center justify-center"
-              : "w-full max-w-5xl self-center rounded-lg shadow-lg",
+              : "w-full max-w-7xl self-center rounded-lg shadow-lg",
           )}
         >
           {isFullscreen ? (
