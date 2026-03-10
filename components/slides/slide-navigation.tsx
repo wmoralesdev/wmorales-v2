@@ -8,6 +8,7 @@ import {
   Printer,
 } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 import { useCallback, useEffect } from "react";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { Button } from "@/components/ui/button";
@@ -28,6 +29,11 @@ export function SlideNavigation({
   onToggleFullscreen,
 }: SlideNavigationProps) {
   const router = useRouter();
+  const { resolvedTheme } = useTheme();
+  const printHref =
+    resolvedTheme === "light" || resolvedTheme === "dark"
+      ? `/slides/${deckSlug}/print?theme=${resolvedTheme}`
+      : `/slides/${deckSlug}/print`;
 
   const goToSlide = useCallback(
     (index: number) => {
@@ -135,7 +141,7 @@ export function SlideNavigation({
                 <Minimize2 className="size-4" />
               </Button>
               <Button variant="outline" size="sm" asChild>
-                <a href={`/slides/${deckSlug}/print`} target="_blank" rel="noopener">
+                <a href={printHref} target="_blank" rel="noopener">
                   <Printer className="mr-2 size-4" />
                   Print
                 </a>
@@ -195,7 +201,7 @@ export function SlideNavigation({
         </Button>
 
         <Button variant="outline" size="sm" asChild>
-          <a href={`/slides/${deckSlug}/print`} target="_blank" rel="noopener">
+          <a href={printHref} target="_blank" rel="noopener">
             <Printer className="mr-2 size-4" />
             Print
           </a>

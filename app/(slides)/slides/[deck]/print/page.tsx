@@ -7,6 +7,7 @@ export const dynamicParams = false;
 
 interface PageProps {
   params: Promise<{ deck: string }>;
+  searchParams: Promise<{ theme?: string }>;
 }
 
 export async function generateStaticParams() {
@@ -21,9 +22,15 @@ export async function generateStaticParams() {
  * The page has no navigation or chrome - just slides.
  * CSS handles page breaks between slides.
  */
-export default async function DeckPrintPage({ params }: PageProps) {
-  const { deck: deckSlug } = await params;
-  const locale = await getLocale();
+export default async function DeckPrintPage({
+  params,
+  searchParams,
+}: PageProps) {
+  const [{ deck: deckSlug }, { theme }, locale] = await Promise.all([
+    params,
+    searchParams,
+    getLocale(),
+  ]);
   const result = loadDeck(deckSlug, locale);
 
   if (!result.success) {
@@ -31,6 +38,8 @@ export default async function DeckPrintPage({ params }: PageProps) {
   }
 
   const { presentation } = result;
+  const printThemeOverride =
+    theme === "light" || theme === "dark" ? theme : undefined;
 
   return (
     <>
@@ -71,7 +80,11 @@ export default async function DeckPrintPage({ params }: PageProps) {
       />
 
       <div className="print-slides">
-        <Deck presentation={presentation} printMode />
+        <Deck
+          presentation={presentation}
+          printMode
+          printThemeOverride={printThemeOverride}
+        />
       </div>
     </>
   );
