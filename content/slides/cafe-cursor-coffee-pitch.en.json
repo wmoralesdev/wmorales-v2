@@ -8,15 +8,15 @@
     "date": "2026-03-05",
     "seo": {
       "title": "Cafe Cursor para Coffee Shops | Walter Morales",
-      "description": "Propuesta para coffee shops: qué es Cafe Cursor, por qué funciona y cómo se vería una alianza.",
+      "description": "Propuesta para coffee shops: cómo funciona Cafe Cursor, qué requiere del venue y por qué vale la pena recibirlo.",
       "image": "https://wmorales.dev/og-image.png"
     }
   },
   "slides": [
     {
       "type": "cover",
-      "headline": "Cafe Cursor\npara Coffee Shops",
-      "subline": "Una comunidad que trabaja, conecta y vuelve",
+      "headline": "Cafe Cursor\npara tu Coffee Shop",
+      "subline": "Una tarde de café, coworking y comunidad sin complicar tu operación",
       "author": {
         "name": "Walter Morales",
         "title": "Cursor Ambassador · El Salvador"
@@ -38,23 +38,24 @@
     },
     {
       "type": "profile",
-      "headline": "¿Quién impulsa Cafe Cursor?",
+      "headline": "¿Quién organiza\nCafe Cursor?",
       "subtitle": "Walter Morales · Founder de Ai /abs · Cursor Ambassador",
-      "bio": "Cafe Cursor es impulsado por Walter Morales, Founder de Ai /abs y Cursor Ambassador en El Salvador, con 6+ años creando software, comunidad y espacios donde la gente correcta se encuentra.",
+      "bio": "Walter Morales lidera Cafe Cursor y coordina cada edición de punta a punta: venue, convocatoria, registro, check-in y operación.",
       "credentials": [
         {
           "category": "Experiencia",
           "items": [
             "6+ años en desarrollo",
             "SOUTHWORKS (AWS/Microsoft)",
-            ".NET, React, Cloud"
+            "Producto, comunidad y eventos tech"
           ]
         },
         {
           "category": "Comunidad",
           "items": [
             "550+ miembros en Cursor SV",
-            "Eventos mensuales presenciales",
+            "3 ediciones de Cafe Cursor",
+            "300+ asistentes acumulados",
             "Base en SV, expansión en GT"
           ]
         }
@@ -76,206 +77,163 @@
       ]
     },
     {
-      "type": "cards",
-      "headline": "¿Quiénes llegan\ny por qué importa?",
-      "cards": [
-        {
-          "title": "Programadores",
-          "subtitle": "Builders técnicos",
-          "description": "Llegan a trabajar, compartir ideas y conocer gente con intereses similares."
-        },
-        {
-          "title": "Diseñadores",
-          "subtitle": "Producto y UX",
-          "description": "Aportan visión visual y de producto a conversaciones que no se quedan solo en código."
-        },
-        {
-          "title": "Marketing",
-          "subtitle": "Growth y marca",
-          "description": "Suman contexto real de audiencias, posicionamiento y distribución."
-        },
-        {
-          "title": "Founders",
-          "subtitle": "Conector natural",
-          "description": "La mezcla de perfiles hace que el networking sea parte central del valor."
-        }
+      "type": "statement",
+      "headline": "¿Qué es Cafe Cursor\npara el venue?",
+      "items": [
+        "Un meetup de coworking para gente tech, creativa y remote workers",
+        "Usa parte del venue o más mesas según capacidad y registros",
+        "La gente llega a trabajar, tomar café y quedarse de 2 a 3 horas",
+        "El local sigue abierto para sus clientes regulares"
       ],
-      "footnote": "No es solo coworking: es una mesa compartida entre perfiles que se complementan."
-    },
-    {
-      "type": "timeline",
-      "headline": "La comunidad que hemos\nconstruido",
-      "events": [
-        {
-          "title": "6 eventos en 2025",
-          "description": "Meetups, cafés y workshops presenciales en San Salvador.",
-          "metric": "450+ asistentes"
-        },
-        {
-          "title": "Comunidad activa",
-          "description": "Perfiles distintos que llegan, conectan y regresan.",
-          "metric": "550+ miembros"
-        },
-        {
-          "title": "Alcance centroamericano",
-          "description": "En SV: UCA, UES y UFG. En GT: Tec y UVG.",
-          "metric": "SV + GT"
-        },
-        {
-          "title": "Hackathon 2026",
-          "description": "Evento regional de builders ya en planificación.",
-          "metric": "2026"
-        }
-      ],
-      "visibleResources": [
-        {
-          "label": "Cursor Community",
-          "url": "https://cursor.com/community"
-        },
-        {
-          "label": "Comunidad en WhatsApp",
-          "url": "https://chat.whatsapp.com/Ga8mG1fqDM9C0ryxAw1eIj",
-          "kind": "community"
-        }
-      ]
+      "footnote": "No es conferencia. No es takeover. Es comunidad usando bien tu espacio."
     },
     {
       "type": "statement",
-      "headline": "¿Qué es Cafe Cursor?",
+      "headline": "¿Cómo se ve\nen la práctica?",
       "items": [
-        "Una tarde para trabajar, conocer gente afín y compartir ideas",
-        "Charlas cortas y demos prácticas cada hora",
-        "Networking natural entre perfiles técnicos y creativos",
-        "Formato flexible: evento completo, media jornada o solo pasar"
+        "Usualmente corre en fin de semana, desde las 2 PM",
+        "También puede adaptarse a weekdays si hace más sentido",
+        "Dura entre 4 y 6 horas y funciona mejor con 35 personas a la vez",
+        "Power access suma, pero es un plus, no un requisito"
       ],
-      "footnote": "La mezcla de asistentes hace que las conversaciones también sean parte del valor."
+      "footnote": "Coworking first, con networking natural y formato flexible."
     },
     {
       "type": "timeline",
-      "headline": "Resultados de las\nediciones anteriores",
+      "headline": "¿Qué hacemos antes\ndel evento?",
       "events": [
         {
-          "title": "108 asistentes",
-          "description": "Charlas por hora, demos en vivo y mesas de trabajo colaborativo.",
-          "metric": "1ª edición"
+          "title": "Anunciamos Luma",
+          "description": "Abrimos la página del evento y los registros con cupo limitado.",
+          "metric": "Lanzamiento"
         },
         {
-          "title": "114 asistentes",
-          "description": "Mentorías personalizadas, speakers invitados y rifas.",
-          "metric": "2ª edición"
+          "title": "Alineamos el venue",
+          "description": "Con la demanda más clara, definimos venue, espacio, horario y menú.",
+          "metric": "Alineación"
         },
         {
-          "title": "93 asistentes",
-          "description": "Enfoque en desarrollo móvil, pitches cortos y networking.",
-          "metric": "3ª edición"
-        },
-        {
-          "title": "45 registrados",
-          "description": "La próxima fecha ya genera interés, incluso sin venue confirmado.",
-          "metric": "Próxima"
-        }
-      ],
-      "visibleResources": [
-        {
-          "label": "Próximo evento en Luma",
-          "url": "https://luma.com/kclz7ga6",
-          "kind": "event"
-        },
-        {
-          "label": "Álbum 3ª edición",
-          "url": "https://photos.app.goo.gl/X4gF3SAVKAG665gb9",
-          "kind": "photos"
-        },
-        {
-          "label": "Álbum 2ª edición",
-          "url": "https://photos.app.goo.gl/AFHgh6CAZzCq6jm79",
-          "kind": "photos"
-        },
-        {
-          "label": "Álbum 1ª edición",
-          "url": "https://photos.app.goo.gl/WHd8v7hVQ9vBGTvFA",
-          "kind": "photos"
+          "title": "Movemos invitaciones",
+          "description": "Hacemos posts, invitaciones y recordatorios para empujar asistencia.",
+          "metric": "Difusión"
         }
       ]
     },
     {
-      "type": "cards",
-      "headline": "¿Qué vive la gente\nen Cafe Cursor?",
-      "cards": [
+      "type": "timeline",
+      "headline": "¿Qué pasa durante\nla edición?",
+      "events": [
         {
-          "title": "Trabajo real",
-          "subtitle": "2-6 horas",
-          "description": "Llegan con laptop, avanzan en sus proyectos y consumen café mientras trabajan."
+          "title": "Check-in",
+          "description": "Recibimos a la gente, validamos su acceso y la acomodamos por zonas.",
+          "metric": "Inicio"
         },
         {
-          "title": "Networking útil",
-          "subtitle": "Entre sesiones",
-          "description": "Conocen personas con otros perfiles y de ahí salen ideas, colaboraciones y referidos."
+          "title": "Asistencia real",
+          "description": "Una edición suele pasar de 75 asistentes, con hasta 50 al mismo tiempo.",
+          "metric": "75+ total"
         },
         {
-          "title": "Mentoría",
-          "subtitle": "1:1 y grupal",
-          "description": "Expertos ayudan a resolver dudas técnicas y desbloquear proyectos."
+          "title": "Flujo y permanencia",
+          "description": "La mayoría llega puntual, otros se suman después y se quedan 2 a 3 horas.",
+          "metric": "2-3 horas"
         },
         {
-          "title": "Ambiente correcto",
-          "subtitle": "Curado",
-          "description": "La gente llega a trabajar, conversar y cuidar el espacio. Eso cambia la calidad del evento."
+          "title": "Si se llena",
+          "description": "Movemos el flujo a entrada o área exterior mientras se liberan mesas.",
+          "metric": "Operación normal"
         }
       ]
     },
     {
       "type": "two-column",
-      "headline": "¿Por qué le conviene\na tu coffee shop?",
+      "headline": "¿Qué puede pedir\nla gente?",
       "left": {
-        "title": "Lo que gana tu negocio",
+        "title": "Lo que incluimos",
         "items": [
-          "Atrae personas que llegan a trabajar, conversar y consumir",
-          "Asocia tu marca con innovación y comunidad local",
-          "Puede repetirse mensual o en ediciones especiales",
-          "Se adapta a tu capacidad, horario y estilo"
+          "Definimos antes del evento qué consumo queda cubierto",
+          "Si esperamos mucha gente, podemos dejarlo solo en café",
+          "Si esperamos menos gente, puede incluir café y postre pequeño"
         ]
       },
       "right": {
-        "title": "Cómo cuidamos la operación",
+        "title": "Cómo se controla",
         "items": [
-          "Registro con aprobación para controlar aforo",
-          "Bloques por horario: completo, media jornada o solo pasar",
-          "Agenda clara: trabajo, charlas y networking",
-          "Coordinación previa con tu equipo"
+          "El staff recibe una instrucción clara del consumo incluido",
+          "Cada asistente usa ticket para pedir lo cubierto por el evento",
+          "Si alguien quiere extra, lo paga por su cuenta"
         ]
       }
     },
     {
-      "type": "cards",
-      "headline": "¿Cómo trabajaríamos\njuntos?",
-      "cards": [
-        {
-          "title": "Piloto",
-          "subtitle": "3-4 horas",
-          "description": "Una primera edición para validar aforo, dinámica y respuesta de la gente."
-        },
-        {
-          "title": "Recurrente",
-          "subtitle": "Mensual",
-          "description": "Si funciona, se convierte en una cita fija con identidad compartida."
-        },
-        {
-          "title": "Ediciones especiales",
-          "subtitle": "Con invitados",
-          "description": "Sumamos speakers, patrocinadores o temas como móvil, IA o talleres."
-        }
-      ],
-      "footnote": "Formato probado en 3 ediciones con más de 300 asistentes."
+      "type": "statement",
+      "headline": "¿Cómo cuidamos\nel presupuesto?",
+      "items": [
+        "El presupuesto se define por edición según producto y capacidad",
+        "Ejemplo: $600 pueden acercarse a 120 cafés",
+        "Ese mismo presupuesto puede cubrir unas 60 órdenes de café y postre",
+        "Todo se paga en una sola cuenta acumulada al final del evento"
+      ]
+    },
+    {
+      "type": "two-column",
+      "headline": "¿Qué hace cada parte?",
+      "left": {
+        "title": "El coffee shop",
+        "items": [
+          "Comparte el espacio disponible y mantiene su operación normal",
+          "Atiende pedidos y prepara el menú acordado",
+          "Trabaja con su staff habitual; normalmente eso es suficiente"
+        ]
+      },
+      "right": {
+        "title": "La organización",
+        "items": [
+          "Maneja Luma, cupos, promoción y recordatorios",
+          "Hace check-in, crowd control y coordinación en sitio",
+          "Alinea consumo, tickets, horario y operación con el venue"
+        ]
+      }
+    },
+    {
+      "type": "two-column",
+      "headline": "¿Por qué le conviene\na tu coffee shop?",
+      "left": {
+        "title": "Valor para el negocio",
+        "items": [
+          "Deja una cuenta pagada y consumo real durante la edición",
+          "Expone tu marca a gente tech y remote workers que aman los cafés",
+          "Parte de esa audiencia puede volver por su cuenta después",
+          "Puede empezar como piloto y repetirse si funciona"
+        ]
+      },
+      "right": {
+        "title": "Operación simple",
+        "items": [
+          "No requiere cerrar el local",
+          "No exige tarima, sonido ni producción especial",
+          "La organización se encarga de todo menos del servicio",
+          "El equipo del café sigue enfocado en café y atención"
+        ]
+      }
+    },
+    {
+      "type": "statement",
+      "headline": "¿Cómo arrancaríamos?",
+      "items": [
+        "La mejor forma de probarlo es con una primera edición piloto",
+        "Usualmente corre en fin de semana, con flexibilidad para weekday",
+        "Si la operación fluye bien, se puede repetir con más claridad"
+      ]
     },
     {
       "type": "cta",
-      "headline": "Hagamos una edición piloto",
+      "headline": "Conversemos un piloto",
       "steps": [
-        "Platicamos 15 minutos para conocer tu espacio",
-        "Definimos fecha, horario y capacidad juntos",
-        "Publicamos el registro y coordinamos la operación",
-        "Medimos resultados para decidir si repetimos"
+        "Conocemos el espacio y vemos si hace fit con el formato",
+        "Definimos fecha, horario y consumo incluido",
+        "Nosotros nos encargamos del registro y la coordinación",
+        "Corremos el piloto y evaluamos si vale la pena repetir"
       ],
       "contact": {
         "name": "Walter Morales",
