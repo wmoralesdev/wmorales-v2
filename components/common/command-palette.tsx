@@ -1,5 +1,6 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { FileText, Home, Presentation } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
