@@ -1,3 +1,5 @@
+import path from "node:path";
+import withStylexTurbopack from "@stylexswc/nextjs-plugin/turbopack";
 import type { NextConfig } from "next";
 import createNextIntlPlugin from "next-intl/plugin";
 
@@ -46,4 +48,16 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default withNextIntl(nextConfig);
+const stylexOptions = {
+  rsOptions: {
+    dev: process.env.NODE_ENV !== "production",
+    aliases: {
+      "@/*": [path.join(process.cwd(), "*")],
+    },
+    unstable_moduleResolution: {
+      type: "commonJS" as const,
+    },
+  },
+};
+
+export default withStylexTurbopack(stylexOptions)(withNextIntl(nextConfig));

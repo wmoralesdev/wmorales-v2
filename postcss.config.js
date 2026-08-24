@@ -1,20 +1,23 @@
-const babelConfig = require("./babel.config");
+const path = require("node:path");
 
 module.exports = {
   plugins: {
-    "@stylexjs/postcss-plugin": {
+    "@stylexswc/postcss-plugin": {
       include: [
         "app/**/*.{js,jsx,ts,tsx}",
         "components/**/*.{js,jsx,ts,tsx}",
         "lib/**/*.{js,jsx,ts,tsx}",
         "hooks/**/*.{js,jsx,ts,tsx}",
       ],
-      babelConfig: {
-        babelrc: false,
-        parserOpts: { plugins: ["typescript", "jsx"] },
-        plugins: babelConfig.plugins,
+      rsOptions: {
+        aliases: {
+          "@/*": [path.join(__dirname, "*")],
+        },
+        unstable_moduleResolution: {
+          type: "commonJS",
+        },
+        dev: process.env.NODE_ENV === "development",
       },
-      useCSSLayers: true,
     },
     autoprefixer: {},
   },
