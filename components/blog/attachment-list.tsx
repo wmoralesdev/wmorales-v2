@@ -1,10 +1,75 @@
+import * as stylex from "@stylexjs/stylex";
 import Link from "next/link";
 import { FaFile, FaFilePdf, FaFilePowerpoint, FaGithub } from "react-icons/fa6";
 import type { PostAttachment } from "@/lib/blog";
+import { colors, fonts, radii } from "@/lib/stylex/tokens.stylex";
 
 type AttachmentListProps = {
   attachments: PostAttachment[];
 };
+
+const styles = stylex.create({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.75rem",
+    borderTopWidth: 1,
+    borderTopStyle: "solid",
+    borderTopColor: `color-mix(in oklch, ${colors.border}, transparent 40%)`,
+    paddingTop: "2rem",
+  },
+  heading: {
+    fontFamily: fonts.display,
+    fontWeight: 500,
+    fontSize: "0.875rem",
+    color: colors.foreground,
+    textWrap: "balance",
+  },
+  list: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.5rem",
+  },
+  link: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.75rem",
+    borderRadius: radii.md,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: `color-mix(in oklch, ${colors.border}, transparent 50%)`,
+    backgroundColor: `color-mix(in oklch, ${colors.muted}, transparent 70%)`,
+    padding: "0.75rem",
+    transitionProperty: "color, background-color, border-color",
+    transitionDuration: "150ms",
+    ":hover": {
+      borderColor: `color-mix(in oklch, ${colors.accent}, transparent 50%)`,
+      backgroundColor: `color-mix(in oklch, ${colors.muted}, transparent 50%)`,
+    },
+  },
+  icon: {
+    width: "1.25rem",
+    height: "1.25rem",
+    flexShrink: 0,
+    color: colors.accent,
+  },
+  text: {
+    minWidth: 0,
+    flex: 1,
+  },
+  title: {
+    fontWeight: 500,
+    color: colors.foreground,
+    ":hover": {
+      color: colors.accent,
+    },
+  },
+  label: {
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    color: colors.mutedForeground,
+  },
+});
 
 function getAttachmentIcon(type?: string) {
   switch (type) {
@@ -38,11 +103,9 @@ export function AttachmentList({ attachments }: AttachmentListProps) {
   }
 
   return (
-    <div className="space-y-3 border-border/60 border-t pt-8">
-      <h3 className="font-display font-medium text-foreground text-sm text-balance">
-        Attachments
-      </h3>
-      <ul className="space-y-2">
+    <div {...stylex.props(styles.root)}>
+      <h3 {...stylex.props(styles.heading)}>Attachments</h3>
+      <ul {...stylex.props(styles.list)}>
         {attachments.map((attachment) => {
           const Icon = getAttachmentIcon(attachment.type);
           const label = getAttachmentLabel(attachment.type);
@@ -51,20 +114,16 @@ export function AttachmentList({ attachments }: AttachmentListProps) {
             <li key={attachment.url}>
               <Link
                 aria-label={`Open ${attachment.title} (${label})`}
-                className="group flex items-center gap-3 rounded-md border border-border/50 bg-muted/30 p-3 transition-colors hover:border-accent/50 hover:bg-muted/50"
                 href={attachment.url}
                 rel="noopener noreferrer"
                 target="_blank"
+                {...stylex.props(styles.link)}
               >
-                <Icon className="size-5 shrink-0 text-accent" />
-                <div className="min-w-0 flex-1">
-                  <div className="font-medium text-foreground group-hover:text-accent">
-                    {attachment.title}
-                  </div>
+                <Icon {...stylex.props(styles.icon)} />
+                <div {...stylex.props(styles.text)}>
+                  <div {...stylex.props(styles.title)}>{attachment.title}</div>
                   {attachment.type && (
-                    <div className="font-mono text-xs text-muted-foreground">
-                      {label}
-                    </div>
+                    <div {...stylex.props(styles.label)}>{label}</div>
                   )}
                 </div>
               </Link>

@@ -1,16 +1,81 @@
+import * as stylex from "@stylexjs/stylex";
 import Image from "next/image";
 import type { ProfileSlide } from "@/lib/slides/schema";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 import { SlideBrandMarks } from "../slide-brand-marks";
 import { SlideChipList } from "../slide-chip-list";
 import { SlideCredentials } from "../slide-credentials";
 import { SlideCanvas, SlideFrame } from "../slide-frame";
-import { SlideVisibleResources } from "../slide-visible-resources";
 import { SlideBody, SlideHeadline, SlideSubline } from "../slide-typography";
+import { SlideVisibleResources } from "../slide-visible-resources";
 
 interface ProfileSlideViewProps {
   slide: ProfileSlide;
   printMode?: boolean;
 }
+
+const styles = stylex.create({
+  row: {
+    display: "flex",
+    gap: "1.25rem",
+    "@media (min-width: 768px)": {
+      gap: "2rem",
+    },
+  },
+  imageWrap: {
+    position: "relative",
+    aspectRatio: "1 / 1",
+    width: "6rem",
+    flexShrink: 0,
+    overflow: "hidden",
+    borderRadius: radii.xl,
+    boxShadow: `0 0 0 2px ${colors.background}, 0 0 0 4px color-mix(in oklch, ${colors.accent}, transparent 70%)`,
+    "@media (min-width: 768px)": {
+      width: "7rem",
+    },
+    "@media (min-width: 1024px)": {
+      width: "9rem",
+    },
+  },
+  image: {
+    objectFit: "cover",
+  },
+  content: {
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+    gap: "1rem",
+  },
+  header: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.375rem",
+  },
+  headline: {
+    fontSize: "1.5rem",
+    "@media (min-width: 768px)": {
+      fontSize: "1.875rem",
+    },
+    "@media (min-width: 1024px)": {
+      fontSize: "2.25rem",
+    },
+  },
+  subline: {
+    fontSize: "1rem",
+    "@media (min-width: 768px)": {
+      fontSize: "1.125rem",
+    },
+  },
+  body: {
+    fontSize: "0.875rem",
+    "@media (min-width: 768px)": {
+      fontSize: "1rem",
+    },
+  },
+  credentials: {
+    gap: "1rem",
+  },
+});
 
 /**
  * ProfileSlideView renders a personal/bio slide with credentials.
@@ -22,28 +87,27 @@ export function ProfileSlideView({
   return (
     <SlideFrame printMode={printMode}>
       <SlideCanvas>
-        <div className="flex gap-5 md:gap-8">
-          {/* Image (if present) */}
+        <div {...stylex.props(styles.row)}>
           {slide.image && (
-            <div className="relative aspect-square w-24 shrink-0 overflow-hidden rounded-xl ring-2 ring-accent/30 ring-offset-2 ring-offset-background md:w-28 lg:w-36">
+            <div {...stylex.props(styles.imageWrap)}>
               <Image
                 src={slide.image}
                 alt={slide.headline}
                 fill
                 sizes="(max-width: 768px) 6rem, (max-width: 1024px) 7rem, 9rem"
-                className="object-cover"
+                {...stylex.props(styles.image)}
               />
             </div>
           )}
 
-          {/* Content */}
-          <div className="flex flex-1 flex-col space-y-4">
-            {/* Header */}
-            <div className="space-y-1.5">
-              <SlideHeadline className="text-2xl md:text-3xl lg:text-4xl">
+          <div {...stylex.props(styles.content)}>
+            <div {...stylex.props(styles.header)}>
+              <SlideHeadline
+                className={stylex.props(styles.headline).className}
+              >
                 {slide.headline}
               </SlideHeadline>
-              <SlideSubline className="text-base md:text-lg">
+              <SlideSubline className={stylex.props(styles.subline).className}>
                 {slide.subtitle}
               </SlideSubline>
             </div>
@@ -52,18 +116,18 @@ export function ProfileSlideView({
               <SlideChipList chips={slide.chips} />
             )}
 
-            {/* Bio */}
-            <SlideBody className="text-sm md:text-base">{slide.bio}</SlideBody>
+            <SlideBody className={stylex.props(styles.body).className}>
+              {slide.bio}
+            </SlideBody>
 
             {slide.brandMarks && slide.brandMarks.length > 0 && (
               <SlideBrandMarks marks={slide.brandMarks} compact />
             )}
 
-            {/* Credentials */}
             {slide.credentials.length > 0 && (
               <SlideCredentials
                 credentials={slide.credentials}
-                className="gap-4"
+                className={stylex.props(styles.credentials).className}
               />
             )}
 

@@ -1,48 +1,130 @@
 "use client";
 
 import * as TogglePrimitive from "@radix-ui/react-toggle";
-import { cva, type VariantProps } from "class-variance-authority";
+import * as stylex from "@stylexjs/stylex";
 import type * as React from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
-
-const toggleVariants = cva(
-  // biome-ignore lint/nursery/useSortedClasses: breaks the build
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium text-sm outline-none transition-[color,box-shadow] [&_svg:not([class*= hover:bg-muted hover:text-muted-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[state=on]:bg-accent data-[state=on]:text-accent-foreground dark:aria-invalid:ring-destructive/40'size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-  {
-    variants: {
-      variant: {
-        default: "bg-transparent",
-        outline:
-          "border border-input bg-transparent shadow-xs hover:bg-accent hover:text-accent-foreground",
-      },
-      size: {
-        default: "h-9 min-w-9 px-2",
-        sm: "h-8 min-w-8 px-1.5",
-        lg: "h-10 min-w-10 px-2.5",
-      },
+const styles = stylex.create({
+  base: {
+    display: "inline-flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "0.5rem",
+    whiteSpace: "nowrap",
+    borderRadius: radii.md,
+    fontWeight: 500,
+    fontSize: "0.875rem",
+    outline: "none",
+    transitionProperty: "color, box-shadow, background-color, border-color",
+    transitionDuration: "150ms",
+    cursor: "pointer",
+    borderWidth: 0,
+    ":hover": {
+      backgroundColor: colors.muted,
+      color: colors.mutedForeground,
     },
-    defaultVariants: {
-      variant: "default",
-      size: "default",
+    ":focus-visible": {
+      borderColor: colors.ring,
+      boxShadow: `0 0 0 3px color-mix(in oklch, ${colors.ring}, transparent 50%)`,
+    },
+    ":disabled": {
+      pointerEvents: "none",
+      opacity: 0.5,
+    },
+    ":is([aria-invalid=true])": {
+      borderColor: colors.destructive,
+      boxShadow: `0 0 0 3px color-mix(in oklch, ${colors.destructive}, transparent 80%)`,
+    },
+    ":is([data-state=on])": {
+      backgroundColor: colors.accent,
+      color: colors.accentForeground,
     },
   },
-);
+  default: {
+    backgroundColor: "transparent",
+  },
+  outline: {
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.input,
+    backgroundColor: "transparent",
+    boxShadow: "0 1px 2px rgb(0 0 0 / 0.05)",
+    ":hover": {
+      backgroundColor: colors.accent,
+      color: colors.accentForeground,
+    },
+  },
+  sizeDefault: {
+    height: "2.25rem",
+    minWidth: "2.25rem",
+    paddingInline: "0.5rem",
+  },
+  sizeSm: {
+    height: "2rem",
+    minWidth: "2rem",
+    paddingInline: "0.375rem",
+  },
+  sizeLg: {
+    height: "2.5rem",
+    minWidth: "2.5rem",
+    paddingInline: "0.625rem",
+  },
+});
+
+export type ToggleVariant = "default" | "outline";
+export type ToggleSize = "default" | "sm" | "lg";
+
+const variantStyles = {
+  default: styles.default,
+  outline: styles.outline,
+} as const;
+
+const sizeStyles = {
+  default: styles.sizeDefault,
+  sm: styles.sizeSm,
+  lg: styles.sizeLg,
+} as const;
+
+export function toggleVariants({
+  variant = "default",
+  size = "default",
+  className,
+}: {
+  variant?: ToggleVariant;
+  size?: ToggleSize;
+  className?: string;
+} = {}) {
+  return (
+    mergeSx(
+      stylex.props(styles.base, variantStyles[variant], sizeStyles[size]),
+      className,
+    ).className ?? ""
+  );
+}
 
 function Toggle({
   className,
-  variant,
-  size,
+  variant = "default",
+  size = "default",
+  style,
   ...props
-}: React.ComponentProps<typeof TogglePrimitive.Root> &
-  VariantProps<typeof toggleVariants>) {
+}: React.ComponentProps<typeof TogglePrimitive.Root> & {
+  variant?: ToggleVariant;
+  size?: ToggleSize;
+}) {
   return (
     <TogglePrimitive.Root
-      className={cn(toggleVariants({ variant, size, className }))}
       data-slot="toggle"
+      {...mergeSx(
+        stylex.props(styles.base, variantStyles[variant], sizeStyles[size]),
+        className,
+        style,
+      )}
       {...props}
     />
   );
 }
 
-export { Toggle, toggleVariants };
+export { Toggle };

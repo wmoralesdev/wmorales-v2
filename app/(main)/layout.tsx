@@ -1,4 +1,22 @@
+import * as stylex from "@stylexjs/stylex";
 import { MinimalHeader } from "@/components/landing/minimal-header";
+
+const styles = stylex.create({
+  shell: {
+    marginInline: "auto",
+    maxWidth: "42rem",
+    paddingInline: "1.5rem",
+    paddingBlock: "4rem",
+    "@media (min-width: 768px)": {
+      paddingBlock: "6rem",
+    },
+  },
+  stack: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "3rem",
+  },
+});
 
 export default function MainLayout({
   children,
@@ -6,8 +24,8 @@ export default function MainLayout({
   children: React.ReactNode;
 }) {
   return (
-    <div className="mx-auto max-w-2xl px-6 py-16 md:py-24">
-      <div className="space-y-12">
+    <div {...stylex.props(styles.shell)}>
+      <div {...stylex.props(styles.stack)}>
         <MinimalHeader />
         {children}
       </div>

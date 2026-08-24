@@ -1,4 +1,83 @@
+import * as stylex from "@stylexjs/stylex";
 import { getTranslations } from "next-intl/server";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, fonts } from "@/lib/stylex/tokens.stylex";
+
+const styles = stylex.create({
+  section: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1.25rem",
+  },
+  title: {
+    fontFamily: fonts.mono,
+    fontWeight: 400,
+    fontSize: "0.75rem",
+    color: `color-mix(in oklch, ${colors.mutedForeground}, transparent 40%)`,
+    textTransform: "uppercase",
+  },
+  list: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  item: {
+    borderTopWidth: 1,
+    borderTopStyle: "solid",
+    borderTopColor: `color-mix(in oklch, ${colors.border}, transparent 40%)`,
+    paddingBlock: "1rem",
+    ":first-child": {
+      borderTopWidth: 0,
+      paddingTop: 0,
+    },
+  },
+  row: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.125rem",
+    "@media (min-width: 640px)": {
+      flexDirection: "row",
+      alignItems: "baseline",
+      justifyContent: "space-between",
+    },
+  },
+  company: {
+    fontFamily: fonts.display,
+    fontWeight: 500,
+    fontSize: "1rem",
+    color: colors.foreground,
+  },
+  currentDot: {
+    marginLeft: "0.5rem",
+    display: "inline-block",
+    width: "0.375rem",
+    height: "0.375rem",
+    borderRadius: "9999px",
+    backgroundColor: colors.accent,
+  },
+  period: {
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    color: `color-mix(in oklch, ${colors.mutedForeground}, transparent 50%)`,
+  },
+  role: {
+    marginTop: "0.125rem",
+    fontSize: "0.875rem",
+    color: colors.mutedForeground,
+    textWrap: "pretty",
+  },
+  description: {
+    marginTop: "0.375rem",
+    fontSize: "0.875rem",
+    color: `color-mix(in oklch, ${colors.mutedForeground}, transparent 20%)`,
+    textWrap: "pretty",
+  },
+  tech: {
+    marginTop: "0.375rem",
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    color: `color-mix(in oklch, ${colors.mutedForeground}, transparent 40%)`,
+  },
+});
 
 export async function MinimalExperiences() {
   const t = await getTranslations("homepage.experience");
@@ -12,36 +91,24 @@ export async function MinimalExperiences() {
   }>;
 
   return (
-    <section className="space-y-5">
-      <h2 className="font-mono font-normal text-xs text-muted-foreground/60 uppercase">
-        {t("title")}
-      </h2>
-      <div className="space-y-0 wm-stagger-1">
+    <section {...stylex.props(styles.section)}>
+      <h2 {...stylex.props(styles.title)}>{t("title")}</h2>
+      <div {...stylex.props(styles.list)}>
         {experiences.map((exp) => (
           <div
-            className="group wm-reveal border-border/60 border-t py-4 first:border-t-0 first:pt-0"
             key={`${exp.company}-${exp.role}-${exp.period}`}
+            {...mergeSx(stylex.props(styles.item), "wm-reveal")}
           >
-            <div className="flex flex-col gap-0.5 sm:flex-row sm:items-baseline sm:justify-between">
-              <h3 className="font-display font-medium text-base text-foreground">
+            <div {...stylex.props(styles.row)}>
+              <h3 {...stylex.props(styles.company)}>
                 {exp.company}
-                {exp.current && (
-                  <span className="ml-2 inline-block size-1.5 rounded-full bg-accent" />
-                )}
+                {exp.current && <span {...stylex.props(styles.currentDot)} />}
               </h3>
-              <span className="font-mono text-xs text-muted-foreground/50">
-                {exp.period}
-              </span>
+              <span {...stylex.props(styles.period)}>{exp.period}</span>
             </div>
-            <p className="mt-0.5 text-sm text-muted-foreground text-pretty">
-              {exp.role}
-            </p>
-            <p className="mt-1.5 text-sm text-muted-foreground/80 text-pretty">
-              {exp.description}
-            </p>
-            <p className="mt-1.5 font-mono text-xs text-muted-foreground/60">
-              {exp.tech}
-            </p>
+            <p {...stylex.props(styles.role)}>{exp.role}</p>
+            <p {...stylex.props(styles.description)}>{exp.description}</p>
+            <p {...stylex.props(styles.tech)}>{exp.tech}</p>
           </div>
         ))}
       </div>

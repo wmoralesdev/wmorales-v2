@@ -2,9 +2,80 @@
 "use client";
 
 import * as SliderPrimitive from "@radix-ui/react-slider";
+import * as stylex from "@stylexjs/stylex";
 import * as React from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
+const styles = stylex.create({
+  root: {
+    position: "relative",
+    display: "flex",
+    width: "100%",
+    touchAction: "none",
+    userSelect: "none",
+    alignItems: "center",
+    ":is([data-orientation=vertical])": {
+      height: "100%",
+      minHeight: "11rem",
+      width: "auto",
+      flexDirection: "column",
+    },
+    ":is([data-disabled])": {
+      opacity: 0.5,
+    },
+  },
+  track: {
+    position: "relative",
+    flexGrow: 1,
+    overflow: "hidden",
+    borderRadius: radii.full,
+    backgroundColor: colors.muted,
+    ":is([data-orientation=horizontal])": {
+      height: "0.375rem",
+      width: "100%",
+    },
+    ":is([data-orientation=vertical])": {
+      height: "100%",
+      width: "0.375rem",
+    },
+  },
+  range: {
+    position: "absolute",
+    backgroundColor: colors.primary,
+    ":is([data-orientation=horizontal])": {
+      height: "100%",
+    },
+    ":is([data-orientation=vertical])": {
+      width: "100%",
+    },
+  },
+  thumb: {
+    display: "block",
+    width: "1rem",
+    height: "1rem",
+    flexShrink: 0,
+    borderRadius: radii.full,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.primary,
+    backgroundColor: colors.background,
+    boxShadow: `0 0 0 0 color-mix(in oklch, ${colors.ring}, transparent 50%)`,
+    transitionProperty: "color, box-shadow",
+    transitionDuration: "150ms",
+    ":hover": {
+      boxShadow: `0 0 0 4px color-mix(in oklch, ${colors.ring}, transparent 50%)`,
+    },
+    ":focus-visible": {
+      outline: "none",
+      boxShadow: `0 0 0 4px color-mix(in oklch, ${colors.ring}, transparent 50%)`,
+    },
+    ":disabled": {
+      pointerEvents: "none",
+      opacity: 0.5,
+    },
+  },
+});
 
 function Slider({
   className,
@@ -12,6 +83,7 @@ function Slider({
   value,
   min = 0,
   max = 100,
+  style,
   ...props
 }: React.ComponentProps<typeof SliderPrimitive.Root>) {
   const _values = React.useMemo(() => {
@@ -26,36 +98,29 @@ function Slider({
 
   return (
     <SliderPrimitive.Root
-      className={cn(
-        "relative flex w-full touch-none select-none items-center data-[orientation=vertical]:h-full data-[orientation=vertical]:min-h-44 data-[orientation=vertical]:w-auto data-[orientation=vertical]:flex-col data-[disabled]:opacity-50",
-        className,
-      )}
       data-slot="slider"
       defaultValue={defaultValue}
       max={max}
       min={min}
       value={value}
+      {...mergeSx(stylex.props(styles.root), className, style)}
       {...props}
     >
       <SliderPrimitive.Track
-        className={cn(
-          "relative grow overflow-hidden rounded-full bg-muted data-[orientation=horizontal]:h-1.5 data-[orientation=vertical]:h-full data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-1.5",
-        )}
         data-slot="slider-track"
+        {...stylex.props(styles.track)}
       >
         <SliderPrimitive.Range
-          className={cn(
-            "absolute bg-primary data-[orientation=horizontal]:h-full data-[orientation=vertical]:w-full",
-          )}
           data-slot="slider-range"
+          {...stylex.props(styles.range)}
         />
       </SliderPrimitive.Track>
       {Array.from({ length: _values.length }, (_, index) => (
         <SliderPrimitive.Thumb
-          className="block size-4 shrink-0 rounded-full border border-primary bg-background shadow-sm ring-ring/50 transition-[color,box-shadow] hover:ring-4 focus-visible:outline-hidden focus-visible:ring-4 disabled:pointer-events-none disabled:opacity-50"
           data-slot="slider-thumb"
           // biome-ignore lint/suspicious/noArrayIndexKey: shadcn convention
           key={index}
+          {...stylex.props(styles.thumb)}
         />
       ))}
     </SliderPrimitive.Root>

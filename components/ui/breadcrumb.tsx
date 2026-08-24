@@ -1,31 +1,88 @@
 import { Slot } from "@radix-ui/react-slot";
+import * as stylex from "@stylexjs/stylex";
 import { ChevronRight, MoreHorizontal } from "lucide-react";
 import type * as React from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
+const styles = stylex.create({
+  list: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
+    gap: "0.375rem",
+    overflowWrap: "break-word",
+    color: colors.mutedForeground,
+    fontSize: "0.875rem",
+    "@media (min-width: 640px)": {
+      gap: "0.625rem",
+    },
+  },
+  item: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "0.375rem",
+  },
+  link: {
+    transitionProperty: "color",
+    transitionDuration: "150ms",
+    color: colors.mutedForeground,
+    ":hover": {
+      color: colors.foreground,
+    },
+  },
+  page: {
+    fontWeight: 400,
+    color: colors.foreground,
+  },
+  separator: {
+    display: "flex",
+    alignItems: "center",
+  },
+  separatorIcon: {
+    width: "0.875rem",
+    height: "0.875rem",
+  },
+  ellipsis: {
+    display: "flex",
+    width: "2.25rem",
+    height: "2.25rem",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  ellipsisIcon: {
+    width: "1rem",
+    height: "1rem",
+  },
+});
 
 function Breadcrumb({ ...props }: React.ComponentProps<"nav">) {
   return <nav aria-label="breadcrumb" data-slot="breadcrumb" {...props} />;
 }
 
-function BreadcrumbList({ className, ...props }: React.ComponentProps<"ol">) {
+function BreadcrumbList({
+  className,
+  style,
+  ...props
+}: React.ComponentProps<"ol">) {
   return (
     <ol
-      className={cn(
-        "flex flex-wrap items-center gap-1.5 break-words text-muted-foreground text-sm sm:gap-2.5",
-        className,
-      )}
       data-slot="breadcrumb-list"
+      {...mergeSx(stylex.props(styles.list), className, style)}
       {...props}
     />
   );
 }
 
-function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
+function BreadcrumbItem({
+  className,
+  style,
+  ...props
+}: React.ComponentProps<"li">) {
   return (
     <li
-      className={cn("inline-flex items-center gap-1.5", className)}
       data-slot="breadcrumb-item"
+      {...mergeSx(stylex.props(styles.item), className, style)}
       {...props}
     />
   );
@@ -34,6 +91,7 @@ function BreadcrumbItem({ className, ...props }: React.ComponentProps<"li">) {
 function BreadcrumbLink({
   asChild,
   className,
+  style,
   ...props
 }: React.ComponentProps<"a"> & {
   asChild?: boolean;
@@ -42,22 +100,26 @@ function BreadcrumbLink({
 
   return (
     <Comp
-      className={cn("transition-colors hover:text-foreground", className)}
       data-slot="breadcrumb-link"
+      {...mergeSx(stylex.props(styles.link), className, style)}
       {...props}
     />
   );
 }
 
-function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
+function BreadcrumbPage({
+  className,
+  style,
+  ...props
+}: React.ComponentProps<"span">) {
   return (
     // biome-ignore lint/a11y/useFocusableInteractive: shadcn convention
     <span
       aria-current="page"
       aria-disabled="true"
-      className={cn("font-normal text-foreground", className)}
       data-slot="breadcrumb-page"
       role="link"
+      {...mergeSx(stylex.props(styles.page), className, style)}
       {...props}
     />
   );
@@ -66,34 +128,36 @@ function BreadcrumbPage({ className, ...props }: React.ComponentProps<"span">) {
 function BreadcrumbSeparator({
   children,
   className,
+  style,
   ...props
 }: React.ComponentProps<"li">) {
   return (
     <li
       aria-hidden="true"
-      className={cn("[&>svg]:size-3.5", className)}
       data-slot="breadcrumb-separator"
       role="presentation"
+      {...mergeSx(stylex.props(styles.separator), className, style)}
       {...props}
     >
-      {children ?? <ChevronRight />}
+      {children ?? <ChevronRight {...stylex.props(styles.separatorIcon)} />}
     </li>
   );
 }
 
 function BreadcrumbEllipsis({
   className,
+  style,
   ...props
 }: React.ComponentProps<"span">) {
   return (
     <span
       aria-hidden="true"
-      className={cn("flex size-9 items-center justify-center", className)}
       data-slot="breadcrumb-ellipsis"
       role="presentation"
+      {...mergeSx(stylex.props(styles.ellipsis), className, style)}
       {...props}
     >
-      <MoreHorizontal className="size-4" />
+      <MoreHorizontal {...stylex.props(styles.ellipsisIcon)} />
       <span className="sr-only">More</span>
     </span>
   );

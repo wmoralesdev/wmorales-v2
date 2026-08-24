@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import type { StatementSlide } from "@/lib/slides/schema";
 import { SlideBreakdown } from "../slide-breakdown";
 import { SlideCanvas, SlideFrame } from "../slide-frame";
@@ -14,6 +15,12 @@ interface StatementSlideViewProps {
   printMode?: boolean;
 }
 
+const styles = stylex.create({
+  canvas: {
+    gap: "2rem",
+  },
+});
+
 /**
  * StatementSlideView renders a bold statement with optional supporting content.
  * Supports body text OR bullet items (mutually exclusive).
@@ -24,18 +31,15 @@ export function StatementSlideView({
 }: StatementSlideViewProps) {
   return (
     <SlideFrame printMode={printMode}>
-      <SlideCanvas className="space-y-8">
-        {/* Main headline */}
+      <SlideCanvas className={stylex.props(styles.canvas).className}>
         <SlideHeadline multiline>{slide.headline}</SlideHeadline>
 
-        {/* Supporting content: body OR items */}
         {slide.body && <SlideBody>{slide.body}</SlideBody>}
 
         {slide.items && slide.items.length > 0 && (
           <SlideList items={slide.items} />
         )}
 
-        {/* Breakdown stats */}
         {slide.breakdown && slide.breakdown.length > 0 && (
           <SlideBreakdown
             items={slide.breakdown}
@@ -43,10 +47,8 @@ export function StatementSlideView({
           />
         )}
 
-        {/* Pull quote */}
         {slide.quote && <SlideQuote>{slide.quote}</SlideQuote>}
 
-        {/* Footnote — only in print; extras panel shows it for screen readers */}
         {printMode && slide.footnote && (
           <SlideFootnote>{slide.footnote}</SlideFootnote>
         )}

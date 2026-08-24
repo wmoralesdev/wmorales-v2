@@ -1,9 +1,33 @@
 "use client";
 
 import * as PopoverPrimitive from "@radix-ui/react-popover";
+import * as stylex from "@stylexjs/stylex";
 import type * as React from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
+const styles = stylex.create({
+  content: {
+    zIndex: 50,
+    width: "18rem",
+    transformOrigin: "var(--radix-popover-content-transform-origin)",
+    borderRadius: radii.md,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.border,
+    backgroundColor: colors.popover,
+    padding: "1rem",
+    color: colors.popoverForeground,
+    boxShadow:
+      "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    outline: "none",
+    animationName: "fadeIn, zoomIn",
+    animationDuration: "150ms",
+    ":is([data-state=closed])": {
+      animationName: "fadeOut, zoomOut",
+    },
+  },
+});
 
 function Popover({
   ...props
@@ -21,18 +45,16 @@ function PopoverContent({
   className,
   align = "center",
   sideOffset = 4,
+  style,
   ...props
 }: React.ComponentProps<typeof PopoverPrimitive.Content>) {
   return (
     <PopoverPrimitive.Portal>
       <PopoverPrimitive.Content
         align={align}
-        className={cn(
-          "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-72 origin-(--radix-popover-content-transform-origin) rounded-md border bg-popover p-4 text-popover-foreground shadow-md outline-hidden data-[state=closed]:animate-out data-[state=open]:animate-in",
-          className,
-        )}
         data-slot="popover-content"
         sideOffset={sideOffset}
+        {...mergeSx(stylex.props(styles.content), className, style)}
         {...props}
       />
     </PopoverPrimitive.Portal>

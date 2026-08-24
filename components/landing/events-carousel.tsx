@@ -1,5 +1,6 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import {
   Children,
   type MouseEvent as ReactMouseEvent,
@@ -12,6 +13,73 @@ import {
   useState,
 } from "react";
 import { FiChevronLeft, FiChevronRight } from "react-icons/fi";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
+
+const styles = stylex.create({
+  root: {
+    position: "relative",
+  },
+  chevron: {
+    position: "absolute",
+    top: "50%",
+    zIndex: 20,
+    display: "flex",
+    width: "2rem",
+    height: "2rem",
+    transform: "translateY(-50%)",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: radii.full,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: `color-mix(in oklch, ${colors.border}, transparent 40%)`,
+    backgroundColor: `color-mix(in oklch, ${colors.background}, transparent 10%)`,
+    color: colors.mutedForeground,
+    backdropFilter: "blur(4px)",
+    transitionProperty: "border-color, color, opacity",
+    transitionDuration: "150ms",
+    cursor: "pointer",
+    ":hover": {
+      borderColor: `color-mix(in oklch, ${colors.accent}, transparent 50%)`,
+      color: colors.foreground,
+    },
+  },
+  chevronLeft: {
+    left: "-0.75rem",
+  },
+  chevronRight: {
+    right: "-0.75rem",
+  },
+  chevronEnabled: {
+    opacity: 1,
+  },
+  chevronDisabled: {
+    opacity: 0.5,
+  },
+  chevronIcon: {
+    width: "1rem",
+    height: "1rem",
+  },
+  scroller: {
+    position: "relative",
+    display: "flex",
+    gap: "1rem",
+    overflowX: "auto",
+    scrollBehavior: "smooth",
+    scrollSnapType: "x mandatory",
+    touchAction: "pan-x",
+    userSelect: "none",
+    cursor: "grab",
+    ":active": {
+      cursor: "grabbing",
+    },
+  },
+  item: {
+    scrollSnapAlign: "start",
+    flexShrink: 0,
+  },
+});
 
 export function EventsCarousel({ children }: { children: ReactNode }) {
   const rootRef = useRef<HTMLDivElement>(null);
@@ -19,14 +87,12 @@ export function EventsCarousel({ children }: { children: ReactNode }) {
   const [canScrollLeft, setCanScrollLeft] = useState(false);
   const [canScrollRight, setCanScrollRight] = useState(false);
 
-  // Autoplay pause state
   const [isHovered, setIsHovered] = useState(false);
   const [isFocusedWithin, setIsFocusedWithin] = useState(false);
   const [isPointerDown, setIsPointerDown] = useState(false);
   const [isDocumentVisible, setIsDocumentVisible] = useState(true);
   const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
 
-  // Drag-to-scroll (mouse) + click suppression
   const dragStateRef = useRef<{
     pointerId: number | null;
     startClientX: number;
@@ -114,7 +180,6 @@ export function EventsCarousel({ children }: { children: ReactNode }) {
     [getItems, getNearestIndex, scrollToIndex],
   );
 
-  // Reduced motion / visibility (autoplay safeguards)
   useEffect(() => {
     if (typeof window === "undefined") return;
 
@@ -122,7 +187,6 @@ export function EventsCarousel({ children }: { children: ReactNode }) {
     const set = () => setPrefersReducedMotion(mql.matches);
     set();
 
-    // Safari < 14 uses addListener/removeListener
     if (typeof mql.addEventListener === "function") {
       mql.addEventListener("change", set);
       return () => mql.removeEventListener("change", set);
@@ -136,12 +200,10 @@ export function EventsCarousel({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  // Keep arrow state in sync with layout/content changes.
   useEffect(() => {
     const el = scrollRef.current;
     if (!el) return;
 
-    // Run after layout (more than once to catch late layout).
     const raf1 = requestAnimationFrame(() => checkScroll());
     const raf2 = requestAnimationFrame(() => checkScroll());
     const t1 = window.setTimeout(() => checkScroll(), 0);
@@ -150,7 +212,6 @@ export function EventsCarousel({ children }: { children: ReactNode }) {
     const resizeObserver = new ResizeObserver(() => checkScroll());
     resizeObserver.observe(el);
 
-    // Also observe item wrappers (in case their widths change).
     const items = getItems();
     for (const item of items) resizeObserver.observe(item);
 
@@ -173,7 +234,6 @@ export function EventsCarousel({ children }: { children: ReactNode }) {
     return () => document.removeEventListener("visibilitychange", onVis);
   }, []);
 
-  // Autoplay: advance by one item, loop back to start
   const autoplayEnabled = useMemo(() => {
     if (itemsCount <= 1) return false;
     if (prefersReducedMotion) return false;
@@ -212,7 +272,6 @@ export function EventsCarousel({ children }: { children: ReactNode }) {
   }, []);
 
   const handleBlurCapture = useCallback(() => {
-    // Let focus settle before checking if we truly left the carousel.
     requestAnimationFrame(() => {
       const root = rootRef.current;
       if (!root) {
@@ -229,7 +288,6 @@ export function EventsCarousel({ children }: { children: ReactNode }) {
       setIsPointerDown(true);
 
       if (e.pointerType !== "mouse") {
-        // Touch already gets great swipe scrolling from the browser.
         return;
       }
 
@@ -304,60 +362,60 @@ export function EventsCarousel({ children }: { children: ReactNode }) {
   return (
     <section
       aria-label="Events carousel"
-      className="group/carousel relative"
       onBlurCapture={handleBlurCapture}
       onFocusCapture={handleFocusCapture}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       ref={rootRef}
+      {...stylex.props(styles.root)}
     >
-      {/* Left chevron */}
       <button
         aria-label="Scroll left"
         aria-disabled={!canScrollLeft}
-        className={`absolute -left-3 top-1/2 z-20 flex size-8 -translate-y-1/2 items-center justify-center rounded-full border border-border/60 bg-background/90 text-muted-foreground backdrop-blur-sm transition-all hover:border-accent/50 hover:text-foreground ${
-          canScrollLeft ? "opacity-100" : "opacity-50"
-        }`}
         onClick={() => scrollByOne("left")}
         type="button"
+        {...stylex.props(
+          styles.chevron,
+          styles.chevronLeft,
+          canScrollLeft ? styles.chevronEnabled : styles.chevronDisabled,
+        )}
       >
-        <FiChevronLeft className="size-4" />
+        <FiChevronLeft {...stylex.props(styles.chevronIcon)} />
       </button>
 
-      {/* Scrollable container */}
       <div
         ref={scrollRef}
-        className="relative flex gap-4 overflow-x-auto scroll-smooth scrollbar-none snap-x snap-mandatory touch-pan-x select-none cursor-grab active:cursor-grabbing"
         onClickCapture={handleClickCapture}
         onPointerCancel={endPointerDrag}
         onPointerDown={handlePointerDown}
         onPointerMove={handlePointerMove}
         onPointerUp={endPointerDrag}
         onScroll={scheduleCheckScroll}
+        {...mergeSx(stylex.props(styles.scroller), "scrollbar-none")}
       >
         {Children.toArray(children).map((child) => (
           <div
-            className="snap-start shrink-0"
             data-carousel-item=""
-            // Children.toArray preserves the original element keys.
             key={(child as { key?: string | null }).key ?? undefined}
+            {...stylex.props(styles.item)}
           >
             {child}
           </div>
         ))}
       </div>
 
-      {/* Right chevron */}
       <button
         aria-label="Scroll right"
         aria-disabled={!canScrollRight}
-        className={`absolute -right-3 top-1/2 z-20 flex size-8 -translate-y-1/2 items-center justify-center rounded-full border border-border/60 bg-background/90 text-muted-foreground backdrop-blur-sm transition-all hover:border-accent/50 hover:text-foreground ${
-          canScrollRight ? "opacity-100" : "opacity-50"
-        }`}
         onClick={() => scrollByOne("right")}
         type="button"
+        {...stylex.props(
+          styles.chevron,
+          styles.chevronRight,
+          canScrollRight ? styles.chevronEnabled : styles.chevronDisabled,
+        )}
       >
-        <FiChevronRight className="size-4" />
+        <FiChevronRight {...stylex.props(styles.chevronIcon)} />
       </button>
     </section>
   );

@@ -1,10 +1,30 @@
-import { cn } from "@/lib/utils";
+import * as stylex from "@stylexjs/stylex";
+import type * as React from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 
-function Skeleton({ className, ...props }: React.ComponentProps<"div">) {
+const pulse = stylex.keyframes({
+  "0%": { opacity: 1 },
+  "50%": { opacity: 0.5 },
+  "100%": { opacity: 1 },
+});
+
+const styles = stylex.create({
+  root: {
+    animationName: pulse,
+    animationDuration: "2s",
+    animationTimingFunction: "ease-in-out",
+    animationIterationCount: "infinite",
+    borderRadius: radii.md,
+    backgroundColor: colors.accent,
+  },
+});
+
+function Skeleton({ className, style, ...props }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("animate-pulse rounded-md bg-accent", className)}
       data-slot="skeleton"
+      {...mergeSx(stylex.props(styles.root), className, style)}
       {...props}
     />
   );

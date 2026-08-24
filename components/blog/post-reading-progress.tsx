@@ -1,6 +1,28 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { useEffect, useState } from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors } from "@/lib/stylex/tokens.stylex";
+
+const styles = stylex.create({
+  track: {
+    position: "fixed",
+    top: 0,
+    left: 0,
+    right: 0,
+    zIndex: 50,
+    height: "0.125rem",
+    backgroundColor: `color-mix(in oklch, ${colors.border}, transparent 70%)`,
+    paddingTop: "env(safe-area-inset-top)",
+  },
+  bar: {
+    height: "100%",
+    backgroundColor: colors.accent,
+    transitionProperty: "width",
+    transitionDuration: "150ms",
+  },
+});
 
 export function PostReadingProgress() {
   const [progress, setProgress] = useState(0);
@@ -40,11 +62,12 @@ export function PostReadingProgress() {
   }, []);
 
   return (
-    <div className="fixed top-0 left-0 right-0 z-50 h-0.5 bg-border/30 pt-safe">
+    <div {...stylex.props(styles.track)}>
       <div
         aria-hidden="true"
-        className="h-full bg-accent transition-all duration-150"
-        style={{ width: `${progress}%` }}
+        {...mergeSx(stylex.props(styles.bar), undefined, {
+          width: `${progress}%`,
+        })}
       />
     </div>
   );

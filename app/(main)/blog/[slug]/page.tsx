@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
@@ -15,6 +16,89 @@ import { ScrollToTop } from "@/components/common/scroll-to-top";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { formatDate, getAllPosts, getPostBySlug } from "@/lib/blog";
 import { createMetadata, siteConfig } from "@/lib/metadata";
+import { colors, fonts } from "@/lib/stylex/tokens.stylex";
+
+const styles = stylex.create({
+  article: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "2.5rem",
+  },
+  header: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  },
+  headerTop: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  backLink: {
+    display: "inline-block",
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    color: colors.accent,
+    transitionProperty: "color",
+    transitionDuration: "150ms",
+    ":hover": {
+      color: `color-mix(in oklch, ${colors.accent}, transparent 20%)`,
+    },
+  },
+  headerActions: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+  },
+  title: {
+    fontFamily: fonts.display,
+    fontWeight: 600,
+    fontSize: "1.875rem",
+    color: colors.foreground,
+    textWrap: "balance",
+    letterSpacing: "-0.025em",
+    "@media (min-width: 640px)": {
+      fontSize: "2.25rem",
+    },
+  },
+  meta: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
+    gap: "0.75rem",
+  },
+  time: {
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    fontVariantNumeric: "tabular-nums",
+    color: colors.mutedForeground,
+  },
+  readingTime: {
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    color: colors.mutedForeground,
+  },
+  divider: {
+    height: "0.75rem",
+    width: 1,
+    backgroundColor: colors.border,
+  },
+  tags: {
+    display: "flex",
+    gap: "0.5rem",
+  },
+  tag: {
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    color: `color-mix(in oklch, ${colors.accent}, transparent 30%)`,
+  },
+  footer: {
+    borderTopWidth: 1,
+    borderTopStyle: "solid",
+    borderTopColor: `color-mix(in oklch, ${colors.border}, transparent 40%)`,
+    paddingTop: "2rem",
+  },
+});
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -88,48 +172,38 @@ export default async function BlogPostPage({ params }: Props) {
       <PostReadingProgress />
       <ScrollToTop />
       <PostToc contentHtml={contentHtml} />
-      <article className="space-y-10" id="blog-post">
-        <header className="space-y-4">
-          <div className="flex items-center justify-between">
-            <Link
-              className="inline-block font-mono text-accent text-xs transition-colors hover:text-accent/80"
-              href="/blog"
-            >
+      <article id="blog-post" {...stylex.props(styles.article)}>
+        <header {...stylex.props(styles.header)}>
+          <div {...stylex.props(styles.headerTop)}>
+            <Link href="/blog" {...stylex.props(styles.backLink)}>
               {t("backToBlog")}
             </Link>
-            <div className="flex items-center gap-2">
+            <div {...stylex.props(styles.headerActions)}>
               <LanguageSwitcher />
               <ThemeToggle />
             </div>
           </div>
-          <h1 className="font-display font-semibold text-3xl text-foreground text-balance tracking-tight sm:text-4xl">
-            {post.meta.title}
-          </h1>
-          <div className="flex flex-wrap items-center gap-3">
-            <time className="font-mono text-muted-foreground text-xs tabular-nums">
+          <h1 {...stylex.props(styles.title)}>{post.meta.title}</h1>
+          <div {...stylex.props(styles.meta)}>
+            <time {...stylex.props(styles.time)}>
               {formatDate(post.meta.date, locale)}
             </time>
             {post.meta.readingTimeText && (
               <>
-                <span className="h-3 w-px bg-border" />
-                <span className="font-mono text-muted-foreground text-xs">
+                <span {...stylex.props(styles.divider)} />
+                <span {...stylex.props(styles.readingTime)}>
                   {post.meta.readingTimeText}
                 </span>
               </>
             )}
-            <>
-              <span className="h-3 w-px bg-border" />
-              <PostViewCount locale={locale} slug={post.meta.slug} />
-            </>
+            <span {...stylex.props(styles.divider)} />
+            <PostViewCount locale={locale} slug={post.meta.slug} />
             {post.meta.tags && post.meta.tags.length > 0 && (
               <>
-                <span className="h-3 w-px bg-border" />
-                <div className="flex gap-2">
+                <span {...stylex.props(styles.divider)} />
+                <div {...stylex.props(styles.tags)}>
                   {post.meta.tags.map((tag) => (
-                    <span
-                      className="font-mono text-accent/70 text-xs"
-                      key={tag}
-                    >
+                    <span key={tag} {...stylex.props(styles.tag)}>
                       #{tag}
                     </span>
                   ))}
@@ -153,11 +227,8 @@ export default async function BlogPostPage({ params }: Props) {
           <AttachmentList attachments={post.meta.attachments} />
         )}
 
-        <footer className="border-border/60 border-t pt-8">
-          <Link
-            className="inline-block font-mono text-accent text-xs transition-colors hover:text-accent/80"
-            href="/blog"
-          >
+        <footer {...stylex.props(styles.footer)}>
+          <Link href="/blog" {...stylex.props(styles.backLink)}>
             {t("backToBlogFooter")}
           </Link>
         </footer>

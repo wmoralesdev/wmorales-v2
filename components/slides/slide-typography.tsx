@@ -1,4 +1,6 @@
-import { cn } from "@/lib/utils";
+import * as stylex from "@stylexjs/stylex";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, fonts } from "@/lib/stylex/tokens.stylex";
 
 interface SlideHeadlineProps {
   children: React.ReactNode;
@@ -9,6 +11,70 @@ interface SlideHeadlineProps {
   multiline?: boolean;
 }
 
+const styles = stylex.create({
+  headline: {
+    fontFamily: fonts.display,
+    fontSize: "2.25rem",
+    fontWeight: 700,
+    letterSpacing: "-0.025em",
+    textWrap: "balance",
+    color: colors.foreground,
+    "@media (min-width: 768px)": {
+      fontSize: "3rem",
+    },
+    "@media (min-width: 1024px)": {
+      fontSize: "3.75rem",
+    },
+  },
+  subline: {
+    fontFamily: fonts.display,
+    fontSize: "1.25rem",
+    fontWeight: 500,
+    textWrap: "balance",
+    color: colors.mutedForeground,
+    "@media (min-width: 768px)": {
+      fontSize: "1.5rem",
+    },
+  },
+  body: {
+    fontSize: "1.125rem",
+    lineHeight: 1.625,
+    textWrap: "pretty",
+    color: colors.mutedForeground,
+    "@media (min-width: 768px)": {
+      fontSize: "1.25rem",
+    },
+  },
+  footnote: {
+    marginTop: "auto",
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    paddingTop: "1rem",
+    fontSize: "0.875rem",
+    color: `color-mix(in oklch, ${colors.mutedForeground}, transparent 30%)`,
+  },
+  footnoteDot: {
+    display: "inline-block",
+    width: "0.25rem",
+    height: "0.25rem",
+    borderRadius: "9999px",
+    backgroundColor: `color-mix(in oklch, ${colors.accent}, transparent 50%)`,
+  },
+  quote: {
+    borderLeftWidth: 4,
+    borderLeftStyle: "solid",
+    borderLeftColor: colors.accent,
+    paddingLeft: "1.5rem",
+    fontSize: "1.25rem",
+    fontStyle: "italic",
+    color: colors.mutedForeground,
+    "@media (min-width: 768px)": {
+      fontSize: "1.5rem",
+    },
+  },
+});
+
 /**
  * SlideHeadline is the primary text element for slides.
  * Large, bold, and designed for readability at presentation distance.
@@ -18,11 +84,9 @@ export function SlideHeadline({
   className,
   multiline = false,
 }: SlideHeadlineProps) {
-  // Handle \n line breaks in headline text
   const content =
     multiline && typeof children === "string"
       ? children.split("\n").map((line, i, arr) => {
-          // Use line content as key; for empty lines, use a stable identifier
           const lineKey = line || `empty-line`;
           return (
             <span key={`${lineKey}-${line.length}`}>
@@ -34,14 +98,7 @@ export function SlideHeadline({
       : children;
 
   return (
-    <h1
-      className={cn(
-        "font-display text-4xl font-bold tracking-tight text-balance text-foreground md:text-5xl lg:text-6xl",
-        className,
-      )}
-    >
-      {content}
-    </h1>
+    <h1 {...mergeSx(stylex.props(styles.headline), className)}>{content}</h1>
   );
 }
 
@@ -56,14 +113,7 @@ interface SlideSublineProps {
  */
 export function SlideSubline({ children, className }: SlideSublineProps) {
   return (
-    <p
-      className={cn(
-        "font-display text-xl font-medium text-balance text-muted-foreground md:text-2xl",
-        className,
-      )}
-    >
-      {children}
-    </p>
+    <p {...mergeSx(stylex.props(styles.subline), className)}>{children}</p>
   );
 }
 
@@ -77,16 +127,7 @@ interface SlideBodyProps {
  * Readable at presentation distance with relaxed line height.
  */
 export function SlideBody({ children, className }: SlideBodyProps) {
-  return (
-    <p
-      className={cn(
-        "text-lg leading-relaxed text-pretty text-muted-foreground md:text-xl",
-        className,
-      )}
-    >
-      {children}
-    </p>
-  );
+  return <p {...mergeSx(stylex.props(styles.body), className)}>{children}</p>;
 }
 
 interface SlideFootnoteProps {
@@ -100,13 +141,8 @@ interface SlideFootnoteProps {
  */
 export function SlideFootnote({ children, className }: SlideFootnoteProps) {
   return (
-    <p
-      className={cn(
-        "mt-auto flex items-center gap-2 pt-4 text-sm text-muted-foreground/70",
-        className,
-      )}
-    >
-      <span className="inline-block size-1 rounded-full bg-accent/50" />
+    <p {...mergeSx(stylex.props(styles.footnote), className)}>
+      <span {...stylex.props(styles.footnoteDot)} />
       {children}
     </p>
   );
@@ -123,12 +159,7 @@ interface SlideQuoteProps {
  */
 export function SlideQuote({ children, className }: SlideQuoteProps) {
   return (
-    <blockquote
-      className={cn(
-        "border-l-4 border-accent pl-6 text-xl italic text-muted-foreground md:text-2xl",
-        className,
-      )}
-    >
+    <blockquote {...mergeSx(stylex.props(styles.quote), className)}>
       {children}
     </blockquote>
   );

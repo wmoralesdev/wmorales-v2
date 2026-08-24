@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import type { BulletsSlide } from "@/lib/slides/schema";
 import { SlideCanvas, SlideFrame } from "../slide-frame";
 import { SlideList } from "../slide-list";
@@ -8,6 +9,12 @@ interface BulletsSlideViewProps {
   printMode?: boolean;
 }
 
+const styles = stylex.create({
+  canvas: {
+    gap: "2rem",
+  },
+});
+
 /**
  * BulletsSlideView renders a simple headline + bullet list.
  */
@@ -17,7 +24,7 @@ export function BulletsSlideView({
 }: BulletsSlideViewProps) {
   return (
     <SlideFrame printMode={printMode}>
-      <SlideCanvas className="space-y-8">
+      <SlideCanvas className={stylex.props(styles.canvas).className}>
         <SlideHeadline>{slide.headline}</SlideHeadline>
 
         <SlideList items={slide.items} />

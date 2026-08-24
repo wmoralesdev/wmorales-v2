@@ -1,11 +1,112 @@
+import * as stylex from "@stylexjs/stylex";
 import Link from "next/link";
 import { getLocale, getTranslations } from "next-intl/server";
 import { PostViewCount } from "@/components/blog/post-view-count";
 import { formatDate, getAllPosts } from "@/lib/blog";
 import { createMetadata, siteConfig } from "@/lib/metadata";
+import { colors, fonts } from "@/lib/stylex/tokens.stylex";
 
 const blogDescription =
   "Thoughts on software engineering, web development, and technology.";
+
+const styles = stylex.create({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+  },
+  empty: {
+    color: colors.mutedForeground,
+  },
+  article: {
+    borderTopWidth: 1,
+    borderTopStyle: "solid",
+    borderTopColor: `color-mix(in oklch, ${colors.border}, transparent 40%)`,
+    paddingBlock: "1.25rem",
+    ":first-child": {
+      borderTopWidth: 0,
+      paddingTop: 0,
+    },
+  },
+  link: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.375rem",
+  },
+  row: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.25rem",
+    "@media (min-width: 640px)": {
+      flexDirection: "row",
+      alignItems: "baseline",
+      gap: "1rem",
+    },
+  },
+  title: {
+    fontFamily: fonts.display,
+    fontWeight: 500,
+    fontSize: "1rem",
+    color: colors.foreground,
+    transitionProperty: "color",
+    transitionDuration: "150ms",
+    ":hover": {
+      color: colors.accent,
+    },
+    "@media (min-width: 640px)": {
+      flex: 1,
+    },
+  },
+  meta: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    "@media (min-width: 640px)": {
+      flexShrink: 0,
+      textAlign: "right",
+    },
+  },
+  readingTime: {
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    color: `color-mix(in oklch, ${colors.mutedForeground}, transparent 40%)`,
+  },
+  divider: {
+    height: "0.625rem",
+    width: 1,
+    backgroundColor: `color-mix(in oklch, ${colors.border}, transparent 40%)`,
+  },
+  summary: {
+    fontSize: "0.875rem",
+    color: colors.mutedForeground,
+    textWrap: "pretty",
+    lineHeight: 1.625,
+  },
+  footer: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "0.5rem",
+  },
+  tags: {
+    display: "flex",
+    gap: "0.5rem",
+  },
+  tag: {
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    color: `color-mix(in oklch, ${colors.accent}, transparent 40%)`,
+  },
+  time: {
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    fontVariantNumeric: "tabular-nums",
+    color: `color-mix(in oklch, ${colors.mutedForeground}, transparent 40%)`,
+    "@media (min-width: 640px)": {
+      flexShrink: 0,
+    },
+  },
+});
 
 export const metadata = createMetadata({
   title: "Blog",
@@ -31,53 +132,43 @@ export default async function BlogPage() {
   const posts = await getAllPosts(locale);
 
   return (
-    <div className="space-y-0">
+    <div {...stylex.props(styles.root)}>
       {posts.length === 0 ? (
-        <p className="text-muted-foreground">{t("noPosts")}</p>
+        <p {...stylex.props(styles.empty)}>{t("noPosts")}</p>
       ) : (
         posts.map((post) => (
-          <article
-            className="group border-border/60 border-t py-5 first:border-t-0 first:pt-0"
-            key={post.slug}
-          >
-            <Link className="block space-y-1.5" href={`/blog/${post.slug}`}>
-              <div className="flex flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-4">
-                <h2 className="font-display font-medium text-base text-foreground transition-colors group-hover:text-accent sm:flex-1">
-                  {post.title}
-                </h2>
-                <div className="flex items-center gap-2 sm:shrink-0 sm:text-right">
+          <article key={post.slug} {...stylex.props(styles.article)}>
+            <Link href={`/blog/${post.slug}`} {...stylex.props(styles.link)}>
+              <div {...stylex.props(styles.row)}>
+                <h2 {...stylex.props(styles.title)}>{post.title}</h2>
+                <div {...stylex.props(styles.meta)}>
                   {post.readingTimeText && (
                     <>
-                      <span className="font-mono text-xs text-muted-foreground/60">
+                      <span {...stylex.props(styles.readingTime)}>
                         {post.readingTimeText}
                       </span>
-                      <span className="h-2.5 w-px bg-border/60" />
+                      <span {...stylex.props(styles.divider)} />
                     </>
                   )}
                   <PostViewCount locale={locale} mode="read" slug={post.slug} />
                 </div>
               </div>
               {post.summary && (
-                <p className="text-sm text-muted-foreground text-pretty leading-relaxed">
-                  {post.summary}
-                </p>
+                <p {...stylex.props(styles.summary)}>{post.summary}</p>
               )}
               {(post.date || (post.tags && post.tags.length > 0)) && (
-                <div className="flex flex-wrap items-center justify-between gap-2">
+                <div {...stylex.props(styles.footer)}>
                   {post.tags && post.tags.length > 0 && (
-                    <div className="flex gap-2">
+                    <div {...stylex.props(styles.tags)}>
                       {post.tags.map((tag) => (
-                        <span
-                          className="font-mono text-xs text-accent/60"
-                          key={tag}
-                        >
+                        <span key={tag} {...stylex.props(styles.tag)}>
                           #{tag}
                         </span>
                       ))}
                     </div>
                   )}
                   {post.date && (
-                    <time className="font-mono text-xs tabular-nums text-muted-foreground/60 sm:shrink-0">
+                    <time {...stylex.props(styles.time)}>
                       {formatDate(post.date, locale)}
                     </time>
                   )}

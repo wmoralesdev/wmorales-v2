@@ -1,10 +1,12 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { Check, Copy } from "lucide-react";
 import { useCallback, useEffect, useId, useState } from "react";
 import { Button } from "@/components/ui/button";
 import type { PromptSlide } from "@/lib/slides/schema";
-import { cn } from "@/lib/utils";
+import { icon } from "@/lib/stylex/icons";
+import { colors, fonts, radii } from "@/lib/stylex/tokens.stylex";
 import { SlideCanvas, SlideFrame } from "../slide-frame";
 import { SlideFootnote, SlideHeadline } from "../slide-typography";
 
@@ -12,6 +14,69 @@ interface PromptSlideViewProps {
   slide: PromptSlide;
   printMode?: boolean;
 }
+
+const styles = stylex.create({
+  accent: {
+    position: "absolute",
+    insetInline: 0,
+    top: 0,
+    height: "0.25rem",
+    backgroundColor: colors.accent,
+  },
+  canvas: {
+    gap: "1.5rem",
+  },
+  header: {
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    gap: "1.5rem",
+  },
+  titleWrap: {
+    minWidth: 0,
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.5rem",
+  },
+  title: {
+    fontSize: "0.875rem",
+    color: colors.mutedForeground,
+    "@media (min-width: 768px)": {
+      fontSize: "1rem",
+    },
+  },
+  copy: {
+    flexShrink: 0,
+  },
+  copyButton: {
+    gap: "0.5rem",
+  },
+  prompt: {
+    position: "relative",
+    overflow: "hidden",
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: `color-mix(in oklch, ${colors.border}, transparent 40%)`,
+    backgroundColor: `color-mix(in oklch, ${colors.muted}, transparent 70%)`,
+    boxShadow: "0 1px 2px rgb(0 0 0 / 0.05)",
+  },
+  pre: {
+    maxHeight: "360px",
+    overflow: "auto",
+    padding: "1rem",
+  },
+  code: {
+    whiteSpace: "pre-wrap",
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    lineHeight: 1.625,
+    color: `color-mix(in oklch, ${colors.foreground}, transparent 10%)`,
+    "@media (min-width: 768px)": {
+      fontSize: "0.875rem",
+    },
+  },
+});
 
 export function PromptSlideView({
   slide,
@@ -33,39 +98,36 @@ export function PromptSlideView({
 
   return (
     <SlideFrame printMode={printMode}>
-      {/* Accent bar at top */}
-      <div className="absolute inset-x-0 top-0 h-1 bg-accent" />
+      <div {...stylex.props(styles.accent)} />
 
-      <SlideCanvas className="space-y-6">
-        <div className="flex items-start justify-between gap-6">
-          <div className="min-w-0 space-y-2">
+      <SlideCanvas className={stylex.props(styles.canvas).className}>
+        <div {...stylex.props(styles.header)}>
+          <div {...stylex.props(styles.titleWrap)}>
             <SlideHeadline>{slide.headline}</SlideHeadline>
             {slide.title && (
-              <p className="text-sm text-muted-foreground md:text-base">
-                {slide.title}
-              </p>
+              <p {...stylex.props(styles.title)}>{slide.title}</p>
             )}
           </div>
 
           {!printMode && (
-            <div className="shrink-0">
+            <div {...stylex.props(styles.copy)}>
               <Button
                 type="button"
                 variant="outline"
                 size="sm"
                 onClick={handleCopy}
-                className="gap-2"
+                className={stylex.props(styles.copyButton).className}
               >
                 {copied ? (
                   <>
-                    <Check className="size-4" />
+                    <Check {...stylex.props(icon.md)} />
                     <span aria-live="polite" id={toastId}>
                       Copied
                     </span>
                   </>
                 ) : (
                   <>
-                    <Copy className="size-4" />
+                    <Copy {...stylex.props(icon.md)} />
                     Copy
                   </>
                 )}
@@ -74,16 +136,9 @@ export function PromptSlideView({
           )}
         </div>
 
-        <div
-          className={cn(
-            "relative overflow-hidden rounded-lg border border-border/60 bg-muted/30",
-            "shadow-sm",
-          )}
-        >
-          <pre className="max-h-[360px] overflow-auto p-4">
-            <code className="whitespace-pre-wrap font-mono text-xs leading-relaxed text-foreground/90 md:text-sm">
-              {slide.prompt}
-            </code>
+        <div {...stylex.props(styles.prompt)}>
+          <pre {...stylex.props(styles.pre)}>
+            <code {...stylex.props(styles.code)}>{slide.prompt}</code>
           </pre>
         </div>
 

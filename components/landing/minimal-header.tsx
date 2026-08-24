@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import Image from "next/image";
 import { getTranslations } from "next-intl/server";
 import { FaGithub, FaLinkedin, FaXTwitter } from "react-icons/fa6";
@@ -8,6 +9,8 @@ import { NavRail } from "@/components/common/nav-rail";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, fonts } from "@/lib/stylex/tokens.stylex";
 
 const socialLinks = [
   { href: "https://github.com/wmoralesdev", icon: FaGithub, label: "GitHub" },
@@ -19,99 +22,264 @@ const socialLinks = [
   { href: "https://x.com/wmoralesdev", icon: FaXTwitter, label: "X" },
 ];
 
+const styles = stylex.create({
+  header: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "2rem",
+  },
+  top: {
+    display: "flex",
+    flexDirection: "column-reverse",
+    gap: "1.5rem",
+    "@media (min-width: 768px)": {
+      flexDirection: "row",
+      alignItems: "flex-start",
+      justifyContent: "space-between",
+    },
+  },
+  text: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+    "@media (min-width: 768px)": {
+      maxWidth: "65%",
+    },
+  },
+  name: {
+    fontFamily: fonts.display,
+    fontWeight: 600,
+    fontSize: "2.25rem",
+    color: colors.foreground,
+    letterSpacing: "-0.05em",
+    textWrap: "balance",
+    "@media (min-width: 640px)": {
+      fontSize: "3rem",
+    },
+  },
+  nameAccent: {
+    color: colors.accent,
+  },
+  intro: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.75rem",
+  },
+  role: {
+    fontSize: "1.125rem",
+    color: colors.mutedForeground,
+    lineHeight: 1.625,
+    textWrap: "pretty",
+  },
+  meta: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    fontFamily: fonts.mono,
+    color: `color-mix(in oklch, ${colors.mutedForeground}, transparent 20%)`,
+    fontSize: "0.875rem",
+  },
+  bullet: {
+    color: `color-mix(in oklch, ${colors.mutedForeground}, transparent 60%)`,
+  },
+  actions: {
+    display: "flex",
+    alignItems: "center",
+    gap: "1rem",
+    paddingTop: "0.25rem",
+  },
+  badge: {
+    flexShrink: 0,
+    gap: "0.375rem",
+    borderColor: `color-mix(in oklch, ${colors.accent}, transparent 70%)`,
+    backgroundColor: `color-mix(in oklch, ${colors.accent}, transparent 90%)`,
+    paddingBlock: "0.25rem",
+    paddingLeft: "0.25rem",
+    paddingRight: "0.625rem",
+    fontWeight: 400,
+    color: colors.foreground,
+  },
+  badgeIcon: {
+    display: "flex",
+    width: "1.25rem",
+    height: "1.25rem",
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: "9999px",
+    backgroundColor: `color-mix(in oklch, ${colors.foreground}, transparent 90%)`,
+  },
+  lightOnly: {
+    display: "block",
+    ":is(.dark *)": {
+      display: "none",
+    },
+  },
+  darkOnly: {
+    display: "none",
+    ":is(.dark *)": {
+      display: "block",
+    },
+  },
+  socials: {
+    display: "flex",
+    flexShrink: 0,
+    alignItems: "center",
+    gap: "0.75rem",
+  },
+  social: {
+    color: `color-mix(in oklch, ${colors.mutedForeground}, transparent 30%)`,
+    transitionProperty: "color, transform",
+    transitionDuration: "200ms",
+    ":hover": {
+      color: colors.foreground,
+      transform: "translateY(-0.125rem)",
+    },
+  },
+  socialIcon: {
+    width: 18,
+    height: 18,
+  },
+  divider: {
+    height: "0.875rem",
+    width: 1,
+    flexShrink: 0,
+    backgroundColor: colors.border,
+  },
+  avatarWrap: {
+    alignSelf: "flex-start",
+  },
+  avatar: {
+    width: "6rem",
+    height: "6rem",
+    borderRadius: "1rem",
+    transitionProperty: "transform",
+    transitionDuration: "200ms",
+    ":hover": {
+      transform: "rotate(-2deg) scale(1.05)",
+    },
+    "@media (min-width: 768px)": {
+      width: "8rem",
+      height: "8rem",
+    },
+  },
+  avatarImage: {
+    objectFit: "cover",
+  },
+  nav: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
+    gap: "1.5rem",
+  },
+  navInner: {
+    display: "flex",
+    minWidth: 0,
+    flex: 1,
+    alignItems: "center",
+    gap: "1.5rem",
+  },
+  mobileNav: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
+    gap: "0.5rem",
+    "@media (min-width: 768px)": {
+      display: "none",
+    },
+  },
+  desktopNav: {
+    display: "none",
+    width: "100%",
+    "@media (min-width: 768px)": {
+      display: "block",
+    },
+  },
+});
+
 export async function MinimalHeader() {
   const t = await getTranslations("homepage.header");
   const tNav = await getTranslations("navigation");
 
   return (
-    <header className="space-y-8">
-      {/* Top Section: Profile & Intro */}
-      <div className="flex flex-col-reverse gap-6 md:flex-row md:items-start md:justify-between">
-        {/* Text Content */}
-        <div className="space-y-4 md:max-w-[65%]">
-          <h1 className="font-display font-semibold text-4xl text-foreground tracking-tighter text-balance sm:text-5xl">
-            {t("name")} <span className="text-accent">{t("nameAccent")}</span>
+    <header {...stylex.props(styles.header)}>
+      <div {...stylex.props(styles.top)}>
+        <div {...stylex.props(styles.text)}>
+          <h1 {...stylex.props(styles.name)}>
+            {t("name")}{" "}
+            <span {...stylex.props(styles.nameAccent)}>{t("nameAccent")}</span>
           </h1>
 
-          <div className="space-y-3">
-            <p className="text-lg text-muted-foreground leading-relaxed text-pretty">
-              {t("role")}
-            </p>
-            <div className="flex items-center gap-2 font-mono text-muted-foreground/80 text-sm">
+          <div {...stylex.props(styles.intro)}>
+            <p {...stylex.props(styles.role)}>{t("role")}</p>
+            <div {...stylex.props(styles.meta)}>
               <span>{t("location")}</span>
-              <span className="text-muted-foreground/40" aria-hidden="true">
+              <span aria-hidden="true" {...stylex.props(styles.bullet)}>
                 •
               </span>
               <ElSalvadorTime />
             </div>
           </div>
 
-          <div className="flex items-center gap-4 pt-1">
+          <div {...stylex.props(styles.actions)}>
             <Badge
               variant="outline"
-              className="shrink-0 gap-1.5 border-accent/30 bg-accent/10 py-1 pl-1 pr-2.5 font-normal text-foreground dark:border-accent/40 dark:bg-accent/15"
+              {...mergeSx(stylex.props(styles.badge))}
             >
-              <div className="flex size-5 items-center justify-center rounded-full bg-foreground/10 dark:bg-foreground/15">
+              <div {...stylex.props(styles.badgeIcon)}>
                 <Image
                   src="/cube-2d-light.svg"
                   width={14}
                   height={14}
                   alt="Cursor"
-                  className="dark:hidden"
+                  {...stylex.props(styles.lightOnly)}
                 />
                 <Image
                   src="/cube-2d-dark.svg"
                   width={14}
                   height={14}
                   alt="Cursor"
-                  className="hidden dark:block"
+                  {...stylex.props(styles.darkOnly)}
                 />
               </div>
               <span>{t("ambassador")}</span>
             </Badge>
 
-            <div className="flex shrink-0 items-center gap-3">
+            <div {...stylex.props(styles.socials)}>
               {socialLinks.map(({ href, icon: Icon, label }) => (
                 <a
                   aria-label={label}
-                  className="text-muted-foreground/70 transition-all duration-200 hover:text-foreground hover:-translate-y-0.5"
                   href={href}
                   key={label}
                   rel="noopener noreferrer"
                   target="_blank"
+                  {...stylex.props(styles.social)}
                 >
-                  <Icon className="size-[18px]" />
+                  <Icon {...stylex.props(styles.socialIcon)} />
                 </a>
               ))}
             </div>
 
-            <span
-              className="h-3.5 w-px shrink-0 bg-border"
-              aria-hidden="true"
-            />
+            <span aria-hidden="true" {...stylex.props(styles.divider)} />
             <LanguageSwitcher />
             <ThemeToggle />
           </div>
         </div>
 
-        {/* Avatar */}
-        <div className="self-start">
-          <Avatar className="size-24 rounded-2xl transition-transform duration-200 hover:-rotate-2 hover:scale-105 md:size-32">
+        <div {...stylex.props(styles.avatarWrap)}>
+          <Avatar {...stylex.props(styles.avatar)}>
             <AvatarImage
               src="/me.jpeg"
               alt="Walter Morales"
-              className="object-cover"
+              {...stylex.props(styles.avatarImage)}
             />
             <AvatarFallback>WM</AvatarFallback>
           </Avatar>
         </div>
       </div>
 
-      {/* Navigation */}
-      <nav className="flex flex-wrap items-center gap-6">
-        <div className="flex min-w-0 flex-1 items-center gap-6">
-          {/* Mobile: allow wrapping; simple active background */}
-          <div className="flex flex-wrap items-center gap-2 md:hidden">
+      <nav {...stylex.props(styles.nav)}>
+        <div {...stylex.props(styles.navInner)}>
+          <div {...stylex.props(styles.mobileNav)}>
             <NavLink href="/" exact>
               {tNav("home")}
             </NavLink>
@@ -121,10 +289,8 @@ export async function MinimalHeader() {
             <NavLink href="/design-system">{tNav("designSystem")}</NavLink>
           </div>
 
-          {/* Desktop: shared sliding indicator (equal-width cells) */}
-          <div className="hidden w-full md:block">
+          <div {...stylex.props(styles.desktopNav)}>
             <NavRail
-              className="w-full"
               items={[
                 { href: "/", label: tNav("home"), exact: true },
                 { href: "/blog", label: tNav("blog") },

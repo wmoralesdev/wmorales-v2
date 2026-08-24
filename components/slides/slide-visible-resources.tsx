@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import {
   CalendarRange,
   ExternalLink,
@@ -6,7 +7,8 @@ import {
   MessageCircleMore,
 } from "lucide-react";
 import type { SlideVisibleResource } from "@/lib/slides/schema";
-import { cn } from "@/lib/utils";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 
 interface SlideVisibleResourcesProps {
   resources: SlideVisibleResource[];
@@ -22,6 +24,93 @@ const iconMap = {
   community: MessageCircleMore,
 } as const;
 
+const styles = stylex.create({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.75rem",
+  },
+  rootCompact: {
+    gap: "0.5rem",
+  },
+  title: {
+    fontWeight: 600,
+    textTransform: "uppercase",
+    letterSpacing: "0.18em",
+    color: colors.mutedForeground,
+    fontSize: "0.75rem",
+  },
+  titleCompact: {
+    fontSize: "0.625rem",
+  },
+  list: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "0.625rem",
+  },
+  listCompact: {
+    gap: "0.5rem",
+  },
+  link: {
+    display: "inline-flex",
+    maxWidth: "100%",
+    alignItems: "center",
+    borderRadius: radii.full,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: `color-mix(in oklch, ${colors.border}, transparent 30%)`,
+    backgroundColor: `color-mix(in oklch, ${colors.background}, transparent 40%)`,
+    color: `color-mix(in oklch, ${colors.foreground}, transparent 10%)`,
+    gap: "0.5rem",
+    paddingInline: "0.75rem",
+    paddingBlock: "0.5rem",
+    fontSize: "0.75rem",
+    transitionProperty: "color, background-color, border-color",
+    transitionDuration: "150ms",
+    ":hover": {
+      borderColor: `color-mix(in oklch, ${colors.accent}, transparent 60%)`,
+      backgroundColor: `color-mix(in oklch, ${colors.accent}, transparent 95%)`,
+      color: colors.accent,
+    },
+    "@media (min-width: 768px)": {
+      fontSize: "0.875rem",
+    },
+  },
+  linkCompact: {
+    gap: "0.375rem",
+    paddingInline: "0.625rem",
+    paddingBlock: "0.375rem",
+    fontSize: "0.6875rem",
+  },
+  icon: {
+    width: "0.875rem",
+    height: "0.875rem",
+    flexShrink: 0,
+  },
+  iconCompact: {
+    width: "0.75rem",
+    height: "0.75rem",
+    flexShrink: 0,
+  },
+  label: {
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+  },
+  external: {
+    width: "0.75rem",
+    height: "0.75rem",
+    flexShrink: 0,
+    opacity: 0.6,
+  },
+  externalCompact: {
+    width: "0.625rem",
+    height: "0.625rem",
+    flexShrink: 0,
+    opacity: 0.6,
+  },
+});
+
 /**
  * SlideVisibleResources renders important links directly inside slides.
  */
@@ -34,19 +123,19 @@ export function SlideVisibleResources({
   if (resources.length === 0) return null;
 
   return (
-    <div className={cn(compact ? "space-y-2" : "space-y-3", className)}>
+    <div
+      {...mergeSx(
+        stylex.props(styles.root, compact && styles.rootCompact),
+        className,
+      )}
+    >
       {title ? (
-        <p
-          className={cn(
-            "font-semibold uppercase tracking-[0.18em] text-muted-foreground",
-            compact ? "text-[10px]" : "text-xs",
-          )}
-        >
+        <p {...stylex.props(styles.title, compact && styles.titleCompact)}>
           {title}
         </p>
       ) : null}
 
-      <div className={cn("flex flex-wrap", compact ? "gap-2" : "gap-2.5")}>
+      <div {...stylex.props(styles.list, compact && styles.listCompact)}>
         {resources.map((resource) => {
           const Icon = iconMap[resource.kind ?? "default"] ?? Link2;
 
@@ -56,19 +145,15 @@ export function SlideVisibleResources({
               href={resource.url}
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(
-                "group inline-flex max-w-full items-center rounded-full border border-border/70 bg-background/60 text-foreground/90 transition-colors hover:border-accent/40 hover:bg-accent/5 hover:text-accent",
-                compact
-                  ? "gap-1.5 px-2.5 py-1.5 text-[11px]"
-                  : "gap-2 px-3 py-2 text-xs md:text-sm",
-              )}
+              {...stylex.props(styles.link, compact && styles.linkCompact)}
             >
-              <Icon className={cn("shrink-0", compact ? "size-3" : "size-3.5")} />
-              <span className="truncate">{resource.label}</span>
+              <Icon
+                {...stylex.props(compact ? styles.iconCompact : styles.icon)}
+              />
+              <span {...stylex.props(styles.label)}>{resource.label}</span>
               <ExternalLink
-                className={cn(
-                  "shrink-0 opacity-60 group-hover:opacity-100",
-                  compact ? "size-2.5" : "size-3",
+                {...stylex.props(
+                  compact ? styles.externalCompact : styles.external,
                 )}
               />
             </a>

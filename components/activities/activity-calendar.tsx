@@ -1,10 +1,13 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { CalendarDays, ChevronLeft, ChevronRight } from "lucide-react";
 import { useCallback, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useIsMobile } from "@/hooks/use-mobile";
 import type { ActivityRecord } from "@/lib/activities";
+import { icon } from "@/lib/stylex/icons";
+import { colors, fonts, radii } from "@/lib/stylex/tokens.stylex";
 import { ActivityAgenda } from "./activity-agenda";
 import { ActivityDayCell } from "./activity-day-cell";
 import { ActivityDetailPopover } from "./activity-detail-popover";
@@ -24,6 +27,53 @@ function getDaysInMonth(year: number, month: number) {
 function getFirstDayOfWeek(year: number, month: number) {
   return new Date(year, month - 1, 1).getDay();
 }
+
+const styles = stylex.create({
+  root: {
+    position: "relative",
+  },
+  nav: {
+    marginBottom: "1rem",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  navControls: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+  },
+  monthLabel: {
+    minWidth: "140px",
+    textAlign: "center",
+    fontFamily: fonts.display,
+    fontSize: "1rem",
+    fontWeight: 600,
+  },
+  weekdays: {
+    marginBottom: "0.25rem",
+    display: "grid",
+    gridTemplateColumns: "repeat(7, minmax(0, 1fr))",
+    gap: "1px",
+  },
+  weekday: {
+    padding: "0.375rem",
+    textAlign: "center",
+    fontSize: "0.75rem",
+    fontWeight: 500,
+    color: colors.mutedForeground,
+  },
+  grid: {
+    display: "grid",
+    gridTemplateColumns: "repeat(7, minmax(0, 1fr))",
+    gap: "1px",
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.border,
+    backgroundColor: `color-mix(in oklch, ${colors.border}, transparent 50%)`,
+  },
+});
 
 export function ActivityCalendar({
   activities,
@@ -112,38 +162,31 @@ export function ActivityCalendar({
     : [];
 
   return (
-    <div className="relative">
+    <div {...stylex.props(styles.root)}>
       {/* Month navigation */}
-      <div className="mb-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
+      <div {...stylex.props(styles.nav)}>
+        <div {...stylex.props(styles.navControls)}>
           <Button
             variant="outline"
             size="icon"
             onClick={goToPrev}
             aria-label="Previous month"
           >
-            <ChevronLeft className="size-4" />
+            <ChevronLeft {...stylex.props(icon.md)} />
           </Button>
-          <h2 className="min-w-[140px] text-center font-display text-base font-semibold">
-            {monthLabel}
-          </h2>
+          <h2 {...stylex.props(styles.monthLabel)}>{monthLabel}</h2>
           <Button
             variant="outline"
             size="icon"
             onClick={goToNext}
             aria-label="Next month"
           >
-            <ChevronRight className="size-4" />
+            <ChevronRight {...stylex.props(icon.md)} />
           </Button>
         </div>
         {!isCurrentMonth && (
-          <Button
-            variant="ghost"
-            size="sm"
-            onClick={goToToday}
-            className="gap-1.5"
-          >
-            <CalendarDays className="size-3.5" />
+          <Button variant="ghost" size="sm" onClick={goToToday}>
+            <CalendarDays {...stylex.props(icon.sm)} />
             Today
           </Button>
         )}
@@ -159,19 +202,16 @@ export function ActivityCalendar({
       ) : (
         <>
           {/* Weekday headers */}
-          <div className="mb-1 grid grid-cols-7 gap-px">
+          <div {...stylex.props(styles.weekdays)}>
             {WEEKDAYS.map((day) => (
-              <div
-                key={day}
-                className="p-1.5 text-center text-xs font-medium text-muted-foreground"
-              >
+              <div key={day} {...stylex.props(styles.weekday)}>
                 {day}
               </div>
             ))}
           </div>
 
           {/* Day grid */}
-          <div className="grid grid-cols-7 gap-px rounded-lg border border-border bg-border/50">
+          <div {...stylex.props(styles.grid)}>
             {/* Previous month trailing days */}
             {Array.from({ length: firstDay }, (_, i) => {
               const day = prevMonthDays - firstDay + i + 1;

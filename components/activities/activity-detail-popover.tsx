@@ -1,17 +1,131 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { Clock, MapPin, X } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { ActivityDetailsDialog } from "@/components/activities/activity-details-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import type { ActivityRecord } from "@/lib/activities";
+import { icon } from "@/lib/stylex/icons";
+import { colors, fonts, radii } from "@/lib/stylex/tokens.stylex";
 
 interface ActivityDetailPopoverProps {
   activities: ActivityRecord[];
   date: Date;
   onClose: () => void;
 }
+
+const styles = stylex.create({
+  overlay: {
+    position: "absolute",
+    inset: 0,
+    zIndex: 10,
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "center",
+    backgroundColor: `color-mix(in oklch, ${colors.background}, transparent 20%)`,
+    backdropFilter: "blur(4px)",
+    "@media (min-width: 768px)": {
+      alignItems: "center",
+    },
+  },
+  card: {
+    margin: "1rem",
+    width: "100%",
+    maxWidth: "32rem",
+    boxShadow:
+      "0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)",
+  },
+  headerRow: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    gap: "0.5rem",
+  },
+  headerText: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.25rem",
+  },
+  cardTitle: {
+    fontFamily: fonts.display,
+    fontSize: "1.125rem",
+    fontWeight: 600,
+  },
+  count: {
+    fontSize: "0.875rem",
+    color: colors.mutedForeground,
+  },
+  close: {
+    borderRadius: radii.md,
+    padding: "0.25rem",
+    color: colors.mutedForeground,
+    transitionProperty: "color, background-color",
+    transitionDuration: "150ms",
+    ":hover": {
+      backgroundColor: colors.muted,
+      color: colors.foreground,
+    },
+  },
+  content: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.75rem",
+  },
+  item: {
+    width: "100%",
+    cursor: "pointer",
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: `color-mix(in oklch, ${colors.border}, transparent 50%)`,
+    backgroundColor: `color-mix(in oklch, ${colors.muted}, transparent 70%)`,
+    padding: "0.75rem",
+    textAlign: "left",
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.5rem",
+    color: colors.foreground,
+    transitionProperty: "color, background-color",
+    transitionDuration: "150ms",
+    ":hover": {
+      backgroundColor: `color-mix(in oklch, ${colors.muted}, transparent 50%)`,
+      color: colors.accent,
+    },
+  },
+  itemTitle: {
+    fontWeight: 500,
+    color: "inherit",
+    transitionProperty: "color",
+    transitionDuration: "150ms",
+  },
+  itemDescription: {
+    fontSize: "0.875rem",
+    color: colors.mutedForeground,
+    lineHeight: 1.625,
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
+  },
+  meta: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
+    gap: "0.5rem",
+  },
+  badge: {
+    gap: "0.25rem",
+    fontSize: "0.75rem",
+  },
+  badgeIcon: {
+    width: "0.75rem",
+    height: "0.75rem",
+    flexShrink: 0,
+  },
+});
 
 export function ActivityDetailPopover({
   activities,
@@ -59,30 +173,32 @@ export function ActivityDetailPopover({
       aria-label={`Activities for ${formattedDate}`}
       onKeyDown={handleKeyDown}
       ref={dialogRef}
-      className="absolute inset-0 z-10 flex items-start justify-center bg-background/80 backdrop-blur-sm md:items-center"
+      {...stylex.props(styles.overlay)}
     >
-      <Card className="m-4 w-full max-w-lg shadow-xl">
-        <CardHeader className="flex flex-row items-start justify-between gap-2">
-          <div className="space-y-1">
-            <CardTitle className="font-display text-lg font-semibold">
-              {formattedDate}
-            </CardTitle>
-            <p className="text-sm text-muted-foreground">
-              {activities.length} activit
-              {activities.length === 1 ? "y" : "ies"}
-            </p>
+      <Card className={stylex.props(styles.card).className}>
+        <CardHeader>
+          <div {...stylex.props(styles.headerRow)}>
+            <div {...stylex.props(styles.headerText)}>
+              <CardTitle className={stylex.props(styles.cardTitle).className}>
+                {formattedDate}
+              </CardTitle>
+              <p {...stylex.props(styles.count)}>
+                {activities.length} activit
+                {activities.length === 1 ? "y" : "ies"}
+              </p>
+            </div>
+            <button
+              ref={closeRef}
+              type="button"
+              onClick={onClose}
+              aria-label="Close"
+              {...stylex.props(styles.close)}
+            >
+              <X {...stylex.props(icon.md)} />
+            </button>
           </div>
-          <button
-            ref={closeRef}
-            type="button"
-            onClick={onClose}
-            aria-label="Close"
-            className="rounded-md p-1 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
-          >
-            <X className="size-4" />
-          </button>
         </CardHeader>
-        <CardContent className="space-y-3">
+        <CardContent className={stylex.props(styles.content).className}>
           {activities.map((activity) => {
             const displayText =
               activity.shortDescription || activity.description;
@@ -92,26 +208,28 @@ export function ActivityDetailPopover({
                 key={activity.id}
                 type="button"
                 onClick={() => handleActivityClick(activity)}
-                className="group w-full cursor-pointer rounded-lg border border-border/50 bg-muted/30 p-3 text-left transition-colors hover:bg-muted/50 space-y-2"
+                {...stylex.props(styles.item)}
               >
-                <p className="font-medium text-foreground transition-colors group-hover:text-accent">
-                  {activity.title}
-                </p>
+                <p {...stylex.props(styles.itemTitle)}>{activity.title}</p>
                 {displayText && (
-                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-2">
-                    {displayText}
-                  </p>
+                  <p {...stylex.props(styles.itemDescription)}>{displayText}</p>
                 )}
-                <div className="flex flex-wrap items-center gap-2">
+                <div {...stylex.props(styles.meta)}>
                   {activity.time && (
-                    <Badge variant="secondary" className="gap-1 text-xs">
-                      <Clock className="size-3" />
+                    <Badge
+                      variant="secondary"
+                      className={stylex.props(styles.badge).className}
+                    >
+                      <Clock {...stylex.props(styles.badgeIcon)} />
                       {activity.time}
                     </Badge>
                   )}
                   {activity.location && (
-                    <Badge variant="outline" className="gap-1 text-xs">
-                      <MapPin className="size-3" />
+                    <Badge
+                      variant="outline"
+                      className={stylex.props(styles.badge).className}
+                    >
+                      <MapPin {...stylex.props(styles.badgeIcon)} />
                       {activity.location}
                     </Badge>
                   )}

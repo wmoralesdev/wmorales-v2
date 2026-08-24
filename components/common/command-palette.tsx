@@ -1,5 +1,6 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { FileText, Home, Presentation } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTranslations } from "next-intl";
@@ -14,6 +15,7 @@ import {
 } from "@/components/ui/command";
 import type { PostMeta } from "@/lib/blog";
 import type { DeckMeta } from "@/lib/slides";
+import { icon } from "@/lib/stylex/icons";
 
 type CommandPaletteProps = {
   posts: PostMeta[];
@@ -84,7 +86,7 @@ export function CommandPalette({ posts, decks }: CommandPaletteProps) {
               value={`${t(labelKey)} ${href}`}
               onSelect={() => handleSelect(href)}
             >
-              <Icon className="size-4" />
+              <Icon {...stylex.props(icon.md)} />
               {t(labelKey)}
             </CommandItem>
           ))}
@@ -98,7 +100,7 @@ export function CommandPalette({ posts, decks }: CommandPaletteProps) {
                 value={`${post.title} /blog/${post.slug}`}
                 onSelect={() => handleSelect(`/blog/${post.slug}`)}
               >
-                <FileText className="size-4" />
+                <FileText {...stylex.props(icon.md)} />
                 {post.title}
               </CommandItem>
             ))}
@@ -113,7 +115,7 @@ export function CommandPalette({ posts, decks }: CommandPaletteProps) {
                 value={`${deck.title} /slides/${deck.slug}`}
                 onSelect={() => handleSelect(`/slides/${deck.slug}`)}
               >
-                <Presentation className="size-4" />
+                <Presentation {...stylex.props(icon.md)} />
                 {deck.title}
               </CommandItem>,
               <CommandItem
@@ -121,7 +123,7 @@ export function CommandPalette({ posts, decks }: CommandPaletteProps) {
                 value={`${deck.title} print /slides/${deck.slug}/print`}
                 onSelect={() => handleSelect(`/slides/${deck.slug}/print`)}
               >
-                <Presentation className="size-4" />
+                <Presentation {...stylex.props(icon.md)} />
                 {deck.title} (Print)
               </CommandItem>,
             ])}
