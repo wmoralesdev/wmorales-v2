@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
 import {
@@ -21,6 +22,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, fonts, radii } from "@/lib/stylex/tokens.stylex";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("designSystem.metadata");
@@ -30,31 +33,344 @@ export async function generateMetadata(): Promise<Metadata> {
   };
 }
 
+const styles = stylex.create({
+  page: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "4rem",
+  },
+  section: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1.5rem",
+  },
+  overview: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  },
+  sectionTitle: {
+    fontFamily: fonts.display,
+    fontSize: "1.25rem",
+    fontWeight: 600,
+    letterSpacing: "-0.025em",
+    textWrap: "balance",
+    color: colors.foreground,
+  },
+  sectionLead: {
+    marginTop: "0.5rem",
+    fontSize: "0.875rem",
+    color: colors.mutedForeground,
+    textWrap: "pretty",
+  },
+  cardPad: {
+    paddingTop: "1.5rem",
+  },
+  muted: {
+    fontSize: "0.875rem",
+    color: colors.mutedForeground,
+    textWrap: "pretty",
+  },
+  scaleStack: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1.5rem",
+  },
+  scaleItem: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.5rem",
+  },
+  scaleHeader: {
+    display: "flex",
+    alignItems: "baseline",
+    justifyContent: "space-between",
+  },
+  scaleName: {
+    fontFamily: fonts.display,
+    fontSize: "1.125rem",
+    fontWeight: 600,
+    color: colors.foreground,
+  },
+  codeChip: {
+    borderRadius: radii.md,
+    backgroundColor: colors.muted,
+    paddingInline: "0.5rem",
+    paddingBlock: "0.25rem",
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    color: colors.mutedForeground,
+  },
+  inlineCode: {
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+  },
+  example: {
+    borderLeftWidth: 2,
+    borderLeftStyle: "solid",
+    borderLeftColor: `color-mix(in oklch, ${colors.accent}, transparent 50%)`,
+    paddingLeft: "1rem",
+  },
+  pageTitleExample: {
+    fontFamily: fonts.display,
+    fontSize: "1.875rem",
+    fontWeight: 600,
+    letterSpacing: "-0.025em",
+    color: colors.foreground,
+    "@media (min-width: 640px)": {
+      fontSize: "2.25rem",
+    },
+  },
+  bodyExample: {
+    fontSize: "0.875rem",
+    color: colors.mutedForeground,
+    lineHeight: 1.625,
+  },
+  metaDate: {
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    color: colors.mutedForeground,
+  },
+  metaTags: {
+    marginTop: "0.5rem",
+    display: "flex",
+    gap: "0.5rem",
+  },
+  monoBadge: {
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+  },
+  smallHeading: {
+    fontFamily: fonts.display,
+    fontSize: "1rem",
+    fontWeight: 500,
+    color: colors.foreground,
+  },
+  split: {
+    display: "grid",
+    gap: "1.5rem",
+    "@media (min-width: 768px)": {
+      gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+    },
+  },
+  doCard: {
+    borderColor: "color-mix(in oklch, #22c55e, transparent 80%)",
+  },
+  dontCard: {
+    borderColor: "color-mix(in oklch, #ef4444, transparent 80%)",
+  },
+  doTitle: {
+    color: "#22c55e",
+  },
+  dontTitle: {
+    color: "#ef4444",
+  },
+  advice: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.75rem",
+  },
+  adviceTitle: {
+    fontSize: "0.875rem",
+    fontWeight: 500,
+    color: colors.foreground,
+  },
+  adviceCode: {
+    marginTop: "0.25rem",
+    display: "block",
+    borderRadius: radii.md,
+    backgroundColor: colors.muted,
+    padding: "0.5rem",
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+  },
+  adviceDontCode: {
+    marginTop: "0.25rem",
+    display: "block",
+    borderRadius: radii.md,
+    backgroundColor: colors.muted,
+    padding: "0.5rem",
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    color: "#ef4444",
+  },
+  adviceBody: {
+    marginTop: "0.25rem",
+    fontSize: "0.875rem",
+    color: colors.mutedForeground,
+    textWrap: "pretty",
+  },
+  palette: {
+    display: "grid",
+    gap: "1rem",
+    "@media (min-width: 640px)": {
+      gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+    },
+  },
+  swatchRow: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.5rem",
+  },
+  swatchMeta: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+  },
+  swatch: {
+    width: "2rem",
+    height: "2rem",
+    borderRadius: radii.md,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.border,
+  },
+  swatchAccent: {
+    backgroundColor: colors.accent,
+  },
+  swatchForeground: {
+    backgroundColor: colors.foreground,
+  },
+  swatchMuted: {
+    backgroundColor: colors.muted,
+  },
+  swatchBorder: {
+    backgroundColor: colors.border,
+  },
+  swatchMutedForeground: {
+    backgroundColor: colors.mutedForeground,
+  },
+  swatchBackground: {
+    backgroundColor: colors.background,
+  },
+  swatchName: {
+    fontSize: "0.875rem",
+    fontWeight: 500,
+    color: colors.foreground,
+  },
+  swatchCode: {
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    color: colors.mutedForeground,
+  },
+  swatchDesc: {
+    fontSize: "0.75rem",
+    color: colors.mutedForeground,
+    textWrap: "pretty",
+  },
+  spacingLabel: {
+    marginBottom: "0.5rem",
+    fontSize: "0.875rem",
+    fontWeight: 500,
+    color: colors.foreground,
+  },
+  spacingList: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.5rem",
+  },
+  spacingRow: {
+    display: "flex",
+    alignItems: "center",
+    gap: "1rem",
+  },
+  spacingSize: {
+    width: "4rem",
+  },
+  spacingBarWrap: {
+    flex: 1,
+  },
+  spacingBar: {
+    height: "1rem",
+    backgroundColor: colors.accent,
+  },
+  spacingCode: {
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    color: colors.mutedForeground,
+  },
+  row: {
+    display: "flex",
+    flexWrap: "wrap",
+    gap: "0.5rem",
+  },
+  preview: {
+    overflow: "hidden",
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.border,
+  },
+  frame: {
+    maxHeight: "16rem",
+  },
+  frameInner: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  },
+  snippet: {
+    marginTop: "1rem",
+    display: "block",
+    borderRadius: radii.md,
+    backgroundColor: colors.muted,
+    paddingInline: "0.75rem",
+    paddingBlock: "0.5rem",
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+    color: colors.mutedForeground,
+  },
+  slideType: {
+    fontSize: "0.875rem",
+    fontWeight: 500,
+    color: colors.foreground,
+  },
+  headlineDemo: {
+    fontSize: "1.5rem",
+    "@media (min-width: 768px)": {
+      fontSize: "1.875rem",
+    },
+  },
+  sublineDemo: {
+    fontSize: "1.125rem",
+  },
+  bodyDemo: {
+    fontSize: "1rem",
+  },
+  footnoteDemo: {
+    marginTop: 0,
+    paddingTop: 0,
+  },
+  listDemo: {
+    fontSize: "1rem",
+  },
+  variantLabel: {
+    marginBottom: "0.75rem",
+    fontSize: "0.875rem",
+    fontWeight: 500,
+    color: colors.foreground,
+  },
+});
+
 export default async function DesignSystemPage() {
   const t = await getTranslations("designSystem");
   return (
-    <div className="space-y-16">
-      {/* Overview */}
-      <section className="space-y-4">
-        <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">
-          {t("overview.title")}
-        </h2>
+    <div {...stylex.props(styles.page)}>
+      <section {...stylex.props(styles.overview)}>
+        <h2 {...stylex.props(styles.sectionTitle)}>{t("overview.title")}</h2>
         <Card>
-          <CardContent className="pt-6">
-            <p className="text-sm text-muted-foreground text-pretty">
-              {t("overview.description")}
-            </p>
+          <CardContent className={stylex.props(styles.cardPad).className}>
+            <p {...stylex.props(styles.muted)}>{t("overview.description")}</p>
           </CardContent>
         </Card>
       </section>
 
-      {/* Typography */}
-      <section className="space-y-6">
+      <section {...stylex.props(styles.section)}>
         <div>
-          <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">
+          <h2 {...stylex.props(styles.sectionTitle)}>
             {t("typography.title")}
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground text-pretty">
+          <p {...stylex.props(styles.sectionLead)}>
             {t("typography.description")}
           </p>
         </div>
@@ -66,26 +382,26 @@ export default async function DesignSystemPage() {
               {t("typography.scale.description")}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex items-baseline justify-between">
-                  <h3 className="font-display text-lg font-semibold text-foreground">
+          <CardContent className={stylex.props(styles.scaleStack).className}>
+            <div {...stylex.props(styles.scaleStack)}>
+              <div {...stylex.props(styles.scaleItem)}>
+                <div {...stylex.props(styles.scaleHeader)}>
+                  <h3 {...stylex.props(styles.scaleName)}>
                     {t("typography.scale.pageTitle.name")}
                   </h3>
-                  <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
-                    text-3xl sm:text-4xl
+                  <code {...stylex.props(styles.codeChip)}>
+                    1.875rem / 2.25rem
                   </code>
                 </div>
-                <p className="text-sm text-muted-foreground text-pretty">
+                <p {...stylex.props(styles.muted)}>
                   {t.rich("typography.scale.pageTitle.description", {
                     code: (chunks) => (
-                      <code className="font-mono text-xs">{chunks}</code>
+                      <code {...stylex.props(styles.inlineCode)}>{chunks}</code>
                     ),
                   })}
                 </p>
-                <div className="border-l-2 border-accent/50 pl-4">
-                  <h1 className="font-display text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
+                <div {...stylex.props(styles.example)}>
+                  <h1 {...stylex.props(styles.pageTitleExample)}>
                     {t("typography.scale.pageTitle.example")}
                   </h1>
                 </div>
@@ -93,20 +409,18 @@ export default async function DesignSystemPage() {
 
               <Separator />
 
-              <div className="space-y-2">
-                <div className="flex items-baseline justify-between">
-                  <h3 className="font-display text-lg font-semibold text-foreground">
+              <div {...stylex.props(styles.scaleItem)}>
+                <div {...stylex.props(styles.scaleHeader)}>
+                  <h3 {...stylex.props(styles.scaleName)}>
                     {t("typography.scale.sectionTitle.name")}
                   </h3>
-                  <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
-                    text-xl
-                  </code>
+                  <code {...stylex.props(styles.codeChip)}>1.25rem</code>
                 </div>
-                <p className="text-sm text-muted-foreground text-pretty">
+                <p {...stylex.props(styles.muted)}>
                   {t("typography.scale.sectionTitle.description")}
                 </p>
-                <div className="border-l-2 border-accent/50 pl-4">
-                  <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">
+                <div {...stylex.props(styles.example)}>
+                  <h2 {...stylex.props(styles.sectionTitle)}>
                     {t("typography.scale.sectionTitle.example")}
                   </h2>
                 </div>
@@ -114,24 +428,22 @@ export default async function DesignSystemPage() {
 
               <Separator />
 
-              <div className="space-y-2">
-                <div className="flex items-baseline justify-between">
-                  <h3 className="font-display text-lg font-semibold text-foreground">
+              <div {...stylex.props(styles.scaleItem)}>
+                <div {...stylex.props(styles.scaleHeader)}>
+                  <h3 {...stylex.props(styles.scaleName)}>
                     {t("typography.scale.bodyText.name")}
                   </h3>
-                  <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
-                    text-sm
-                  </code>
+                  <code {...stylex.props(styles.codeChip)}>0.875rem</code>
                 </div>
-                <p className="text-sm text-muted-foreground text-pretty">
+                <p {...stylex.props(styles.muted)}>
                   {t.rich("typography.scale.bodyText.description", {
                     code: (chunks) => (
-                      <code className="font-mono text-xs">{chunks}</code>
+                      <code {...stylex.props(styles.inlineCode)}>{chunks}</code>
                     ),
                   })}
                 </p>
-                <div className="border-l-2 border-accent/50 pl-4">
-                  <p className="text-sm text-muted-foreground leading-relaxed">
+                <div {...stylex.props(styles.example)}>
+                  <p {...stylex.props(styles.bodyExample)}>
                     {t("typography.scale.bodyText.example")}
                   </p>
                 </div>
@@ -139,28 +451,31 @@ export default async function DesignSystemPage() {
 
               <Separator />
 
-              <div className="space-y-2">
-                <div className="flex items-baseline justify-between">
-                  <h3 className="font-display text-lg font-semibold text-foreground">
+              <div {...stylex.props(styles.scaleItem)}>
+                <div {...stylex.props(styles.scaleHeader)}>
+                  <h3 {...stylex.props(styles.scaleName)}>
                     {t("typography.scale.metaText.name")}
                   </h3>
-                  <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
-                    text-xs font-mono
+                  <code {...stylex.props(styles.codeChip)}>
+                    0.75rem / fonts.mono
                   </code>
                 </div>
-                <p className="text-sm text-muted-foreground text-pretty">
+                <p {...stylex.props(styles.muted)}>
                   {t.rich("typography.scale.metaText.description", {
                     code: (chunks) => (
-                      <code className="font-mono text-xs">{chunks}</code>
+                      <code {...stylex.props(styles.inlineCode)}>{chunks}</code>
                     ),
                   })}
                 </p>
-                <div className="border-l-2 border-accent/50 pl-4">
-                  <time className="font-mono text-xs text-muted-foreground">
+                <div {...stylex.props(styles.example)}>
+                  <time {...stylex.props(styles.metaDate)}>
                     {t("typography.scale.metaText.exampleDate")}
                   </time>
-                  <div className="mt-2 flex gap-2">
-                    <Badge variant="outline" className="font-mono text-xs">
+                  <div {...stylex.props(styles.metaTags)}>
+                    <Badge
+                      variant="outline"
+                      className={stylex.props(styles.monoBadge).className}
+                    >
                       {t("typography.scale.metaText.exampleTag")}
                     </Badge>
                   </div>
@@ -169,24 +484,24 @@ export default async function DesignSystemPage() {
 
               <Separator />
 
-              <div className="space-y-2">
-                <div className="flex items-baseline justify-between">
-                  <h3 className="font-display text-lg font-semibold text-foreground">
+              <div {...stylex.props(styles.scaleItem)}>
+                <div {...stylex.props(styles.scaleHeader)}>
+                  <h3 {...stylex.props(styles.scaleName)}>
                     {t("typography.scale.smallHeading.name")}
                   </h3>
-                  <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
-                    text-base font-display
+                  <code {...stylex.props(styles.codeChip)}>
+                    1rem / fonts.display
                   </code>
                 </div>
-                <p className="text-sm text-muted-foreground text-pretty">
+                <p {...stylex.props(styles.muted)}>
                   {t.rich("typography.scale.smallHeading.description", {
                     code: (chunks) => (
-                      <code className="font-mono text-xs">{chunks}</code>
+                      <code {...stylex.props(styles.inlineCode)}>{chunks}</code>
                     ),
                   })}
                 </p>
-                <div className="border-l-2 border-accent/50 pl-4">
-                  <h3 className="font-display text-base font-medium text-foreground">
+                <div {...stylex.props(styles.example)}>
+                  <h3 {...stylex.props(styles.smallHeading)}>
                     {t("typography.scale.smallHeading.example")}
                   </h3>
                 </div>
@@ -195,28 +510,27 @@ export default async function DesignSystemPage() {
           </CardContent>
         </Card>
 
-        {/* Do's and Don'ts */}
-        <div className="grid gap-6 md:grid-cols-2">
-          <Card className="border-green-500/20">
+        <div {...stylex.props(styles.split)}>
+          <Card className={stylex.props(styles.doCard).className}>
             <CardHeader>
-              <CardTitle className="text-green-500">
+              <CardTitle className={stylex.props(styles.doTitle).className}>
                 {t("typography.dosAndDonts.do.title")}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className={stylex.props(styles.advice).className}>
               <div>
-                <p className="text-sm font-medium text-foreground">
+                <p {...stylex.props(styles.adviceTitle)}>
                   {t("typography.dosAndDonts.do.useCanonical.title")}
                 </p>
-                <code className="mt-1 block rounded bg-muted p-2 font-mono text-xs">
+                <code {...stylex.props(styles.adviceCode)}>
                   {t("typography.dosAndDonts.do.useCanonical.classes")}
                 </code>
               </div>
               <div>
-                <p className="text-sm font-medium text-foreground">
+                <p {...stylex.props(styles.adviceTitle)}>
                   {t("typography.dosAndDonts.do.maintainConsistency.title")}
                 </p>
-                <p className="mt-1 text-sm text-muted-foreground text-pretty">
+                <p {...stylex.props(styles.adviceBody)}>
                   {t(
                     "typography.dosAndDonts.do.maintainConsistency.description",
                   )}
@@ -225,26 +539,26 @@ export default async function DesignSystemPage() {
             </CardContent>
           </Card>
 
-          <Card className="border-red-500/20">
+          <Card className={stylex.props(styles.dontCard).className}>
             <CardHeader>
-              <CardTitle className="text-red-500">
+              <CardTitle className={stylex.props(styles.dontTitle).className}>
                 {t("typography.dosAndDonts.dont.title")}
               </CardTitle>
             </CardHeader>
-            <CardContent className="space-y-3">
+            <CardContent className={stylex.props(styles.advice).className}>
               <div>
-                <p className="text-sm font-medium text-foreground">
+                <p {...stylex.props(styles.adviceTitle)}>
                   {t("typography.dosAndDonts.dont.avoidArbitrary.title")}
                 </p>
-                <code className="mt-1 block rounded bg-muted p-2 font-mono text-xs text-red-500">
+                <code {...stylex.props(styles.adviceDontCode)}>
                   {t("typography.dosAndDonts.dont.avoidArbitrary.classes")}
                 </code>
               </div>
               <div>
-                <p className="text-sm font-medium text-foreground">
+                <p {...stylex.props(styles.adviceTitle)}>
                   {t("typography.dosAndDonts.dont.dontMix.title")}
                 </p>
-                <p className="mt-1 text-sm text-muted-foreground text-pretty">
+                <p {...stylex.props(styles.adviceBody)}>
                   {t("typography.dosAndDonts.dont.dontMix.description")}
                 </p>
               </div>
@@ -253,15 +567,10 @@ export default async function DesignSystemPage() {
         </div>
       </section>
 
-      {/* Colors */}
-      <section className="space-y-6">
+      <section {...stylex.props(styles.section)}>
         <div>
-          <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">
-            {t("colors.title")}
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground text-pretty">
-            {t("colors.description")}
-          </p>
+          <h2 {...stylex.props(styles.sectionTitle)}>{t("colors.title")}</h2>
+          <p {...stylex.props(styles.sectionLead)}>{t("colors.description")}</p>
         </div>
 
         <Card>
@@ -269,106 +578,115 @@ export default async function DesignSystemPage() {
             <CardTitle>{t("colors.palette.title")}</CardTitle>
             <CardDescription>{t("colors.palette.description")}</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="size-8 rounded border border-border bg-accent" />
+          <CardContent className={stylex.props(styles.scaleStack).className}>
+            <div {...stylex.props(styles.palette)}>
+              <div {...stylex.props(styles.swatchRow)}>
+                <div {...stylex.props(styles.swatchMeta)}>
+                  <div {...stylex.props(styles.swatch, styles.swatchAccent)} />
                   <div>
-                    <p className="text-sm font-medium text-foreground">
+                    <p {...stylex.props(styles.swatchName)}>
                       {t("colors.palette.accent.name")}
                     </p>
-                    <code className="font-mono text-xs text-muted-foreground">
-                      bg-accent
+                    <code {...stylex.props(styles.swatchCode)}>
+                      colors.accent
                     </code>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground text-pretty">
+                <p {...stylex.props(styles.swatchDesc)}>
                   {t("colors.palette.accent.description")}
                 </p>
               </div>
 
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="size-8 rounded border border-border bg-foreground" />
+              <div {...stylex.props(styles.swatchRow)}>
+                <div {...stylex.props(styles.swatchMeta)}>
+                  <div
+                    {...stylex.props(styles.swatch, styles.swatchForeground)}
+                  />
                   <div>
-                    <p className="text-sm font-medium text-foreground">
+                    <p {...stylex.props(styles.swatchName)}>
                       {t("colors.palette.foreground.name")}
                     </p>
-                    <code className="font-mono text-xs text-muted-foreground">
-                      text-foreground
+                    <code {...stylex.props(styles.swatchCode)}>
+                      colors.foreground
                     </code>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground text-pretty">
+                <p {...stylex.props(styles.swatchDesc)}>
                   {t("colors.palette.foreground.description")}
                 </p>
               </div>
 
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="size-8 rounded border border-border bg-muted" />
+              <div {...stylex.props(styles.swatchRow)}>
+                <div {...stylex.props(styles.swatchMeta)}>
+                  <div {...stylex.props(styles.swatch, styles.swatchMuted)} />
                   <div>
-                    <p className="text-sm font-medium text-foreground">
+                    <p {...stylex.props(styles.swatchName)}>
                       {t("colors.palette.muted.name")}
                     </p>
-                    <code className="font-mono text-xs text-muted-foreground">
-                      bg-muted
+                    <code {...stylex.props(styles.swatchCode)}>
+                      colors.muted
                     </code>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground text-pretty">
+                <p {...stylex.props(styles.swatchDesc)}>
                   {t("colors.palette.muted.description")}
                 </p>
               </div>
 
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="size-8 rounded border border-border bg-border" />
+              <div {...stylex.props(styles.swatchRow)}>
+                <div {...stylex.props(styles.swatchMeta)}>
+                  <div {...stylex.props(styles.swatch, styles.swatchBorder)} />
                   <div>
-                    <p className="text-sm font-medium text-foreground">
+                    <p {...stylex.props(styles.swatchName)}>
                       {t("colors.palette.border.name")}
                     </p>
-                    <code className="font-mono text-xs text-muted-foreground">
-                      border-border
+                    <code {...stylex.props(styles.swatchCode)}>
+                      colors.border
                     </code>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground text-pretty">
+                <p {...stylex.props(styles.swatchDesc)}>
                   {t("colors.palette.border.description")}
                 </p>
               </div>
 
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="size-8 rounded border border-border bg-muted-foreground" />
+              <div {...stylex.props(styles.swatchRow)}>
+                <div {...stylex.props(styles.swatchMeta)}>
+                  <div
+                    {...stylex.props(
+                      styles.swatch,
+                      styles.swatchMutedForeground,
+                    )}
+                  />
                   <div>
-                    <p className="text-sm font-medium text-foreground">
+                    <p {...stylex.props(styles.swatchName)}>
                       {t("colors.palette.mutedForeground.name")}
                     </p>
-                    <code className="font-mono text-xs text-muted-foreground">
-                      text-muted-foreground
+                    <code {...stylex.props(styles.swatchCode)}>
+                      colors.mutedForeground
                     </code>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground text-pretty">
+                <p {...stylex.props(styles.swatchDesc)}>
                   {t("colors.palette.mutedForeground.description")}
                 </p>
               </div>
 
-              <div className="space-y-2">
-                <div className="flex items-center gap-2">
-                  <div className="size-8 rounded border border-border bg-background" />
+              <div {...stylex.props(styles.swatchRow)}>
+                <div {...stylex.props(styles.swatchMeta)}>
+                  <div
+                    {...stylex.props(styles.swatch, styles.swatchBackground)}
+                  />
                   <div>
-                    <p className="text-sm font-medium text-foreground">
+                    <p {...stylex.props(styles.swatchName)}>
                       {t("colors.palette.background.name")}
                     </p>
-                    <code className="font-mono text-xs text-muted-foreground">
-                      bg-background
+                    <code {...stylex.props(styles.swatchCode)}>
+                      colors.background
                     </code>
                   </div>
                 </div>
-                <p className="text-xs text-muted-foreground text-pretty">
+                <p {...stylex.props(styles.swatchDesc)}>
                   {t("colors.palette.background.description")}
                 </p>
               </div>
@@ -377,13 +695,10 @@ export default async function DesignSystemPage() {
         </Card>
       </section>
 
-      {/* Spacing */}
-      <section className="space-y-6">
+      <section {...stylex.props(styles.section)}>
         <div>
-          <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">
-            {t("spacing.title")}
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground text-pretty">
+          <h2 {...stylex.props(styles.sectionTitle)}>{t("spacing.title")}</h2>
+          <p {...stylex.props(styles.sectionLead)}>
             {t("spacing.description")}
           </p>
         </div>
@@ -393,66 +708,69 @@ export default async function DesignSystemPage() {
             <CardTitle>{t("spacing.scale.title")}</CardTitle>
             <CardDescription>{t("spacing.scale.description")}</CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-4">
-              <div>
-                <p className="mb-2 text-sm font-medium text-foreground">
-                  {t("spacing.scale.commonValues")}
-                </p>
-                <div className="space-y-2">
-                  {[2, 3, 4, 6, 8, 12, 16].map((size) => (
-                    <div key={size} className="flex items-center gap-4">
-                      <div className="w-16">
-                        <code className="font-mono text-xs text-muted-foreground">
-                          {size * 4}px
-                        </code>
-                      </div>
-                      <div className="flex-1">
-                        <div
-                          className="h-4 bg-accent"
-                          style={{ width: `${size * 4}px` }}
-                        />
-                      </div>
-                      <code className="font-mono text-xs text-muted-foreground">
-                        gap-{size} | p-{size} | space-y-{size}
+          <CardContent className={stylex.props(styles.scaleStack).className}>
+            <div>
+              <p {...stylex.props(styles.spacingLabel)}>
+                {t("spacing.scale.commonValues")}
+              </p>
+              <div {...stylex.props(styles.spacingList)}>
+                {[2, 3, 4, 6, 8, 12, 16].map((size) => (
+                  <div key={size} {...stylex.props(styles.spacingRow)}>
+                    <div {...stylex.props(styles.spacingSize)}>
+                      <code {...stylex.props(styles.spacingCode)}>
+                        {size * 4}px
                       </code>
                     </div>
-                  ))}
-                </div>
+                    <div {...stylex.props(styles.spacingBarWrap)}>
+                      <div
+                        {...mergeSx(
+                          stylex.props(styles.spacingBar),
+                          undefined,
+                          {
+                            width: `${size * 4}px`,
+                          },
+                        )}
+                      />
+                    </div>
+                    <code {...stylex.props(styles.spacingCode)}>
+                      {size * 0.25}rem
+                    </code>
+                  </div>
+                ))}
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <div className="grid gap-6 md:grid-cols-2">
-          <Card className="border-green-500/20">
+        <div {...stylex.props(styles.split)}>
+          <Card className={stylex.props(styles.doCard).className}>
             <CardHeader>
-              <CardTitle className="text-green-500">
+              <CardTitle className={stylex.props(styles.doTitle).className}>
                 {t("spacing.dosAndDonts.do.title")}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground text-pretty">
+              <p {...stylex.props(styles.muted)}>
                 {t.rich("spacing.dosAndDonts.do.description", {
                   code: (chunks) => (
-                    <code className="font-mono text-xs">{chunks}</code>
+                    <code {...stylex.props(styles.inlineCode)}>{chunks}</code>
                   ),
                 })}
               </p>
             </CardContent>
           </Card>
 
-          <Card className="border-red-500/20">
+          <Card className={stylex.props(styles.dontCard).className}>
             <CardHeader>
-              <CardTitle className="text-red-500">
+              <CardTitle className={stylex.props(styles.dontTitle).className}>
                 {t("spacing.dosAndDonts.dont.title")}
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-sm text-muted-foreground text-pretty">
+              <p {...stylex.props(styles.muted)}>
                 {t.rich("spacing.dosAndDonts.dont.description", {
                   code: (chunks) => (
-                    <code className="font-mono text-xs">{chunks}</code>
+                    <code {...stylex.props(styles.inlineCode)}>{chunks}</code>
                   ),
                 })}
               </p>
@@ -461,13 +779,12 @@ export default async function DesignSystemPage() {
         </div>
       </section>
 
-      {/* Components */}
-      <section className="space-y-6">
+      <section {...stylex.props(styles.section)}>
         <div>
-          <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">
+          <h2 {...stylex.props(styles.sectionTitle)}>
             {t("components.title")}
           </h2>
-          <p className="mt-2 text-sm text-muted-foreground text-pretty">
+          <p {...stylex.props(styles.sectionLead)}>
             {t("components.description")}
           </p>
         </div>
@@ -479,8 +796,8 @@ export default async function DesignSystemPage() {
               {t("components.button.description")}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex flex-wrap gap-2">
+          <CardContent className={stylex.props(styles.scaleStack).className}>
+            <div {...stylex.props(styles.row)}>
               <Button>{t("components.button.variants.default")}</Button>
               <Button variant="outline">
                 {t("components.button.variants.outline")}
@@ -502,8 +819,8 @@ export default async function DesignSystemPage() {
               {t("components.badge.description")}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="flex flex-wrap gap-2">
+          <CardContent className={stylex.props(styles.scaleStack).className}>
+            <div {...stylex.props(styles.row)}>
               <Badge>{t("components.badge.variants.default")}</Badge>
               <Badge variant="outline">
                 {t("components.badge.variants.outline")}
@@ -516,39 +833,32 @@ export default async function DesignSystemPage() {
         </Card>
       </section>
 
-      {/* Slides */}
-      <section className="space-y-6">
+      <section {...stylex.props(styles.section)}>
         <div>
-          <h2 className="font-display text-xl font-semibold tracking-tight text-balance text-foreground">
-            {t("slides.title")}
-          </h2>
-          <p className="mt-2 text-sm text-muted-foreground text-pretty">
-            {t("slides.description")}
-          </p>
+          <h2 {...stylex.props(styles.sectionTitle)}>{t("slides.title")}</h2>
+          <p {...stylex.props(styles.sectionLead)}>{t("slides.description")}</p>
         </div>
 
-        {/* Slide Frame */}
         <Card>
           <CardHeader>
             <CardTitle>{t("slides.frame.title")}</CardTitle>
             <CardDescription>{t("slides.frame.description")}</CardDescription>
           </CardHeader>
           <CardContent>
-            <div className="overflow-hidden rounded-lg border border-border">
-              <SlideFrame className="max-h-64">
-                <div className="flex flex-col gap-4">
+            <div {...stylex.props(styles.preview)}>
+              <SlideFrame className={stylex.props(styles.frame).className}>
+                <div {...stylex.props(styles.frameInner)}>
                   <SlideHeadline>Example Slide</SlideHeadline>
                   <SlideSubline>16:9 aspect ratio canvas</SlideSubline>
                 </div>
               </SlideFrame>
             </div>
-            <code className="mt-4 block rounded bg-muted px-3 py-2 font-mono text-xs text-muted-foreground">
+            <code {...stylex.props(styles.snippet)}>
               {"<SlideFrame>...</SlideFrame>"}
             </code>
           </CardContent>
         </Card>
 
-        {/* Slide Typography */}
         <Card>
           <CardHeader>
             <CardTitle>{t("slides.typography.title")}</CardTitle>
@@ -556,19 +866,19 @@ export default async function DesignSystemPage() {
               {t("slides.typography.description")}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
-            <div className="space-y-4">
-              <div className="space-y-2">
-                <div className="flex items-baseline justify-between">
-                  <span className="text-sm font-medium text-foreground">
+          <CardContent className={stylex.props(styles.scaleStack).className}>
+            <div {...stylex.props(styles.scaleStack)}>
+              <div {...stylex.props(styles.scaleItem)}>
+                <div {...stylex.props(styles.scaleHeader)}>
+                  <span {...stylex.props(styles.slideType)}>
                     {t("slides.typography.headline")}
                   </span>
-                  <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
-                    SlideHeadline
-                  </code>
+                  <code {...stylex.props(styles.codeChip)}>SlideHeadline</code>
                 </div>
-                <div className="border-l-2 border-accent/50 pl-4">
-                  <SlideHeadline className="text-2xl md:text-3xl">
+                <div {...stylex.props(styles.example)}>
+                  <SlideHeadline
+                    className={stylex.props(styles.headlineDemo).className}
+                  >
                     Bold Statement Here
                   </SlideHeadline>
                 </div>
@@ -576,17 +886,17 @@ export default async function DesignSystemPage() {
 
               <Separator />
 
-              <div className="space-y-2">
-                <div className="flex items-baseline justify-between">
-                  <span className="text-sm font-medium text-foreground">
+              <div {...stylex.props(styles.scaleItem)}>
+                <div {...stylex.props(styles.scaleHeader)}>
+                  <span {...stylex.props(styles.slideType)}>
                     {t("slides.typography.subline")}
                   </span>
-                  <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
-                    SlideSubline
-                  </code>
+                  <code {...stylex.props(styles.codeChip)}>SlideSubline</code>
                 </div>
-                <div className="border-l-2 border-accent/50 pl-4">
-                  <SlideSubline className="text-lg">
+                <div {...stylex.props(styles.example)}>
+                  <SlideSubline
+                    className={stylex.props(styles.sublineDemo).className}
+                  >
                     Supporting tagline or subtitle
                   </SlideSubline>
                 </div>
@@ -594,17 +904,17 @@ export default async function DesignSystemPage() {
 
               <Separator />
 
-              <div className="space-y-2">
-                <div className="flex items-baseline justify-between">
-                  <span className="text-sm font-medium text-foreground">
+              <div {...stylex.props(styles.scaleItem)}>
+                <div {...stylex.props(styles.scaleHeader)}>
+                  <span {...stylex.props(styles.slideType)}>
                     {t("slides.typography.body")}
                   </span>
-                  <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
-                    SlideBody
-                  </code>
+                  <code {...stylex.props(styles.codeChip)}>SlideBody</code>
                 </div>
-                <div className="border-l-2 border-accent/50 pl-4">
-                  <SlideBody className="text-base">
+                <div {...stylex.props(styles.example)}>
+                  <SlideBody
+                    className={stylex.props(styles.bodyDemo).className}
+                  >
                     Body text for supporting paragraphs, readable at
                     presentation distance.
                   </SlideBody>
@@ -613,17 +923,17 @@ export default async function DesignSystemPage() {
 
               <Separator />
 
-              <div className="space-y-2">
-                <div className="flex items-baseline justify-between">
-                  <span className="text-sm font-medium text-foreground">
+              <div {...stylex.props(styles.scaleItem)}>
+                <div {...stylex.props(styles.scaleHeader)}>
+                  <span {...stylex.props(styles.slideType)}>
                     {t("slides.typography.footnote")}
                   </span>
-                  <code className="rounded bg-muted px-2 py-1 font-mono text-xs text-muted-foreground">
-                    SlideFootnote
-                  </code>
+                  <code {...stylex.props(styles.codeChip)}>SlideFootnote</code>
                 </div>
-                <div className="border-l-2 border-accent/50 pl-4">
-                  <SlideFootnote className="mt-0 pt-0">
+                <div {...stylex.props(styles.example)}>
+                  <SlideFootnote
+                    className={stylex.props(styles.footnoteDemo).className}
+                  >
                     Source: Example citation or footnote
                   </SlideFootnote>
                 </div>
@@ -632,7 +942,6 @@ export default async function DesignSystemPage() {
           </CardContent>
         </Card>
 
-        {/* Slide List */}
         <Card>
           <CardHeader>
             <CardTitle>{t("slides.list.title")}</CardTitle>
@@ -646,15 +955,14 @@ export default async function DesignSystemPage() {
                 "Third point with actionable item",
                 "Fourth point wrapping up the list",
               ]}
-              className="text-base"
+              className={stylex.props(styles.listDemo).className}
             />
-            <code className="mt-4 block rounded bg-muted px-3 py-2 font-mono text-xs text-muted-foreground">
+            <code {...stylex.props(styles.snippet)}>
               {'<SlideList items={["Item 1", "Item 2"]} />'}
             </code>
           </CardContent>
         </Card>
 
-        {/* Slide Breakdown */}
         <Card>
           <CardHeader>
             <CardTitle>{t("slides.breakdown.title")}</CardTitle>
@@ -662,11 +970,9 @@ export default async function DesignSystemPage() {
               {t("slides.breakdown.description")}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className={stylex.props(styles.scaleStack).className}>
             <div>
-              <p className="mb-3 text-sm font-medium text-foreground">
-                Bars variant:
-              </p>
+              <p {...stylex.props(styles.variantLabel)}>Bars variant:</p>
               <SlideBreakdown
                 items={[
                   { label: "Category A", value: 75 },
@@ -678,9 +984,7 @@ export default async function DesignSystemPage() {
             </div>
             <Separator />
             <div>
-              <p className="mb-3 text-sm font-medium text-foreground">
-                Stats variant:
-              </p>
+              <p {...stylex.props(styles.variantLabel)}>Stats variant:</p>
               <SlideBreakdown
                 items={[
                   { label: "Metric A", value: 85 },
@@ -693,7 +997,6 @@ export default async function DesignSystemPage() {
           </CardContent>
         </Card>
 
-        {/* Card Grid */}
         <Card>
           <CardHeader>
             <CardTitle>{t("slides.cardGrid.title")}</CardTitle>
@@ -723,7 +1026,6 @@ export default async function DesignSystemPage() {
           </CardContent>
         </Card>
 
-        {/* Timeline */}
         <Card>
           <CardHeader>
             <CardTitle>{t("slides.timeline.title")}</CardTitle>
@@ -731,11 +1033,9 @@ export default async function DesignSystemPage() {
               {t("slides.timeline.description")}
             </CardDescription>
           </CardHeader>
-          <CardContent className="space-y-6">
+          <CardContent className={stylex.props(styles.scaleStack).className}>
             <div>
-              <p className="mb-3 text-sm font-medium text-foreground">
-                Horizontal:
-              </p>
+              <p {...stylex.props(styles.variantLabel)}>Horizontal:</p>
               <SlideTimeline
                 events={[
                   {
@@ -755,9 +1055,7 @@ export default async function DesignSystemPage() {
             </div>
             <Separator />
             <div>
-              <p className="mb-3 text-sm font-medium text-foreground">
-                Vertical:
-              </p>
+              <p {...stylex.props(styles.variantLabel)}>Vertical:</p>
               <SlideTimeline
                 events={[
                   {

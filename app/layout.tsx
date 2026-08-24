@@ -1,5 +1,6 @@
 import "./globals.css";
 
+import * as stylex from "@stylexjs/stylex";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { JetBrains_Mono, Poppins, Space_Grotesk } from "next/font/google";
@@ -14,7 +15,8 @@ import { Toaster } from "@/components/ui/sonner";
 import { getAllPosts } from "@/lib/blog";
 import { baseMetadata } from "@/lib/metadata";
 import { type DeckMeta, listDecks } from "@/lib/slides";
-import { cn } from "@/lib/utils";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors } from "@/lib/stylex/tokens.stylex";
 
 export const metadata = baseMetadata;
 
@@ -34,6 +36,14 @@ const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
   weight: ["400"],
   variable: "--mono-family",
+});
+
+const styles = stylex.create({
+  body: {
+    minHeight: "100vh",
+    backgroundColor: colors.background,
+    color: colors.foreground,
+  },
 });
 
 type Props = {
@@ -62,20 +72,18 @@ export default async function RootLayout({ children }: Props) {
         )}
       </head>
       <body
-        className={cn(
-          spaceGrotesk.variable,
-          poppins.variable,
-          jetbrainsMono.variable,
-          "min-h-screen bg-background text-foreground antialiased",
+        {...mergeSx(
+          stylex.props(styles.body),
+          `${spaceGrotesk.variable} ${poppins.variable} ${jetbrainsMono.variable}`,
         )}
       >
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <NuqsAdapter>
-          <NextIntlClientProvider messages={messages}>
-            {children}
-            <CommandPalette posts={posts} decks={decks} />
-            <CookieNotice />
-          </NextIntlClientProvider>
+            <NextIntlClientProvider messages={messages}>
+              {children}
+              <CommandPalette posts={posts} decks={decks} />
+              <CookieNotice />
+            </NextIntlClientProvider>
           </NuqsAdapter>
           <Toaster position="bottom-center" />
         </ThemeProvider>

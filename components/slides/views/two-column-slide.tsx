@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import type { TwoColumnSlide } from "@/lib/slides/schema";
 import { SlideCanvas, SlideFrame } from "../slide-frame";
 import { SlideTwoColumn } from "../slide-two-column";
@@ -8,6 +9,12 @@ interface TwoColumnSlideViewProps {
   printMode?: boolean;
 }
 
+const styles = stylex.create({
+  canvas: {
+    gap: "2rem",
+  },
+});
+
 /**
  * TwoColumnSlideView renders side-by-side content comparison.
  */
@@ -17,7 +24,7 @@ export function TwoColumnSlideView({
 }: TwoColumnSlideViewProps) {
   return (
     <SlideFrame printMode={printMode}>
-      <SlideCanvas className="space-y-8">
+      <SlideCanvas className={stylex.props(styles.canvas).className}>
         <SlideHeadline>{slide.headline}</SlideHeadline>
 
         <SlideTwoColumn left={slide.left} right={slide.right} />

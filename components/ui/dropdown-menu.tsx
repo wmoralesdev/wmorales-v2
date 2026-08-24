@@ -1,10 +1,178 @@
 "use client";
 
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu";
+import * as stylex from "@stylexjs/stylex";
 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react";
 import type * as React from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
+const styles = stylex.create({
+  content: {
+    zIndex: 50,
+    maxHeight: "var(--radix-dropdown-menu-content-available-height)",
+    minWidth: "8rem",
+    transformOrigin: "var(--radix-dropdown-menu-content-transform-origin)",
+    overflowY: "auto",
+    overflowX: "hidden",
+    borderRadius: radii.md,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.border,
+    backgroundColor: colors.popover,
+    padding: "0.25rem",
+    color: colors.popoverForeground,
+    boxShadow:
+      "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    animationName: "fadeIn, zoomIn",
+    animationDuration: "150ms",
+    ":is([data-state=closed])": {
+      animationName: "fadeOut, zoomOut",
+    },
+  },
+  item: {
+    position: "relative",
+    display: "flex",
+    cursor: "default",
+    alignItems: "center",
+    gap: "0.5rem",
+    borderRadius: radii.sm,
+    paddingInline: "0.5rem",
+    paddingBlock: "0.375rem",
+    fontSize: "0.875rem",
+    outline: "none",
+    userSelect: "none",
+    ":focus": {
+      backgroundColor: colors.accent,
+      color: colors.accentForeground,
+    },
+    ":is([data-variant=destructive])": {
+      color: colors.destructive,
+    },
+    ":is([data-variant=destructive]):focus": {
+      backgroundColor: `color-mix(in oklch, ${colors.destructive}, transparent 90%)`,
+      color: colors.destructive,
+    },
+    ":is([data-disabled])": {
+      pointerEvents: "none",
+      opacity: 0.5,
+    },
+    ":is([data-inset=true])": {
+      paddingLeft: "2rem",
+    },
+  },
+  checkboxItem: {
+    position: "relative",
+    display: "flex",
+    cursor: "default",
+    alignItems: "center",
+    gap: "0.5rem",
+    borderRadius: radii.sm,
+    paddingBlock: "0.375rem",
+    paddingRight: "0.5rem",
+    paddingLeft: "2rem",
+    fontSize: "0.875rem",
+    outline: "none",
+    userSelect: "none",
+    ":focus": {
+      backgroundColor: colors.accent,
+      color: colors.accentForeground,
+    },
+    ":is([data-disabled])": {
+      pointerEvents: "none",
+      opacity: 0.5,
+    },
+  },
+  indicatorWrap: {
+    pointerEvents: "none",
+    position: "absolute",
+    left: "0.5rem",
+    display: "flex",
+    width: "0.875rem",
+    height: "0.875rem",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  icon: {
+    width: "1rem",
+    height: "1rem",
+    pointerEvents: "none",
+    flexShrink: 0,
+  },
+  radioIcon: {
+    width: "0.5rem",
+    height: "0.5rem",
+    fill: "currentColor",
+  },
+  label: {
+    paddingInline: "0.5rem",
+    paddingBlock: "0.375rem",
+    fontWeight: 500,
+    fontSize: "0.875rem",
+    ":is([data-inset=true])": {
+      paddingLeft: "2rem",
+    },
+  },
+  separator: {
+    marginInline: "-0.25rem",
+    marginBlock: "0.25rem",
+    height: "1px",
+    backgroundColor: colors.border,
+  },
+  shortcut: {
+    marginLeft: "auto",
+    color: colors.mutedForeground,
+    fontSize: "0.75rem",
+    letterSpacing: "0.1em",
+  },
+  subTrigger: {
+    display: "flex",
+    cursor: "default",
+    userSelect: "none",
+    alignItems: "center",
+    borderRadius: radii.sm,
+    paddingInline: "0.5rem",
+    paddingBlock: "0.375rem",
+    fontSize: "0.875rem",
+    outline: "none",
+    ":focus": {
+      backgroundColor: colors.accent,
+      color: colors.accentForeground,
+    },
+    ":is([data-state=open])": {
+      backgroundColor: colors.accent,
+      color: colors.accentForeground,
+    },
+    ":is([data-inset=true])": {
+      paddingLeft: "2rem",
+    },
+  },
+  subIcon: {
+    marginLeft: "auto",
+    width: "1rem",
+    height: "1rem",
+  },
+  subContent: {
+    zIndex: 50,
+    minWidth: "8rem",
+    transformOrigin: "var(--radix-dropdown-menu-content-transform-origin)",
+    overflow: "hidden",
+    borderRadius: radii.md,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.border,
+    backgroundColor: colors.popover,
+    padding: "0.25rem",
+    color: colors.popoverForeground,
+    boxShadow:
+      "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+    animationName: "fadeIn, zoomIn",
+    animationDuration: "150ms",
+    ":is([data-state=closed])": {
+      animationName: "fadeOut, zoomOut",
+    },
+  },
+});
 
 function DropdownMenu({
   ...props
@@ -34,17 +202,15 @@ function DropdownMenuTrigger({
 function DropdownMenuContent({
   className,
   sideOffset = 4,
+  style,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Content>) {
   return (
     <DropdownMenuPrimitive.Portal>
       <DropdownMenuPrimitive.Content
-        className={cn(
-          "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-(--radix-dropdown-menu-content-available-height) min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=closed]:animate-out data-[state=open]:animate-in",
-          className,
-        )}
         data-slot="dropdown-menu-content"
         sideOffset={sideOffset}
+        {...mergeSx(stylex.props(styles.content), className, style)}
         {...props}
       />
     </DropdownMenuPrimitive.Portal>
@@ -63,6 +229,7 @@ function DropdownMenuItem({
   className,
   inset,
   variant = "default",
+  style,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Item> & {
   inset?: boolean;
@@ -70,14 +237,10 @@ function DropdownMenuItem({
 }) {
   return (
     <DropdownMenuPrimitive.Item
-      className={cn(
-        // biome-ignore lint/nursery/useSortedClasses: breaks the build
-        "focus:bg-accent focus:text-accent-foreground data-[variant=destructive]:text-destructive data-[variant=destructive]:focus:bg-destructive/10 dark:data-[variant=destructive]:focus:bg-destructive/20 data-[variant=destructive]:focus:text-destructive data-[variant=destructive]:*:[svg]:!text-destructive [&_svg:not([class*='text-'])]:text-muted-foreground relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 data-[inset]:pl-8 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className,
-      )}
       data-inset={inset}
       data-slot="dropdown-menu-item"
       data-variant={variant}
+      {...mergeSx(stylex.props(styles.item), className, style)}
       {...props}
     />
   );
@@ -87,22 +250,19 @@ function DropdownMenuCheckboxItem({
   className,
   children,
   checked,
+  style,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.CheckboxItem>) {
   return (
     <DropdownMenuPrimitive.CheckboxItem
       checked={checked}
-      className={cn(
-        // biome-ignore lint/nursery/useSortedClasses: breaks the build
-        "focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className,
-      )}
       data-slot="dropdown-menu-checkbox-item"
+      {...mergeSx(stylex.props(styles.checkboxItem), className, style)}
       {...props}
     >
-      <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
+      <span {...stylex.props(styles.indicatorWrap)}>
         <DropdownMenuPrimitive.ItemIndicator>
-          <CheckIcon className="size-4" />
+          <CheckIcon {...stylex.props(styles.icon)} />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -124,21 +284,18 @@ function DropdownMenuRadioGroup({
 function DropdownMenuRadioItem({
   className,
   children,
+  style,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.RadioItem>) {
   return (
     <DropdownMenuPrimitive.RadioItem
-      className={cn(
-        // biome-ignore lint/nursery/useSortedClasses: breaks the build
-        "focus:bg-accent focus:text-accent-foreground relative flex cursor-default items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden select-none data-[disabled]:pointer-events-none data-[disabled]:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
-        className,
-      )}
       data-slot="dropdown-menu-radio-item"
+      {...mergeSx(stylex.props(styles.checkboxItem), className, style)}
       {...props}
     >
-      <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
+      <span {...stylex.props(styles.indicatorWrap)}>
         <DropdownMenuPrimitive.ItemIndicator>
-          <CircleIcon className="size-2 fill-current" />
+          <CircleIcon {...stylex.props(styles.radioIcon)} />
         </DropdownMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -149,18 +306,16 @@ function DropdownMenuRadioItem({
 function DropdownMenuLabel({
   className,
   inset,
+  style,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Label> & {
   inset?: boolean;
 }) {
   return (
     <DropdownMenuPrimitive.Label
-      className={cn(
-        "px-2 py-1.5 font-medium text-sm data-[inset]:pl-8",
-        className,
-      )}
       data-inset={inset}
       data-slot="dropdown-menu-label"
+      {...mergeSx(stylex.props(styles.label), className, style)}
       {...props}
     />
   );
@@ -168,12 +323,13 @@ function DropdownMenuLabel({
 
 function DropdownMenuSeparator({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Separator>) {
   return (
     <DropdownMenuPrimitive.Separator
-      className={cn("-mx-1 my-1 h-px bg-border", className)}
       data-slot="dropdown-menu-separator"
+      {...mergeSx(stylex.props(styles.separator), className, style)}
       {...props}
     />
   );
@@ -181,15 +337,13 @@ function DropdownMenuSeparator({
 
 function DropdownMenuShortcut({
   className,
+  style,
   ...props
 }: React.ComponentProps<"span">) {
   return (
     <span
-      className={cn(
-        "ml-auto text-muted-foreground text-xs tracking-widest",
-        className,
-      )}
       data-slot="dropdown-menu-shortcut"
+      {...mergeSx(stylex.props(styles.shortcut), className, style)}
       {...props}
     />
   );
@@ -205,37 +359,33 @@ function DropdownMenuSubTrigger({
   className,
   inset,
   children,
+  style,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.SubTrigger> & {
   inset?: boolean;
 }) {
   return (
     <DropdownMenuPrimitive.SubTrigger
-      className={cn(
-        "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-hidden focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[inset]:pl-8 data-[state=open]:text-accent-foreground",
-        className,
-      )}
       data-inset={inset}
       data-slot="dropdown-menu-sub-trigger"
+      {...mergeSx(stylex.props(styles.subTrigger), className, style)}
       {...props}
     >
       {children}
-      <ChevronRightIcon className="ml-auto size-4" />
+      <ChevronRightIcon {...stylex.props(styles.subIcon)} />
     </DropdownMenuPrimitive.SubTrigger>
   );
 }
 
 function DropdownMenuSubContent({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.SubContent>) {
   return (
     <DropdownMenuPrimitive.SubContent
-      className={cn(
-        "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[8rem] origin-(--radix-dropdown-menu-content-transform-origin) overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg data-[state=closed]:animate-out data-[state=open]:animate-in",
-        className,
-      )}
       data-slot="dropdown-menu-sub-content"
+      {...mergeSx(stylex.props(styles.subContent), className, style)}
       {...props}
     />
   );

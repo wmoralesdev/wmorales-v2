@@ -113,10 +113,10 @@
       "description": "La tipografía consistente crea jerarquía y mejora la legibilidad.",
       "scale": {
         "title": "Escala de Tipografía",
-        "description": "Usa estas clases canónicas en lugar de valores de píxeles arbitrarios.",
+        "description": "Usa estos valores de StyleX en lugar de tamaños de píxel arbitrarios.",
         "pageTitle": {
           "name": "Título de Página",
-          "description": "Encabezados principales de página. Usa con <code>font-display</code>.",
+          "description": "Encabezados principales de página. Usa con <code>fonts.display</code>.",
           "example": "Ejemplo de Título de Página"
         },
         "sectionTitle": {
@@ -126,18 +126,18 @@
         },
         "bodyText": {
           "name": "Texto del Cuerpo",
-          "description": "Texto del cuerpo por defecto, resúmenes y descripciones. Reemplaza <code>text-[13px]</code>.",
+          "description": "Texto del cuerpo por defecto, resúmenes y descripciones. Usa <code>0.875rem</code>.",
           "example": "Este es el texto del cuerpo usado para resúmenes, descripciones y contenido general. Proporciona buena legibilidad mientras mantiene una estética limpia y minimalista."
         },
         "metaText": {
           "name": "Texto Meta",
-          "description": "Fechas, etiquetas, rótulos y metadatos pequeños. Reemplaza <code>text-[11px]</code>.",
+          "description": "Fechas, etiquetas, rótulos y metadatos pequeños. Usa <code>0.75rem</code> con <code>fonts.mono</code>.",
           "exampleDate": "15 de enero de 2025",
           "exampleTag": "#etiqueta"
         },
         "smallHeading": {
           "name": "Encabezado Pequeño",
-          "description": "Encabezados pequeños, títulos de tarjetas y títulos de elementos de lista. Reemplaza <code>text-[15px]</code>.",
+          "description": "Encabezados pequeños, títulos de tarjetas y títulos de elementos de lista. Usa <code>1rem</code> con <code>fonts.display</code>.",
           "example": "Ejemplo de Encabezado Pequeño"
         }
       },
@@ -145,12 +145,12 @@
         "do": {
           "title": "Hacer",
           "useCanonical": {
-            "title": "Usa clases canónicas:",
-            "classes": "text-xs font-mono\ntext-sm\ntext-base font-display"
+            "title": "Usa valores canónicos de StyleX:",
+            "classes": "0.75rem / fonts.mono\n0.875rem\n1rem / fonts.display"
           },
           "maintainConsistency": {
             "title": "Mantén la consistencia:",
-            "description": "Usa las mismas clases de tipografía para el mismo propósito semántico en todas las páginas."
+            "description": "Usa los mismos estilos de tipografía de StyleX para el mismo propósito semántico en todas las páginas."
           }
         },
         "dont": {
@@ -203,13 +203,13 @@
       "description": "El espaciado consistente crea ritmo visual y jerarquía.",
       "scale": {
         "title": "Escala de Espaciado",
-        "description": "Usa la escala de espaciado de Tailwind para espacios y rellenos consistentes.",
+        "description": "Usa valores rem (0.5rem, 0.75rem, 1rem…) para espacios y rellenos consistentes.",
         "commonValues": "Valores de Espaciado Comunes"
       },
       "dosAndDonts": {
         "do": {
           "title": "Hacer",
-          "description": "Usa tokens de espaciado consistentes como <code>space-y-4</code>, <code>gap-6</code> y <code>p-8</code>."
+          "description": "Usa espaciado rem consistente como <code>1rem</code>, <code>1.5rem</code> y <code>2rem</code>."
         },
         "dont": {
           "title": "No hacer",
@@ -219,7 +219,7 @@
     },
     "components": {
       "title": "Componentes",
-      "description": "Componentes de UI reutilizables construidos con shadcn/ui y Tailwind CSS.",
+      "description": "Componentes de UI reutilizables construidos con primitivos Radix y StyleX.",
       "button": {
         "title": "Botón",
         "description": "Usa el componente Button para todas las acciones interactivas.",

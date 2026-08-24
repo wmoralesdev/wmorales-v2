@@ -113,10 +113,10 @@
       "description": "Consistent typography creates hierarchy and improves readability.",
       "scale": {
         "title": "Typography Scale",
-        "description": "Use these canonical classes instead of arbitrary pixel values.",
+        "description": "Use these StyleX values instead of arbitrary pixel sizes.",
         "pageTitle": {
           "name": "Page Title",
-          "description": "Main page headings. Use with <code>font-display</code>.",
+          "description": "Main page headings. Use with <code>fonts.display</code>.",
           "example": "Example Page Title"
         },
         "sectionTitle": {
@@ -126,18 +126,18 @@
         },
         "bodyText": {
           "name": "Body Text",
-          "description": "Default body text, summaries, and descriptions. Replaces <code>text-[13px]</code>.",
+          "description": "Default body text, summaries, and descriptions. Use <code>0.875rem</code>.",
           "example": "This is body text used for summaries, descriptions, and general content. It provides good readability while maintaining a clean, minimal aesthetic."
         },
         "metaText": {
           "name": "Meta Text",
-          "description": "Dates, tags, labels, and small metadata. Replaces <code>text-[11px]</code>.",
+          "description": "Dates, tags, labels, and small metadata. Use <code>0.75rem</code> with <code>fonts.mono</code>.",
           "exampleDate": "January 15, 2025",
           "exampleTag": "#tag"
         },
         "smallHeading": {
           "name": "Small Heading",
-          "description": "Small headings, card titles, and list item titles. Replaces <code>text-[15px]</code>.",
+          "description": "Small headings, card titles, and list item titles. Use <code>1rem</code> with <code>fonts.display</code>.",
           "example": "Small Heading Example"
         }
       },
@@ -145,12 +145,12 @@
         "do": {
           "title": "Do",
           "useCanonical": {
-            "title": "Use canonical classes:",
-            "classes": "text-xs font-mono\ntext-sm\ntext-base font-display"
+            "title": "Use canonical StyleX values:",
+            "classes": "0.75rem / fonts.mono\n0.875rem\n1rem / fonts.display"
           },
           "maintainConsistency": {
             "title": "Maintain consistency:",
-            "description": "Use the same typography classes for the same semantic purpose across all pages."
+            "description": "Use the same StyleX typography styles for the same semantic purpose across all pages."
           }
         },
         "dont": {
@@ -203,13 +203,13 @@
       "description": "Consistent spacing creates visual rhythm and hierarchy.",
       "scale": {
         "title": "Spacing Scale",
-        "description": "Use Tailwind's spacing scale for consistent gaps and padding.",
+        "description": "Use rem spacing values (0.5rem, 0.75rem, 1rem…) for consistent gaps and padding.",
         "commonValues": "Common Spacing Values"
       },
       "dosAndDonts": {
         "do": {
           "title": "Do",
-          "description": "Use consistent spacing tokens like <code>space-y-4</code>, <code>gap-6</code>, and <code>p-8</code>."
+          "description": "Use consistent rem spacing like <code>1rem</code>, <code>1.5rem</code>, and <code>2rem</code>."
         },
         "dont": {
           "title": "Don't",
@@ -219,7 +219,7 @@
     },
     "components": {
       "title": "Components",
-      "description": "Reusable UI components built with shadcn/ui and Tailwind CSS.",
+      "description": "Reusable UI components built with Radix primitives and StyleX.",
       "button": {
         "title": "Button",
         "description": "Use Button component for all interactive actions.",

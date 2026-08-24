@@ -1,4 +1,6 @@
-import { cn } from "@/lib/utils";
+import * as stylex from "@stylexjs/stylex";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, fonts, radii } from "@/lib/stylex/tokens.stylex";
 
 interface SlideListProps {
   items: string[];
@@ -8,6 +10,71 @@ interface SlideListProps {
    */
   numbered?: boolean;
 }
+
+const styles = stylex.create({
+  list: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+    fontSize: "1.125rem",
+    "@media (min-width: 768px)": {
+      fontSize: "1.25rem",
+    },
+  },
+  numbered: {
+    listStyleType: "decimal",
+    paddingLeft: "1.5rem",
+  },
+  bullets: {
+    listStyleType: "none",
+  },
+  item: {
+    display: "flex",
+    alignItems: "flex-start",
+    gap: "1rem",
+  },
+  bullet: {
+    marginTop: "0.5rem",
+    width: "0.5rem",
+    height: "0.5rem",
+    flexShrink: 0,
+    borderRadius: radii.full,
+    backgroundColor: colors.accent,
+  },
+  text: {
+    textWrap: "pretty",
+    color: colors.foreground,
+  },
+  steps: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  },
+  stepNumber: {
+    display: "flex",
+    width: "2.25rem",
+    height: "2.25rem",
+    flexShrink: 0,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: radii.full,
+    backgroundColor: colors.accent,
+    fontFamily: fonts.display,
+    fontSize: "0.875rem",
+    fontWeight: 700,
+    color: colors.accentForeground,
+    boxShadow: `0 10px 15px -3px color-mix(in oklch, ${colors.accent}, transparent 80%)`,
+  },
+  stepText: {
+    paddingTop: "0.375rem",
+    fontSize: "1.125rem",
+    textWrap: "pretty",
+    color: colors.foreground,
+    "@media (min-width: 768px)": {
+      fontSize: "1.25rem",
+    },
+  },
+});
 
 /**
  * SlideList renders bullet points or numbered lists for slides.
@@ -22,18 +89,15 @@ export function SlideList({
 
   return (
     <ListTag
-      className={cn(
-        "space-y-4 text-lg md:text-xl",
-        numbered ? "list-decimal pl-6" : "list-none",
+      {...mergeSx(
+        stylex.props(styles.list, numbered ? styles.numbered : styles.bullets),
         className,
       )}
     >
       {items.map((item) => (
-        <li key={item} className="flex items-start gap-4">
-          {!numbered && (
-            <span className="mt-2 size-2 shrink-0 rounded-full bg-accent" />
-          )}
-          <span className="text-pretty text-foreground">{item}</span>
+        <li key={item} {...stylex.props(styles.item)}>
+          {!numbered && <span {...stylex.props(styles.bullet)} />}
+          <span {...stylex.props(styles.text)}>{item}</span>
         </li>
       ))}
     </ListTag>
@@ -54,15 +118,11 @@ export function SlideNumberedSteps({
   className,
 }: SlideNumberedStepsProps) {
   return (
-    <ol className={cn("space-y-4", className)}>
+    <ol {...mergeSx(stylex.props(styles.steps), className)}>
       {steps.map((step, index) => (
-        <li key={step} className="flex items-start gap-4">
-          <span className="flex size-9 shrink-0 items-center justify-center rounded-full bg-accent font-display text-sm font-bold text-accent-foreground shadow-lg shadow-accent/20">
-            {index + 1}
-          </span>
-          <span className="pt-1.5 text-lg text-pretty text-foreground md:text-xl">
-            {step}
-          </span>
+        <li key={step} {...stylex.props(styles.item)}>
+          <span {...stylex.props(styles.stepNumber)}>{index + 1}</span>
+          <span {...stylex.props(styles.stepText)}>{step}</span>
         </li>
       ))}
     </ol>

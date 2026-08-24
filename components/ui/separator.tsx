@@ -1,25 +1,46 @@
 "use client";
 
 import * as SeparatorPrimitive from "@radix-ui/react-separator";
+import * as stylex from "@stylexjs/stylex";
 import type * as React from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
+const styles = stylex.create({
+  base: {
+    flexShrink: 0,
+    backgroundColor: colors.border,
+  },
+  horizontal: {
+    height: 1,
+    width: "100%",
+  },
+  vertical: {
+    height: "100%",
+    width: 1,
+  },
+});
 
 function Separator({
   className,
   orientation = "horizontal",
   decorative = true,
+  style,
   ...props
 }: React.ComponentProps<typeof SeparatorPrimitive.Root>) {
   return (
     <SeparatorPrimitive.Root
-      className={cn(
-        "shrink-0 bg-border data-[orientation=horizontal]:h-px data-[orientation=vertical]:h-full data-[orientation=horizontal]:w-full data-[orientation=vertical]:w-px",
-        className,
-      )}
       data-slot="separator"
       decorative={decorative}
       orientation={orientation}
+      {...mergeSx(
+        stylex.props(
+          styles.base,
+          orientation === "vertical" ? styles.vertical : styles.horizontal,
+        ),
+        className,
+        style,
+      )}
       {...props}
     />
   );

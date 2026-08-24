@@ -1,9 +1,39 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import * as TooltipPrimitive from "@radix-ui/react-tooltip";
 import type * as React from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
+const styles = stylex.create({
+  content: {
+    zIndex: 50,
+    width: "fit-content",
+    transformOrigin: "var(--radix-tooltip-content-transform-origin)",
+    textWrap: "balance",
+    borderRadius: radii.md,
+    backgroundColor: colors.primary,
+    paddingInline: "0.75rem",
+    paddingBlock: "0.375rem",
+    color: colors.primaryForeground,
+    fontSize: "0.75rem",
+    animationName: "fadeIn, zoomIn",
+    animationDuration: "150ms",
+    ":is([data-state=closed])": {
+      animationName: "fadeOut, zoomOut",
+    },
+  },
+  arrow: {
+    zIndex: 50,
+    width: "0.625rem",
+    height: "0.625rem",
+    transform: "translateY(calc(-50% - 2px)) rotate(45deg)",
+    borderRadius: "2px",
+    backgroundColor: colors.primary,
+    fill: colors.primary,
+  },
+});
 
 function TooltipProvider({
   delayDuration = 0,
@@ -38,21 +68,19 @@ function TooltipContent({
   className,
   sideOffset = 0,
   children,
+  style,
   ...props
 }: React.ComponentProps<typeof TooltipPrimitive.Content>) {
   return (
     <TooltipPrimitive.Portal>
       <TooltipPrimitive.Content
-        className={cn(
-          "fade-in-0 zoom-in-95 data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) animate-in text-balance rounded-md bg-primary px-3 py-1.5 text-primary-foreground text-xs data-[state=closed]:animate-out",
-          className,
-        )}
         data-slot="tooltip-content"
         sideOffset={sideOffset}
+        {...mergeSx(stylex.props(styles.content), className, style)}
         {...props}
       >
         {children}
-        <TooltipPrimitive.Arrow className="z-50 size-2.5 translate-y-[calc(-50%_-_2px)] rotate-45 rounded-[2px] bg-primary fill-primary" />
+        <TooltipPrimitive.Arrow {...stylex.props(styles.arrow)} />
       </TooltipPrimitive.Content>
     </TooltipPrimitive.Portal>
   );

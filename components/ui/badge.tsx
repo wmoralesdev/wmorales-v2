@@ -1,46 +1,100 @@
 import { Slot } from "@radix-ui/react-slot";
-import { cva, type VariantProps } from "class-variance-authority";
+import * as stylex from "@stylexjs/stylex";
 import type * as React from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
-
-const badgeVariants = cva(
-  "inline-flex w-fit shrink-0 items-center justify-center gap-1 overflow-hidden whitespace-nowrap rounded-md border px-2 py-0.5 font-medium text-xs transition-[color,box-shadow] focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 [&>svg]:pointer-events-none [&>svg]:size-3",
-  {
-    variants: {
-      variant: {
-        default:
-          "border-transparent bg-primary text-primary-foreground [a&]:hover:bg-primary/90",
-        secondary:
-          "border-transparent bg-secondary text-secondary-foreground [a&]:hover:bg-secondary/90",
-        destructive:
-          "border-transparent bg-destructive text-white focus-visible:ring-destructive/20 dark:bg-destructive/60 dark:focus-visible:ring-destructive/40 [a&]:hover:bg-destructive/90",
-        outline:
-          "text-foreground [a&]:hover:bg-accent [a&]:hover:text-accent-foreground",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
+const styles = stylex.create({
+  base: {
+    display: "inline-flex",
+    width: "fit-content",
+    flexShrink: 0,
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "0.25rem",
+    overflow: "hidden",
+    whiteSpace: "nowrap",
+    borderRadius: radii.md,
+    borderWidth: 1,
+    borderStyle: "solid",
+    paddingInline: "0.5rem",
+    paddingBlock: "0.125rem",
+    fontWeight: 500,
+    fontSize: "0.75rem",
+    transitionProperty: "color, box-shadow",
+    transitionDuration: "150ms",
+    ":focus-visible": {
+      borderColor: colors.ring,
+      boxShadow: `0 0 0 3px color-mix(in oklch, ${colors.ring}, transparent 50%)`,
     },
   },
-);
+  default: {
+    borderColor: "transparent",
+    backgroundColor: colors.primary,
+    color: colors.primaryForeground,
+  },
+  secondary: {
+    borderColor: "transparent",
+    backgroundColor: colors.secondary,
+    color: colors.secondaryForeground,
+  },
+  destructive: {
+    borderColor: "transparent",
+    backgroundColor: colors.destructive,
+    color: "white",
+  },
+  outline: {
+    borderColor: colors.border,
+    backgroundColor: "transparent",
+    color: colors.foreground,
+  },
+});
+
+export type BadgeVariant = "default" | "secondary" | "destructive" | "outline";
+
+const variantStyles = {
+  default: styles.default,
+  secondary: styles.secondary,
+  destructive: styles.destructive,
+  outline: styles.outline,
+} as const;
+
+export function badgeVariants({
+  variant = "default",
+  className,
+}: {
+  variant?: BadgeVariant;
+  className?: string;
+} = {}) {
+  return (
+    mergeSx(stylex.props(styles.base, variantStyles[variant]), className)
+      .className ?? ""
+  );
+}
 
 function Badge({
   className,
-  variant,
+  variant = "default",
   asChild = false,
+  style,
   ...props
-}: React.ComponentProps<"span"> &
-  VariantProps<typeof badgeVariants> & { asChild?: boolean }) {
+}: React.ComponentProps<"span"> & {
+  variant?: BadgeVariant;
+  asChild?: boolean;
+}) {
   const Comp = asChild ? Slot : "span";
 
   return (
     <Comp
-      className={cn(badgeVariants({ variant }), className)}
       data-slot="badge"
+      {...mergeSx(
+        stylex.props(styles.base, variantStyles[variant]),
+        className,
+        style,
+      )}
       {...props}
     />
   );
 }
 
-export { Badge, badgeVariants };
+export { Badge };

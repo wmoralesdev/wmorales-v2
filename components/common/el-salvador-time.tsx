@@ -1,7 +1,25 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
+import { colors, fonts } from "@/lib/stylex/tokens.stylex";
+
+const styles = stylex.create({
+  time: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.375rem",
+    fontFamily: fonts.mono,
+    color: `color-mix(in oklch, ${colors.mutedForeground}, transparent 20%)`,
+    fontSize: "0.875rem",
+  },
+  icon: {
+    width: "0.875rem",
+    height: "0.875rem",
+    flexShrink: 0,
+  },
+});
 
 export function ElSalvadorTime() {
   const [time, setTime] = useState<string>("");
@@ -37,8 +55,8 @@ export function ElSalvadorTime() {
   const Icon = isDaytime ? Sun : Moon;
 
   return (
-    <span className="flex items-center gap-1.5 font-mono text-muted-foreground/80 text-sm">
-      <Icon className="size-3.5 shrink-0" />
+    <span {...stylex.props(styles.time)}>
+      <Icon {...stylex.props(styles.icon)} />
       {time}
     </span>
   );

@@ -1,6 +1,9 @@
+import * as stylex from "@stylexjs/stylex";
 import { Globe, Mail, Phone, User } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { cn } from "@/lib/utils";
+import { icon } from "@/lib/stylex/icons";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors } from "@/lib/stylex/tokens.stylex";
 
 interface ContactInfo {
   name?: string;
@@ -15,6 +18,59 @@ interface SlideContactProps {
   compact?: boolean;
 }
 
+const styles = stylex.create({
+  card: {
+    borderColor: `color-mix(in oklch, ${colors.border}, transparent 40%)`,
+    backgroundColor: `color-mix(in oklch, ${colors.muted}, transparent 80%)`,
+  },
+  content: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.75rem",
+    padding: "1.5rem",
+  },
+  contentCompact: {
+    gap: "0.625rem",
+    padding: "1rem",
+  },
+  row: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.75rem",
+  },
+  rowCompact: {
+    gap: "0.625rem",
+  },
+  icon: {
+    color: colors.mutedForeground,
+  },
+  iconCompact: {
+    width: "0.875rem",
+    height: "0.875rem",
+    flexShrink: 0,
+    color: colors.mutedForeground,
+  },
+  name: {
+    fontWeight: 500,
+    color: colors.foreground,
+  },
+  nameCompact: {
+    fontSize: "0.875rem",
+    fontWeight: 500,
+    color: colors.foreground,
+  },
+  link: {
+    color: colors.accent,
+    textUnderlineOffset: "2px",
+    ":hover": {
+      textDecoration: "underline",
+    },
+  },
+  linkCompact: {
+    fontSize: "0.875rem",
+  },
+});
+
 /**
  * SlideContact renders contact information in a card format.
  * Used in CTA slides.
@@ -25,53 +81,69 @@ export function SlideContact({
   compact = false,
 }: SlideContactProps) {
   return (
-    <Card className={cn("border-border/60 bg-muted/20", className)}>
-      <CardContent className={cn(compact ? "space-y-2.5 p-4" : "space-y-3 p-6")}>
+    <Card className={mergeSx(stylex.props(styles.card), className).className}>
+      <CardContent
+        className={
+          stylex.props(styles.content, compact && styles.contentCompact)
+            .className
+        }
+      >
         {contact.name && (
-          <div className={cn("flex items-center", compact ? "gap-2.5" : "gap-3")}>
-            <User className={cn("text-muted-foreground", compact ? "size-3.5" : "size-4")} />
-            <span className={cn("text-foreground", compact ? "text-sm font-medium" : "font-medium")}>
+          <div {...stylex.props(styles.row, compact && styles.rowCompact)}>
+            <User
+              {...stylex.props(
+                compact ? styles.iconCompact : icon.md,
+                !compact && styles.icon,
+              )}
+            />
+            <span {...stylex.props(compact ? styles.nameCompact : styles.name)}>
               {contact.name}
             </span>
           </div>
         )}
-        <div className={cn("flex items-center", compact ? "gap-2.5" : "gap-3")}>
-          <Mail className={cn("text-muted-foreground", compact ? "size-3.5" : "size-4")} />
+        <div {...stylex.props(styles.row, compact && styles.rowCompact)}>
+          <Mail
+            {...stylex.props(
+              compact ? styles.iconCompact : icon.md,
+              !compact && styles.icon,
+            )}
+          />
           <a
             href={`mailto:${contact.email}`}
-            className={cn(
-              "text-accent underline-offset-2 hover:underline",
-              compact && "text-sm",
-            )}
+            {...stylex.props(styles.link, compact && styles.linkCompact)}
           >
             {contact.email}
           </a>
         </div>
         {contact.website && (
-          <div className={cn("flex items-center", compact ? "gap-2.5" : "gap-3")}>
-            <Globe className={cn("text-muted-foreground", compact ? "size-3.5" : "size-4")} />
+          <div {...stylex.props(styles.row, compact && styles.rowCompact)}>
+            <Globe
+              {...stylex.props(
+                compact ? styles.iconCompact : icon.md,
+                !compact && styles.icon,
+              )}
+            />
             <a
               href={contact.website}
               target="_blank"
               rel="noopener noreferrer"
-              className={cn(
-                "text-accent underline-offset-2 hover:underline",
-                compact && "text-sm",
-              )}
+              {...stylex.props(styles.link, compact && styles.linkCompact)}
             >
               {contact.website}
             </a>
           </div>
         )}
         {contact.phone && (
-          <div className={cn("flex items-center", compact ? "gap-2.5" : "gap-3")}>
-            <Phone className={cn("text-muted-foreground", compact ? "size-3.5" : "size-4")} />
+          <div {...stylex.props(styles.row, compact && styles.rowCompact)}>
+            <Phone
+              {...stylex.props(
+                compact ? styles.iconCompact : icon.md,
+                !compact && styles.icon,
+              )}
+            />
             <a
               href={`tel:${contact.phone}`}
-              className={cn(
-                "text-accent underline-offset-2 hover:underline",
-                compact && "text-sm",
-              )}
+              {...stylex.props(styles.link, compact && styles.linkCompact)}
             >
               {contact.phone}
             </a>

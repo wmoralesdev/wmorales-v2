@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import * as React from "react";
 import * as RechartsPrimitive from "recharts";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, fonts, radii } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
-
-// Format: { THEME_NAME: CSS_SELECTOR }
 const THEMES = { light: "", dark: ".dark" } as const;
 
 export type ChartConfig = {
@@ -35,7 +35,6 @@ function useChart() {
   return context;
 }
 
-// Helper to extract item config from a payload.
 function getPayloadConfigFromPayload(
   config: ChartConfig,
   payload: unknown,
@@ -73,6 +72,119 @@ function getPayloadConfigFromPayload(
     ? config[configLabelKey]
     : config[key as keyof typeof config];
 }
+
+const styles = stylex.create({
+  container: {
+    display: "flex",
+    aspectRatio: "16 / 9",
+    justifyContent: "center",
+    fontSize: "0.75rem",
+  },
+  tooltip: {
+    display: "grid",
+    minWidth: "8rem",
+    alignItems: "flex-start",
+    gap: "0.375rem",
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: `color-mix(in oklch, ${colors.border}, transparent 50%)`,
+    backgroundColor: colors.background,
+    paddingInline: "0.625rem",
+    paddingBlock: "0.375rem",
+    fontSize: "0.75rem",
+    boxShadow: "0 20px 25px -5px rgb(0 0 0 / 0.1)",
+  },
+  tooltipLabel: {
+    fontWeight: 500,
+  },
+  tooltipRows: {
+    display: "grid",
+    gap: "0.375rem",
+  },
+  tooltipRow: {
+    display: "flex",
+    width: "100%",
+    flexWrap: "wrap",
+    alignItems: "stretch",
+    gap: "0.5rem",
+  },
+  tooltipRowDot: {
+    alignItems: "center",
+  },
+  indicator: {
+    flexShrink: 0,
+    borderRadius: "2px",
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: "var(--color-border)",
+    backgroundColor: "var(--color-bg)",
+  },
+  indicatorDot: {
+    height: "0.625rem",
+    width: "0.625rem",
+  },
+  indicatorLine: {
+    width: "0.25rem",
+  },
+  indicatorDashed: {
+    width: 0,
+    borderWidth: "1.5px",
+    borderStyle: "dashed",
+    backgroundColor: "transparent",
+  },
+  indicatorDashedNested: {
+    marginBlock: "0.125rem",
+  },
+  tooltipValueRow: {
+    display: "flex",
+    flex: 1,
+    justifyContent: "space-between",
+    lineHeight: 1,
+  },
+  tooltipValueEnd: {
+    alignItems: "flex-end",
+  },
+  tooltipValueCenter: {
+    alignItems: "center",
+  },
+  tooltipValueStack: {
+    display: "grid",
+    gap: "0.375rem",
+  },
+  tooltipMuted: {
+    color: colors.mutedForeground,
+  },
+  tooltipValue: {
+    fontWeight: 500,
+    fontFamily: fonts.mono,
+    color: colors.foreground,
+    fontVariantNumeric: "tabular-nums",
+  },
+  legend: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "1rem",
+  },
+  legendTop: {
+    paddingBottom: "0.75rem",
+  },
+  legendBottom: {
+    paddingTop: "0.75rem",
+  },
+  legendItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.375rem",
+  },
+  legendSwatch: {
+    height: "0.5rem",
+    width: "0.5rem",
+    flexShrink: 0,
+    borderRadius: "2px",
+  },
+});
 
 const ChartStyle = ({ id, config }: { id: string; config: ChartConfig }) => {
   const colorConfig = Object.entries(config).filter(
@@ -113,6 +225,7 @@ function ChartContainer({
   className,
   children,
   config,
+  style,
   ...props
 }: React.ComponentProps<"div"> & {
   config: ChartConfig;
@@ -126,12 +239,9 @@ function ChartContainer({
   return (
     <ChartContext.Provider value={{ config }}>
       <div
-        className={cn(
-          'flex aspect-video justify-center text-xs [&_.recharts-cartesian-axis-tick_text]:fill-muted-foreground [&_.recharts-cartesian-grid_line[stroke="#ccc"]]:stroke-border/50 [&_.recharts-curve.recharts-tooltip-cursor]:stroke-border [&_.recharts-dot[stroke="#fff"]]:stroke-transparent [&_.recharts-layer]:outline-hidden [&_.recharts-polar-grid_[stroke="#ccc"]]:stroke-border [&_.recharts-radial-bar-background-sector]:fill-muted [&_.recharts-rectangle.recharts-tooltip-cursor]:fill-muted [&_.recharts-reference-line_[stroke="#ccc"]]:stroke-border [&_.recharts-sector[stroke="#fff"]]:stroke-transparent [&_.recharts-sector]:outline-hidden [&_.recharts-surface]:outline-hidden',
-          className,
-        )}
         data-chart={chartId}
         data-slot="chart"
+        {...mergeSx(stylex.props(styles.container), className, style)}
         {...props}
       >
         <ChartStyle config={config} id={chartId} />
@@ -159,6 +269,7 @@ function ChartTooltipContent({
   color,
   nameKey,
   labelKey,
+  style,
 }: React.ComponentProps<typeof RechartsPrimitive.Tooltip> &
   React.ComponentProps<"div"> & {
     hideLabel?: boolean;
@@ -187,7 +298,9 @@ function ChartTooltipContent({
 
     if (labelFormatter) {
       return (
-        <div className={cn("font-medium", labelClassName)}>
+        <div
+          {...mergeSx(stylex.props(styles.tooltipLabel), labelClassName)}
+        >
           {labelFormatter(value, payload)}
         </div>
       );
@@ -197,7 +310,11 @@ function ChartTooltipContent({
       return null;
     }
 
-    return <div className={cn("font-medium", labelClassName)}>{value}</div>;
+    return (
+      <div {...mergeSx(stylex.props(styles.tooltipLabel), labelClassName)}>
+        {value}
+      </div>
+    );
   }, [
     label,
     labelFormatter,
@@ -215,14 +332,9 @@ function ChartTooltipContent({
   const nestLabel = payload.length === 1 && indicator !== "dot";
 
   return (
-    <div
-      className={cn(
-        "grid min-w-[8rem] items-start gap-1.5 rounded-lg border border-border/50 bg-background px-2.5 py-1.5 text-xs shadow-xl",
-        className,
-      )}
-    >
+    <div {...mergeSx(stylex.props(styles.tooltip), className, style)}>
       {nestLabel ? null : tooltipLabel}
-      <div className="grid gap-1.5">
+      <div {...stylex.props(styles.tooltipRows)}>
         {payload.map((item: any, index: number) => {
           const key = `${nameKey || item.name || item.dataKey || "value"}`;
           const itemConfig = getPayloadConfigFromPayload(config, item, key);
@@ -230,11 +342,11 @@ function ChartTooltipContent({
 
           return (
             <div
-              className={cn(
-                "flex w-full flex-wrap items-stretch gap-2 [&>svg]:h-2.5 [&>svg]:w-2.5 [&>svg]:text-muted-foreground",
-                indicator === "dot" && "items-center",
-              )}
               key={item.dataKey}
+              {...stylex.props(
+                styles.tooltipRow,
+                indicator === "dot" && styles.tooltipRowDot,
+              )}
             >
               {formatter && item?.value !== undefined && item.name ? (
                 formatter(item.value, item.name, item, index, item.payload)
@@ -245,15 +357,14 @@ function ChartTooltipContent({
                   ) : (
                     !hideIndicator && (
                       <div
-                        className={cn(
-                          "shrink-0 rounded-[2px] border-(--color-border) bg-(--color-bg)",
-                          {
-                            "h-2.5 w-2.5": indicator === "dot",
-                            "w-1": indicator === "line",
-                            "w-0 border-[1.5px] border-dashed bg-transparent":
-                              indicator === "dashed",
-                            "my-0.5": nestLabel && indicator === "dashed",
-                          },
+                        {...stylex.props(
+                          styles.indicator,
+                          indicator === "dot" && styles.indicatorDot,
+                          indicator === "line" && styles.indicatorLine,
+                          indicator === "dashed" && styles.indicatorDashed,
+                          nestLabel &&
+                            indicator === "dashed" &&
+                            styles.indicatorDashedNested,
                         )}
                         style={
                           {
@@ -265,19 +376,21 @@ function ChartTooltipContent({
                     )
                   )}
                   <div
-                    className={cn(
-                      "flex flex-1 justify-between leading-none",
-                      nestLabel ? "items-end" : "items-center",
+                    {...stylex.props(
+                      styles.tooltipValueRow,
+                      nestLabel
+                        ? styles.tooltipValueEnd
+                        : styles.tooltipValueCenter,
                     )}
                   >
-                    <div className="grid gap-1.5">
+                    <div {...stylex.props(styles.tooltipValueStack)}>
                       {nestLabel ? tooltipLabel : null}
-                      <span className="text-muted-foreground">
+                      <span {...stylex.props(styles.tooltipMuted)}>
                         {itemConfig?.label || item.name}
                       </span>
                     </div>
                     {item.value && (
-                      <span className="font-medium font-mono text-foreground tabular-nums">
+                      <span {...stylex.props(styles.tooltipValue)}>
                         {item.value.toLocaleString()}
                       </span>
                     )}
@@ -300,6 +413,7 @@ function ChartLegendContent({
   payload,
   verticalAlign = "bottom",
   nameKey,
+  style,
 }: React.ComponentProps<"div"> &
   Pick<RechartsPrimitive.LegendProps, "verticalAlign"> & {
     // biome-ignore lint/suspicious/noExplicitAny: lib controlled
@@ -315,10 +429,13 @@ function ChartLegendContent({
 
   return (
     <div
-      className={cn(
-        "flex items-center justify-center gap-4",
-        verticalAlign === "top" ? "pb-3" : "pt-3",
+      {...mergeSx(
+        stylex.props(
+          styles.legend,
+          verticalAlign === "top" ? styles.legendTop : styles.legendBottom,
+        ),
         className,
+        style,
       )}
     >
       {/** biome-ignore lint/suspicious/noExplicitAny: lib controlled */}
@@ -327,17 +444,12 @@ function ChartLegendContent({
         const itemConfig = getPayloadConfigFromPayload(config, item, key);
 
         return (
-          <div
-            className={cn(
-              "flex items-center gap-1.5 [&>svg]:h-3 [&>svg]:w-3 [&>svg]:text-muted-foreground",
-            )}
-            key={item.value}
-          >
+          <div key={item.value} {...stylex.props(styles.legendItem)}>
             {itemConfig?.icon && !hideIcon ? (
               <itemConfig.icon />
             ) : (
               <div
-                className="h-2 w-2 shrink-0 rounded-[2px]"
+                {...stylex.props(styles.legendSwatch)}
                 style={{
                   backgroundColor: item.color,
                 }}

@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import { AlertCircle } from "lucide-react";
 import type { Metadata } from "next";
 import Link from "next/link";
@@ -7,12 +8,47 @@ import { LandscapeEnforcer } from "@/components/slides";
 import { SlidePlayer } from "@/components/slides/slide-player";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { listDeckSlugs, loadDeck } from "@/lib/slides";
+import { icon } from "@/lib/stylex/icons";
+import { colors, fonts } from "@/lib/stylex/tokens.stylex";
 
 export const dynamicParams = false;
 
 interface PageProps {
   params: Promise<{ deck: string; slide: string }>;
 }
+
+const styles = stylex.create({
+  error: {
+    marginInline: "auto",
+    maxWidth: "42rem",
+    paddingInline: "1.5rem",
+    paddingBlock: "4rem",
+  },
+  intro: {
+    marginBottom: "1rem",
+  },
+  list: {
+    listStylePosition: "inside",
+    listStyleType: "disc",
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.25rem",
+    fontFamily: fonts.mono,
+    fontSize: "0.75rem",
+  },
+  path: {
+    fontWeight: 600,
+  },
+  back: {
+    marginTop: "1rem",
+    display: "inline-block",
+    fontSize: "0.875rem",
+    color: colors.mutedForeground,
+    ":hover": {
+      color: colors.foreground,
+    },
+  },
+});
 
 export async function generateStaticParams() {
   const slugs = listDeckSlugs();
@@ -83,28 +119,25 @@ export default async function SlideViewPage({ params }: PageProps) {
     }
 
     return (
-      <div className="mx-auto max-w-2xl px-6 py-16">
+      <div {...stylex.props(styles.error)}>
         <Alert variant="destructive">
-          <AlertCircle className="size-4" />
+          <AlertCircle {...stylex.props(icon.md)} />
           <AlertTitle>Validation Error</AlertTitle>
           <AlertDescription>
-            <p className="mb-4">
+            <p {...stylex.props(styles.intro)}>
               The deck <code>{deckSlug}</code> has validation errors:
             </p>
-            <ul className="list-inside list-disc space-y-1 font-mono text-xs">
+            <ul {...stylex.props(styles.list)}>
               {result.errors.map((error) => (
                 <li key={`${error.path}-${error.message}`}>
-                  <span className="font-semibold">[{error.path}]</span>{" "}
+                  <span {...stylex.props(styles.path)}>[{error.path}]</span>{" "}
                   {error.message}
                 </li>
               ))}
             </ul>
           </AlertDescription>
         </Alert>
-        <Link
-          href="/slides"
-          className="mt-4 inline-block text-sm text-muted-foreground hover:text-foreground"
-        >
+        <Link href="/slides" {...stylex.props(styles.back)}>
           ← Back to all decks
         </Link>
       </div>

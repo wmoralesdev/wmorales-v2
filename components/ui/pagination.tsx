@@ -3,16 +3,61 @@ import {
   ChevronRightIcon,
   MoreHorizontalIcon,
 } from "lucide-react";
+import * as stylex from "@stylexjs/stylex";
 import type * as React from "react";
 import { type Button, buttonVariants } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { mergeSx } from "@/lib/stylex/sx";
 
-function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
+const styles = stylex.create({
+  nav: {
+    marginInline: "auto",
+    display: "flex",
+    width: "100%",
+    justifyContent: "center",
+  },
+  content: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    gap: "0.25rem",
+  },
+  previous: {
+    gap: "0.25rem",
+    paddingInline: "0.625rem",
+  },
+  next: {
+    gap: "0.25rem",
+    paddingInline: "0.625rem",
+  },
+  navLabel: {
+    display: "none",
+    "@media (min-width: 640px)": {
+      display: "block",
+    },
+  },
+  ellipsis: {
+    display: "flex",
+    width: "2.25rem",
+    height: "2.25rem",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  icon: {
+    width: "1rem",
+    height: "1rem",
+  },
+});
+
+function Pagination({
+  className,
+  style,
+  ...props
+}: React.ComponentProps<"nav">) {
   return (
     <nav
       aria-label="pagination"
-      className={cn("mx-auto flex w-full justify-center", className)}
       data-slot="pagination"
+      {...mergeSx(stylex.props(styles.nav), className, style)}
       {...props}
     />
   );
@@ -20,12 +65,13 @@ function Pagination({ className, ...props }: React.ComponentProps<"nav">) {
 
 function PaginationContent({
   className,
+  style,
   ...props
 }: React.ComponentProps<"ul">) {
   return (
     <ul
-      className={cn("flex flex-row items-center gap-1", className)}
       data-slot="pagination-content"
+      {...mergeSx(stylex.props(styles.content), className, style)}
       {...props}
     />
   );
@@ -44,20 +90,24 @@ function PaginationLink({
   className,
   isActive,
   size = "icon",
+  style,
   ...props
 }: PaginationLinkProps) {
   return (
     <a
       aria-current={isActive ? "page" : undefined}
-      className={cn(
-        buttonVariants({
-          variant: isActive ? "outline" : "ghost",
-          size,
-        }),
-        className,
-      )}
       data-active={isActive}
       data-slot="pagination-link"
+      {...mergeSx(
+        {
+          className: buttonVariants({
+            variant: isActive ? "outline" : "ghost",
+            size,
+          }),
+        },
+        className,
+        style,
+      )}
       {...props}
     />
   );
@@ -65,33 +115,35 @@ function PaginationLink({
 
 function PaginationPrevious({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) {
   return (
     <PaginationLink
       aria-label="Go to previous page"
-      className={cn("gap-1 px-2.5 sm:pl-2.5", className)}
       size="default"
+      {...mergeSx(stylex.props(styles.previous), className, style)}
       {...props}
     >
       <ChevronLeftIcon />
-      <span className="hidden sm:block">Previous</span>
+      <span {...stylex.props(styles.navLabel)}>Previous</span>
     </PaginationLink>
   );
 }
 
 function PaginationNext({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof PaginationLink>) {
   return (
     <PaginationLink
       aria-label="Go to next page"
-      className={cn("gap-1 px-2.5 sm:pr-2.5", className)}
       size="default"
+      {...mergeSx(stylex.props(styles.next), className, style)}
       {...props}
     >
-      <span className="hidden sm:block">Next</span>
+      <span {...stylex.props(styles.navLabel)}>Next</span>
       <ChevronRightIcon />
     </PaginationLink>
   );
@@ -99,16 +151,17 @@ function PaginationNext({
 
 function PaginationEllipsis({
   className,
+  style,
   ...props
 }: React.ComponentProps<"span">) {
   return (
     <span
       aria-hidden
-      className={cn("flex size-9 items-center justify-center", className)}
       data-slot="pagination-ellipsis"
+      {...mergeSx(stylex.props(styles.ellipsis), className, style)}
       {...props}
     >
-      <MoreHorizontalIcon className="size-4" />
+      <MoreHorizontalIcon {...stylex.props(styles.icon)} />
       <span className="sr-only">More pages</span>
     </span>
   );

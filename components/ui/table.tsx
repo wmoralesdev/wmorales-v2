@@ -1,91 +1,145 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import type * as React from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
+const styles = stylex.create({
+  container: {
+    position: "relative",
+    width: "100%",
+    overflowX: "auto",
+  },
+  table: {
+    width: "100%",
+    captionSide: "bottom",
+    fontSize: "0.875rem",
+  },
+  footer: {
+    borderTopWidth: 1,
+    borderTopStyle: "solid",
+    borderTopColor: colors.border,
+    backgroundColor: `color-mix(in oklch, ${colors.muted}, transparent 50%)`,
+    fontWeight: 500,
+  },
+  row: {
+    borderBottomWidth: 1,
+    borderBottomStyle: "solid",
+    borderBottomColor: colors.border,
+    transitionProperty: "background-color",
+    transitionDuration: "150ms",
+    ":hover": {
+      backgroundColor: `color-mix(in oklch, ${colors.muted}, transparent 50%)`,
+    },
+    ":is([data-state=selected])": {
+      backgroundColor: colors.muted,
+    },
+  },
+  head: {
+    height: "2.5rem",
+    whiteSpace: "nowrap",
+    paddingInline: "0.5rem",
+    textAlign: "left",
+    verticalAlign: "middle",
+    fontWeight: 500,
+    color: colors.foreground,
+  },
+  cell: {
+    whiteSpace: "nowrap",
+    padding: "0.5rem",
+    verticalAlign: "middle",
+  },
+  caption: {
+    marginTop: "1rem",
+    color: colors.mutedForeground,
+    fontSize: "0.875rem",
+  },
+});
 
-function Table({ className, ...props }: React.ComponentProps<"table">) {
+function Table({
+  className,
+  style,
+  ...props
+}: React.ComponentProps<"table">) {
   return (
-    <div
-      className="relative w-full overflow-x-auto"
-      data-slot="table-container"
-    >
+    <div data-slot="table-container" {...stylex.props(styles.container)}>
       <table
-        className={cn("w-full caption-bottom text-sm", className)}
         data-slot="table"
+        {...mergeSx(stylex.props(styles.table), className, style)}
         {...props}
       />
     </div>
   );
 }
 
-function TableHeader({ className, ...props }: React.ComponentProps<"thead">) {
+function TableHeader({
+  className,
+  style,
+  ...props
+}: React.ComponentProps<"thead">) {
   return (
     <thead
-      className={cn("[&_tr]:border-b", className)}
       data-slot="table-header"
+      {...mergeSx({}, className, style)}
       {...props}
     />
   );
 }
 
-function TableBody({ className, ...props }: React.ComponentProps<"tbody">) {
+function TableBody({
+  className,
+  style,
+  ...props
+}: React.ComponentProps<"tbody">) {
   return (
     <tbody
-      className={cn("[&_tr:last-child]:border-0", className)}
       data-slot="table-body"
+      {...mergeSx({}, className, style)}
       {...props}
     />
   );
 }
 
-function TableFooter({ className, ...props }: React.ComponentProps<"tfoot">) {
+function TableFooter({
+  className,
+  style,
+  ...props
+}: React.ComponentProps<"tfoot">) {
   return (
     <tfoot
-      className={cn(
-        "border-t bg-muted/50 font-medium [&>tr]:last:border-b-0",
-        className,
-      )}
       data-slot="table-footer"
+      {...mergeSx(stylex.props(styles.footer), className, style)}
       {...props}
     />
   );
 }
 
-function TableRow({ className, ...props }: React.ComponentProps<"tr">) {
+function TableRow({ className, style, ...props }: React.ComponentProps<"tr">) {
   return (
     <tr
-      className={cn(
-        "border-b transition-colors hover:bg-muted/50 data-[state=selected]:bg-muted",
-        className,
-      )}
       data-slot="table-row"
+      {...mergeSx(stylex.props(styles.row), className, style)}
       {...props}
     />
   );
 }
 
-function TableHead({ className, ...props }: React.ComponentProps<"th">) {
+function TableHead({ className, style, ...props }: React.ComponentProps<"th">) {
   return (
     <th
-      className={cn(
-        "h-10 whitespace-nowrap px-2 text-left align-middle font-medium text-foreground [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
-        className,
-      )}
       data-slot="table-head"
+      {...mergeSx(stylex.props(styles.head), className, style)}
       {...props}
     />
   );
 }
 
-function TableCell({ className, ...props }: React.ComponentProps<"td">) {
+function TableCell({ className, style, ...props }: React.ComponentProps<"td">) {
   return (
     <td
-      className={cn(
-        "whitespace-nowrap p-2 align-middle [&:has([role=checkbox])]:pr-0 [&>[role=checkbox]]:translate-y-[2px]",
-        className,
-      )}
       data-slot="table-cell"
+      {...mergeSx(stylex.props(styles.cell), className, style)}
       {...props}
     />
   );
@@ -93,12 +147,13 @@ function TableCell({ className, ...props }: React.ComponentProps<"td">) {
 
 function TableCaption({
   className,
+  style,
   ...props
 }: React.ComponentProps<"caption">) {
   return (
     <caption
-      className={cn("mt-4 text-muted-foreground text-sm", className)}
       data-slot="table-caption"
+      {...mergeSx(stylex.props(styles.caption), className, style)}
       {...props}
     />
   );

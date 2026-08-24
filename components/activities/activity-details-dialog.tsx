@@ -1,5 +1,6 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { CalendarDays, Clock, ExternalLink, MapPin } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -11,6 +12,8 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import type { ActivityRecord } from "@/lib/activities";
+import { icon } from "@/lib/stylex/icons";
+import { colors, fonts } from "@/lib/stylex/tokens.stylex";
 
 interface ActivityDetailsDialogProps {
   activity: ActivityRecord | null;
@@ -29,6 +32,72 @@ function formatActivityDate(date: Date): string {
     timeZone: "UTC",
   }).format(date);
 }
+
+const styles = stylex.create({
+  dialog: {
+    "@media (min-width: 640px)": {
+      maxWidth: "32rem",
+    },
+  },
+  title: {
+    fontFamily: fonts.display,
+    fontSize: "1.25rem",
+    fontWeight: 600,
+  },
+  description: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+    paddingTop: "0.25rem",
+  },
+  stack: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  },
+  meta: {
+    display: "flex",
+    flexWrap: "wrap",
+    alignItems: "center",
+    gap: "0.75rem",
+  },
+  metaItem: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.375rem",
+    fontSize: "0.875rem",
+    color: colors.mutedForeground,
+  },
+  field: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.25rem",
+  },
+  shortDescription: {
+    fontSize: "0.875rem",
+    fontWeight: 500,
+    color: colors.foreground,
+  },
+  fullDescription: {
+    fontSize: "0.875rem",
+    lineHeight: 1.625,
+    color: colors.mutedForeground,
+  },
+  cta: {
+    paddingTop: "0.5rem",
+  },
+  ctaButton: {
+    width: "100%",
+    "@media (min-width: 640px)": {
+      width: "auto",
+    },
+  },
+  ctaLink: {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: "0.5rem",
+  },
+});
 
 export function ActivityDetailsDialog({
   activity,
@@ -49,30 +118,32 @@ export function ActivityDetailsDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="max-w-lg">
+      <DialogContent className={stylex.props(styles.dialog).className}>
         <DialogHeader>
-          <DialogTitle className="font-display text-xl font-semibold">
+          <DialogTitle className={stylex.props(styles.title).className}>
             {activity.title}
           </DialogTitle>
-          <DialogDescription className="flex items-center gap-2 pt-1">
-            <CalendarDays className="size-4 shrink-0" />
+          <DialogDescription
+            className={stylex.props(styles.description).className}
+          >
+            <CalendarDays {...stylex.props(icon.md)} />
             {formattedDate}
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div {...stylex.props(styles.stack)}>
           {/* Time and Location */}
           {(activity.time || activity.location) && (
-            <div className="flex flex-wrap items-center gap-3">
+            <div {...stylex.props(styles.meta)}>
               {activity.time && (
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <Clock className="size-4 shrink-0" />
+                <div {...stylex.props(styles.metaItem)}>
+                  <Clock {...stylex.props(icon.md)} />
                   {activity.time}
                 </div>
               )}
               {activity.location && (
-                <div className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                  <MapPin className="size-4 shrink-0" />
+                <div {...stylex.props(styles.metaItem)}>
+                  <MapPin {...stylex.props(icon.md)} />
                   {activity.location}
                 </div>
               )}
@@ -81,8 +152,8 @@ export function ActivityDetailsDialog({
 
           {/* Short Description */}
           {activity.shortDescription && (
-            <div className="space-y-1">
-              <p className="text-sm font-medium text-foreground">
+            <div {...stylex.props(styles.field)}>
+              <p {...stylex.props(styles.shortDescription)}>
                 {activity.shortDescription}
               </p>
             </div>
@@ -90,8 +161,8 @@ export function ActivityDetailsDialog({
 
           {/* Full Description */}
           {activity.description && (
-            <div className="space-y-1">
-              <p className="text-sm leading-relaxed text-muted-foreground">
+            <div {...stylex.props(styles.field)}>
+              <p {...stylex.props(styles.fullDescription)}>
                 {activity.description}
               </p>
             </div>
@@ -99,21 +170,27 @@ export function ActivityDetailsDialog({
 
           {/* Luma URL CTA */}
           {activity.lumaUrl && (
-            <div className="pt-2">
+            <div {...stylex.props(styles.cta)}>
               {isPastEvent ? (
-                <Button disabled className="w-full sm:w-auto">
+                <Button
+                  disabled
+                  className={stylex.props(styles.ctaButton).className}
+                >
                   Event has ended
                 </Button>
               ) : (
-                <Button asChild className="w-full sm:w-auto">
+                <Button
+                  asChild
+                  className={stylex.props(styles.ctaButton).className}
+                >
                   <Link
                     href={activity.lumaUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="inline-flex items-center gap-2"
+                    {...stylex.props(styles.ctaLink)}
                   >
                     RSVP on Luma
-                    <ExternalLink className="size-4" />
+                    <ExternalLink {...stylex.props(icon.md)} />
                   </Link>
                 </Button>
               )}

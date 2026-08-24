@@ -1,5 +1,6 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { toast } from "sonner";
@@ -17,6 +18,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { fonts } from "@/lib/stylex/tokens.stylex";
 
 type FormState = {
   title: string;
@@ -51,6 +53,48 @@ function isShortcut(e: KeyboardEvent): boolean {
     ? e.metaKey && e.shiftKey && !e.altKey
     : e.ctrlKey && e.shiftKey && !e.altKey;
 }
+
+const styles = stylex.create({
+  dialog: {
+    "@media (min-width: 640px)": {
+      maxWidth: "36rem",
+    },
+  },
+  title: {
+    fontFamily: fonts.display,
+    fontSize: "1.25rem",
+    fontWeight: 600,
+  },
+  stack: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  },
+  field: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.5rem",
+  },
+  fieldFull: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.5rem",
+    gridColumn: "1 / -1",
+  },
+  grid: {
+    display: "grid",
+    gap: "1rem",
+    "@media (min-width: 640px)": {
+      gridTemplateColumns: "1fr 1fr",
+    },
+  },
+  actions: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    gap: "0.5rem",
+  },
+});
 
 export function ActivityAdminCreateDialog() {
   const router = useRouter();
@@ -162,16 +206,16 @@ export function ActivityAdminCreateDialog() {
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <DialogContent className="max-w-xl">
+      <DialogContent className={stylex.props(styles.dialog).className}>
         <DialogHeader>
-          <DialogTitle className="font-display text-xl font-semibold">
+          <DialogTitle className={stylex.props(styles.title).className}>
             Create activity
           </DialogTitle>
         </DialogHeader>
 
         {!unlocked ? (
-          <div className="space-y-4">
-            <div className="space-y-2">
+          <div {...stylex.props(styles.stack)}>
+            <div {...stylex.props(styles.field)}>
               <Label htmlFor="activity-admin-password">Password</Label>
               <Input
                 ref={passwordRef}
@@ -183,7 +227,7 @@ export function ActivityAdminCreateDialog() {
                 autoComplete="current-password"
               />
             </div>
-            <div className="flex items-center justify-end gap-2">
+            <div {...stylex.props(styles.actions)}>
               <Button
                 variant="secondary"
                 onClick={() => handleOpenChange(false)}
@@ -200,9 +244,9 @@ export function ActivityAdminCreateDialog() {
             </div>
           </div>
         ) : (
-          <div className="space-y-4">
-            <div className="grid gap-4 sm:grid-cols-2">
-              <div className="space-y-2 sm:col-span-2">
+          <div {...stylex.props(styles.stack)}>
+            <div {...stylex.props(styles.grid)}>
+              <div {...stylex.props(styles.fieldFull)}>
                 <Label htmlFor="activity-title">Title</Label>
                 <Input
                   id="activity-title"
@@ -214,7 +258,7 @@ export function ActivityAdminCreateDialog() {
                 />
               </div>
 
-              <div className="space-y-2">
+              <div {...stylex.props(styles.field)}>
                 <Label htmlFor="activity-date">Date</Label>
                 <Input
                   id="activity-date"
@@ -226,7 +270,7 @@ export function ActivityAdminCreateDialog() {
                 />
               </div>
 
-              <div className="space-y-2">
+              <div {...stylex.props(styles.field)}>
                 <Label htmlFor="activity-time">Time (optional)</Label>
                 <Input
                   id="activity-time"
@@ -238,7 +282,7 @@ export function ActivityAdminCreateDialog() {
                 />
               </div>
 
-              <div className="space-y-2 sm:col-span-2">
+              <div {...stylex.props(styles.fieldFull)}>
                 <Label htmlFor="activity-location">Location (optional)</Label>
                 <Input
                   id="activity-location"
@@ -250,7 +294,7 @@ export function ActivityAdminCreateDialog() {
                 />
               </div>
 
-              <div className="space-y-2 sm:col-span-2">
+              <div {...stylex.props(styles.fieldFull)}>
                 <Label htmlFor="activity-short-description">
                   Short description (optional)
                 </Label>
@@ -264,7 +308,7 @@ export function ActivityAdminCreateDialog() {
                 />
               </div>
 
-              <div className="space-y-2 sm:col-span-2">
+              <div {...stylex.props(styles.fieldFull)}>
                 <Label htmlFor="activity-description">Description</Label>
                 <Textarea
                   id="activity-description"
@@ -276,7 +320,7 @@ export function ActivityAdminCreateDialog() {
                 />
               </div>
 
-              <div className="space-y-2 sm:col-span-2">
+              <div {...stylex.props(styles.fieldFull)}>
                 <Label htmlFor="activity-luma-url">Luma URL (optional)</Label>
                 <Input
                   id="activity-luma-url"
@@ -289,7 +333,7 @@ export function ActivityAdminCreateDialog() {
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-2">
+            <div {...stylex.props(styles.actions)}>
               <Button
                 variant="secondary"
                 onClick={() => handleOpenChange(false)}

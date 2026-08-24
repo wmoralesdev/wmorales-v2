@@ -1,5 +1,6 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import {
   ChevronLeft,
   ChevronRight,
@@ -9,9 +10,11 @@ import {
 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTheme } from "next-themes";
-import { useCallback, useEffect } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ThemeToggle } from "@/components/common/theme-toggle";
 import { Button } from "@/components/ui/button";
+import { icon } from "@/lib/stylex/icons";
+import { colors, fonts } from "@/lib/stylex/tokens.stylex";
 
 interface SlideNavigationProps {
   deckSlug: string;
@@ -20,6 +23,74 @@ interface SlideNavigationProps {
   isFullscreen: boolean;
   onToggleFullscreen: () => void;
 }
+
+const styles = stylex.create({
+  fullscreenRoot: {
+    position: "fixed",
+    insetInline: 0,
+    bottom: 0,
+    zIndex: 50,
+    display: "flex",
+    height: "4rem",
+    flexDirection: "column",
+    justifyContent: "flex-end",
+  },
+  barWrap: {
+    transform: "translateY(100%)",
+    transitionProperty: "transform",
+    transitionDuration: "300ms",
+    transitionTimingFunction: "ease-out",
+  },
+  barWrapVisible: {
+    transform: "translateY(0)",
+  },
+  bar: {
+    display: "flex",
+    height: "3rem",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "1rem",
+    borderTopWidth: 1,
+    borderTopStyle: "solid",
+    borderTopColor: colors.border,
+    backgroundColor: `color-mix(in oklch, ${colors.background}, transparent 5%)`,
+    paddingInline: "1rem",
+    backdropFilter: "blur(4px)",
+  },
+  barSolid: {
+    display: "flex",
+    height: "3rem",
+    flexShrink: 0,
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "1rem",
+    borderTopWidth: 1,
+    borderTopStyle: "solid",
+    borderTopColor: colors.border,
+    backgroundColor: colors.background,
+    paddingInline: "1rem",
+  },
+  group: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+  },
+  counter: {
+    minWidth: "80px",
+    textAlign: "center",
+  },
+  counterText: {
+    fontFamily: fonts.mono,
+    fontSize: "0.875rem",
+    fontVariantNumeric: "tabular-nums",
+  },
+  printIcon: {
+    marginRight: "0.5rem",
+    width: "1rem",
+    height: "1rem",
+    flexShrink: 0,
+  },
+});
 
 export function SlideNavigation({
   deckSlug,
@@ -30,6 +101,7 @@ export function SlideNavigation({
 }: SlideNavigationProps) {
   const router = useRouter();
   const { resolvedTheme } = useTheme();
+  const [navHovered, setNavHovered] = useState(false);
   const printHref =
     resolvedTheme === "light" || resolvedTheme === "dark"
       ? `/slides/${deckSlug}/print?theme=${resolvedTheme}`
@@ -91,6 +163,8 @@ export function SlideNavigation({
           break;
         case "Escape":
           break;
+        default:
+          break;
       }
     };
 
@@ -102,10 +176,17 @@ export function SlideNavigation({
 
   if (isFullscreen) {
     return (
-      <div className="group fixed inset-x-0 bottom-0 z-50 flex h-16 flex-col justify-end">
-        <div className="translate-y-full transform transition-transform duration-300 ease-out group-hover:translate-y-0">
-          <div className="flex h-12 items-center justify-between gap-4 border-t border-border bg-background/95 px-4 backdrop-blur-sm">
-            <div className="flex items-center gap-2">
+      <nav
+        aria-label="Fullscreen slide controls"
+        onMouseEnter={() => setNavHovered(true)}
+        onMouseLeave={() => setNavHovered(false)}
+        {...stylex.props(styles.fullscreenRoot)}
+      >
+        <div
+          {...stylex.props(styles.barWrap, navHovered && styles.barWrapVisible)}
+        >
+          <div {...stylex.props(styles.bar)}>
+            <div {...stylex.props(styles.group)}>
               <Button
                 variant="outline"
                 size="icon"
@@ -113,10 +194,10 @@ export function SlideNavigation({
                 disabled={currentSlide === 0}
                 aria-label="Previous slide"
               >
-                <ChevronLeft className="size-4" />
+                <ChevronLeft {...stylex.props(icon.md)} />
               </Button>
-              <div className="min-w-[80px] text-center">
-                <span className="font-mono text-sm tabular-nums">
+              <div {...stylex.props(styles.counter)}>
+                <span {...stylex.props(styles.counterText)}>
                   {currentSlide + 1} / {totalSlides}
                 </span>
               </div>
@@ -127,10 +208,10 @@ export function SlideNavigation({
                 disabled={currentSlide === totalSlides - 1}
                 aria-label="Next slide"
               >
-                <ChevronRight className="size-4" />
+                <ChevronRight {...stylex.props(icon.md)} />
               </Button>
             </div>
-            <div className="flex items-center gap-2">
+            <div {...stylex.props(styles.group)}>
               <ThemeToggle />
               <Button
                 variant="outline"
@@ -138,24 +219,24 @@ export function SlideNavigation({
                 onClick={onToggleFullscreen}
                 aria-label="Exit fullscreen"
               >
-                <Minimize2 className="size-4" />
+                <Minimize2 {...stylex.props(icon.md)} />
               </Button>
               <Button variant="outline" size="sm" asChild>
                 <a href={printHref} target="_blank" rel="noopener">
-                  <Printer className="mr-2 size-4" />
+                  <Printer {...stylex.props(styles.printIcon)} />
                   Print
                 </a>
               </Button>
             </div>
           </div>
         </div>
-      </div>
+      </nav>
     );
   }
 
   return (
-    <div className="flex h-12 shrink-0 items-center justify-between gap-4 border-t border-border bg-background px-4">
-      <div className="flex items-center gap-2">
+    <div {...stylex.props(styles.barSolid)}>
+      <div {...stylex.props(styles.group)}>
         <Button
           variant="outline"
           size="icon"
@@ -163,11 +244,11 @@ export function SlideNavigation({
           disabled={currentSlide === 0}
           aria-label="Previous slide"
         >
-          <ChevronLeft className="size-4" />
+          <ChevronLeft {...stylex.props(icon.md)} />
         </Button>
 
-        <div className="min-w-[80px] text-center">
-          <span className="font-mono text-sm tabular-nums">
+        <div {...stylex.props(styles.counter)}>
+          <span {...stylex.props(styles.counterText)}>
             {currentSlide + 1} / {totalSlides}
           </span>
         </div>
@@ -179,11 +260,11 @@ export function SlideNavigation({
           disabled={currentSlide === totalSlides - 1}
           aria-label="Next slide"
         >
-          <ChevronRight className="size-4" />
+          <ChevronRight {...stylex.props(icon.md)} />
         </Button>
       </div>
 
-      <div className="flex items-center gap-2">
+      <div {...stylex.props(styles.group)}>
         <ThemeToggle />
         <Button
           variant="outline"
@@ -192,15 +273,15 @@ export function SlideNavigation({
           aria-label={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
         >
           {isFullscreen ? (
-            <Minimize2 className="size-4" />
+            <Minimize2 {...stylex.props(icon.md)} />
           ) : (
-            <Maximize2 className="size-4" />
+            <Maximize2 {...stylex.props(icon.md)} />
           )}
         </Button>
 
         <Button variant="outline" size="sm" asChild>
           <a href={printHref} target="_blank" rel="noopener">
-            <Printer className="mr-2 size-4" />
+            <Printer {...stylex.props(styles.printIcon)} />
             Print
           </a>
         </Button>

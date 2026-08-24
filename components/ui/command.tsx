@@ -1,5 +1,6 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { Command as CommandPrimitive } from "cmdk";
 import { SearchIcon } from "lucide-react";
 import type * as React from "react";
@@ -10,19 +11,113 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { cn } from "@/lib/utils";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
+
+const styles = stylex.create({
+  root: {
+    display: "flex",
+    height: "100%",
+    width: "100%",
+    flexDirection: "column",
+    overflow: "hidden",
+    borderRadius: radii.md,
+    backgroundColor: colors.popover,
+    color: colors.popoverForeground,
+  },
+  dialogContent: {
+    overflow: "hidden",
+    padding: 0,
+  },
+  inputWrapper: {
+    display: "flex",
+    height: "2.25rem",
+    alignItems: "center",
+    gap: "0.5rem",
+    borderBottomWidth: 1,
+    borderBottomStyle: "solid",
+    borderBottomColor: colors.border,
+    paddingInline: "0.75rem",
+  },
+  searchIcon: {
+    width: "1rem",
+    height: "1rem",
+    flexShrink: 0,
+    opacity: 0.5,
+  },
+  input: {
+    display: "flex",
+    height: "2.5rem",
+    width: "100%",
+    borderRadius: radii.md,
+    backgroundColor: "transparent",
+    paddingBlock: "0.75rem",
+    fontSize: "0.875rem",
+    outline: "none",
+    borderWidth: 0,
+    color: colors.foreground,
+    "::placeholder": {
+      color: colors.mutedForeground,
+    },
+    ":disabled": {
+      cursor: "not-allowed",
+      opacity: 0.5,
+    },
+  },
+  list: {
+    maxHeight: "300px",
+    overflowY: "auto",
+    overflowX: "hidden",
+  },
+  empty: {
+    paddingBlock: "1.5rem",
+    textAlign: "center",
+    fontSize: "0.875rem",
+  },
+  group: {
+    overflow: "hidden",
+    padding: "0.25rem",
+    color: colors.foreground,
+  },
+  separator: {
+    marginInline: "-0.25rem",
+    height: 1,
+    backgroundColor: colors.border,
+  },
+  item: {
+    position: "relative",
+    display: "flex",
+    cursor: "default",
+    userSelect: "none",
+    alignItems: "center",
+    gap: "0.5rem",
+    borderRadius: "0.125rem",
+    paddingInline: "0.5rem",
+    paddingBlock: "0.375rem",
+    fontSize: "0.875rem",
+    outline: "none",
+    ":is([data-selected=true])": {
+      backgroundColor: `color-mix(in oklch, ${colors.accent}, transparent 85%)`,
+      color: colors.accentForeground,
+    },
+  },
+  shortcut: {
+    marginLeft: "auto",
+    color: colors.mutedForeground,
+    fontSize: "0.75rem",
+    letterSpacing: "0.1em",
+  },
+});
 
 function Command({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof CommandPrimitive>) {
   return (
     <CommandPrimitive
-      className={cn(
-        "flex h-full w-full flex-col overflow-hidden rounded-md bg-popover text-popover-foreground",
-        className,
-      )}
       data-slot="command"
+      {...mergeSx(stylex.props(styles.root), className, style)}
       {...props}
     />
   );
@@ -48,12 +143,11 @@ function CommandDialog({
         <DialogDescription>{description}</DialogDescription>
       </DialogHeader>
       <DialogContent
-        className={cn("overflow-hidden p-0", className)}
+        className={className}
         showCloseButton={showCloseButton}
+        {...stylex.props(styles.dialogContent)}
       >
-        <Command className="**:data-[slot=command-input-wrapper]:h-12 [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group]:not([hidden])_~[cmdk-group]]:pt-0 [&_[cmdk-group]]:px-2 [&_[cmdk-input-wrapper]_svg]:h-5 [&_[cmdk-input-wrapper]_svg]:w-5 [&_[cmdk-input]]:h-12 [&_[cmdk-item]]:px-2 [&_[cmdk-item]]:py-3 [&_[cmdk-item]_svg]:h-5 [&_[cmdk-item]_svg]:w-5">
-          {children}
-        </Command>
+        <Command>{children}</Command>
       </DialogContent>
     </Dialog>
   );
@@ -61,20 +155,15 @@ function CommandDialog({
 
 function CommandInput({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Input>) {
   return (
-    <div
-      className="flex h-9 items-center gap-2 border-b px-3"
-      data-slot="command-input-wrapper"
-    >
-      <SearchIcon className="size-4 shrink-0 opacity-50" />
+    <div data-slot="command-input-wrapper" {...stylex.props(styles.inputWrapper)}>
+      <SearchIcon {...stylex.props(styles.searchIcon)} />
       <CommandPrimitive.Input
-        className={cn(
-          "flex h-10 w-full rounded-md bg-transparent py-3 text-sm outline-hidden placeholder:text-muted-foreground disabled:cursor-not-allowed disabled:opacity-50",
-          className,
-        )}
         data-slot="command-input"
+        {...mergeSx(stylex.props(styles.input), className, style)}
         {...props}
       />
     </div>
@@ -83,15 +172,13 @@ function CommandInput({
 
 function CommandList({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.List>) {
   return (
     <CommandPrimitive.List
-      className={cn(
-        "max-h-[300px] scroll-py-1 overflow-y-auto overflow-x-hidden",
-        className,
-      )}
       data-slot="command-list"
+      {...mergeSx(stylex.props(styles.list), className, style)}
       {...props}
     />
   );
@@ -102,8 +189,8 @@ function CommandEmpty({
 }: React.ComponentProps<typeof CommandPrimitive.Empty>) {
   return (
     <CommandPrimitive.Empty
-      className="py-6 text-center text-sm"
       data-slot="command-empty"
+      {...stylex.props(styles.empty)}
       {...props}
     />
   );
@@ -111,15 +198,13 @@ function CommandEmpty({
 
 function CommandGroup({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Group>) {
   return (
     <CommandPrimitive.Group
-      className={cn(
-        "overflow-hidden p-1 text-foreground [&_[cmdk-group-heading]]:px-2 [&_[cmdk-group-heading]]:py-1.5 [&_[cmdk-group-heading]]:font-medium [&_[cmdk-group-heading]]:text-muted-foreground [&_[cmdk-group-heading]]:text-xs",
-        className,
-      )}
       data-slot="command-group"
+      {...mergeSx(stylex.props(styles.group), className, style)}
       {...props}
     />
   );
@@ -127,12 +212,13 @@ function CommandGroup({
 
 function CommandSeparator({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Separator>) {
   return (
     <CommandPrimitive.Separator
-      className={cn("-mx-1 h-px bg-border", className)}
       data-slot="command-separator"
+      {...mergeSx(stylex.props(styles.separator), className, style)}
       {...props}
     />
   );
@@ -140,16 +226,13 @@ function CommandSeparator({
 
 function CommandItem({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof CommandPrimitive.Item>) {
   return (
     <CommandPrimitive.Item
-      className={cn(
-        // biome-ignore lint/nursery/useSortedClasses: breaks the build
-        "relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden [&_svg:not([class*= data-[disabled=true]:pointer-events-none data-[selected=true]:bg-accent data-[selected=true]:text-accent-foreground data-[disabled=true]:opacity-50'size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
-        className,
-      )}
       data-slot="command-item"
+      {...mergeSx(stylex.props(styles.item), className, style)}
       {...props}
     />
   );
@@ -157,15 +240,13 @@ function CommandItem({
 
 function CommandShortcut({
   className,
+  style,
   ...props
 }: React.ComponentProps<"span">) {
   return (
     <span
-      className={cn(
-        "ml-auto text-muted-foreground text-xs tracking-widest",
-        className,
-      )}
       data-slot="command-shortcut"
+      {...mergeSx(stylex.props(styles.shortcut), className, style)}
       {...props}
     />
   );

@@ -1,10 +1,76 @@
 "use client";
 
 import * as AccordionPrimitive from "@radix-ui/react-accordion";
+import * as stylex from "@stylexjs/stylex";
 import { ChevronDownIcon } from "lucide-react";
 import type * as React from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
+const styles = stylex.create({
+  item: {
+    borderBottomWidth: 1,
+    borderBottomStyle: "solid",
+    borderBottomColor: colors.border,
+    ":last-child": {
+      borderBottomWidth: 0,
+    },
+  },
+  header: {
+    display: "flex",
+  },
+  trigger: {
+    display: "flex",
+    flex: 1,
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    gap: "1rem",
+    borderRadius: radii.md,
+    paddingBlock: "1rem",
+    textAlign: "left",
+    fontWeight: 500,
+    fontSize: "0.875rem",
+    outline: "none",
+    transitionProperty: "all",
+    transitionDuration: "150ms",
+    backgroundColor: "transparent",
+    borderWidth: 0,
+    cursor: "pointer",
+    color: colors.foreground,
+    ":hover": {
+      textDecoration: "underline",
+    },
+    ":focus-visible": {
+      borderColor: colors.ring,
+      boxShadow: `0 0 0 3px color-mix(in oklch, ${colors.ring}, transparent 50%)`,
+    },
+    ":disabled": {
+      pointerEvents: "none",
+      opacity: 0.5,
+    },
+    ":is([data-state=open]) > svg": {
+      transform: "rotate(180deg)",
+    },
+  },
+  icon: {
+    pointerEvents: "none",
+    width: "1rem",
+    height: "1rem",
+    flexShrink: 0,
+    transform: "translateY(0.125rem)",
+    color: colors.mutedForeground,
+    transitionProperty: "transform",
+    transitionDuration: "200ms",
+  },
+  content: {
+    overflow: "hidden",
+    fontSize: "0.875rem",
+  },
+  contentInner: {
+    paddingTop: 0,
+    paddingBottom: "1rem",
+  },
+});
 
 function Accordion({
   ...props
@@ -14,12 +80,13 @@ function Accordion({
 
 function AccordionItem({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Item>) {
   return (
     <AccordionPrimitive.Item
-      className={cn("border-b last:border-b-0", className)}
       data-slot="accordion-item"
+      {...mergeSx(stylex.props(styles.item), className, style)}
       {...props}
     />
   );
@@ -28,20 +95,18 @@ function AccordionItem({
 function AccordionTrigger({
   className,
   children,
+  style,
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Trigger>) {
   return (
-    <AccordionPrimitive.Header className="flex">
+    <AccordionPrimitive.Header {...stylex.props(styles.header)}>
       <AccordionPrimitive.Trigger
-        className={cn(
-          "flex flex-1 items-start justify-between gap-4 rounded-md py-4 text-left font-medium text-sm outline-none transition-all hover:underline focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:pointer-events-none disabled:opacity-50 [&[data-state=open]>svg]:rotate-180",
-          className,
-        )}
         data-slot="accordion-trigger"
+        {...mergeSx(stylex.props(styles.trigger), className, style)}
         {...props}
       >
         {children}
-        <ChevronDownIcon className="pointer-events-none size-4 shrink-0 translate-y-0.5 text-muted-foreground transition-transform duration-200" />
+        <ChevronDownIcon {...stylex.props(styles.icon)} />
       </AccordionPrimitive.Trigger>
     </AccordionPrimitive.Header>
   );
@@ -50,15 +115,18 @@ function AccordionTrigger({
 function AccordionContent({
   className,
   children,
+  style,
   ...props
 }: React.ComponentProps<typeof AccordionPrimitive.Content>) {
   return (
     <AccordionPrimitive.Content
-      className="overflow-hidden text-sm data-[state=closed]:animate-accordion-up data-[state=open]:animate-accordion-down"
       data-slot="accordion-content"
+      {...stylex.props(styles.content)}
       {...props}
     >
-      <div className={cn("pt-0 pb-4", className)}>{children}</div>
+      <div {...mergeSx(stylex.props(styles.contentInner), className, style)}>
+        {children}
+      </div>
     </AccordionPrimitive.Content>
   );
 }

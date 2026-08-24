@@ -1,14 +1,61 @@
 "use client";
 
 import * as ToggleGroupPrimitive from "@radix-ui/react-toggle-group";
-import type { VariantProps } from "class-variance-authority";
+import * as stylex from "@stylexjs/stylex";
 import * as React from "react";
-import { toggleVariants } from "@/components/ui/toggle";
-import { cn } from "@/lib/utils";
+import {
+  type ToggleSize,
+  type ToggleVariant,
+  toggleVariants,
+} from "@/components/ui/toggle";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 
-const ToggleGroupContext = React.createContext<
-  VariantProps<typeof toggleVariants>
->({
+const styles = stylex.create({
+  root: {
+    display: "flex",
+    width: "fit-content",
+    alignItems: "center",
+    borderRadius: radii.md,
+    ":is([data-variant=outline])": {
+      boxShadow: "0 1px 2px rgb(0 0 0 / 0.05)",
+    },
+  },
+  item: {
+    minWidth: 0,
+    flex: 1,
+    flexShrink: 0,
+    borderRadius: 0,
+    boxShadow: "none",
+    ":first-child": {
+      borderTopLeftRadius: radii.md,
+      borderBottomLeftRadius: radii.md,
+    },
+    ":last-child": {
+      borderTopRightRadius: radii.md,
+      borderBottomRightRadius: radii.md,
+    },
+    ":focus": {
+      zIndex: 10,
+    },
+    ":focus-visible": {
+      zIndex: 10,
+    },
+    ":is([data-variant=outline])": {
+      borderLeftWidth: 0,
+    },
+    ":is([data-variant=outline]):first-child": {
+      borderLeftWidth: 1,
+      borderLeftStyle: "solid",
+      borderLeftColor: colors.input,
+    },
+  },
+});
+
+const ToggleGroupContext = React.createContext<{
+  size?: ToggleSize;
+  variant?: ToggleVariant;
+}>({
   size: "default",
   variant: "default",
 });
@@ -18,18 +65,18 @@ function ToggleGroup({
   variant,
   size,
   children,
+  style,
   ...props
-}: React.ComponentProps<typeof ToggleGroupPrimitive.Root> &
-  VariantProps<typeof toggleVariants>) {
+}: React.ComponentProps<typeof ToggleGroupPrimitive.Root> & {
+  variant?: ToggleVariant;
+  size?: ToggleSize;
+}) {
   return (
     <ToggleGroupPrimitive.Root
-      className={cn(
-        "group/toggle-group flex w-fit items-center rounded-md data-[variant=outline]:shadow-xs",
-        className,
-      )}
       data-size={size}
       data-slot="toggle-group"
       data-variant={variant}
+      {...mergeSx(stylex.props(styles.root), className, style)}
       {...props}
     >
       <ToggleGroupContext.Provider value={{ variant, size }}>
@@ -44,24 +91,31 @@ function ToggleGroupItem({
   children,
   variant,
   size,
+  style,
   ...props
-}: React.ComponentProps<typeof ToggleGroupPrimitive.Item> &
-  VariantProps<typeof toggleVariants>) {
+}: React.ComponentProps<typeof ToggleGroupPrimitive.Item> & {
+  variant?: ToggleVariant;
+  size?: ToggleSize;
+}) {
   const context = React.useContext(ToggleGroupContext);
+  const resolvedVariant = context.variant || variant;
+  const resolvedSize = context.size || size;
 
   return (
     <ToggleGroupPrimitive.Item
-      className={cn(
-        toggleVariants({
-          variant: context.variant || variant,
-          size: context.size || size,
-        }),
-        "min-w-0 flex-1 shrink-0 rounded-none shadow-none first:rounded-l-md last:rounded-r-md focus:z-10 focus-visible:z-10 data-[variant=outline]:border-l-0 data-[variant=outline]:first:border-l",
-        className,
-      )}
-      data-size={context.size || size}
+      data-size={resolvedSize}
       data-slot="toggle-group-item"
-      data-variant={context.variant || variant}
+      data-variant={resolvedVariant}
+      {...mergeSx(
+        {
+          className: toggleVariants({
+            variant: resolvedVariant,
+            size: resolvedSize,
+          }),
+        },
+        mergeSx(stylex.props(styles.item), className).className,
+        style,
+      )}
       {...props}
     >
       {children}

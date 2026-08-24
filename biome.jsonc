@@ -54,7 +54,7 @@
     "parser": {
       "cssModules": true,
       "allowWrongLineComments": true,
-      "tailwindDirectives": true
+      "tailwindDirectives": false
     }
   }
 }

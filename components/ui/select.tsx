@@ -1,43 +1,193 @@
 "use client";
 
 import * as SelectPrimitive from "@radix-ui/react-select";
+import * as stylex from "@stylexjs/stylex";
 import { CheckIcon, ChevronDownIcon, ChevronUpIcon } from "lucide-react";
 import type * as React from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
+const styles = stylex.create({
+  scrollButton: {
+    display: "flex",
+    cursor: "default",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingBlock: "0.25rem",
+  },
+  icon: {
+    width: "1rem",
+    height: "1rem",
+    pointerEvents: "none",
+    flexShrink: 0,
+  },
+  chevron: {
+    width: "1rem",
+    height: "1rem",
+    opacity: 0.5,
+  },
+  trigger: {
+    display: "flex",
+    width: "fit-content",
+    alignItems: "center",
+    justifyContent: "space-between",
+    gap: "0.5rem",
+    whiteSpace: "nowrap",
+    borderRadius: radii.md,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.input,
+    backgroundColor: "transparent",
+    paddingInline: "0.75rem",
+    paddingBlock: "0.5rem",
+    fontSize: "0.875rem",
+    boxShadow: "0 1px 2px rgb(0 0 0 / 0.05)",
+    outline: "none",
+    transitionProperty: "color, box-shadow, border-color",
+    transitionDuration: "150ms",
+    color: colors.foreground,
+    ":focus-visible": {
+      borderColor: colors.ring,
+      boxShadow: `0 0 0 3px color-mix(in oklch, ${colors.ring}, transparent 50%)`,
+    },
+    ":disabled": {
+      cursor: "not-allowed",
+      opacity: 0.5,
+    },
+    ":is([aria-invalid=true])": {
+      borderColor: colors.destructive,
+      boxShadow: `0 0 0 3px color-mix(in oklch, ${colors.destructive}, transparent 80%)`,
+    },
+    ":is([data-size=default])": {
+      height: "2.25rem",
+    },
+    ":is([data-size=sm])": {
+      height: "2rem",
+    },
+    ":is([data-placeholder])": {
+      color: colors.mutedForeground,
+    },
+  },
+  content: {
+    position: "relative",
+    zIndex: 50,
+    maxHeight: "var(--radix-select-content-available-height)",
+    minWidth: "8rem",
+    transformOrigin: "var(--radix-select-content-transform-origin)",
+    overflowY: "auto",
+    overflowX: "hidden",
+    borderRadius: radii.md,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.border,
+    backgroundColor: colors.popover,
+    color: colors.popoverForeground,
+    boxShadow:
+      "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    animationName: "fadeIn, zoomIn",
+    animationDuration: "150ms",
+    ":is([data-state=closed])": {
+      animationName: "fadeOut, zoomOut",
+    },
+  },
+  contentPopper: {
+    ":is([data-side=left])": {
+      transform: "translateX(-0.25rem)",
+    },
+    ":is([data-side=top])": {
+      transform: "translateY(-0.25rem)",
+    },
+    ":is([data-side=right])": {
+      transform: "translateX(0.25rem)",
+    },
+    ":is([data-side=bottom])": {
+      transform: "translateY(0.25rem)",
+    },
+  },
+  viewport: {
+    padding: "0.25rem",
+  },
+  viewportPopper: {
+    height: "var(--radix-select-trigger-height)",
+    width: "100%",
+    minWidth: "var(--radix-select-trigger-width)",
+    scrollMarginBlock: "0.25rem",
+  },
+  label: {
+    paddingInline: "0.5rem",
+    paddingBlock: "0.375rem",
+    color: colors.mutedForeground,
+    fontSize: "0.75rem",
+  },
+  item: {
+    position: "relative",
+    display: "flex",
+    width: "100%",
+    cursor: "default",
+    userSelect: "none",
+    alignItems: "center",
+    gap: "0.5rem",
+    borderRadius: radii.sm,
+    paddingBlock: "0.375rem",
+    paddingRight: "2rem",
+    paddingLeft: "0.5rem",
+    fontSize: "0.875rem",
+    outline: "none",
+    ":focus": {
+      backgroundColor: colors.accent,
+      color: colors.accentForeground,
+    },
+    ":is([data-disabled])": {
+      pointerEvents: "none",
+      opacity: 0.5,
+    },
+  },
+  itemIndicatorWrap: {
+    position: "absolute",
+    right: "0.5rem",
+    display: "flex",
+    width: "0.875rem",
+    height: "0.875rem",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  separator: {
+    marginInline: "-0.25rem",
+    pointerEvents: "none",
+    marginBlock: "0.25rem",
+    height: "1px",
+    backgroundColor: colors.border,
+  },
+});
 
 function SelectScrollUpButton({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.ScrollUpButton>) {
   return (
     <SelectPrimitive.ScrollUpButton
-      className={cn(
-        "flex cursor-default items-center justify-center py-1",
-        className,
-      )}
       data-slot="select-scroll-up-button"
+      {...mergeSx(stylex.props(styles.scrollButton), className, style)}
       {...props}
     >
-      <ChevronUpIcon className="size-4" />
+      <ChevronUpIcon {...stylex.props(styles.icon)} />
     </SelectPrimitive.ScrollUpButton>
   );
 }
 
 function SelectScrollDownButton({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.ScrollDownButton>) {
   return (
     <SelectPrimitive.ScrollDownButton
-      className={cn(
-        "flex cursor-default items-center justify-center py-1",
-        className,
-      )}
       data-slot="select-scroll-down-button"
+      {...mergeSx(stylex.props(styles.scrollButton), className, style)}
       {...props}
     >
-      <ChevronDownIcon className="size-4" />
+      <ChevronDownIcon {...stylex.props(styles.icon)} />
     </SelectPrimitive.ScrollDownButton>
   );
 }
@@ -64,24 +214,21 @@ function SelectTrigger({
   className,
   size = "default",
   children,
+  style,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Trigger> & {
   size?: "sm" | "default";
 }) {
   return (
     <SelectPrimitive.Trigger
-      className={cn(
-        // biome-ignore lint/nursery/useSortedClasses: breaks the build
-        "flex w-fit items-center justify-between gap-2 whitespace-nowrap rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs outline-none transition-[color,box-shadow] [&_svg:not([class*= focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 disabled:cursor-not-allowed disabled:opacity-50 aria-invalid:border-destructive aria-invalid:ring-destructive/20 data-[size=default]:h-9 data-[size=sm]:h-8 data-[placeholder]:text-muted-foreground *:data-[slot=select-value]:line-clamp-1 *:data-[slot=select-value]:flex *:data-[slot=select-value]:items-center *:data-[slot=select-value]:gap-2 dark:bg-input/30 dark:aria-invalid:ring-destructive/40 dark:hover:bg-input/50'size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
-        className,
-      )}
       data-size={size}
       data-slot="select-trigger"
+      {...mergeSx(stylex.props(styles.trigger), className, style)}
       {...props}
     >
       {children}
       <SelectPrimitive.Icon asChild>
-        <ChevronDownIcon className="size-4 opacity-50" />
+        <ChevronDownIcon {...stylex.props(styles.chevron)} />
       </SelectPrimitive.Icon>
     </SelectPrimitive.Trigger>
   );
@@ -91,27 +238,29 @@ function SelectContent({
   className,
   children,
   position = "popper",
+  style,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Content>) {
   return (
     <SelectPrimitive.Portal>
       <SelectPrimitive.Content
-        className={cn(
-          "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 max-h-(--radix-select-content-available-height) min-w-[8rem] origin-(--radix-select-content-transform-origin) overflow-y-auto overflow-x-hidden rounded-md border bg-popover text-popover-foreground shadow-md data-[state=closed]:animate-out data-[state=open]:animate-in",
-          position === "popper" &&
-            "data-[side=left]:-translate-x-1 data-[side=top]:-translate-y-1 data-[side=right]:translate-x-1 data-[side=bottom]:translate-y-1",
-          className,
-        )}
         data-slot="select-content"
         position={position}
+        {...mergeSx(
+          stylex.props(
+            styles.content,
+            position === "popper" && styles.contentPopper,
+          ),
+          className,
+          style,
+        )}
         {...props}
       >
         <SelectScrollUpButton />
         <SelectPrimitive.Viewport
-          className={cn(
-            "p-1",
-            position === "popper" &&
-              "h-[var(--radix-select-trigger-height)] w-full min-w-[var(--radix-select-trigger-width)] scroll-my-1",
+          {...stylex.props(
+            styles.viewport,
+            position === "popper" && styles.viewportPopper,
           )}
         >
           {children}
@@ -124,12 +273,13 @@ function SelectContent({
 
 function SelectLabel({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Label>) {
   return (
     <SelectPrimitive.Label
-      className={cn("px-2 py-1.5 text-muted-foreground text-xs", className)}
       data-slot="select-label"
+      {...mergeSx(stylex.props(styles.label), className, style)}
       {...props}
     />
   );
@@ -138,21 +288,18 @@ function SelectLabel({
 function SelectItem({
   className,
   children,
+  style,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Item>) {
   return (
     <SelectPrimitive.Item
-      className={cn(
-        // biome-ignore lint/nursery/useSortedClasses: breaks the build
-        "relative flex w-full cursor-default select-none items-center gap-2 rounded-sm py-1.5 pr-8 pl-2 text-sm outline-hidden [&_svg:not([class*= focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50'size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 *:[span]:last:flex *:[span]:last:items-center *:[span]:last:gap-2",
-        className,
-      )}
       data-slot="select-item"
+      {...mergeSx(stylex.props(styles.item), className, style)}
       {...props}
     >
-      <span className="absolute right-2 flex size-3.5 items-center justify-center">
+      <span {...stylex.props(styles.itemIndicatorWrap)}>
         <SelectPrimitive.ItemIndicator>
-          <CheckIcon className="size-4" />
+          <CheckIcon {...stylex.props(styles.icon)} />
         </SelectPrimitive.ItemIndicator>
       </span>
       <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>
@@ -162,12 +309,13 @@ function SelectItem({
 
 function SelectSeparator({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof SelectPrimitive.Separator>) {
   return (
     <SelectPrimitive.Separator
-      className={cn("-mx-1 pointer-events-none my-1 h-px bg-border", className)}
       data-slot="select-separator"
+      {...mergeSx(stylex.props(styles.separator), className, style)}
       {...props}
     />
   );

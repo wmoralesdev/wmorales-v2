@@ -4,9 +4,74 @@ import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react";
 import { ArrowLeft, ArrowRight } from "lucide-react";
+import * as stylex from "@stylexjs/stylex";
 import * as React from "react";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { mergeSx } from "@/lib/stylex/sx";
+import { radii } from "@/lib/stylex/tokens.stylex";
+
+const styles = stylex.create({
+  root: {
+    position: "relative",
+  },
+  viewport: {
+    overflow: "hidden",
+  },
+  content: {
+    display: "flex",
+  },
+  contentHorizontal: {
+    marginLeft: "-1rem",
+  },
+  contentVertical: {
+    marginTop: "-1rem",
+    flexDirection: "column",
+  },
+  item: {
+    minWidth: 0,
+    flexShrink: 0,
+    flexGrow: 0,
+    flexBasis: "100%",
+  },
+  itemHorizontal: {
+    paddingLeft: "1rem",
+  },
+  itemVertical: {
+    paddingTop: "1rem",
+  },
+  previous: {
+    position: "absolute",
+    width: "2rem",
+    height: "2rem",
+    borderRadius: radii.full,
+  },
+  previousHorizontal: {
+    left: "-3rem",
+    top: "50%",
+    transform: "translateY(-50%)",
+  },
+  previousVertical: {
+    top: "-3rem",
+    left: "50%",
+    transform: "translateX(-50%) rotate(90deg)",
+  },
+  next: {
+    position: "absolute",
+    width: "2rem",
+    height: "2rem",
+    borderRadius: radii.full,
+  },
+  nextHorizontal: {
+    right: "-3rem",
+    top: "50%",
+    transform: "translateY(-50%)",
+  },
+  nextVertical: {
+    bottom: "-3rem",
+    left: "50%",
+    transform: "translateX(-50%) rotate(90deg)",
+  },
+});
 
 type CarouselApi = UseEmblaCarouselType[1];
 type UseCarouselParameters = Parameters<typeof useEmblaCarousel>;
@@ -48,6 +113,7 @@ function Carousel({
   plugins,
   className,
   children,
+  style,
   ...props
 }: React.ComponentProps<"div"> & CarouselProps) {
   const [carouselRef, api] = useEmblaCarousel(
@@ -125,11 +191,11 @@ function Carousel({
     >
       <section
         aria-roledescription="carousel"
-        className={cn("relative", className)}
         data-slot="carousel"
         onKeyDownCapture={handleKeyDown}
         // biome-ignore lint/a11y/useSemanticElements: shadcn convention
         role="region"
+        {...mergeSx(stylex.props(styles.root), className, style)}
         {...props}
       >
         {children}
@@ -138,20 +204,29 @@ function Carousel({
   );
 }
 
-function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
+function CarouselContent({
+  className,
+  style,
+  ...props
+}: React.ComponentProps<"div">) {
   const { carouselRef, orientation } = useCarousel();
 
   return (
     <div
-      className="overflow-hidden"
       data-slot="carousel-content"
       ref={carouselRef}
+      {...stylex.props(styles.viewport)}
     >
       <div
-        className={cn(
-          "flex",
-          orientation === "horizontal" ? "-ml-4" : "-mt-4 flex-col",
+        {...mergeSx(
+          stylex.props(
+            styles.content,
+            orientation === "horizontal"
+              ? styles.contentHorizontal
+              : styles.contentVertical,
+          ),
           className,
+          style,
         )}
         {...props}
       />
@@ -159,19 +234,28 @@ function CarouselContent({ className, ...props }: React.ComponentProps<"div">) {
   );
 }
 
-function CarouselItem({ className, ...props }: React.ComponentProps<"div">) {
+function CarouselItem({
+  className,
+  style,
+  ...props
+}: React.ComponentProps<"div">) {
   const { orientation } = useCarousel();
 
   return (
     <div
       aria-roledescription="slide"
-      className={cn(
-        "min-w-0 shrink-0 grow-0 basis-full",
-        orientation === "horizontal" ? "pl-4" : "pt-4",
-        className,
-      )}
       data-slot="carousel-item"
       role="group"
+      {...mergeSx(
+        stylex.props(
+          styles.item,
+          orientation === "horizontal"
+            ? styles.itemHorizontal
+            : styles.itemVertical,
+        ),
+        className,
+        style,
+      )}
       {...props}
     />
   );
@@ -181,24 +265,28 @@ function CarouselPrevious({
   className,
   variant = "outline",
   size = "icon",
+  style,
   ...props
 }: React.ComponentProps<typeof Button>) {
   const { orientation, scrollPrev, canScrollPrev } = useCarousel();
 
   return (
     <Button
-      className={cn(
-        "absolute size-8 rounded-full",
-        orientation === "horizontal"
-          ? "-left-12 -translate-y-1/2 top-1/2"
-          : "-top-12 -translate-x-1/2 left-1/2 rotate-90",
-        className,
-      )}
       data-slot="carousel-previous"
       disabled={!canScrollPrev}
       onClick={scrollPrev}
       size={size}
       variant={variant}
+      {...mergeSx(
+        stylex.props(
+          styles.previous,
+          orientation === "horizontal"
+            ? styles.previousHorizontal
+            : styles.previousVertical,
+        ),
+        className,
+        style,
+      )}
       {...props}
     >
       <ArrowLeft />
@@ -211,24 +299,28 @@ function CarouselNext({
   className,
   variant = "outline",
   size = "icon",
+  style,
   ...props
 }: React.ComponentProps<typeof Button>) {
   const { orientation, scrollNext, canScrollNext } = useCarousel();
 
   return (
     <Button
-      className={cn(
-        "absolute size-8 rounded-full",
-        orientation === "horizontal"
-          ? "-right-12 -translate-y-1/2 top-1/2"
-          : "-bottom-12 -translate-x-1/2 left-1/2 rotate-90",
-        className,
-      )}
       data-slot="carousel-next"
       disabled={!canScrollNext}
       onClick={scrollNext}
       size={size}
       variant={variant}
+      {...mergeSx(
+        stylex.props(
+          styles.next,
+          orientation === "horizontal"
+            ? styles.nextHorizontal
+            : styles.nextVertical,
+        ),
+        className,
+        style,
+      )}
       {...props}
     >
       <ArrowRight />

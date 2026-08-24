@@ -1,18 +1,56 @@
+import * as stylex from "@stylexjs/stylex";
 import type * as React from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
+const styles = stylex.create({
+  input: {
+    display: "flex",
+    height: "2.25rem",
+    width: "100%",
+    minWidth: 0,
+    borderRadius: radii.md,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.input,
+    backgroundColor: "transparent",
+    paddingInline: "0.75rem",
+    paddingBlock: "0.25rem",
+    fontSize: "1rem",
+    boxShadow: "0 1px 2px rgb(0 0 0 / 0.05)",
+    outline: "none",
+    transitionProperty: "color, box-shadow, border-color",
+    transitionDuration: "150ms",
+    color: colors.foreground,
+    "::placeholder": {
+      color: colors.mutedForeground,
+    },
+    ":disabled": {
+      pointerEvents: "none",
+      cursor: "not-allowed",
+      opacity: 0.5,
+    },
+    ":focus-visible": {
+      borderColor: colors.ring,
+      boxShadow: `0 0 0 3px color-mix(in oklch, ${colors.ring}, transparent 50%)`,
+    },
+    "@media (min-width: 768px)": {
+      fontSize: "0.875rem",
+    },
+  },
+});
 
-function Input({ className, type, ...props }: React.ComponentProps<"input">) {
+function Input({
+  className,
+  type,
+  style,
+  ...props
+}: React.ComponentProps<"input">) {
   return (
     <input
-      className={cn(
-        "flex h-9 w-full min-w-0 rounded-md border border-input bg-transparent px-3 py-1 text-base shadow-xs outline-none transition-[color,box-shadow] selection:bg-primary selection:text-primary-foreground file:inline-flex file:h-7 file:border-0 file:bg-transparent file:font-medium file:text-foreground file:text-sm placeholder:text-muted-foreground disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 md:text-sm dark:bg-input/30",
-        "focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50",
-        "aria-invalid:border-destructive aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40",
-        className,
-      )}
       data-slot="input"
       type={type}
+      {...mergeSx(stylex.props(styles.input), className, style)}
       {...props}
     />
   );

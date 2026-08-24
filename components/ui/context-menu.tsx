@@ -1,10 +1,177 @@
 "use client";
 
 import * as ContextMenuPrimitive from "@radix-ui/react-context-menu";
+import * as stylex from "@stylexjs/stylex";
 import { CheckIcon, ChevronRightIcon, CircleIcon } from "lucide-react";
 import type * as React from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
+const styles = stylex.create({
+  subTrigger: {
+    display: "flex",
+    cursor: "default",
+    userSelect: "none",
+    alignItems: "center",
+    borderRadius: radii.sm,
+    paddingInline: "0.5rem",
+    paddingBlock: "0.375rem",
+    fontSize: "0.875rem",
+    outline: "none",
+    ":focus": {
+      backgroundColor: colors.accent,
+      color: colors.accentForeground,
+    },
+    ":is([data-state=open])": {
+      backgroundColor: colors.accent,
+      color: colors.accentForeground,
+    },
+    ":is([data-inset=true])": {
+      paddingLeft: "2rem",
+    },
+  },
+  subIcon: {
+    marginLeft: "auto",
+  },
+  subContent: {
+    zIndex: 50,
+    minWidth: "8rem",
+    transformOrigin: "var(--radix-context-menu-content-transform-origin)",
+    overflow: "hidden",
+    borderRadius: radii.md,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.border,
+    backgroundColor: colors.popover,
+    padding: "0.25rem",
+    color: colors.popoverForeground,
+    boxShadow:
+      "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+    animationName: "fadeIn, zoomIn",
+    animationDuration: "150ms",
+    ":is([data-state=closed])": {
+      animationName: "fadeOut, zoomOut",
+    },
+  },
+  content: {
+    zIndex: 50,
+    maxHeight: "var(--radix-context-menu-content-available-height)",
+    minWidth: "8rem",
+    transformOrigin: "var(--radix-context-menu-content-transform-origin)",
+    overflowY: "auto",
+    overflowX: "hidden",
+    borderRadius: radii.md,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.border,
+    backgroundColor: colors.popover,
+    padding: "0.25rem",
+    color: colors.popoverForeground,
+    boxShadow:
+      "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+    animationName: "fadeIn, zoomIn",
+    animationDuration: "150ms",
+    ":is([data-state=closed])": {
+      animationName: "fadeOut, zoomOut",
+    },
+  },
+  item: {
+    position: "relative",
+    display: "flex",
+    cursor: "default",
+    userSelect: "none",
+    alignItems: "center",
+    gap: "0.5rem",
+    borderRadius: radii.sm,
+    paddingInline: "0.5rem",
+    paddingBlock: "0.375rem",
+    fontSize: "0.875rem",
+    outline: "none",
+    ":focus": {
+      backgroundColor: colors.accent,
+      color: colors.accentForeground,
+    },
+    ":is([data-disabled])": {
+      pointerEvents: "none",
+      opacity: 0.5,
+    },
+    ":is([data-inset=true])": {
+      paddingLeft: "2rem",
+    },
+    ":is([data-variant=destructive])": {
+      color: colors.destructive,
+    },
+    ":is([data-variant=destructive]):focus": {
+      backgroundColor: `color-mix(in oklch, ${colors.destructive}, transparent 90%)`,
+      color: colors.destructive,
+    },
+  },
+  checkboxItem: {
+    position: "relative",
+    display: "flex",
+    cursor: "default",
+    userSelect: "none",
+    alignItems: "center",
+    gap: "0.5rem",
+    borderRadius: radii.sm,
+    paddingBlock: "0.375rem",
+    paddingRight: "0.5rem",
+    paddingLeft: "2rem",
+    fontSize: "0.875rem",
+    outline: "none",
+    ":focus": {
+      backgroundColor: colors.accent,
+      color: colors.accentForeground,
+    },
+    ":is([data-disabled])": {
+      pointerEvents: "none",
+      opacity: 0.5,
+    },
+  },
+  indicatorWrap: {
+    pointerEvents: "none",
+    position: "absolute",
+    left: "0.5rem",
+    display: "flex",
+    width: "0.875rem",
+    height: "0.875rem",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  icon: {
+    width: "1rem",
+    height: "1rem",
+    pointerEvents: "none",
+    flexShrink: 0,
+  },
+  radioIcon: {
+    width: "0.5rem",
+    height: "0.5rem",
+    fill: "currentColor",
+  },
+  label: {
+    paddingInline: "0.5rem",
+    paddingBlock: "0.375rem",
+    fontWeight: 500,
+    color: colors.foreground,
+    fontSize: "0.875rem",
+    ":is([data-inset=true])": {
+      paddingLeft: "2rem",
+    },
+  },
+  separator: {
+    marginInline: "-0.25rem",
+    marginBlock: "0.25rem",
+    height: "1px",
+    backgroundColor: colors.border,
+  },
+  shortcut: {
+    marginLeft: "auto",
+    color: colors.mutedForeground,
+    fontSize: "0.75rem",
+    letterSpacing: "0.1em",
+  },
+});
 
 function ContextMenu({
   ...props
@@ -57,37 +224,33 @@ function ContextMenuSubTrigger({
   className,
   inset,
   children,
+  style,
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.SubTrigger> & {
   inset?: boolean;
 }) {
   return (
     <ContextMenuPrimitive.SubTrigger
-      className={cn(
-        "flex cursor-default select-none items-center rounded-sm px-2 py-1.5 text-sm outline-hidden focus:bg-accent focus:text-accent-foreground data-[state=open]:bg-accent data-[inset]:pl-8 data-[state=open]:text-accent-foreground [&_svg:not([class*=size-])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-        className,
-      )}
       data-inset={inset}
       data-slot="context-menu-sub-trigger"
+      {...mergeSx(stylex.props(styles.subTrigger), className, style)}
       {...props}
     >
       {children}
-      <ChevronRightIcon className="ml-auto" />
+      <ChevronRightIcon {...stylex.props(styles.subIcon)} />
     </ContextMenuPrimitive.SubTrigger>
   );
 }
 
 function ContextMenuSubContent({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.SubContent>) {
   return (
     <ContextMenuPrimitive.SubContent
-      className={cn(
-        "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 min-w-[8rem] origin-(--radix-context-menu-content-transform-origin) overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-lg data-[state=closed]:animate-out data-[state=open]:animate-in",
-        className,
-      )}
       data-slot="context-menu-sub-content"
+      {...mergeSx(stylex.props(styles.subContent), className, style)}
       {...props}
     />
   );
@@ -95,16 +258,14 @@ function ContextMenuSubContent({
 
 function ContextMenuContent({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Content>) {
   return (
     <ContextMenuPrimitive.Portal>
       <ContextMenuPrimitive.Content
-        className={cn(
-          "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 max-h-(--radix-context-menu-content-available-height) min-w-[8rem] origin-(--radix-context-menu-content-transform-origin) overflow-y-auto overflow-x-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md data-[state=closed]:animate-out data-[state=open]:animate-in",
-          className,
-        )}
         data-slot="context-menu-content"
+        {...mergeSx(stylex.props(styles.content), className, style)}
         {...props}
       />
     </ContextMenuPrimitive.Portal>
@@ -115,6 +276,7 @@ function ContextMenuItem({
   className,
   inset,
   variant = "default",
+  style,
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Item> & {
   inset?: boolean;
@@ -122,14 +284,10 @@ function ContextMenuItem({
 }) {
   return (
     <ContextMenuPrimitive.Item
-      className={cn(
-        // biome-ignore lint/nursery/useSortedClasses: breaks the build
-        "data-[variant=destructive]:*:[svg]:!text-destructive relative flex cursor-default select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-hidden [&_svg:not([class*= focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[inset]:pl-8 data-[variant=destructive]:text-destructive data-[disabled]:opacity-50 data-[variant=destructive]:focus:bg-destructive/10 data-[variant=destructive]:focus:text-destructive dark:data-[variant=destructive]:focus:bg-destructive/20'size-'])]:size-4 [&_svg:not([class*='text-'])]:text-muted-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0",
-        className,
-      )}
       data-inset={inset}
       data-slot="context-menu-item"
       data-variant={variant}
+      {...mergeSx(stylex.props(styles.item), className, style)}
       {...props}
     />
   );
@@ -139,22 +297,19 @@ function ContextMenuCheckboxItem({
   className,
   children,
   checked,
+  style,
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.CheckboxItem>) {
   return (
     <ContextMenuPrimitive.CheckboxItem
       checked={checked}
-      className={cn(
-        // biome-ignore lint/nursery/useSortedClasses: breaks the build
-        "relative flex cursor-default select-none items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden [&_svg:not([class*= focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50'size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-        className,
-      )}
       data-slot="context-menu-checkbox-item"
+      {...mergeSx(stylex.props(styles.checkboxItem), className, style)}
       {...props}
     >
-      <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
+      <span {...stylex.props(styles.indicatorWrap)}>
         <ContextMenuPrimitive.ItemIndicator>
-          <CheckIcon className="size-4" />
+          <CheckIcon {...stylex.props(styles.icon)} />
         </ContextMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -165,21 +320,18 @@ function ContextMenuCheckboxItem({
 function ContextMenuRadioItem({
   className,
   children,
+  style,
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.RadioItem>) {
   return (
     <ContextMenuPrimitive.RadioItem
-      className={cn(
-        // biome-ignore lint/nursery/useSortedClasses: breaks the build
-        "relative flex cursor-default select-none items-center gap-2 rounded-sm py-1.5 pr-2 pl-8 text-sm outline-hidden [&_svg:not([class*= focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50'size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0",
-        className,
-      )}
       data-slot="context-menu-radio-item"
+      {...mergeSx(stylex.props(styles.checkboxItem), className, style)}
       {...props}
     >
-      <span className="pointer-events-none absolute left-2 flex size-3.5 items-center justify-center">
+      <span {...stylex.props(styles.indicatorWrap)}>
         <ContextMenuPrimitive.ItemIndicator>
-          <CircleIcon className="size-2 fill-current" />
+          <CircleIcon {...stylex.props(styles.radioIcon)} />
         </ContextMenuPrimitive.ItemIndicator>
       </span>
       {children}
@@ -190,18 +342,16 @@ function ContextMenuRadioItem({
 function ContextMenuLabel({
   className,
   inset,
+  style,
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Label> & {
   inset?: boolean;
 }) {
   return (
     <ContextMenuPrimitive.Label
-      className={cn(
-        "px-2 py-1.5 font-medium text-foreground text-sm data-[inset]:pl-8",
-        className,
-      )}
       data-inset={inset}
       data-slot="context-menu-label"
+      {...mergeSx(stylex.props(styles.label), className, style)}
       {...props}
     />
   );
@@ -209,12 +359,13 @@ function ContextMenuLabel({
 
 function ContextMenuSeparator({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof ContextMenuPrimitive.Separator>) {
   return (
     <ContextMenuPrimitive.Separator
-      className={cn("-mx-1 my-1 h-px bg-border", className)}
       data-slot="context-menu-separator"
+      {...mergeSx(stylex.props(styles.separator), className, style)}
       {...props}
     />
   );
@@ -222,15 +373,13 @@ function ContextMenuSeparator({
 
 function ContextMenuShortcut({
   className,
+  style,
   ...props
 }: React.ComponentProps<"span">) {
   return (
     <span
-      className={cn(
-        "ml-auto text-muted-foreground text-xs tracking-widest",
-        className,
-      )}
       data-slot="context-menu-shortcut"
+      {...mergeSx(stylex.props(styles.shortcut), className, style)}
       {...props}
     />
   );

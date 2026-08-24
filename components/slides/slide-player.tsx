@@ -1,9 +1,10 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { useQueryState } from "nuqs";
 import { useCallback } from "react";
 import type { Presentation } from "@/lib/slides/schema";
-import { cn } from "@/lib/utils";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 import { Deck } from "./deck";
 import { SlideExtras } from "./slide-extras";
 import { SlideNavigation } from "./slide-navigation";
@@ -13,6 +14,90 @@ interface SlidePlayerProps {
   deckSlug: string;
   currentSlide: number;
 }
+
+const styles = stylex.create({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    backgroundColor: colors.background,
+  },
+  fullscreen: {
+    position: "fixed",
+    inset: 0,
+    zIndex: 50,
+    height: "100dvh",
+    width: "100dvw",
+  },
+  windowed: {
+    minHeight: "calc(100dvh - 3rem)",
+  },
+  stage: {
+    position: "relative",
+    display: "flex",
+    minHeight: 0,
+    flex: 1,
+    gap: "1.5rem",
+  },
+  stageFullscreen: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "black",
+  },
+  stageWindowed: {
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: `color-mix(in oklch, ${colors.muted}, transparent 10%)`,
+    padding: "0.75rem",
+    "@media (min-width: 768px)": {
+      padding: "1.25rem",
+    },
+    "@media (min-width: 1024px)": {
+      padding: "1.5rem",
+    },
+  },
+  deckFullscreen: {
+    display: "flex",
+    overflow: "hidden",
+    height: "100%",
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  deckWindowed: {
+    overflow: "hidden",
+    width: "100%",
+    maxWidth: "80rem",
+    alignSelf: "center",
+    borderRadius: radii.lg,
+    boxShadow:
+      "0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1)",
+  },
+  aspect: {
+    aspectRatio: "16 / 9",
+    maxHeight: "100dvh",
+    width: "100%",
+    maxWidth: "100%",
+  },
+  sidebar: {
+    display: "none",
+    width: "18rem",
+    flexShrink: 0,
+    paddingTop: 0,
+    "@media (min-width: 1280px)": {
+      display: "block",
+    },
+  },
+  floating: {
+    position: "absolute",
+    bottom: "1rem",
+    right: "1rem",
+  },
+  floatingWindowed: {
+    "@media (min-width: 1280px)": {
+      display: "none",
+    },
+  },
+});
 
 export function SlidePlayer({
   presentation,
@@ -40,31 +125,24 @@ export function SlidePlayer({
 
   return (
     <div
-      className={cn(
-        "flex flex-col bg-background",
-        isFullscreen
-          ? "fixed inset-0 z-50 h-dvh w-dvw"
-          : "min-h-[calc(100dvh-3rem)]",
+      {...stylex.props(
+        styles.root,
+        isFullscreen ? styles.fullscreen : styles.windowed,
       )}
     >
       <div
-        className={cn(
-          "relative flex min-h-0 flex-1 gap-6",
-          isFullscreen
-            ? "items-center justify-center bg-black"
-            : "items-center justify-center bg-muted/90 p-3 md:p-5 lg:p-6",
+        {...stylex.props(
+          styles.stage,
+          isFullscreen ? styles.stageFullscreen : styles.stageWindowed,
         )}
       >
         <div
-          className={cn(
-            "overflow-hidden",
-            isFullscreen
-              ? "flex h-full w-full items-center justify-center"
-              : "w-full max-w-7xl self-center rounded-lg shadow-lg",
+          {...stylex.props(
+            isFullscreen ? styles.deckFullscreen : styles.deckWindowed,
           )}
         >
           {isFullscreen ? (
-            <div className="aspect-video max-h-dvh w-full max-w-full">
+            <div {...stylex.props(styles.aspect)}>
               <Deck
                 presentation={presentation}
                 currentSlide={currentSlide}
@@ -81,16 +159,16 @@ export function SlidePlayer({
         </div>
 
         {hasExtras && !isFullscreen && (
-          <aside className="hidden w-72 shrink-0 pt-0 xl:block">
+          <aside {...stylex.props(styles.sidebar)}>
             <SlideExtras slide={slide} variant="sidebar" />
           </aside>
         )}
 
         {hasExtras && (
           <div
-            className={cn(
-              "absolute bottom-4 right-4",
-              !isFullscreen && "xl:hidden",
+            {...stylex.props(
+              styles.floating,
+              !isFullscreen && styles.floatingWindowed,
             )}
           >
             <SlideExtras slide={slide} variant="floating" />

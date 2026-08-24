@@ -1,8 +1,23 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
+import { icon } from "@/lib/stylex/icons";
+
+const styles = stylex.create({
+  button: {
+    position: "fixed",
+    bottom: "1.5rem",
+    right: "1.5rem",
+    zIndex: 50,
+    width: "2.5rem",
+    height: "2.5rem",
+    borderRadius: "9999px",
+    boxShadow: "0 10px 15px -3px rgb(0 0 0 / 0.1)",
+  },
+});
 
 export function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
@@ -38,11 +53,11 @@ export function ScrollToTop() {
     <Button
       variant="outline"
       size="icon"
-      className="fixed bottom-6 right-6 z-50 size-10 rounded-full shadow-lg pb-safe"
+      className={stylex.props(styles.button).className}
       onClick={scrollToTop}
       aria-label="Scroll to top"
     >
-      <ArrowUp className="size-4" />
+      <ArrowUp {...stylex.props(icon.md)} />
     </Button>
   );
 }

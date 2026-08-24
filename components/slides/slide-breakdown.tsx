@@ -1,4 +1,6 @@
-import { cn } from "@/lib/utils";
+import * as stylex from "@stylexjs/stylex";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, fonts, radii } from "@/lib/stylex/tokens.stylex";
 
 interface BreakdownItem {
   label: string;
@@ -16,6 +18,100 @@ interface SlideBreakdownProps {
   variant?: "bars" | "stats";
 }
 
+const styles = stylex.create({
+  statsGrid: {
+    display: "grid",
+    gap: "1.5rem",
+  },
+  cols2: {
+    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+  },
+  cols3: {
+    gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
+  },
+  cols4: {
+    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+    "@media (min-width: 768px)": {
+      gridTemplateColumns: "repeat(4, minmax(0, 1fr))",
+    },
+  },
+  statCard: {
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    overflow: "hidden",
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.border,
+    backgroundColor: `color-mix(in oklch, ${colors.muted}, transparent 70%)`,
+    padding: "1.5rem",
+  },
+  accentBar: {
+    position: "absolute",
+    insetInline: 0,
+    top: 0,
+    height: "0.25rem",
+    backgroundColor: colors.accent,
+  },
+  statValue: {
+    fontFamily: fonts.display,
+    fontSize: "2.25rem",
+    fontWeight: 700,
+    fontVariantNumeric: "tabular-nums",
+    color: colors.accent,
+    "@media (min-width: 768px)": {
+      fontSize: "3rem",
+    },
+  },
+  statLabel: {
+    marginTop: "0.5rem",
+    textAlign: "center",
+    fontSize: "0.875rem",
+    color: colors.mutedForeground,
+  },
+  bars: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  },
+  barRow: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.5rem",
+  },
+  barMeta: {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  barLabel: {
+    fontSize: "0.875rem",
+    fontWeight: 500,
+    color: colors.foreground,
+  },
+  barValue: {
+    fontFamily: fonts.mono,
+    fontSize: "0.875rem",
+    fontVariantNumeric: "tabular-nums",
+    color: colors.mutedForeground,
+  },
+  track: {
+    height: "0.75rem",
+    overflow: "hidden",
+    borderRadius: radii.full,
+    backgroundColor: colors.muted,
+  },
+  fill: {
+    height: "100%",
+    borderRadius: radii.full,
+    backgroundColor: colors.accent,
+    transitionProperty: "width",
+    transitionDuration: "150ms",
+  },
+});
+
 /**
  * SlideBreakdown renders percentage/value breakdowns.
  * Avoids recharts for PDF compatibility - uses pure CSS.
@@ -28,50 +124,46 @@ export function SlideBreakdown({
   if (variant === "stats") {
     return (
       <div
-        className={cn(
-          "grid gap-6",
-          items.length === 2 && "grid-cols-2",
-          items.length === 3 && "grid-cols-3",
-          items.length >= 4 && "grid-cols-2 md:grid-cols-4",
+        {...mergeSx(
+          stylex.props(
+            styles.statsGrid,
+            items.length === 2 && styles.cols2,
+            items.length === 3 && styles.cols3,
+            items.length >= 4 && styles.cols4,
+          ),
           className,
         )}
       >
         {items.map((item) => (
           <div
             key={`${item.label}-${item.value}`}
-            className="relative flex flex-col items-center overflow-hidden rounded-lg border border-border bg-muted/30 p-6"
+            {...stylex.props(styles.statCard)}
           >
-            {/* Accent gradient at top */}
-            <div className="absolute inset-x-0 top-0 h-1 bg-accent" />
-            <span className="font-display text-4xl font-bold tabular-nums text-accent md:text-5xl">
-              {item.value}%
-            </span>
-            <span className="mt-2 text-center text-sm text-muted-foreground">
-              {item.label}
-            </span>
+            <div {...stylex.props(styles.accentBar)} />
+            <span {...stylex.props(styles.statValue)}>{item.value}%</span>
+            <span {...stylex.props(styles.statLabel)}>{item.label}</span>
           </div>
         ))}
       </div>
     );
   }
 
-  // Default: horizontal bars
   return (
-    <div className={cn("space-y-4", className)}>
+    <div {...mergeSx(stylex.props(styles.bars), className)}>
       {items.map((item) => (
-        <div key={`${item.label}-${item.value}`} className="space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-sm font-medium text-foreground">
-              {item.label}
-            </span>
-            <span className="font-mono text-sm tabular-nums text-muted-foreground">
-              {item.value}%
-            </span>
+        <div
+          key={`${item.label}-${item.value}`}
+          {...stylex.props(styles.barRow)}
+        >
+          <div {...stylex.props(styles.barMeta)}>
+            <span {...stylex.props(styles.barLabel)}>{item.label}</span>
+            <span {...stylex.props(styles.barValue)}>{item.value}%</span>
           </div>
-          <div className="h-3 overflow-hidden rounded-full bg-muted">
+          <div {...stylex.props(styles.track)}>
             <div
-              className="h-full rounded-full bg-accent transition-all"
-              style={{ width: `${Math.min(100, Math.max(0, item.value))}%` }}
+              {...mergeSx(stylex.props(styles.fill), undefined, {
+                width: `${Math.min(100, Math.max(0, item.value))}%`,
+              })}
             />
           </div>
         </div>

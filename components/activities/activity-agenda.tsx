@@ -1,11 +1,12 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { Clock, MapPin } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { ActivityDetailsDialog } from "@/components/activities/activity-details-dialog";
 import { Badge } from "@/components/ui/badge";
 import type { ActivityRecord } from "@/lib/activities";
-import { cn } from "@/lib/utils";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 
 interface ActivityAgendaProps {
   activities: ActivityRecord[];
@@ -36,7 +37,7 @@ function groupByDate(activities: ActivityRecord[]): GroupedActivities[] {
 
   return Array.from(groups.entries()).map(([key, items]) => {
     // Parse the UTC date string and format in UTC to display correct date
-    const date = new Date(key + "T00:00:00.000Z");
+    const date = new Date(`${key}T00:00:00.000Z`);
     return {
       date,
       dayLabel: new Intl.DateTimeFormat("en-US", {
@@ -49,6 +50,132 @@ function groupByDate(activities: ActivityRecord[]): GroupedActivities[] {
     };
   });
 }
+
+const styles = stylex.create({
+  empty: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingBlock: "4rem",
+    textAlign: "center",
+  },
+  emptyTitle: {
+    fontSize: "1.125rem",
+    fontWeight: 500,
+    color: colors.mutedForeground,
+  },
+  emptyHint: {
+    marginTop: "0.25rem",
+    fontSize: "0.875rem",
+    color: `color-mix(in oklch, ${colors.mutedForeground}, transparent 30%)`,
+  },
+  list: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "1rem",
+  },
+  group: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.5rem",
+  },
+  groupHeader: {
+    display: "flex",
+    alignItems: "center",
+    gap: "0.5rem",
+  },
+  dayLabel: {
+    fontSize: "0.875rem",
+    fontWeight: 600,
+  },
+  dayLabelToday: {
+    color: colors.accent,
+  },
+  dayLabelMuted: {
+    color: colors.mutedForeground,
+  },
+  todayBadge: {
+    fontSize: "10px",
+  },
+  items: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.5rem",
+    borderLeftWidth: 2,
+    borderLeftStyle: "solid",
+    borderLeftColor: colors.border,
+    paddingLeft: "1rem",
+  },
+  item: {
+    width: "100%",
+    cursor: "pointer",
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: `color-mix(in oklch, ${colors.border}, transparent 50%)`,
+    backgroundColor: `color-mix(in oklch, ${colors.muted}, transparent 70%)`,
+    padding: "0.75rem",
+    textAlign: "left",
+    color: colors.foreground,
+    transitionProperty: "color, background-color",
+    transitionDuration: "150ms",
+    ":hover": {
+      backgroundColor: `color-mix(in oklch, ${colors.muted}, transparent 50%)`,
+      color: colors.accent,
+    },
+  },
+  itemHeader: {
+    display: "flex",
+    alignItems: "flex-start",
+    justifyContent: "space-between",
+    gap: "0.5rem",
+  },
+  itemTitle: {
+    fontWeight: 500,
+    color: "inherit",
+    transitionProperty: "color",
+    transitionDuration: "150ms",
+  },
+  itemMeta: {
+    display: "flex",
+    flexShrink: 0,
+    alignItems: "center",
+    gap: "0.375rem",
+  },
+  timeBadge: {
+    gap: "0.25rem",
+    fontSize: "10px",
+  },
+  timeIcon: {
+    width: "0.625rem",
+    height: "0.625rem",
+    flexShrink: 0,
+  },
+  location: {
+    marginTop: "0.25rem",
+    display: "flex",
+    alignItems: "center",
+    gap: "0.25rem",
+    fontSize: "0.75rem",
+    color: colors.mutedForeground,
+  },
+  locationIcon: {
+    width: "0.75rem",
+    height: "0.75rem",
+    flexShrink: 0,
+  },
+  itemDescription: {
+    marginTop: "0.5rem",
+    fontSize: "0.875rem",
+    color: colors.mutedForeground,
+    lineHeight: 1.625,
+    display: "-webkit-box",
+    WebkitLineClamp: 2,
+    WebkitBoxOrient: "vertical",
+    overflow: "hidden",
+  },
+});
 
 export function ActivityAgenda({
   activities,
@@ -81,11 +208,9 @@ export function ActivityAgenda({
 
   if (grouped.length === 0) {
     return (
-      <div className="flex flex-col items-center justify-center py-16 text-center">
-        <p className="text-lg font-medium text-muted-foreground">
-          No activities this month
-        </p>
-        <p className="mt-1 text-sm text-muted-foreground/70">
+      <div {...stylex.props(styles.empty)}>
+        <p {...stylex.props(styles.emptyTitle)}>No activities this month</p>
+        <p {...stylex.props(styles.emptyHint)}>
           Check other months for upcoming events.
         </p>
       </div>
@@ -94,7 +219,7 @@ export function ActivityAgenda({
 
   return (
     <>
-      <div className="space-y-4">
+      <div {...stylex.props(styles.list)}>
         {grouped.map((group) => {
           // Use UTC date string for comparison with activity dates
           const groupKey = group.date.toISOString().split("T")[0];
@@ -105,25 +230,28 @@ export function ActivityAgenda({
             <div
               key={groupKey}
               ref={isToday ? todayRef : undefined}
-              className="space-y-2"
+              {...stylex.props(styles.group)}
             >
-              <div className="flex items-center gap-2">
+              <div {...stylex.props(styles.groupHeader)}>
                 <h3
-                  className={cn(
-                    "text-sm font-semibold",
-                    isToday ? "text-accent" : "text-muted-foreground",
+                  {...stylex.props(
+                    styles.dayLabel,
+                    isToday ? styles.dayLabelToday : styles.dayLabelMuted,
                   )}
                 >
                   {group.dayLabel}
                 </h3>
                 {isToday && (
-                  <Badge variant="secondary" className="text-[10px]">
+                  <Badge
+                    variant="secondary"
+                    className={stylex.props(styles.todayBadge).className}
+                  >
                     Today
                   </Badge>
                 )}
               </div>
 
-              <div className="space-y-2 border-l-2 border-border pl-4">
+              <div {...stylex.props(styles.items)}>
                 {group.items.map((activity) => {
                   const displayText =
                     activity.shortDescription || activity.description;
@@ -133,19 +261,21 @@ export function ActivityAgenda({
                       key={activity.id}
                       type="button"
                       onClick={() => handleActivityClick(activity)}
-                      className="group w-full cursor-pointer rounded-lg border border-border/50 bg-muted/30 p-3 text-left transition-colors hover:bg-muted/50"
+                      {...stylex.props(styles.item)}
                     >
-                      <div className="flex items-start justify-between gap-2">
-                        <p className="font-medium text-foreground transition-colors group-hover:text-accent">
+                      <div {...stylex.props(styles.itemHeader)}>
+                        <p {...stylex.props(styles.itemTitle)}>
                           {activity.title}
                         </p>
-                        <div className="flex shrink-0 items-center gap-1.5">
+                        <div {...stylex.props(styles.itemMeta)}>
                           {activity.time && (
                             <Badge
                               variant="secondary"
-                              className="gap-1 text-[10px]"
+                              className={
+                                stylex.props(styles.timeBadge).className
+                              }
                             >
-                              <Clock className="size-2.5" />
+                              <Clock {...stylex.props(styles.timeIcon)} />
                               {activity.time}
                             </Badge>
                           )}
@@ -153,14 +283,14 @@ export function ActivityAgenda({
                       </div>
 
                       {activity.location && (
-                        <div className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
-                          <MapPin className="size-3" />
+                        <div {...stylex.props(styles.location)}>
+                          <MapPin {...stylex.props(styles.locationIcon)} />
                           {activity.location}
                         </div>
                       )}
 
                       {displayText && (
-                        <p className="mt-2 text-sm text-muted-foreground leading-relaxed line-clamp-2">
+                        <p {...stylex.props(styles.itemDescription)}>
                           {displayText}
                         </p>
                       )}

@@ -1,32 +1,83 @@
 "use client";
 
 import * as ScrollAreaPrimitive from "@radix-ui/react-scroll-area";
+import * as stylex from "@stylexjs/stylex";
 import type * as React from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
+const styles = stylex.create({
+  root: {
+    position: "relative",
+  },
+  viewport: {
+    width: "100%",
+    height: "100%",
+    borderRadius: "inherit",
+    outline: "none",
+    transitionProperty: "color, box-shadow",
+    transitionDuration: "150ms",
+    ":focus-visible": {
+      outlineWidth: 1,
+      outlineStyle: "solid",
+      boxShadow: `0 0 0 3px color-mix(in oklch, ${colors.ring}, transparent 50%)`,
+    },
+  },
+  scrollbar: {
+    display: "flex",
+    touchAction: "none",
+    userSelect: "none",
+    padding: "1px",
+    transitionProperty: "colors",
+    transitionDuration: "150ms",
+  },
+  scrollbarVertical: {
+    height: "100%",
+    width: "0.625rem",
+    borderLeftWidth: 1,
+    borderLeftStyle: "solid",
+    borderLeftColor: "transparent",
+  },
+  scrollbarHorizontal: {
+    height: "0.625rem",
+    flexDirection: "column",
+    borderTopWidth: 1,
+    borderTopStyle: "solid",
+    borderTopColor: "transparent",
+  },
+  thumb: {
+    position: "relative",
+    flex: 1,
+    borderRadius: "9999px",
+    backgroundColor: colors.border,
+  },
+});
 
 function ScrollBar({
   className,
   orientation = "vertical",
+  style,
   ...props
 }: React.ComponentProps<typeof ScrollAreaPrimitive.ScrollAreaScrollbar>) {
   return (
     <ScrollAreaPrimitive.ScrollAreaScrollbar
-      className={cn(
-        "flex touch-none select-none p-px transition-colors",
-        orientation === "vertical" &&
-          "h-full w-2.5 border-l border-l-transparent",
-        orientation === "horizontal" &&
-          "h-2.5 flex-col border-t border-t-transparent",
-        className,
-      )}
       data-slot="scroll-area-scrollbar"
       orientation={orientation}
+      {...mergeSx(
+        stylex.props(
+          styles.scrollbar,
+          orientation === "horizontal"
+            ? styles.scrollbarHorizontal
+            : styles.scrollbarVertical,
+        ),
+        className,
+        style,
+      )}
       {...props}
     >
       <ScrollAreaPrimitive.ScrollAreaThumb
-        className="relative flex-1 rounded-full bg-border"
         data-slot="scroll-area-thumb"
+        {...stylex.props(styles.thumb)}
       />
     </ScrollAreaPrimitive.ScrollAreaScrollbar>
   );
@@ -35,17 +86,18 @@ function ScrollBar({
 function ScrollArea({
   className,
   children,
+  style,
   ...props
 }: React.ComponentProps<typeof ScrollAreaPrimitive.Root>) {
   return (
     <ScrollAreaPrimitive.Root
-      className={cn("relative", className)}
       data-slot="scroll-area"
+      {...mergeSx(stylex.props(styles.root), className, style)}
       {...props}
     >
       <ScrollAreaPrimitive.Viewport
-        className="size-full rounded-[inherit] outline-none transition-[color,box-shadow] focus-visible:outline-1 focus-visible:ring-[3px] focus-visible:ring-ring/50"
         data-slot="scroll-area-viewport"
+        {...stylex.props(styles.viewport)}
       >
         {children}
       </ScrollAreaPrimitive.Viewport>

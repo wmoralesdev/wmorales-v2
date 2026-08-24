@@ -1,15 +1,76 @@
+import * as stylex from "@stylexjs/stylex";
 import QRCode from "react-qr-code";
 import type { CtaSlide } from "@/lib/slides/schema";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 import { SlideContact } from "../slide-contact";
 import { SlideCanvas, SlideFrame } from "../slide-frame";
 import { SlideNumberedSteps } from "../slide-list";
-import { SlideVisibleResources } from "../slide-visible-resources";
 import { SlideHeadline } from "../slide-typography";
+import { SlideVisibleResources } from "../slide-visible-resources";
 
 interface CtaSlideViewProps {
   slide: CtaSlide;
   printMode?: boolean;
 }
+
+const styles = stylex.create({
+  accent: {
+    position: "absolute",
+    insetInline: 0,
+    top: 0,
+    height: "0.25rem",
+    backgroundColor: colors.accent,
+  },
+  canvas: {
+    gap: "1.5rem",
+  },
+  row: {
+    display: "flex",
+    gap: "1.5rem",
+    "@media (min-width: 768px)": {
+      gap: "2rem",
+    },
+  },
+  main: {
+    flex: 1,
+    display: "flex",
+    flexDirection: "column",
+    gap: "1.25rem",
+  },
+  steps: {
+    gap: "0.75rem",
+  },
+  aside: {
+    display: "flex",
+    width: "11rem",
+    flexShrink: 0,
+    flexDirection: "column",
+    alignItems: "center",
+    gap: "0.75rem",
+  },
+  qr: {
+    overflow: "hidden",
+    borderRadius: radii.xl,
+    borderWidth: 2,
+    borderStyle: "solid",
+    borderColor: `color-mix(in oklch, ${colors.accent}, transparent 70%)`,
+    backgroundColor: "white",
+    padding: "1rem",
+    boxShadow: `0 10px 15px -3px color-mix(in oklch, ${colors.accent}, transparent 90%)`,
+  },
+  qrLabel: {
+    maxWidth: "160px",
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    textAlign: "center",
+    fontSize: "0.75rem",
+    color: colors.mutedForeground,
+  },
+  resources: {
+    width: "100%",
+  },
+});
 
 /**
  * CtaSlideView renders a call-to-action with steps, contact info, and optional QR.
@@ -17,23 +78,25 @@ interface CtaSlideViewProps {
 export function CtaSlideView({ slide, printMode = false }: CtaSlideViewProps) {
   return (
     <SlideFrame printMode={printMode}>
-      {/* Accent bar at top */}
-      <div className="absolute inset-x-0 top-0 h-1 bg-accent" />
+      <div {...stylex.props(styles.accent)} />
 
-      <SlideCanvas className="space-y-6">
+      <SlideCanvas className={stylex.props(styles.canvas).className}>
         <SlideHeadline multiline>{slide.headline}</SlideHeadline>
 
-        <div className="flex gap-6 md:gap-8">
-          {/* Steps and contact */}
-          <div className="flex-1 space-y-5">
-            <SlideNumberedSteps steps={slide.steps} className="space-y-3" />
+        <div {...stylex.props(styles.row)}>
+          <div {...stylex.props(styles.main)}>
+            <SlideNumberedSteps
+              steps={slide.steps}
+              className={stylex.props(styles.steps).className}
+            />
             <SlideContact contact={slide.contact} compact />
           </div>
 
-          {(slide.qr || (slide.visibleResources && slide.visibleResources.length > 0)) && (
-            <div className="flex w-44 shrink-0 flex-col items-center gap-3">
+          {(slide.qr ||
+            (slide.visibleResources && slide.visibleResources.length > 0)) && (
+            <div {...stylex.props(styles.aside)}>
               {slide.qr && (
-                <div className="overflow-hidden rounded-xl border-2 border-accent/30 bg-white p-4 shadow-lg shadow-accent/10">
+                <div {...stylex.props(styles.qr)}>
                   <QRCode
                     value={slide.qr.url}
                     size={112}
@@ -44,7 +107,7 @@ export function CtaSlideView({ slide, printMode = false }: CtaSlideViewProps) {
                 </div>
               )}
               {slide.qr && (
-                <p className="max-w-[160px] truncate text-center text-xs text-muted-foreground">
+                <p {...stylex.props(styles.qrLabel)}>
                   {slide.qr.label ?? slide.qr.url}
                 </p>
               )}
@@ -53,7 +116,7 @@ export function CtaSlideView({ slide, printMode = false }: CtaSlideViewProps) {
                   resources={slide.visibleResources}
                   title="Mantengamos el contacto"
                   compact
-                  className="w-full"
+                  className={stylex.props(styles.resources).className}
                 />
               )}
             </div>

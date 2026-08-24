@@ -1,5 +1,6 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { Check, Copy, Share2 } from "lucide-react";
 import { useCallback, useState } from "react";
 import QRCode from "react-qr-code";
@@ -12,11 +13,91 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { icon } from "@/lib/stylex/icons";
+import { colors, fonts, radii } from "@/lib/stylex/tokens.stylex";
 
 interface DeckShareButtonProps {
   slug: string;
   title: string;
 }
+
+const styles = stylex.create({
+  trigger: {
+    width: "2rem",
+    height: "2rem",
+  },
+  dialog: {
+    display: "flex",
+    maxHeight: "90dvh",
+    width: "92vw",
+    maxWidth: "56rem",
+    flexDirection: "column",
+    gap: "1.5rem",
+    overflow: "auto",
+    "@media (min-width: 640px)": {
+      width: "88vw",
+    },
+    "@media (min-width: 768px)": {
+      width: "85vw",
+    },
+  },
+  title: {
+    fontFamily: fonts.display,
+    fontSize: "1.25rem",
+    "@media (min-width: 640px)": {
+      fontSize: "1.5rem",
+    },
+  },
+  body: {
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "2rem",
+    paddingBlock: "1rem",
+  },
+  qrWrap: {
+    borderRadius: "1rem",
+    backgroundColor: "white",
+    padding: "1.5rem",
+    boxShadow:
+      "0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)",
+  },
+  urlRow: {
+    display: "flex",
+    width: "100%",
+    minWidth: 0,
+    alignItems: "center",
+    gap: "0.75rem",
+  },
+  url: {
+    minWidth: 0,
+    flex: 1,
+    overflow: "hidden",
+    textOverflow: "ellipsis",
+    whiteSpace: "nowrap",
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.border,
+    backgroundColor: colors.muted,
+    paddingInline: "1rem",
+    paddingBlock: "0.625rem",
+    fontFamily: fonts.mono,
+    fontSize: "0.875rem",
+    color: colors.mutedForeground,
+  },
+  copy: {
+    flexShrink: 0,
+    gap: "0.375rem",
+  },
+  tinyIcon: {
+    width: "0.75rem",
+    height: "0.75rem",
+    flexShrink: 0,
+  },
+});
 
 export function DeckShareButton({ slug, title }: DeckShareButtonProps) {
   const [copied, setCopied] = useState(false);
@@ -42,16 +123,16 @@ export function DeckShareButton({ slug, title }: DeckShareButtonProps) {
         <Button
           variant="ghost"
           size="icon"
-          className="size-8"
+          className={stylex.props(styles.trigger).className}
           aria-label={`Share ${title}`}
           onClick={(e) => e.stopPropagation()}
         >
-          <Share2 className="size-4" />
+          <Share2 {...stylex.props(icon.md)} />
         </Button>
       </DialogTrigger>
-      <DialogContent className="flex max-h-[90dvh] w-[92vw] max-w-4xl flex-col gap-6 overflow-auto sm:w-[88vw] md:w-[85vw]">
+      <DialogContent className={stylex.props(styles.dialog).className}>
         <DialogHeader>
-          <DialogTitle className="font-display text-xl sm:text-2xl">
+          <DialogTitle className={stylex.props(styles.title).className}>
             {title}
           </DialogTitle>
           <DialogDescription>
@@ -59,8 +140,8 @@ export function DeckShareButton({ slug, title }: DeckShareButtonProps) {
           </DialogDescription>
         </DialogHeader>
 
-        <div className="flex flex-1 flex-col items-center justify-center gap-8 py-4">
-          <div className="rounded-2xl bg-white p-6 shadow-md">
+        <div {...stylex.props(styles.body)}>
+          <div {...stylex.props(styles.qrWrap)}>
             <QRCode
               value={shareUrl}
               size={320}
@@ -70,27 +151,24 @@ export function DeckShareButton({ slug, title }: DeckShareButtonProps) {
             />
           </div>
 
-          <div className="flex w-full min-w-0 items-center gap-3">
-            <code
-              className="min-w-0 flex-1 overflow-hidden text-ellipsis whitespace-nowrap rounded-lg border bg-muted px-4 py-2.5 font-mono text-sm text-muted-foreground"
-              title={shareUrl}
-            >
+          <div {...stylex.props(styles.urlRow)}>
+            <code {...stylex.props(styles.url)} title={shareUrl}>
               {shareUrl}
             </code>
             <Button
               variant="outline"
               size="sm"
               onClick={handleCopy}
-              className="shrink-0 gap-1.5"
+              className={stylex.props(styles.copy).className}
             >
               {copied ? (
                 <>
-                  <Check className="size-3" />
+                  <Check {...stylex.props(styles.tinyIcon)} />
                   Copied
                 </>
               ) : (
                 <>
-                  <Copy className="size-3" />
+                  <Copy {...stylex.props(styles.tinyIcon)} />
                   Copy
                 </>
               )}

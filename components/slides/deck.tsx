@@ -1,12 +1,14 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { useTheme } from "next-themes";
 import type { Presentation } from "@/lib/slides/schema";
 import {
   generateSlideTheme,
   themeTokensToCSSProperties,
 } from "@/lib/slides/theme";
-import { cn } from "@/lib/utils";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, fonts } from "@/lib/stylex/tokens.stylex";
 import { SlideRenderer } from "./slide-renderer";
 
 interface DeckProps {
@@ -23,6 +25,28 @@ interface DeckProps {
   className?: string;
   printThemeOverride?: "light" | "dark";
 }
+
+const styles = stylex.create({
+  info: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.5rem",
+  },
+  title: {
+    fontFamily: fonts.display,
+    fontSize: "1.25rem",
+    fontWeight: 600,
+    color: colors.foreground,
+  },
+  meta: {
+    fontSize: "0.875rem",
+    color: colors.mutedForeground,
+  },
+  language: {
+    fontSize: "0.75rem",
+    color: colors.mutedForeground,
+  },
+});
 
 /**
  * Deck component wraps a presentation with theme tokens
@@ -49,8 +73,11 @@ export function Deck({
   if (printMode) {
     return (
       <div
-        className={cn(themeClass, className)}
-        style={themeTokensToCSSProperties(themeTokens)}
+        {...mergeSx(
+          { className: undefined },
+          [themeClass, className].filter(Boolean).join(" ") || undefined,
+          themeTokensToCSSProperties(themeTokens),
+        )}
       >
         {slides.map((slide, index) => (
           <SlideRenderer
@@ -68,8 +95,11 @@ export function Deck({
 
   return (
     <div
-      className={cn(themeClass, className)}
-      style={themeTokensToCSSProperties(themeTokens)}
+      {...mergeSx(
+        { className: undefined },
+        [themeClass, className].filter(Boolean).join(" ") || undefined,
+        themeTokensToCSSProperties(themeTokens),
+      )}
     >
       <SlideRenderer slide={slide} />
     </div>
@@ -87,17 +117,13 @@ export function DeckInfo({ presentation }: DeckInfoProps) {
   const { meta, slides } = presentation;
 
   return (
-    <div className="space-y-2">
-      <h1 className="font-display text-xl font-semibold text-foreground">
-        {meta.title}
-      </h1>
-      <p className="text-sm text-muted-foreground">
+    <div {...stylex.props(styles.info)}>
+      <h1 {...stylex.props(styles.title)}>{meta.title}</h1>
+      <p {...stylex.props(styles.meta)}>
         By {meta.author} · {slides.length} slides
       </p>
       {meta.language && (
-        <p className="text-xs text-muted-foreground">
-          Language: {meta.language}
-        </p>
+        <p {...stylex.props(styles.language)}>Language: {meta.language}</p>
       )}
     </div>
   );

@@ -1,3 +1,4 @@
+import * as stylex from "@stylexjs/stylex";
 import type { Metadata } from "next";
 import { ActivityAdminCreateDialog } from "@/components/activities/activity-admin-create-dialog";
 import { ActivityCalendar } from "@/components/activities/activity-calendar";
@@ -11,13 +12,21 @@ export const metadata: Metadata = {
 
 export const dynamic = "force-dynamic";
 
+const styles = stylex.create({
+  root: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "3rem",
+  },
+});
+
 export default async function ActivitiesPage() {
   const activities = await getAllActivities();
   const upcomingActivities = await getUpcomingActivities(3);
   const now = new Date();
 
   return (
-    <div className="space-y-12">
+    <div {...stylex.props(styles.root)}>
       <NextActivityBanner
         activities={JSON.parse(JSON.stringify(upcomingActivities))}
       />

@@ -1,11 +1,28 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 import { useEffect, useRef, useState } from "react";
-import { cn } from "@/lib/utils";
+import { icon } from "@/lib/stylex/icons";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors } from "@/lib/stylex/tokens.stylex";
 
 const THEME_TRANSITION_DURATION = 400;
+
+const styles = stylex.create({
+  button: {
+    position: "relative",
+    borderRadius: "9999px",
+    color: `color-mix(in oklch, ${colors.mutedForeground}, transparent 30%)`,
+    transitionProperty: "color, transform",
+    transitionDuration: "200ms",
+    ":hover": {
+      color: colors.foreground,
+      transform: "translateY(-0.125rem)",
+    },
+  },
+});
 
 export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme();
@@ -21,7 +38,6 @@ export function ThemeToggle() {
     const currentIsDark = resolvedTheme === "dark";
     const nextTheme = currentIsDark ? "light" : "dark";
 
-    // Trigger ping animation
     setPing(true);
 
     const motionReduced =
@@ -49,12 +65,10 @@ export function ThemeToggle() {
 
     if (!motionReduced && typeof startViewTransition === "function") {
       startViewTransition(() => {
-        // Ensure the "new" snapshot is captured with the next theme.
         document.documentElement.classList.toggle("dark", nextTheme === "dark");
         setTheme(nextTheme);
       });
     } else {
-      // Fallback: smooth color transition (no circle)
       document.documentElement.classList.add("theme-transition");
       setTheme(nextTheme);
       setTimeout(() => {
@@ -62,7 +76,6 @@ export function ThemeToggle() {
       }, THEME_TRANSITION_DURATION);
     }
 
-    // Cleanup
     setTimeout(() => {
       setPing(false);
     }, THEME_TRANSITION_DURATION);
@@ -73,9 +86,9 @@ export function ThemeToggle() {
       <button
         type="button"
         aria-label="Toggle theme"
-        className="text-muted-foreground/70 transition-colors hover:text-foreground"
+        {...stylex.props(styles.button)}
       >
-        <Moon className="size-[18px]" />
+        <Moon {...stylex.props(icon.lg)} />
       </button>
     );
   }
@@ -86,17 +99,14 @@ export function ThemeToggle() {
     <button
       type="button"
       aria-label={isDark ? "Switch to light mode" : "Switch to dark mode"}
-      className={cn(
-        "relative rounded-full text-muted-foreground/70 transition-all duration-200 hover:text-foreground hover:-translate-y-0.5",
-        ping && "wm-theme-ping",
-      )}
+      {...mergeSx(stylex.props(styles.button), ping ? "wm-theme-ping" : undefined)}
       onClick={toggleTheme}
       ref={buttonRef}
     >
       {isDark ? (
-        <Sun className="size-[18px]" />
+        <Sun {...stylex.props(icon.lg)} />
       ) : (
-        <Moon className="size-[18px]" />
+        <Moon {...stylex.props(icon.lg)} />
       )}
     </button>
   );

@@ -1,9 +1,110 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import type * as React from "react";
 import { Drawer as DrawerPrimitive } from "vaul";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
+const styles = stylex.create({
+  overlay: {
+    position: "fixed",
+    inset: 0,
+    zIndex: 50,
+    backgroundColor: "rgb(0 0 0 / 0.5)",
+    animationName: "fadeIn",
+    animationDuration: "200ms",
+  },
+  content: {
+    position: "fixed",
+    zIndex: 50,
+    display: "flex",
+    height: "auto",
+    flexDirection: "column",
+    backgroundColor: colors.background,
+    ":is([data-vaul-drawer-direction=top])": {
+      insetInline: 0,
+      top: 0,
+      marginBottom: "6rem",
+      maxHeight: "80vh",
+      borderBottomLeftRadius: radii.lg,
+      borderBottomRightRadius: radii.lg,
+      borderBottomWidth: 1,
+      borderBottomStyle: "solid",
+      borderBottomColor: colors.border,
+    },
+    ":is([data-vaul-drawer-direction=bottom])": {
+      insetInline: 0,
+      bottom: 0,
+      marginTop: "6rem",
+      maxHeight: "80vh",
+      borderTopLeftRadius: radii.lg,
+      borderTopRightRadius: radii.lg,
+      borderTopWidth: 1,
+      borderTopStyle: "solid",
+      borderTopColor: colors.border,
+    },
+    ":is([data-vaul-drawer-direction=right])": {
+      insetBlock: 0,
+      right: 0,
+      width: "75%",
+      borderLeftWidth: 1,
+      borderLeftStyle: "solid",
+      borderLeftColor: colors.border,
+    },
+    ":is([data-vaul-drawer-direction=left])": {
+      insetBlock: 0,
+      left: 0,
+      width: "75%",
+      borderRightWidth: 1,
+      borderRightStyle: "solid",
+      borderRightColor: colors.border,
+    },
+    "@media (min-width: 640px)": {
+      ":is([data-vaul-drawer-direction=right])": {
+        maxWidth: "24rem",
+      },
+      ":is([data-vaul-drawer-direction=left])": {
+        maxWidth: "24rem",
+      },
+    },
+  },
+  handle: {
+    marginInline: "auto",
+    marginTop: "1rem",
+    display: "none",
+    height: "0.5rem",
+    width: "100px",
+    flexShrink: 0,
+    borderRadius: radii.full,
+    backgroundColor: colors.muted,
+  },
+  header: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.125rem",
+    padding: "1rem",
+    "@media (min-width: 768px)": {
+      gap: "0.375rem",
+      textAlign: "left",
+    },
+  },
+  footer: {
+    marginTop: "auto",
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.5rem",
+    padding: "1rem",
+  },
+  title: {
+    fontWeight: 600,
+    color: colors.foreground,
+  },
+  description: {
+    color: colors.mutedForeground,
+    fontSize: "0.875rem",
+  },
+});
 
 function Drawer({
   ...props
@@ -31,15 +132,13 @@ function DrawerClose({
 
 function DrawerOverlay({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Overlay>) {
   return (
     <DrawerPrimitive.Overlay
-      className={cn(
-        "data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 fixed inset-0 z-50 bg-black/50 data-[state=closed]:animate-out data-[state=open]:animate-in",
-        className,
-      )}
       data-slot="drawer-overlay"
+      {...mergeSx(stylex.props(styles.overlay), className, style)}
       {...props}
     />
   );
@@ -48,48 +147,47 @@ function DrawerOverlay({
 function DrawerContent({
   className,
   children,
+  style,
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Content>) {
   return (
     <DrawerPortal data-slot="drawer-portal">
       <DrawerOverlay />
       <DrawerPrimitive.Content
-        className={cn(
-          "group/drawer-content fixed z-50 flex h-auto flex-col bg-background",
-          "data-[vaul-drawer-direction=top]:inset-x-0 data-[vaul-drawer-direction=top]:top-0 data-[vaul-drawer-direction=top]:mb-24 data-[vaul-drawer-direction=top]:max-h-[80vh] data-[vaul-drawer-direction=top]:rounded-b-lg data-[vaul-drawer-direction=top]:border-b",
-          "data-[vaul-drawer-direction=bottom]:inset-x-0 data-[vaul-drawer-direction=bottom]:bottom-0 data-[vaul-drawer-direction=bottom]:mt-24 data-[vaul-drawer-direction=bottom]:max-h-[80vh] data-[vaul-drawer-direction=bottom]:rounded-t-lg data-[vaul-drawer-direction=bottom]:border-t",
-          "data-[vaul-drawer-direction=right]:inset-y-0 data-[vaul-drawer-direction=right]:right-0 data-[vaul-drawer-direction=right]:w-3/4 data-[vaul-drawer-direction=right]:border-l data-[vaul-drawer-direction=right]:sm:max-w-sm",
-          "data-[vaul-drawer-direction=left]:inset-y-0 data-[vaul-drawer-direction=left]:left-0 data-[vaul-drawer-direction=left]:w-3/4 data-[vaul-drawer-direction=left]:border-r data-[vaul-drawer-direction=left]:sm:max-w-sm",
-          className,
-        )}
         data-slot="drawer-content"
+        {...mergeSx(stylex.props(styles.content), className, style)}
         {...props}
       >
-        <div className="mx-auto mt-4 hidden h-2 w-[100px] shrink-0 rounded-full bg-muted group-data-[vaul-drawer-direction=bottom]/drawer-content:block" />
+        <div {...stylex.props(styles.handle)} />
         {children}
       </DrawerPrimitive.Content>
     </DrawerPortal>
   );
 }
 
-function DrawerHeader({ className, ...props }: React.ComponentProps<"div">) {
+function DrawerHeader({
+  className,
+  style,
+  ...props
+}: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn(
-        "flex flex-col gap-0.5 p-4 group-data-[vaul-drawer-direction=bottom]/drawer-content:text-center group-data-[vaul-drawer-direction=top]/drawer-content:text-center md:gap-1.5 md:text-left",
-        className,
-      )}
       data-slot="drawer-header"
+      {...mergeSx(stylex.props(styles.header), className, style)}
       {...props}
     />
   );
 }
 
-function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
+function DrawerFooter({
+  className,
+  style,
+  ...props
+}: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn("mt-auto flex flex-col gap-2 p-4", className)}
       data-slot="drawer-footer"
+      {...mergeSx(stylex.props(styles.footer), className, style)}
       {...props}
     />
   );
@@ -97,12 +195,13 @@ function DrawerFooter({ className, ...props }: React.ComponentProps<"div">) {
 
 function DrawerTitle({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Title>) {
   return (
     <DrawerPrimitive.Title
-      className={cn("font-semibold text-foreground", className)}
       data-slot="drawer-title"
+      {...mergeSx(stylex.props(styles.title), className, style)}
       {...props}
     />
   );
@@ -110,12 +209,13 @@ function DrawerTitle({
 
 function DrawerDescription({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof DrawerPrimitive.Description>) {
   return (
     <DrawerPrimitive.Description
-      className={cn("text-muted-foreground text-sm", className)}
       data-slot="drawer-description"
+      {...mergeSx(stylex.props(styles.description), className, style)}
       {...props}
     />
   );

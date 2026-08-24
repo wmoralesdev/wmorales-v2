@@ -1,11 +1,64 @@
 "use client";
 
+import * as stylex from "@stylexjs/stylex";
 import { RotateCcw } from "lucide-react";
 import { useEffect, useState } from "react";
+import { colors, fonts } from "@/lib/stylex/tokens.stylex";
 
 interface LandscapeEnforcerProps {
   children: React.ReactNode;
 }
+
+const pulse = stylex.keyframes({
+  "0%": { opacity: 1 },
+  "50%": { opacity: 0.5 },
+  "100%": { opacity: 1 },
+});
+
+const styles = stylex.create({
+  overlay: {
+    position: "fixed",
+    inset: 0,
+    zIndex: 50,
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: "1.5rem",
+    backgroundColor: colors.background,
+    padding: "2rem",
+    textAlign: "center",
+  },
+  pulse: {
+    animationName: pulse,
+    animationDuration: "2s",
+    animationTimingFunction: "cubic-bezier(0.4, 0, 0.6, 1)",
+    animationIterationCount: "infinite",
+  },
+  icon: {
+    width: "4rem",
+    height: "4rem",
+    color: colors.accent,
+  },
+  copy: {
+    display: "flex",
+    flexDirection: "column",
+    gap: "0.5rem",
+  },
+  title: {
+    fontFamily: fonts.display,
+    fontSize: "1.25rem",
+    fontWeight: 600,
+    color: colors.foreground,
+  },
+  body: {
+    fontSize: "0.875rem",
+    color: colors.mutedForeground,
+  },
+  hidden: {
+    display: "none",
+  },
+});
 
 /**
  * LandscapeEnforcer attempts to lock orientation to landscape on mobile
@@ -16,19 +69,16 @@ export function LandscapeEnforcer({ children }: LandscapeEnforcerProps) {
   const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    // Check if mobile device
     const checkMobile = () => {
       const mobile = window.matchMedia("(max-width: 1024px)").matches;
       setIsMobile(mobile);
     };
 
-    // Check orientation
     const checkOrientation = () => {
       const portrait = window.matchMedia("(orientation: portrait)").matches;
       setIsPortrait(portrait);
     };
 
-    // Try to lock orientation to landscape (requires fullscreen on most browsers)
     const tryLockOrientation = async () => {
       try {
         // @ts-expect-error - Screen Orientation API types
@@ -45,7 +95,6 @@ export function LandscapeEnforcer({ children }: LandscapeEnforcerProps) {
     checkOrientation();
     tryLockOrientation();
 
-    // Listen for changes
     const portraitQuery = window.matchMedia("(orientation: portrait)");
     const mobileQuery = window.matchMedia("(max-width: 1024px)");
 
@@ -66,21 +115,18 @@ export function LandscapeEnforcer({ children }: LandscapeEnforcerProps) {
     };
   }, []);
 
-  // Show rotate prompt only on mobile in portrait
   const showRotatePrompt = isMobile && isPortrait;
 
   return (
     <>
       {showRotatePrompt && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center gap-6 bg-background p-8 text-center">
-          <div className="animate-pulse">
-            <RotateCcw className="size-16 text-accent" />
+        <div {...stylex.props(styles.overlay)}>
+          <div {...stylex.props(styles.pulse)}>
+            <RotateCcw {...stylex.props(styles.icon)} />
           </div>
-          <div className="space-y-2">
-            <h2 className="font-display text-xl font-semibold text-foreground">
-              Rotate Your Device
-            </h2>
-            <p className="text-sm text-muted-foreground">
+          <div {...stylex.props(styles.copy)}>
+            <h2 {...stylex.props(styles.title)}>Rotate Your Device</h2>
+            <p {...stylex.props(styles.body)}>
               This presentation is best viewed in landscape mode.
               <br />
               Please rotate your device horizontally.
@@ -88,7 +134,7 @@ export function LandscapeEnforcer({ children }: LandscapeEnforcerProps) {
           </div>
         </div>
       )}
-      <div className={showRotatePrompt ? "hidden" : undefined}>{children}</div>
+      <div {...stylex.props(showRotatePrompt && styles.hidden)}>{children}</div>
     </>
   );
 }

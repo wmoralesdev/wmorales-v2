@@ -1,4 +1,6 @@
-import { cn } from "@/lib/utils";
+import * as stylex from "@stylexjs/stylex";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors } from "@/lib/stylex/tokens.stylex";
 
 interface SlideFrameProps {
   children: React.ReactNode;
@@ -9,6 +11,46 @@ interface SlideFrameProps {
    */
   printMode?: boolean;
 }
+
+const styles = stylex.create({
+  frame: {
+    position: "relative",
+    display: "flex",
+    flexDirection: "column",
+    overflow: "hidden",
+    backgroundColor: colors.background,
+  },
+  print: {
+    height: "7.5in",
+    width: "13.333in",
+    flexShrink: 0,
+    breakInside: "avoid",
+    breakAfter: "page",
+  },
+  preview: {
+    aspectRatio: "16 / 9",
+    width: "100%",
+  },
+  inner: {
+    display: "flex",
+    width: "100%",
+    height: "100%",
+    flexDirection: "column",
+    padding: "2rem",
+    "@media (min-width: 768px)": {
+      padding: "3rem",
+    },
+    "@media (min-width: 1024px)": {
+      padding: "4rem",
+    },
+  },
+  canvas: {
+    display: "flex",
+    flex: 1,
+    flexDirection: "column",
+    justifyContent: "center",
+  },
+});
 
 /**
  * SlideFrame provides the 16:9 aspect ratio canvas for slides.
@@ -22,19 +64,12 @@ export function SlideFrame({
 }: SlideFrameProps) {
   return (
     <div
-      className={cn(
-        "relative flex flex-col overflow-hidden bg-background",
-        // 16:9 aspect ratio
-        printMode
-          ? "h-[7.5in] w-[13.333in] shrink-0 break-inside-avoid break-after-page"
-          : "aspect-video w-full",
+      {...mergeSx(
+        stylex.props(styles.frame, printMode ? styles.print : styles.preview),
         className,
       )}
     >
-      {/* Inner content area with consistent padding */}
-      <div className="flex size-full flex-col p-8 md:p-12 lg:p-16">
-        {children}
-      </div>
+      <div {...stylex.props(styles.inner)}>{children}</div>
     </div>
   );
 }
@@ -50,8 +85,6 @@ interface SlideCanvasProps {
  */
 export function SlideCanvas({ children, className }: SlideCanvasProps) {
   return (
-    <div className={cn("flex flex-1 flex-col justify-center", className)}>
-      {children}
-    </div>
+    <div {...mergeSx(stylex.props(styles.canvas), className)}>{children}</div>
   );
 }

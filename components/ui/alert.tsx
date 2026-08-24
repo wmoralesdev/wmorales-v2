@@ -1,47 +1,86 @@
-import { cva, type VariantProps } from "class-variance-authority";
+import * as stylex from "@stylexjs/stylex";
 import type * as React from "react";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors, radii } from "@/lib/stylex/tokens.stylex";
 
-import { cn } from "@/lib/utils";
-
-const alertVariants = cva(
-  "relative grid w-full grid-cols-[0_1fr] items-start gap-y-0.5 rounded-lg border px-4 py-3 text-sm has-[>svg]:grid-cols-[calc(var(--spacing)*4)_1fr] has-[>svg]:gap-x-3 [&>svg]:size-4 [&>svg]:translate-y-0.5 [&>svg]:text-current",
-  {
-    variants: {
-      variant: {
-        default: "bg-card text-card-foreground",
-        destructive:
-          "bg-card text-destructive *:data-[slot=alert-description]:text-destructive/90 [&>svg]:text-current",
-      },
-    },
-    defaultVariants: {
-      variant: "default",
-    },
+const styles = stylex.create({
+  root: {
+    position: "relative",
+    display: "grid",
+    width: "100%",
+    gridTemplateColumns: "0 1fr",
+    alignItems: "start",
+    rowGap: "0.125rem",
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    borderStyle: "solid",
+    borderColor: colors.border,
+    paddingInline: "1rem",
+    paddingBlock: "0.75rem",
+    fontSize: "0.875rem",
   },
-);
+  default: {
+    backgroundColor: colors.card,
+    color: colors.cardForeground,
+  },
+  destructive: {
+    backgroundColor: colors.card,
+    color: colors.destructive,
+  },
+  title: {
+    gridColumnStart: 2,
+    minHeight: "1rem",
+    fontWeight: 500,
+    letterSpacing: "-0.025em",
+    overflow: "hidden",
+    display: "-webkit-box",
+    WebkitLineClamp: 1,
+    WebkitBoxOrient: "vertical",
+  },
+  description: {
+    gridColumnStart: 2,
+    display: "grid",
+    justifyItems: "start",
+    gap: "0.25rem",
+    color: colors.mutedForeground,
+    fontSize: "0.875rem",
+  },
+});
 
 function Alert({
   className,
-  variant,
+  variant = "default",
+  style,
   ...props
-}: React.ComponentProps<"div"> & VariantProps<typeof alertVariants>) {
+}: React.ComponentProps<"div"> & {
+  variant?: "default" | "destructive";
+}) {
   return (
     <div
-      className={cn(alertVariants({ variant }), className)}
       data-slot="alert"
       role="alert"
+      {...mergeSx(
+        stylex.props(
+          styles.root,
+          variant === "destructive" ? styles.destructive : styles.default,
+        ),
+        className,
+        style,
+      )}
       {...props}
     />
   );
 }
 
-function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
+function AlertTitle({
+  className,
+  style,
+  ...props
+}: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn(
-        "col-start-2 line-clamp-1 min-h-4 font-medium tracking-tight",
-        className,
-      )}
       data-slot="alert-title"
+      {...mergeSx(stylex.props(styles.title), className, style)}
       {...props}
     />
   );
@@ -49,15 +88,13 @@ function AlertTitle({ className, ...props }: React.ComponentProps<"div">) {
 
 function AlertDescription({
   className,
+  style,
   ...props
 }: React.ComponentProps<"div">) {
   return (
     <div
-      className={cn(
-        "col-start-2 grid justify-items-start gap-1 text-muted-foreground text-sm [&_p]:leading-relaxed",
-        className,
-      )}
       data-slot="alert-description"
+      {...mergeSx(stylex.props(styles.description), className, style)}
       {...props}
     />
   );

@@ -2,6 +2,7 @@
 
 import type * as LabelPrimitive from "@radix-ui/react-label";
 import { Slot } from "@radix-ui/react-slot";
+import * as stylex from "@stylexjs/stylex";
 import * as React from "react";
 import {
   Controller,
@@ -13,7 +14,28 @@ import {
   useFormState,
 } from "react-hook-form";
 import { Label } from "@/components/ui/label";
-import { cn } from "@/lib/utils";
+import { mergeSx } from "@/lib/stylex/sx";
+import { colors } from "@/lib/stylex/tokens.stylex";
+
+const styles = stylex.create({
+  item: {
+    display: "grid",
+    gap: "0.5rem",
+  },
+  label: {
+    ":is([data-error=true])": {
+      color: colors.destructive,
+    },
+  },
+  description: {
+    color: colors.mutedForeground,
+    fontSize: "0.875rem",
+  },
+  message: {
+    color: colors.destructive,
+    fontSize: "0.875rem",
+  },
+});
 
 const Form = FormProvider;
 
@@ -72,14 +94,18 @@ type FormItemContextValue = {
   id: string;
 };
 
-function FormItem({ className, ...props }: React.ComponentProps<"div">) {
+function FormItem({
+  className,
+  style,
+  ...props
+}: React.ComponentProps<"div">) {
   const id = React.useId();
 
   return (
     <FormItemContext.Provider value={{ id }}>
       <div
-        className={cn("grid gap-2", className)}
         data-slot="form-item"
+        {...mergeSx(stylex.props(styles.item), className, style)}
         {...props}
       />
     </FormItemContext.Provider>
@@ -88,16 +114,17 @@ function FormItem({ className, ...props }: React.ComponentProps<"div">) {
 
 function FormLabel({
   className,
+  style,
   ...props
 }: React.ComponentProps<typeof LabelPrimitive.Root>) {
   const { error, formItemId } = useFormField();
 
   return (
     <Label
-      className={cn("data-[error=true]:text-destructive", className)}
       data-error={!!error}
       data-slot="form-label"
       htmlFor={formItemId}
+      {...mergeSx(stylex.props(styles.label), className, style)}
       {...props}
     />
   );
@@ -120,20 +147,28 @@ function FormControl({ ...props }: React.ComponentProps<typeof Slot>) {
   );
 }
 
-function FormDescription({ className, ...props }: React.ComponentProps<"p">) {
+function FormDescription({
+  className,
+  style,
+  ...props
+}: React.ComponentProps<"p">) {
   const { formDescriptionId } = useFormField();
 
   return (
     <p
-      className={cn("text-muted-foreground text-sm", className)}
       data-slot="form-description"
       id={formDescriptionId}
+      {...mergeSx(stylex.props(styles.description), className, style)}
       {...props}
     />
   );
 }
 
-function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
+function FormMessage({
+  className,
+  style,
+  ...props
+}: React.ComponentProps<"p">) {
   const { error, formMessageId } = useFormField();
   const body = error ? String(error?.message ?? "") : props.children;
 
@@ -143,9 +178,9 @@ function FormMessage({ className, ...props }: React.ComponentProps<"p">) {
 
   return (
     <p
-      className={cn("text-destructive text-sm", className)}
       data-slot="form-message"
       id={formMessageId}
+      {...mergeSx(stylex.props(styles.message), className, style)}
       {...props}
     >
       {body}
