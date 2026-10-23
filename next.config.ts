@@ -1,49 +1,54 @@
 import type { NextConfig } from "next";
-import createNextIntlPlugin from "next-intl/plugin";
 
-const withNextIntl = createNextIntlPlugin("./i18n/request.ts");
-
-const MAX_QUALITY = 100;
-const MIN_QUALITY = 75;
+const gone = [
+  "/blog",
+  "/blog/:path*",
+  "/activities",
+  "/resources",
+  "/design-system",
+  "/slides",
+  "/slides/:path*",
+  "/r/:code",
+];
 
 const nextConfig: NextConfig = {
-  experimental: {
-    // Enable filesystem caching to reduce compile times and resource usage across dev restarts
-    turbopackFileSystemCacheForDev: true,
-    viewTransition: true,
-  },
+  poweredByHeader: false,
+  reactStrictMode: true,
   images: {
-    qualities: [MAX_QUALITY, MIN_QUALITY],
-    remotePatterns: [
-      {
-        protocol: "https",
-        hostname: "*.keystatic.app",
-      },
-      {
-        protocol: "https",
-        hostname: "avatars.githubusercontent.com",
-      },
-      {
-        protocol: "https",
-        hostname: "lh3.googleusercontent.com",
-      },
-      {
-        protocol: "https",
-        hostname: "images.unsplash.com",
-      },
-      {
-        protocol: "https",
-        hostname: "qikotilzxqgnbjpgmgbj.supabase.co",
-      },
-    ],
+    formats: ["image/avif", "image/webp"],
   },
-  outputFileTracingIncludes: {
-    "/blog": ["./content/**/*"],
-    "/blog/*": ["./content/**/*"],
-    "/sitemap.xml": ["./content/**/*"],
-    "/slides": ["./content/slides/**/*"],
-    "/slides/*": ["./content/slides/**/*"],
+  // The previous site's sections no longer exist; keep their link equity on the home page.
+  async redirects() {
+    return gone.map((source) => ({
+      source,
+      destination: "/",
+      permanent: true,
+    }));
+  },
+  async headers() {
+    return [
+      {
+        source: "/:path*",
+        headers: [
+          { key: "X-Content-Type-Options", value: "nosniff" },
+          { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+          {
+            key: "Permissions-Policy",
+            value: "camera=(), microphone=(), geolocation=()",
+          },
+        ],
+      },
+      {
+        source: "/halftone/:file*",
+        headers: [
+          {
+            key: "Cache-Control",
+            value: "public, max-age=604800, stale-while-revalidate=86400",
+          },
+        ],
+      },
+    ];
   },
 };
 
-export default withNextIntl(nextConfig);
+export default nextConfig;

@@ -1,86 +1,50 @@
 import "./globals.css";
 
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
-import { JetBrains_Mono, Poppins, Space_Grotesk } from "next/font/google";
-import Script from "next/script";
-import { NextIntlClientProvider } from "next-intl";
-import { getLocale, getMessages } from "next-intl/server";
-import { NuqsAdapter } from "nuqs/adapters/next/app";
-import { CommandPalette } from "@/components/common/command-palette";
-import { CookieNotice } from "@/components/common/cookie-notice";
-import { ThemeProvider } from "@/components/common/theme-provider";
-import { Toaster } from "@/components/ui/sonner";
-import { getAllPosts } from "@/lib/blog";
-import { baseMetadata } from "@/lib/metadata";
-import { type DeckMeta, listDecks } from "@/lib/slides";
-import { cn } from "@/lib/utils";
+import type { Metadata, Viewport } from "next";
+import { Big_Shoulders, Public_Sans } from "next/font/google";
+import { baseMetadata } from "@/lib/seo";
 
-export const metadata = baseMetadata;
-
-const spaceGrotesk = Space_Grotesk({
+const display = Big_Shoulders({
   subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--display-family",
+  weight: ["800"],
+  variable: "--font-big-shoulders",
+  display: "swap",
+  fallback: ["Arial Narrow", "sans-serif"],
+  adjustFontFallback: false,
 });
 
-const poppins = Poppins({
+const sans = Public_Sans({
   subsets: ["latin"],
-  weight: ["400", "500"],
-  variable: "--text-family",
+  weight: ["400", "600"],
+  variable: "--font-public-sans",
+  display: "swap",
 });
 
-const jetbrainsMono = JetBrains_Mono({
-  subsets: ["latin"],
-  weight: ["400"],
-  variable: "--mono-family",
-});
+export const metadata: Metadata = baseMetadata;
 
-type Props = {
-  children: React.ReactNode;
+export const viewport: Viewport = {
+  themeColor: "#614afc",
+  colorScheme: "light",
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
-export default async function RootLayout({ children }: Props) {
-  const locale = await getLocale();
-  const messages = await getMessages();
-  const posts = getAllPosts(locale);
-  const allDecks = listDecks(locale);
-  const decks = allDecks.filter((d): d is DeckMeta => !d.invalid);
-
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <head>
-        <link href="/wm.ico" rel="icon" />
-        <link href="/wm.ico" rel="shortcut icon" />
-        <link href="/wm.png" rel="apple-touch-icon" />
-        {process.env.NODE_ENV === "development" && (
-          <Script
-            src="//unpkg.com/react-grab/dist/index.global.js"
-            crossOrigin="anonymous"
-            strategy="beforeInteractive"
-          />
-        )}
-      </head>
-      <body
-        className={cn(
-          spaceGrotesk.variable,
-          poppins.variable,
-          jetbrainsMono.variable,
-          "min-h-screen bg-background text-foreground antialiased",
-        )}
-      >
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <NuqsAdapter>
-          <NextIntlClientProvider messages={messages}>
-            {children}
-            <CommandPalette posts={posts} decks={decks} />
-            <CookieNotice />
-          </NextIntlClientProvider>
-          </NuqsAdapter>
-          <Toaster position="bottom-center" />
-        </ThemeProvider>
-        <Analytics />
-        <SpeedInsights />
+    <html lang="es" className={`${display.variable} ${sans.variable}`}>
+      <body className="min-h-svh overflow-x-clip">
+        <a
+          href="#contenido"
+          className="btn sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50"
+        >
+          Saltar al contenido
+        </a>
+        {children}
       </body>
     </html>
   );

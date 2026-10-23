@@ -1,36 +1,46 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# wmorales.dev
 
-## Getting Started
+Landing de Walter Morales, consultor de IA y fundador de Ai Labs. Next.js 16 (App Router), Tailwind CSS v4, GSAP y Motion. Sin API keys ni servicios externos.
 
-First, run the development server:
+## Rutas
+
+| Ruta     | Qué es                                                                      |
+| -------- | --------------------------------------------------------------------------- |
+| `/`      | Home: hero waterline, servicios, Ai Labs, trayectoria, comunidad, FAQ y CTA |
+| `/book`  | Calendario de Google embebido dentro de un marco con el estilo del sitio    |
+| `/intro` | Tarjeta de presentación con QR (sitio, agenda o vCard). `noindex`           |
+
+Las rutas del sitio anterior (`/blog`, `/slides`, `/r/:code`, etc.) redirigen con 308 a `/`.
+
+## Desarrollo
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+pnpm install
+pnpm dev          # http://localhost:3000
+pnpm build        # todo se prerenderiza como estático
+pnpm lint         # biome
+pnpm typecheck
+pnpm halftone     # regenera public/photos, public/halftone y lib/portrait-dots.ts
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Contenido
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Todo el texto y los datos viven en `lib/site.ts`: la home, el JSON-LD, `/llms.txt` y la vCard leen de ahí.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Las fotos originales van en `assets/photos/` (sin EXIF ni GPS). `pnpm halftone` genera:
+- `public/photos/*.jpg`: la foto re-codificada.
+- `public/halftone/*.webp`: máscara de puntos que CSS colorea con `mask-image`.
+- `lib/portrait-dots.ts`: la grilla de luminancia del retrato interactivo.
 
-## Learn More
+## Agenda
 
-To learn more about Next.js, take a look at the following resources:
+`BOOKING_URL` en `lib/site.ts` es el link corto de Google Calendar. Para el embed más limpio, copiá en Google Calendar → página de reservas → **Compartir → Insertar en sitio web** la URL `https://calendar.google.com/calendar/appointments/schedules/…?gv=true` y ponela en `NEXT_PUBLIC_BOOKING_EMBED_URL` (o directamente en `BOOKING_EMBED_URL`). Si el iframe no carga, la página muestra un enlace para abrir el calendario en otra pestaña.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## SEO, GEO y AEO
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Metadata con title/description orientados a "consultor de IA" y "fundador de Ai Labs", canonical, Open Graph y Twitter con imágenes generadas (`app/opengraph-image.tsx`).
+- JSON-LD en un solo `@graph`: `Person`, `Organization` (Ai Labs, con `founder`), `ProfessionalService`, `WebSite`, `ProfilePage` y `FAQPage`; `/book` lleva `WebPage` + `BreadcrumbList` + `ReserveAction`.
+- `robots.txt` permite explícitamente a los crawlers de IA (GPTBot, ClaudeBot, PerplexityBot, Google-Extended…), `sitemap.xml` y `llms.txt` con el perfil en texto plano.
+- FAQ visible en la página con respuestas cortas y directas, pensadas para ser citadas.
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`NEXT_PUBLIC_SITE_URL` cambia el dominio canónico (por defecto `https://wmorales.dev`).

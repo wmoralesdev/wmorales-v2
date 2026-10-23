@@ -1,40 +1,21 @@
 import type { MetadataRoute } from "next";
-import { getAllPosts } from "@/lib/blog";
-import { siteConfig } from "@/lib/metadata";
+import { SITE_URL } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = siteConfig.url;
-
-  // Define your main routes
-  const routes: MetadataRoute.Sitemap = [
+  const lastModified = new Date();
+  return [
     {
-      url: baseUrl,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
+      url: SITE_URL,
+      lastModified,
+      changeFrequency: "monthly",
       priority: 1,
+      images: [`${SITE_URL}/photos/walter-morales.jpg`],
     },
     {
-      url: `${baseUrl}/blog`,
-      lastModified: new Date(),
-      changeFrequency: "weekly" as const,
+      url: `${SITE_URL}/book`,
+      lastModified,
+      changeFrequency: "monthly",
       priority: 0.8,
     },
-    {
-      url: `${baseUrl}/design-system`,
-      lastModified: new Date(),
-      changeFrequency: "monthly" as const,
-      priority: 0.3,
-    },
   ];
-
-  // Add blog posts
-  const posts = getAllPosts("en");
-  const blogRoutes: MetadataRoute.Sitemap = posts.map((post) => ({
-    url: `${baseUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.date),
-    changeFrequency: "monthly" as const,
-    priority: 0.7,
-  }));
-
-  return [...routes, ...blogRoutes];
 }
