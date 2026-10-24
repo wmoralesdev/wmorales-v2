@@ -5,9 +5,9 @@ import { SITE_URL } from "@/lib/site";
 import { vcard } from "@/lib/vcard";
 
 export const metadata: Metadata = {
-  title: "Tarjeta de presentación",
+  title: "Intro",
   description:
-    "Escaneá el código para visitar el sitio de Walter Morales, agendar una llamada o guardar su contacto.",
+    "Walter Morales: Ai Labs, MediConecto, programas de embajador y todas las formas de contacto. Guardá su contacto o agendá una llamada.",
   alternates: { canonical: "/intro" },
   robots: { index: false, follow: true },
 };

@@ -1,5 +1,13 @@
 import type { Metadata } from "next";
-import { aiLabs, faqs, person, SITE_URL, services } from "@/lib/site";
+import {
+  aiLabs,
+  consultantFaqs,
+  faqs,
+  mediconecto,
+  person,
+  SITE_URL,
+  services,
+} from "@/lib/site";
 
 export const TITLE = "Walter Morales";
 // Search snippet only. "Consultoría de IA" is the query we want to rank for; it
@@ -78,6 +86,7 @@ const ids = {
   org: `${SITE_URL}/#ai-labs`,
   website: `${SITE_URL}/#website`,
   service: `${SITE_URL}/#consultoria-ia`,
+  mediconecto: `${SITE_URL}/#mediconecto`,
 };
 
 const personNode = {
@@ -92,7 +101,8 @@ const personNode = {
   url: SITE_URL,
   image: `${SITE_URL}${person.image}`,
   email: `mailto:${person.email}`,
-  founder: { "@id": ids.org },
+  founder: [{ "@id": ids.org }, { "@id": ids.mediconecto }],
+  worksFor: { "@id": ids.org },
   affiliation: { "@id": ids.org },
   memberOf: [
     ["SpaceXAI Ambassadors", "SpaceXAI", "Regional Lead"],
@@ -146,11 +156,23 @@ const orgNode = {
   name: aiLabs.name,
   alternateName: [aiLabs.wordmark, "AI Labs", "Ai Labs El Salvador"],
   description: aiLabs.description,
-  url: SITE_URL,
+  url: aiLabs.url,
+  sameAs: Object.values(aiLabs.social),
   logo: `${SITE_URL}${aiLabs.logo}`,
   founder: { "@id": ids.person },
   foundingLocation: { "@type": "Place", name: person.location },
   areaServed: ["Latinoamérica", "Estados Unidos"],
+};
+
+const mediconectoNode = {
+  "@type": "Organization",
+  "@id": ids.mediconecto,
+  name: mediconecto.name,
+  url: mediconecto.url,
+  description: mediconecto.line,
+  founder: { "@id": ids.person },
+  parentOrganization: { "@id": ids.org },
+  areaServed: { "@type": "Country", name: "El Salvador" },
 };
 
 const serviceNode = {
@@ -209,6 +231,7 @@ export function homeJsonLd() {
     "@graph": [
       personNode,
       orgNode,
+      mediconectoNode,
       serviceNode,
       websiteNode,
       {
@@ -263,6 +286,90 @@ export function bookJsonLd() {
             position: 2,
             name: "Agendar",
             item: `${SITE_URL}/book`,
+          },
+        ],
+      },
+    ],
+  };
+}
+
+export const CONSULTANT_PATH = "/consultor-de-ia";
+export const CONSULTANT_TITLE = "Consultor de IA en El Salvador";
+export const CONSULTANT_DESCRIPTION =
+  "Walter Morales, consultor de IA en El Salvador: Regional Lead de SpaceXAI Ambassadors y Ambassador de Codex, Mistral y Cognition. Estrategia, agentes y capacitación en IA para empresas.";
+
+export function consultantJsonLd() {
+  const url = `${SITE_URL}${CONSULTANT_PATH}`;
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${url}#page`,
+        url,
+        name: `${CONSULTANT_TITLE} · Walter Morales`,
+        description: CONSULTANT_DESCRIPTION,
+        inLanguage: "es",
+        isPartOf: { "@id": ids.website },
+        about: { "@id": `${url}#service` },
+        mainEntity: { "@id": `${url}#service` },
+        primaryImageOfPage: `${SITE_URL}${person.image}`,
+      },
+      {
+        "@type": "Service",
+        "@id": `${url}#service`,
+        name: "Consultoría de IA",
+        serviceType: "Consultor de inteligencia artificial",
+        description: CONSULTANT_DESCRIPTION,
+        url,
+        provider: { "@id": ids.person },
+        brand: { "@id": ids.org },
+        areaServed: [
+          { "@type": "Country", name: "El Salvador" },
+          { "@type": "Place", name: "Latinoamérica" },
+          { "@type": "Country", name: "Estados Unidos" },
+        ],
+        availableLanguage: ["es", "en"],
+        hasOfferCatalog: {
+          "@type": "OfferCatalog",
+          name: "Servicios de consultoría de IA",
+          itemListElement: services.map((s) => ({
+            "@type": "Offer",
+            itemOffered: {
+              "@type": "Service",
+              name: s.name,
+              description: s.description,
+            },
+          })),
+        },
+        potentialAction: {
+          "@type": "ReserveAction",
+          target: `${SITE_URL}/book`,
+          name: "Agendar una llamada",
+        },
+      },
+      // Repeated here so the page stands on its own when crawled in isolation.
+      personNode,
+      orgNode,
+      {
+        "@type": "FAQPage",
+        "@id": `${url}#faq`,
+        inLanguage: "es",
+        mainEntity: consultantFaqs.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a },
+        })),
+      },
+      {
+        "@type": "BreadcrumbList",
+        itemListElement: [
+          { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
+          {
+            "@type": "ListItem",
+            position: 2,
+            name: CONSULTANT_TITLE,
+            item: url,
           },
         ],
       },

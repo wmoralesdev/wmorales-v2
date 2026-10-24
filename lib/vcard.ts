@@ -10,7 +10,10 @@ export function vcard() {
     `TITLE:${person.role}`,
     `EMAIL;TYPE=INTERNET:${person.email}`,
     `URL:${SITE_URL}`,
+    `NOTE:${person.roles.join(" · ")}`,
     `X-SOCIALPROFILE;TYPE=linkedin:${person.social.linkedin}`,
+    `X-SOCIALPROFILE;TYPE=github:${person.social.github}`,
+    `X-SOCIALPROFILE;TYPE=twitter:${person.social.x}`,
     `ADR;TYPE=WORK:;;;${person.city};;;${person.country}`,
     "END:VCARD",
   ].join("\r\n");

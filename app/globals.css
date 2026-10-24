@@ -1,13 +1,22 @@
 @import "tailwindcss";
 
+/*
+ * Colour tokens come in two kinds:
+ * - Themed (paper, surface, ink, muted, lilac, accent): page and text colours.
+ *   Dark mode swaps them, so `bg-ink text-paper` stays an inverted block in both.
+ * - Fixed (snow, accent-deep, night, night-soft): ink on the accent field and the
+ *   night footer, which look the same in both themes.
+ */
 @theme {
   --color-paper: #f3f2f7;
   --color-surface: #e7e4f1;
   --color-ink: #120d26;
   --color-muted: #4a4562;
   --color-accent: #614afc;
-  --color-accent-deep: #3d27c9;
   --color-lilac: #d6cffd;
+
+  --color-snow: #f3f2f7;
+  --color-accent-deep: #3d27c9;
   --color-night: #0b0818;
   --color-night-soft: #b9b4cc;
 
@@ -17,10 +26,7 @@
   --text-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
   --text-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
   --text-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
-  --text-head: calc(
-    clamp(2.5rem, 1.6rem + 3.2vw, 4.5rem) *
-    var(--display-scale)
-  );
+  --text-head: clamp(2.5rem, 1.6rem + 3.2vw, 4.5rem);
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -51,8 +57,34 @@
   }
 }
 
+/* Set before first paint by the script in app/layout.tsx. */
+:root[data-theme="dark"] {
+  --color-paper: #0f0b21;
+  --color-surface: #1c1735;
+  --color-ink: #efedf8;
+  --color-muted: #a9a3c3;
+  --color-accent: #7462ff;
+  --color-lilac: #4a34d6;
+  color-scheme: dark;
+}
+
+/*
+ * Pins a block to the light palette in either theme. Used on the portrait: its
+ * halftone is part of the brand, so the photo prints the same in both themes.
+ */
+.theme-light {
+  --color-paper: #f3f2f7;
+  --color-surface: #e7e4f1;
+  --color-ink: #120d26;
+  --color-muted: #4a4562;
+  --color-accent: #614afc;
+  --color-lilac: #d6cffd;
+  color-scheme: light;
+}
+
 @layer base {
   html {
+    background: var(--color-paper);
     -webkit-text-size-adjust: 100%;
     text-rendering: optimizeLegibility;
     scroll-padding-top: 1rem;
@@ -90,12 +122,11 @@
 }
 
 @layer components {
-  /* Display type. Case, weight and tracking come from the Tools prefs below. */
+  /* Display type: tight tracking and leading, sentence case. */
   .display {
     font-family: var(--font-display);
-    font-weight: var(--display-weight);
-    text-transform: var(--display-case);
-    letter-spacing: var(--display-tracking);
+    font-weight: 700;
+    letter-spacing: -0.035em;
     line-height: 0.95;
   }
 
@@ -110,8 +141,9 @@
     font-weight: 600;
     font-size: var(--text-small);
     line-height: 1;
+    white-space: nowrap;
     background: var(--btn-bg, var(--color-accent));
-    color: var(--btn-fg, #fff);
+    color: var(--btn-fg, var(--color-snow));
     transition:
       transform 160ms var(--ease-out),
       background-color 180ms ease,
@@ -127,7 +159,7 @@
   @media (hover: hover) and (pointer: fine) {
     .btn:hover {
       background: var(--btn-bg-hover, var(--color-ink));
-      color: var(--btn-fg-hover, #fff);
+      color: var(--btn-fg-hover, var(--color-paper));
     }
   }
 
@@ -187,70 +219,62 @@
 }
 
 /*
- * Tools prefs. The <head> script in app/layout.tsx copies the saved choices onto
- * <html> as data attributes before first paint; these rules turn them into
- * tokens. Unlayered on purpose so they win over the @theme defaults.
+ * Hero name, halftone print: each letter is masked by a dot screen whose dots
+ * grow until they merge into solid type. GSAP drives --r per letter.
  */
-:root {
-  --display-weight: 700;
-  --display-case: none;
-  --display-tracking: -0.035em;
-  /* Shrinks fixed-size display text when uppercase makes words wider. */
-  --display-fit: 1;
-  --display-scale: 1;
-  --ht-cell: 6px;
+.ht-char {
+  --r: 0.1em;
+  -webkit-mask-image: radial-gradient(
+    circle at center,
+    #000 var(--r),
+    transparent calc(var(--r) + 0.5px)
+  );
+  mask-image: radial-gradient(
+    circle at center,
+    #000 var(--r),
+    transparent calc(var(--r) + 0.5px)
+  );
+  -webkit-mask-size: 0.075em 0.075em;
+  mask-size: 0.075em 0.075em;
 }
 
-html[data-font="helvetica"] {
-  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+/* Fully printed letters drop the mask so edges stay crisp. */
+.ht-char[data-solid] {
+  -webkit-mask-image: none;
+  mask-image: none;
 }
 
-html[data-case="upper"] {
-  --display-case: uppercase;
-  --display-tracking: -0.015em;
-  --display-fit: 0.86;
+/*
+ * Hold the name back until it is split, so it never flashes solid first. If the
+ * script never runs, it shows up on its own after a beat.
+ */
+.hero-name:not([data-split]) {
+  visibility: hidden;
+  animation: show-name 0s 2.5s forwards;
 }
 
-html[data-weight="600"] {
-  --display-weight: 600;
+@keyframes show-name {
+  to {
+    visibility: visible;
+  }
 }
 
-html[data-weight="800"] {
-  --display-weight: 800;
+/* The tide draws its own wavy seam, so the straight dotted strip steps aside. */
+.seam-strip {
+  display: none;
 }
 
-html[data-scale="s"] {
-  --display-scale: 0.85;
+@media (prefers-reduced-motion: reduce) {
+  .hero-name:not([data-split]) {
+    visibility: visible;
+  }
+
+  .seam-strip {
+    display: block;
+  }
 }
 
-html[data-scale="l"] {
-  --display-scale: 1.15;
-}
-
-/* Accents are AA against paper text (4.5:1) so every pairing on the site holds. */
-html[data-accent="cobalt"] {
-  --color-accent: #2551f0;
-  --color-accent-deep: #1636b8;
-  --color-lilac: #cdd7fd;
-}
-
-html[data-accent="orange"] {
-  --color-accent: #c2410c;
-  --color-accent-deep: #8a2c06;
-  --color-lilac: #fbd5c2;
-}
-
-html[data-accent="green"] {
-  --color-accent: #047857;
-  --color-accent-deep: #024d38;
-  --color-lilac: #c3ecdc;
-}
-
-html[data-ht-size="medium"] {
-  --ht-cell: 9px;
-}
-
-/* Masked headline reveal. Pure CSS so it runs off the main thread and needs no JS. */
+/* Masked headline reveal (the /book title). Pure CSS, off the main thread. */
 @media (prefers-reduced-motion: no-preference) {
   .mask-line {
     display: block;
@@ -268,6 +292,68 @@ html[data-ht-size="medium"] {
   .fade-in-late {
     animation: var(--animate-fade-up);
     animation-delay: 520ms;
+  }
+}
+
+/*
+ * Halftone brand logos (components/halftone-logo.tsx). --dot-r is registered so
+ * the dot size can animate: the logo prints in as it scrolls into view and the
+ * dots pulse on hover.
+ */
+@property --dot-r {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 28%;
+}
+
+.halftone-logo {
+  --dot: currentColor;
+  --dot-size: 3px;
+  --dot-r: 42%;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+}
+
+@keyframes logo-print {
+  from {
+    --dot-r: 0%;
+  }
+  to {
+    --dot-r: 42%;
+  }
+}
+
+@keyframes logo-pulse {
+  0%,
+  100% {
+    --dot-r: 42%;
+  }
+  35% {
+    --dot-r: 16%;
+  }
+  65% {
+    --dot-r: 50%;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  @supports (animation-timeline: view()) {
+    .halftone-logo {
+      animation: logo-print linear both;
+      animation-timeline: view();
+      animation-range: entry 0% entry 90%;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .group:hover .halftone-logo {
+      animation: logo-pulse 900ms var(--ease-out);
+      animation-timeline: auto;
+    }
   }
 }
 

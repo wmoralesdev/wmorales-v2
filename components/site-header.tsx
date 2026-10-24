@@ -11,7 +11,7 @@ export function SiteHeader({
   tone = "paper",
   action = { href: "/book", label: "Agendar llamada" },
 }: Props) {
-  const ink = tone === "night" ? "text-paper" : "text-ink";
+  const ink = tone === "night" ? "text-snow" : "text-ink";
   return (
     <header
       className={`relative z-20 flex items-center justify-between gap-4 px-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-7 sm:pt-7 ${ink}`}

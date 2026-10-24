@@ -31,12 +31,12 @@ export function CtaBand() {
         href="/book"
         onPointerMove={onMove}
         onPointerLeave={onLeave}
-        className="group relative flex min-h-[18rem] flex-col gap-16 justify-between overflow-clip bg-accent px-4 pt-5 pb-6 text-paper outline-offset-[-6px] focus-visible:bg-ink sm:px-7 md:min-h-[24rem] md:hover:bg-ink"
+        className="group relative flex min-h-[18rem] flex-col gap-16 justify-between overflow-clip bg-accent px-4 pt-5 pb-6 text-snow outline-offset-[-6px] transition-colors duration-500 ease-(--ease-out) motion-reduce:transition-none focus-visible:bg-night sm:px-7 md:min-h-[24rem] md:hover:bg-night"
       >
         <HalftoneField
           seed={2.4}
           fade="up"
-          className="absolute inset-0 text-accent-deep transition-opacity duration-300 group-hover:opacity-40"
+          className="absolute inset-0 text-accent-deep transition-opacity duration-500 ease-(--ease-out) group-hover:opacity-40"
         />
         <div className="relative flex items-start justify-between gap-6">
           <p className="max-w-[22rem] text-[1.0625rem] leading-snug md:text-[1.25rem]">
@@ -54,7 +54,7 @@ export function CtaBand() {
         </div>
         <h2
           id="contacto-title"
-          className="display relative -mb-[0.08em] text-[calc(16vw*var(--display-fit)*var(--display-scale))] leading-[0.85] text-paper md:text-[calc(clamp(5rem,10vw,9rem)*var(--display-fit)*var(--display-scale))]"
+          className="display relative -mb-[0.08em] text-[16vw] leading-[0.85] text-snow md:text-[clamp(5rem,10vw,9rem)]"
         >
           Hablemos
         </h2>

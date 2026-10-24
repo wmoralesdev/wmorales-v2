@@ -52,7 +52,7 @@ export default function BookPage() {
         <SiteHeader action={{ href: "/", label: "Volver al inicio" }} />
         <Reveal className="grid gap-12 px-4 pt-12 sm:px-7 md:grid-cols-12 md:grid-rows-[auto_1fr] md:gap-x-8 md:pt-20">
           <div className="md:col-span-5 md:row-start-1 lg:col-span-4">
-            <h1 className="display text-[calc(clamp(2.75rem,12vw,4.25rem)*var(--display-fit)*var(--display-scale))] md:text-[calc(clamp(3rem,5.4vw,5.5rem)*var(--display-fit)*var(--display-scale))]">
+            <h1 className="display text-[clamp(2.75rem,12vw,4.25rem)] md:text-[clamp(3rem,5.4vw,5.5rem)]">
               <span className="mask-line">
                 <span>Agendá una</span>
               </span>

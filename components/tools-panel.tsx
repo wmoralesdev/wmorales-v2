@@ -1,98 +1,96 @@
 "use client";
 
 import {
+  ArrowUpRight01Icon,
+  Calendar03Icon,
   Cancel01Icon,
-  Copy01Icon,
-  PaintBoardIcon,
-  RefreshIcon,
+  ComputerIcon,
+  Home01Icon,
+  IdCardIcon,
+  Moon02Icon,
+  Sun03Icon,
 } from "@hugeicons/core-free-icons";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useEffect, useRef, useState } from "react";
+import { HalftoneIcon } from "@/components/halftone-icon";
 import { Icon } from "@/components/icon";
-import {
-  defaultPrefs,
-  PREFS_KEY,
-  type PrefKey,
-  type Prefs,
-  prefAttr,
-  prefOptions,
-  TOOLS_KEY,
-} from "@/lib/prefs";
+import { applyPref, readPref, type ThemePref } from "@/lib/theme";
 
-function readStored(): Partial<Prefs> {
-  try {
-    return JSON.parse(localStorage.getItem(PREFS_KEY) ?? "{}");
-  } catch {
-    return {};
-  }
-}
+/** Add an entry here to add a shortcut. */
+const shortcuts = [
+  { label: "Inicio", href: "/", icon: Home01Icon },
+  { label: "Agendar llamada", href: "/book", icon: Calendar03Icon },
+  { label: "Tarjeta de presentación", href: "/intro", icon: IdCardIcon },
+];
 
-function apply(prefs: Prefs) {
-  const html = document.documentElement;
-  for (const key of Object.keys(prefs) as PrefKey[]) {
-    html.setAttribute(prefAttr(key), prefs[key]);
-  }
-}
+const themes: { value: ThemePref; label: string; icon: typeof Sun03Icon }[] = [
+  { value: "light", label: "Claro", icon: Sun03Icon },
+  { value: "dark", label: "Oscuro", icon: Moon02Icon },
+  { value: "system", label: "Sistema", icon: ComputerIcon },
+];
 
 /**
- * Floating design switcher. Every change applies instantly and is saved to
- * localStorage, so a combination survives reloads while we decide what to keep.
- * Shown in development, or anywhere after visiting with ?tools (?tools=0 hides it).
+ * Floating Tools button on every page: the theme switch plus quick links to the
+ * booking page and the intro card.
  */
 export function ToolsPanel() {
-  const [enabled, setEnabled] = useState(false);
+  const pathname = usePathname();
+  const rootRef = useRef<HTMLDivElement>(null);
   const [open, setOpen] = useState(false);
-  const [prefs, setPrefs] = useState<Prefs>(defaultPrefs);
-  const [copied, setCopied] = useState(false);
+  const [theme, setTheme] = useState<ThemePref>("system");
 
+  // The stored choice is only readable after hydration.
+  useEffect(() => setTheme(readPref()), []);
+
+  // While following the system, track it live.
   useEffect(() => {
-    const param = new URLSearchParams(location.search).get("tools");
-    try {
-      if (param === "0") localStorage.removeItem(TOOLS_KEY);
-      else if (param !== null) localStorage.setItem(TOOLS_KEY, "1");
-      setEnabled(
-        process.env.NODE_ENV === "development" ||
-          localStorage.getItem(TOOLS_KEY) === "1",
-      );
-    } catch {
-      setEnabled(process.env.NODE_ENV === "development" || param !== null);
-    }
-    setPrefs({ ...defaultPrefs, ...readStored() });
-  }, []);
+    if (theme !== "system") return;
+    const mq = window.matchMedia("(prefers-color-scheme: dark)");
+    const onChange = () => applyPref("system");
+    mq.addEventListener("change", onChange);
+    return () => mq.removeEventListener("change", onChange);
+  }, [theme]);
 
+  // Close on Escape, on a click outside, and after following a shortcut.
   useEffect(() => {
     if (!open) return;
     const onKey = (e: KeyboardEvent) => e.key === "Escape" && setOpen(false);
+    const onDown = (e: PointerEvent) => {
+      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+    };
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+    window.addEventListener("pointerdown", onDown);
+    return () => {
+      window.removeEventListener("keydown", onKey);
+      window.removeEventListener("pointerdown", onDown);
+    };
   }, [open]);
 
-  function update(patch: Partial<Prefs>) {
-    setPrefs((prev) => {
-      const next = { ...prev, ...patch };
-      apply(next);
-      try {
-        localStorage.setItem(PREFS_KEY, JSON.stringify(next));
-      } catch {}
-      return next;
-    });
+  // biome-ignore lint/correctness/useExhaustiveDependencies: close whenever the route changes.
+  useEffect(() => setOpen(false), [pathname]);
+
+  function pick(value: ThemePref) {
+    setTheme(value);
+    applyPref(value);
   }
 
-  async function copy() {
-    try {
-      await navigator.clipboard.writeText(JSON.stringify(prefs, null, 2));
-      setCopied(true);
-      setTimeout(() => setCopied(false), 1400);
-    } catch {}
-  }
-
-  if (!enabled) return null;
+  const links = shortcuts.filter((s) => s.href !== pathname);
+  // On /intro's phone layout the button shares a row with the action bar.
+  const place =
+    pathname === "/intro"
+      ? "bottom-[max(0.75rem,env(safe-area-inset-bottom))] lg:bottom-5"
+      : "bottom-[max(5rem,calc(env(safe-area-inset-bottom)+4.5rem))] md:bottom-5";
 
   return (
-    <div className="fixed right-3 bottom-[max(5rem,calc(env(safe-area-inset-bottom)+4.5rem))] z-40 flex flex-col items-end gap-2 font-sans md:right-5 md:bottom-5">
+    <div
+      ref={rootRef}
+      className={`fixed right-3 z-40 flex flex-col items-end gap-2 font-sans md:right-5 ${place}`}
+    >
       {open && (
         <section
-          aria-label="Tools de diseño"
-          className="w-[min(20rem,calc(100vw-1.5rem))] origin-bottom-right animate-fade-up border border-ink/10 bg-paper p-4 text-ink shadow-[0_18px_50px_-12px_rgb(18_13_38/0.35)]"
+          aria-label="Tools"
+          className="w-[min(18rem,calc(100vw-1.5rem))] origin-bottom-right animate-fade-up border border-ink/10 bg-paper p-4 text-ink shadow-[0_18px_50px_-12px_rgb(18_13_38/0.35)]"
         >
           <div className="mb-3 flex items-center justify-between">
             <p className="font-semibold text-small">Tools</p>
@@ -106,65 +104,52 @@ export function ToolsPanel() {
             </button>
           </div>
 
-          <div className="space-y-3">
-            {(Object.keys(prefOptions) as PrefKey[]).map((key) => {
-              const group = prefOptions[key];
-              return (
-                <fieldset key={key}>
-                  <legend className="mb-1.5 text-muted text-xs">
-                    {group.label}
-                  </legend>
-                  <div className="flex flex-wrap gap-1">
-                    {group.options.map((opt) => {
-                      const active = prefs[key] === opt.value;
-                      return (
-                        <button
-                          key={opt.value}
-                          type="button"
-                          aria-pressed={active}
-                          onClick={() =>
-                            update({ [key]: opt.value } as Partial<Prefs>)
-                          }
-                          className={`press flex min-h-8 items-center gap-1.5 px-2.5 text-xs transition-colors ${
-                            active
-                              ? "bg-ink text-paper"
-                              : "bg-surface text-ink hover:bg-lilac"
-                          }`}
-                        >
-                          {"swatch" in opt && (
-                            <span
-                              className="size-2.5 rounded-full"
-                              style={{ background: opt.swatch }}
-                            />
-                          )}
-                          {opt.label}
-                        </button>
-                      );
-                    })}
-                  </div>
-                </fieldset>
-              );
-            })}
-          </div>
+          <fieldset>
+            <legend className="mb-1.5 text-muted text-small">Tema</legend>
+            <div className="grid grid-cols-3 gap-1 bg-surface p-1">
+              {themes.map((t) => (
+                <label
+                  key={t.value}
+                  className={`press flex min-h-12 cursor-pointer flex-col items-center justify-center gap-0.5 font-semibold text-[0.75rem] transition-colors duration-200 has-focus-visible:outline-2 has-focus-visible:outline-accent ${
+                    theme === t.value
+                      ? "bg-ink text-paper"
+                      : "text-ink hover:bg-paper"
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="theme"
+                    value={t.value}
+                    checked={theme === t.value}
+                    onChange={() => pick(t.value)}
+                    className="sr-only"
+                  />
+                  <Icon icon={t.icon} size={16} />
+                  {t.label}
+                </label>
+              ))}
+            </div>
+          </fieldset>
 
-          <div className="mt-4 flex gap-1.5 border-ink/10 border-t pt-3">
-            <button
-              type="button"
-              onClick={copy}
-              className="press flex min-h-8 flex-1 items-center justify-center gap-1.5 bg-accent px-2.5 text-paper text-xs"
-            >
-              <Icon icon={Copy01Icon} size={14} />
-              {copied ? "Copiado" : "Copiar selección"}
-            </button>
-            <button
-              type="button"
-              onClick={() => update(defaultPrefs)}
-              className="press flex min-h-8 items-center gap-1.5 bg-surface px-2.5 text-xs hover:bg-lilac"
-            >
-              <Icon icon={RefreshIcon} size={14} />
-              Reset
-            </button>
-          </div>
+          {links.length > 0 && (
+            <nav aria-label="Accesos rápidos" className="mt-4 space-y-1">
+              {links.map((s) => (
+                <Link
+                  key={s.href}
+                  href={s.href}
+                  className="press group/link flex min-h-10 items-center gap-2.5 bg-surface px-3 text-small transition-colors hover:bg-ink hover:text-paper"
+                >
+                  <Icon icon={s.icon} size={18} />
+                  <span className="flex-1">{s.label}</span>
+                  <Icon
+                    icon={ArrowUpRight01Icon}
+                    size={16}
+                    className="opacity-50 transition-opacity group-hover/link:opacity-100"
+                  />
+                </Link>
+              ))}
+            </nav>
+          )}
         </section>
       )}
 
@@ -172,12 +157,16 @@ export function ToolsPanel() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
-        className="press group flex h-11 items-center gap-2 bg-ink px-3.5 text-paper text-small shadow-[0_10px_30px_-10px_rgb(18_13_38/0.5)]"
+        aria-label="Tools"
+        data-icon-hover
+        className="press grid size-14 place-items-center bg-ink shadow-[0_10px_30px_-10px_rgb(18_13_38/0.5)]"
       >
-        <Icon icon={PaintBoardIcon} size={18} />
-        <span className="max-w-0 overflow-hidden whitespace-nowrap transition-[max-width] duration-300 ease-(--ease-out) group-hover:max-w-16 group-aria-expanded:max-w-16">
-          Tools
-        </span>
+        {/* A grid of tiles for "menu"; it turns into a cross while the panel is open. */}
+        <HalftoneIcon
+          shape={open ? "plus" : "tiles"}
+          motion="hover"
+          className={`size-8 text-lilac transition-transform duration-300 ease-(--ease-out) ${open ? "rotate-45" : ""}`}
+        />
       </button>
     </div>
   );

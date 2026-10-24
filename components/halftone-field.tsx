@@ -1,13 +1,13 @@
 "use client";
 
 import { useEffect, useRef } from "react";
+import { onThemeChange } from "@/lib/theme";
 
-type Style = "fluid" | "waves";
+const CELL = 6;
 
 /**
- * A generative halftone: dots sized by a slowly moving field, like ink drifting in
- * water. Used as a supporting texture next to the photos. The style (fluid, waves
- * or off) and dot pitch come from the Tools prefs on <html>; the dots take the
+ * A generative halftone: dots sized by slow, bending waves, like ink moving on
+ * water. Used as a supporting texture next to the photos; the dots take the
  * element's text colour.
  *
  * It only animates while on screen, at ~30fps, and draws one still frame under
@@ -33,10 +33,7 @@ export function HalftoneField({
     const ctx = canvas?.getContext("2d");
     if (!wrap || !canvas || !ctx) return;
 
-    const html = document.documentElement;
     const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let style: Style | "off" = "fluid";
-    let cell = 6;
     let w = 0;
     let h = 0;
     let color = "";
@@ -44,16 +41,6 @@ export function HalftoneField({
     let raf = 0;
     let last = 0;
     const t0 = performance.now();
-
-    function readPrefs() {
-      style = (html.dataset.ht as Style | "off" | undefined) ?? "fluid";
-      cell =
-        Number.parseFloat(
-          getComputedStyle(html).getPropertyValue("--ht-cell"),
-        ) || 6;
-      color = getComputedStyle(wrap as HTMLElement).color;
-      wrap?.toggleAttribute("hidden", style === "off");
-    }
 
     function resize() {
       if (!canvas || !ctx || !wrap) return;
@@ -65,24 +52,8 @@ export function HalftoneField({
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     }
 
-    // Both fields return 0..1. Coordinates are in units of the shorter side so the
-    // shapes keep their proportions on wide and tall boxes.
-    function fluid(x: number, y: number, t: number) {
-      const wx = x + 0.18 * Math.sin(2.6 * y + t * 0.5 + seed);
-      const wy = y + 0.18 * Math.sin(2.2 * x - t * 0.42 + seed * 1.7);
-      const cx = 0.7 + 0.35 * Math.sin(t * 0.21 + seed);
-      const cy = 0.5 + 0.3 * Math.cos(t * 0.17 + seed);
-      const v =
-        Math.sin(3.4 * wx + t * 0.6) +
-        Math.sin(4.1 * wy - t * 0.45) +
-        Math.sin(2.7 * (wx + wy) + t * 0.33) +
-        Math.sin(5 * Math.hypot(wx - cx, wy - cy) - t * 0.8);
-      const n = (v / 4 + 1) / 2;
-      // Push toward 0 and 1 so the field reads as blobs, not fog.
-      const k = Math.min(Math.max((n - 0.38) / 0.4, 0), 1);
-      return k * k * (3 - 2 * k);
-    }
-
+    // Returns 0..1. Coordinates are in units of the shorter side so the waves keep
+    // their proportions on wide and tall boxes.
     function waves(x: number, y: number, t: number) {
       const v = Math.sin(
         7 * y + 1.6 * Math.sin(2.4 * x + t * 0.5 + seed) - t * 0.7,
@@ -93,18 +64,17 @@ export function HalftoneField({
     function draw(now: number) {
       if (!ctx) return;
       ctx.clearRect(0, 0, w, h);
-      if (style === "off" || !w || !h) return;
+      if (!w || !h) return;
       const t = reduced.matches ? 4 : (now - t0) / 1000;
-      const field = style === "waves" ? waves : fluid;
       const unit = Math.min(w, h);
-      const max = cell * 0.48;
+      const max = CELL * 0.48;
       ctx.fillStyle = color;
       ctx.beginPath();
-      for (let row = 0, y = cell / 2; y < h + cell; row++, y += cell) {
-        const shift = row % 2 ? cell / 2 : 0;
+      for (let row = 0, y = CELL / 2; y < h + CELL; row++, y += CELL) {
+        const shift = row % 2 ? CELL / 2 : 0;
         const edge = fade === "down" ? 1 - y / h : fade === "up" ? y / h : 1;
-        for (let x = shift; x < w + cell; x += cell) {
-          const r = field(x / unit, y / unit, t) * max * edge;
+        for (let x = shift; x < w + CELL; x += CELL) {
+          const r = waves(x / unit, y / unit, t) * max * edge;
           if (r < 0.3) continue;
           ctx.moveTo(x + r, y);
           ctx.arc(x, y, r, 0, Math.PI * 2);
@@ -115,7 +85,7 @@ export function HalftoneField({
 
     function frame(now: number) {
       raf = 0;
-      if (!visible || reduced.matches || style === "off") return;
+      if (!visible || reduced.matches) return;
       if (now - last >= 33) {
         last = now;
         draw(now);
@@ -129,7 +99,7 @@ export function HalftoneField({
         raf = requestAnimationFrame(frame);
     }
 
-    readPrefs();
+    color = getComputedStyle(wrap).color;
     resize();
 
     const io = new IntersectionObserver(([entry]) => {
@@ -144,12 +114,10 @@ export function HalftoneField({
     });
     ro.observe(wrap);
 
-    // The Tools panel flips data attributes on <html>; follow along live.
-    const mo = new MutationObserver(() => {
-      readPrefs();
-      start();
+    const offTheme = onThemeChange(() => {
+      color = getComputedStyle(wrap).color;
+      draw(performance.now());
     });
-    mo.observe(html, { attributes: true });
 
     const onMotion = () => start();
     reduced.addEventListener("change", onMotion);
@@ -158,7 +126,7 @@ export function HalftoneField({
       cancelAnimationFrame(raf);
       io.disconnect();
       ro.disconnect();
-      mo.disconnect();
+      offTheme();
       reduced.removeEventListener("change", onMotion);
     };
   }, [seed, fade]);

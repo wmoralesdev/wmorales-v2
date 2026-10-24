@@ -38,7 +38,7 @@ const columns = [
 
 export function SiteFooter() {
   return (
-    <footer className="sticky bottom-0 z-0 grid grid-cols-[minmax(0,1fr)] gap-y-16 bg-night px-4 pt-10 pb-[max(1.25rem,env(safe-area-inset-bottom))] text-paper sm:px-7">
+    <footer className="sticky bottom-0 z-0 grid grid-cols-[minmax(0,1fr)] gap-y-16 bg-night px-4 pt-10 pb-[max(1.25rem,env(safe-area-inset-bottom))] text-snow sm:px-7">
       <div className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-12 md:gap-x-8">
         {columns.map((col) => (
           <div key={col.title} className="md:col-span-3">
@@ -52,14 +52,14 @@ export function SiteFooter() {
                         href={l.href}
                         rel="me noopener noreferrer"
                         target="_blank"
-                        className="link-underline hover:text-paper"
+                        className="link-underline hover:text-snow"
                       >
                         {l.label}
                       </a>
                     ) : (
                       <Link
                         href={l.href}
-                        className="link-underline hover:text-paper"
+                        className="link-underline hover:text-snow"
                       >
                         {l.label}
                       </Link>

@@ -44,13 +44,20 @@ export const person = {
     linkedin: "https://linkedin.com/in/wmoralesdev",
     github: "https://github.com/wmoralesdev",
     x: "https://x.com/wmoralesdev",
-    instagram: "https://instagram.com/wmorales.dev",
+    instagram: "https://instagram.com/wmoralesdev",
   },
 } as const;
 
 export const aiLabs = {
   name: "Ai Labs",
   wordmark: "Ai /abs",
+  url: "https://www.ailabs.sv",
+  social: {
+    linkedin: "https://linkedin.com/company/ai-labs-sv",
+    instagram: "https://instagram.com/ailabs_sv",
+    tiktok: "https://tiktok.com/@ailabs_sv",
+    x: "https://x.com/ailabs_sv",
+  },
   logo: "/ailabs-lockup-horizontal.svg",
   description:
     "Ai Labs es el estudio que Walter Morales cofundó en El Salvador para diseñar y construir productos con inteligencia artificial: estrategia, prototipos y software en producción para empresas de Latinoamérica.",
@@ -64,9 +71,9 @@ export const facts = [
 
 export const stats = [
   { value: 6, suffix: "+", label: "años construyendo software" },
-  { value: 550, suffix: "+", label: "builders en la comunidad" },
-  { value: 7, suffix: "", label: "eventos organizados" },
-  { value: 450, suffix: "+", label: "asistentes presenciales en 2025" },
+  { value: 1, suffix: "K+", label: "builders en la comunidad" },
+  { value: 75, suffix: "+", label: "eventos realizados" },
+  { value: 3, suffix: "K+", label: "asistentes diferentes" },
 ] as const;
 
 export const services: {
@@ -93,10 +100,10 @@ export const services: {
       "Funcionalidades con IA dentro de productos web reales, del prototipo a producción con Next.js y la nube.",
   },
   {
-    name: "Adopción de Cursor",
+    name: "Adopción de IA",
     icon: "cursor",
     description:
-      "Talleres y acompañamiento para que tu equipo de ingeniería trabaje con agentes de código sin perder calidad.",
+      "Talleres y acompañamiento para que tu equipo adopte herramientas de IA, de asistentes a agentes de código, sin perder calidad.",
   },
   {
     name: "Arquitectura cloud",
@@ -118,12 +125,54 @@ export const services: {
 export const aiLabsLine =
   "Estudio de IA que cofundé en El Salvador. Llevamos productos con IA de la estrategia a producción y somos la casa de Cafe Cursor.";
 
-export const ambassadorships = [
-  { name: "SpaceXAI Ambassadors", role: "Regional Lead" },
-  { name: "Codex", role: "Ambassador" },
-  { name: "Mistral", role: "Ambassador" },
-  { name: "Cognition", role: "Ambassador" },
-] as const;
+export const mediconecto = {
+  name: "MediConecto",
+  role: "Founder",
+  url: "https://mediconecto.com",
+  line: "Directorio de médicos en El Salvador para agendar sin llamar, con agenda y expediente para clínicas. Un producto de Ai Labs.",
+} as const;
+
+// Logos live in /public/logos and print as halftone (see HalftoneLogo). SpaceXAI
+// Ambassadors uses the xAI mark.
+export const ambassadorships: {
+  name: string;
+  role: string;
+  logo: string;
+  host: string;
+  line: string;
+  /** Optical size correction for thin marks; see HalftoneLogo. */
+  scale?: number;
+}[] = [
+  {
+    name: "SpaceXAI Ambassadors",
+    role: "Regional Lead",
+    logo: "/logos/xai.svg",
+    host: "SpaceXAI",
+    line: "Lidera el programa de embajadores en la región: comunidad, eventos y adopción de sus modelos.",
+  },
+  {
+    name: "Codex",
+    role: "Ambassador",
+    logo: "/logos/codex.svg",
+    host: "OpenAI",
+    line: "Embajador del agente de código de OpenAI: talleres y adopción en equipos de ingeniería.",
+  },
+  {
+    name: "Mistral",
+    role: "Ambassador",
+    logo: "/logos/mistral.svg",
+    host: "Mistral AI",
+    line: "Embajador de Mistral AI y sus modelos abiertos, una opción fuerte cuando los datos no pueden salir de casa.",
+  },
+  {
+    name: "Cognition",
+    role: "Ambassador",
+    logo: "/logos/cognition.svg",
+    scale: 1.3,
+    host: "Cognition",
+    line: "Embajador de Cognition, el equipo detrás de Devin y Windsurf, agentes que escriben software.",
+  },
+];
 
 export type Job = {
   name: string;
@@ -137,7 +186,7 @@ export const experience: Job[] = [
     name: "Cursor",
     role: "Ambassador, El Salvador",
     year: "2025",
-    detail: "Comunidad de más de 550 builders y siete eventos.",
+    detail: "Comunidad de más de 1K builders en El Salvador.",
   },
   {
     name: "SOUTHWORKS",
@@ -291,7 +340,7 @@ export type Photo = (typeof photos)[keyof typeof photos];
 export const faqs = [
   {
     q: "¿Quién es Walter Morales?",
-    a: "Walter Morales es AI Engineer y Co-Founder de Ai Labs, con más de seis años construyendo software. Es Regional Lead de SpaceXAI Ambassadors, Ambassador de Codex, Mistral y Cognition, y organiza una comunidad de más de 550 builders en El Salvador.",
+    a: "Walter Morales es AI Engineer y Co-Founder de Ai Labs, con más de seis años construyendo software. Es Regional Lead de SpaceXAI Ambassadors, Ambassador de Codex, Mistral y Cognition, y lidera una comunidad de más de mil builders en El Salvador con más de 75 eventos y más de tres mil asistentes.",
   },
   {
     q: "¿Qué es Ai Labs?",
@@ -308,5 +357,42 @@ export const faqs = [
   {
     q: "¿Das talleres de Cursor para equipos o universidades?",
     a: "Sí. Como Cursor Ambassador doy talleres prácticos de desarrollo con agentes de código para equipos de ingeniería, universidades y comunidades, con un proyecto funcionando al final de cada sesión.",
+  },
+] as const;
+
+// /consultor-de-ia only. That page is reachable from search, not from the site's
+// navigation, so its questions answer the "consultor de IA" query head on.
+export const consultantFaqs = [
+  {
+    q: "¿Qué hace un consultor de IA?",
+    a: "Un consultor de IA encuentra dónde la inteligencia artificial mueve números en tu operación, decide con vos qué herramientas y modelos usar, y acompaña la implementación hasta que funciona en producción. No vende humo: si un caso no conviene, te lo dice.",
+  },
+  {
+    q: "¿Por qué trabajar con un consultor de IA que es embajador de laboratorios de IA?",
+    a: "Porque trabaja con las herramientas desde adentro. Walter Morales es Regional Lead de SpaceXAI Ambassadors y Ambassador de Codex (OpenAI), Mistral y Cognition. Prueba los modelos y agentes antes y a fondo, y conoce sus límites reales, no solo los del anuncio.",
+  },
+  {
+    q: "¿Qué tipo de proyectos hace un consultor de IA en El Salvador?",
+    a: "Estrategia de IA para dirección, agentes conectados a datos y herramientas internas, funcionalidades con IA dentro de productos web, adopción de agentes de código en equipos de ingeniería y talleres para equipos, universidades y gobierno.",
+  },
+  {
+    q: "¿Cuánto cuesta una consultoría de IA?",
+    a: "Depende del alcance. La primera llamada no tiene costo: salís con un diagnóstico inicial y, si hay fit, una propuesta con alcance, tiempos y entregables cerrados antes de empezar.",
+  },
+  {
+    q: "¿Trabajás solo o con un equipo?",
+    a: "Las dos cosas. Para estrategia, talleres y acompañamiento trabajo directo con tu equipo. Cuando el proyecto pide construir producto, lo ejecutamos con Ai Labs, el estudio de IA que cofundé en El Salvador.",
+  },
+  {
+    q: "¿Atendés empresas fuera de San Salvador o en Estados Unidos?",
+    a: "Sí. Trabajo con todo El Salvador, Latinoamérica y Estados Unidos, de forma remota y en español o inglés. Las sesiones presenciales son en San Salvador o según el proyecto.",
+  },
+  {
+    q: "¿Das capacitación en IA para equipos?",
+    a: "Sí. Talleres prácticos con proyectos reales de tu empresa, de asistentes a agentes de código. La comunidad que organizo suma más de 75 eventos y más de 3 mil asistentes diferentes, así que el formato está probado.",
+  },
+  {
+    q: "¿Cómo empezamos?",
+    a: "Agendá una llamada en wmorales.dev/book y contame qué querés resolver, qué intentaron antes y con qué datos y herramientas cuentan.",
   },
 ] as const;

@@ -5,6 +5,7 @@ import {
   events,
   experience,
   faqs,
+  mediconecto,
   person,
   SITE_URL,
   services,
@@ -41,10 +42,11 @@ ${stats.map((s) => `- ${s.value}${s.suffix} ${s.label}`).join("\n")}
 ## Trayectoria
 
 - ${aiLabs.name}, Co-Founder (hoy): ${aiLabsLine}
+- ${mediconecto.name}, ${mediconecto.role} (hoy): ${mediconecto.line} ${mediconecto.url}
 ${ambassadorships.map((a) => `- ${a.name}, ${a.role} (hoy)`).join("\n")}
 ${experience.map((e) => `- ${e.name}, ${e.role} (${e.year}): ${e.detail}`).join("\n")}
 
-## Eventos organizados con la comunidad de Cursor en El Salvador
+## Eventos destacados de la comunidad de Cursor en El Salvador
 
 ${events.map((e) => `- ${e.name}, San Salvador (${e.year}): ${e.href}`).join("\n")}
 

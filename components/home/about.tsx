@@ -1,28 +1,30 @@
+import { HalftoneIcon } from "@/components/halftone-icon";
+import { HalftoneLogo } from "@/components/halftone-logo";
 import { Reveal } from "@/components/motion/reveal";
 import { facts } from "@/lib/site";
 
-const record = [
+// The AI tools he works with every day, printed as halftone logos. Logos live in
+// /public/logos; the last tile stands for everything else.
+const tools: { name: string; note: string; logo: string; scale?: number }[] = [
+  { name: "Cursor", note: "Agentes de código", logo: "/logos/cursor.svg" },
   {
-    title: "Stack",
-    items: [
-      ["TypeScript", "Lenguaje"],
-      ["Next.js y React", "Web"],
-      [".NET", "Backend"],
-      ["PostgreSQL", "Datos"],
-      ["AWS y Azure", "Cloud"],
-    ],
+    name: "Claude Code",
+    note: "Agentes de código",
+    logo: "/logos/claudecode.svg",
+    scale: 1.15,
   },
+  { name: "Codex", note: "Agentes de código", logo: "/logos/codex.svg" },
   {
-    title: "Con IA",
-    items: [
-      ["Cursor", "Agentes de código"],
-      ["OpenAI", "Modelos"],
-      ["Supabase", "Backends rápidos"],
-      ["Evaluaciones", "Calidad"],
-      ["Talleres", "Adopción"],
-    ],
+    name: "Cognition",
+    note: "Agentes autónomos",
+    logo: "/logos/cognition.svg",
+    scale: 1.3,
   },
-] as const;
+  { name: "OpenAI", note: "Modelos", logo: "/logos/openai.svg", scale: 1.45 },
+  { name: "Mistral", note: "Modelos abiertos", logo: "/logos/mistral.svg" },
+  { name: "Grok", note: "Modelos y bots", logo: "/logos/grok.svg" },
+  { name: "ElevenLabs", note: "Voz", logo: "/logos/elevenlabs.svg" },
+];
 
 export function About() {
   return (
@@ -62,24 +64,39 @@ export function About() {
             Ambassador de Codex, Mistral y Cognition.
           </p>
 
-          <div className="mt-16 grid gap-10 sm:grid-cols-2 sm:gap-16">
-            {record.map((col) => (
-              <div key={col.title} data-reveal>
-                <h3 className="font-semibold text-small">{col.title}</h3>
-                <ul className="mt-3 space-y-2.5">
-                  {col.items.map(([name, note]) => (
-                    <li
-                      key={name}
-                      className="flex justify-between gap-4 text-small"
-                    >
-                      <span>{name}</span>
-                      <span className="text-muted">{note}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
+          <div data-reveal className="mt-16">
+            <h3 className="font-semibold text-small">Con IA</h3>
+            <ul className="mt-4 grid grid-cols-2 gap-1.5 sm:grid-cols-3">
+              {tools.map((t) => (
+                <li
+                  key={t.name}
+                  className="group flex min-h-36 flex-col justify-between gap-6 bg-surface p-4"
+                >
+                  <HalftoneLogo
+                    src={t.logo}
+                    scale={t.scale}
+                    className="size-10 text-accent"
+                  />
+                  <div>
+                    <p className="font-semibold text-small">{t.name}</p>
+                    <p className="text-muted text-small">{t.note}</p>
+                  </div>
+                </li>
+              ))}
+              <li className="flex min-h-36 flex-col justify-between gap-6 bg-ink p-4 text-paper">
+                <HalftoneIcon shape="plus" className="size-10 text-lilac" />
+                <div>
+                  <p className="font-semibold text-small">Y más</p>
+                  <p className="text-small opacity-70">Supabase, evals, MCP</p>
+                </div>
+              </li>
+            </ul>
           </div>
+
+          <p data-reveal className="mt-10 text-muted text-small">
+            <span className="font-semibold text-ink">Stack:</span> TypeScript
+            con Next.js y React, y .NET, sobre PostgreSQL en AWS y Azure.
+          </p>
         </div>
       </div>
     </Reveal>

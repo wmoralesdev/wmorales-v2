@@ -31,10 +31,10 @@ const tiles: Tile[] = [
   },
   {
     type: "stat",
-    value: 550,
-    suffix: "+",
+    value: 1,
+    suffix: "K+",
     caption: "builders en la comunidad",
-    tone: "bg-accent text-paper",
+    tone: "bg-accent text-snow",
   },
   {
     type: "event",
@@ -44,9 +44,9 @@ const tiles: Tile[] = [
   { type: "event", event: event("Cursor Meetup"), tone: "bg-surface text-ink" },
   {
     type: "stat",
-    value: 450,
-    suffix: "+",
-    caption: "asistentes presenciales en 2025",
+    value: 3,
+    suffix: "K+",
+    caption: "asistentes diferentes",
     tone: "bg-lilac text-ink",
   },
   {
@@ -63,10 +63,10 @@ const tiles: Tile[] = [
   },
   {
     type: "stat",
-    value: events.length,
-    suffix: "",
-    caption: "eventos desde 2025",
-    tone: "bg-accent text-paper",
+    value: 75,
+    suffix: "+",
+    caption: "eventos realizados",
+    tone: "bg-accent text-snow",
   },
   {
     type: "event",
@@ -76,7 +76,7 @@ const tiles: Tile[] = [
 ];
 
 const big =
-  "display text-[calc(15vw*var(--display-fit)*var(--display-scale))] leading-none sm:text-[calc(clamp(2.75rem,6.4vw,7rem)*var(--display-fit)*var(--display-scale))]";
+  "display text-[15vw] leading-none sm:text-[clamp(2.75rem,6.4vw,7rem)]";
 const caption =
   "absolute inset-x-3 bottom-3 text-center text-small leading-tight sm:bottom-[18px]";
 
@@ -124,7 +124,7 @@ export function Community() {
               <div className="grid size-full place-items-center">
                 <h2
                   id="comunidad-title"
-                  className="display text-[calc(7vw*var(--display-fit)*var(--display-scale))] leading-none sm:text-[calc(clamp(1.75rem,3.3vw,3.75rem)*var(--display-fit)*var(--display-scale))]"
+                  className="display text-[7vw] leading-none sm:text-[clamp(1.75rem,3.3vw,3.75rem)]"
                 >
                   Comunidad
                 </h2>

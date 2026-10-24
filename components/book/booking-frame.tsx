@@ -25,9 +25,7 @@ export function BookingFrame({
           <Icon icon={Calendar03Icon} size={18} />
           Horarios disponibles
         </span>
-        <span className="text-night-soft text-small">
-          Hora local automática
-        </span>
+        <span className="text-paper/65 text-small">Hora local automática</span>
       </div>
       <div
         aria-hidden="true"
