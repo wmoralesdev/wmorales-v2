@@ -14,9 +14,12 @@ const RIPPLE_MS = 1400;
 export function PortraitCanvas({
   className = "",
   light = false,
+  decorative = false,
 }: {
   className?: string;
   light?: boolean;
+  /** A twin print (e.g. the copy below the hero waterline); hidden from assistive tech. */
+  decorative?: boolean;
 }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -86,8 +89,10 @@ export function PortraitCanvas({
 
     function frame(now: number) {
       ripples = ripples.filter((r) => now - r.t0 < RIPPLE_MS);
-      const lens = cell * 9;
-      const band = cell * 3.5;
+      // Sized off the portrait width so the lens feels the same at any dot density.
+      const span = cols * cell;
+      const lens = span * 0.14;
+      const band = span * 0.055;
       const max = cell * 0.72;
       let moving = false;
 
@@ -101,7 +106,7 @@ export function PortraitCanvas({
         }
         for (const rp of ripples) {
           const age = (now - rp.t0) / RIPPLE_MS;
-          const radius = age * cell * 70;
+          const radius = age * span * 1.1;
           const d = Math.hypot(x - rp.x, y - rp.y);
           const k = Math.exp(-(((d - radius) / band) ** 2)) * (1 - age);
           target += k * cell * 0.45;
@@ -126,6 +131,16 @@ export function PortraitCanvas({
       return { x: e.clientX - rect.left, y: e.clientY - rect.top };
     };
 
+    // Twin prints share one pointer surface so they swell in step.
+    const surface =
+      (canvas.closest("[data-portrait-pointer]") as HTMLElement | null) ??
+      canvas;
+    const inside = (p: { x: number; y: number }) =>
+      p.x >= 0 &&
+      p.y >= 0 &&
+      p.x <= canvas.clientWidth &&
+      p.y <= canvas.clientHeight;
+
     const onMove = (e: PointerEvent) => {
       if (e.pointerType !== "mouse") return;
       pointer = local(e);
@@ -136,16 +151,18 @@ export function PortraitCanvas({
       wake();
     };
     const onDown = (e: PointerEvent) => {
-      ripples.push({ ...local(e), t0: performance.now() });
+      const p = local(e);
+      if (!inside(p)) return;
+      ripples.push({ ...p, t0: performance.now() });
       wake();
     };
 
     resize();
     const ro = new ResizeObserver(resize);
     if (canvas.parentElement) ro.observe(canvas.parentElement);
-    canvas.addEventListener("pointermove", onMove);
-    canvas.addEventListener("pointerleave", onLeave);
-    canvas.addEventListener("pointerdown", onDown);
+    surface.addEventListener("pointermove", onMove);
+    surface.addEventListener("pointerleave", onLeave);
+    surface.addEventListener("pointerdown", onDown);
 
     // Greet the visitor once, when the portrait first scrolls into view.
     const io = new IntersectionObserver(
@@ -167,17 +184,22 @@ export function PortraitCanvas({
       cancelAnimationFrame(raf);
       ro.disconnect();
       io.disconnect();
-      canvas.removeEventListener("pointermove", onMove);
-      canvas.removeEventListener("pointerleave", onLeave);
-      canvas.removeEventListener("pointerdown", onDown);
+      surface.removeEventListener("pointermove", onMove);
+      surface.removeEventListener("pointerleave", onLeave);
+      surface.removeEventListener("pointerdown", onDown);
     };
   }, [light]);
 
   return (
     <canvas
       ref={canvasRef}
-      role="img"
-      aria-label="Retrato de Walter Morales impreso en puntos de semitono"
+      role={decorative ? undefined : "img"}
+      aria-hidden={decorative || undefined}
+      aria-label={
+        decorative
+          ? undefined
+          : "Retrato de Walter Morales impreso en puntos de semitono"
+      }
       className={`block w-full cursor-crosshair touch-manipulation ${className}`}
     />
   );

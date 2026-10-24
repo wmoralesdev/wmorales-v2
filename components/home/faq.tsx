@@ -1,4 +1,5 @@
 import { ArrowDown01Icon } from "@hugeicons/core-free-icons";
+import { HalftoneIcon } from "@/components/halftone-icon";
 import { Icon } from "@/components/icon";
 import { Reveal } from "@/components/motion/reveal";
 import { faqs } from "@/lib/site";
@@ -11,14 +12,18 @@ export function Faq() {
       aria-labelledby="preguntas-title"
       className="px-4 py-24 sm:px-7 md:py-40"
     >
-      <h2
-        id="preguntas-title"
-        data-reveal
-        className="display text-[clamp(3rem,10vw,7rem)] md:text-[clamp(3rem,7.2vw,7.5rem)]"
-      >
+      <h2 id="preguntas-title" data-reveal className="display text-head">
         Preguntas frecuentes
       </h2>
       <div className="mt-12 md:mt-20 md:grid md:grid-cols-12 md:gap-x-8">
+        <div className="hidden md:col-span-3 md:block">
+          <HalftoneIcon
+            shape={["sparkle", "chat", "heart", "target", "cloud", "cursor"]}
+            grid={13}
+            motion="morph"
+            className="sticky top-10 w-full max-w-[15rem] text-accent"
+          />
+        </div>
         <div className="space-y-2 md:col-span-8 md:col-start-5 md:space-y-4">
           {faqs.map((f) => (
             <details

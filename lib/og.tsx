@@ -18,15 +18,15 @@ export async function waterlineOg({
   note: string;
 }) {
   const [display, text] = await Promise.all([
-    font("BigShoulders-ExtraBold.ttf"),
-    font("PublicSans-SemiBold.ttf"),
+    font("PlusJakartaSans-ExtraBold.woff"),
+    font("PlusJakartaSans-SemiBold.woff"),
   ]);
   const headline = {
-    fontFamily: "Big Shoulders",
-    fontSize: 150,
-    lineHeight: 0.9,
-    textTransform: "uppercase" as const,
-    letterSpacing: "-0.005em",
+    fontFamily: "Plus Jakarta Sans",
+    fontWeight: 800,
+    fontSize: 120,
+    lineHeight: 1,
+    letterSpacing: "-0.04em",
   };
 
   return new ImageResponse(
@@ -53,7 +53,7 @@ export async function waterlineOg({
             display: "flex",
             alignItems: "center",
             gap: 14,
-            fontFamily: "Public Sans",
+            fontFamily: "Plus Jakarta Sans",
             fontSize: 26,
             color: "#120d26",
           }}
@@ -67,8 +67,9 @@ export async function waterlineOg({
               height: 48,
               background: "#120d26",
               color: "#f3f2f7",
-              fontFamily: "Big Shoulders",
-              fontSize: 28,
+              fontFamily: "Plus Jakarta Sans",
+              fontWeight: 800,
+              fontSize: 20,
             }}
           >
             WM
@@ -104,7 +105,7 @@ export async function waterlineOg({
         <div
           style={{
             display: "flex",
-            fontFamily: "Public Sans",
+            fontFamily: "Plus Jakarta Sans",
             fontSize: 30,
             color: "#f3f2f7",
           }}
@@ -116,8 +117,13 @@ export async function waterlineOg({
     {
       ...ogSize,
       fonts: [
-        { name: "Big Shoulders", data: display, weight: 800, style: "normal" },
-        { name: "Public Sans", data: text, weight: 600, style: "normal" },
+        {
+          name: "Plus Jakarta Sans",
+          data: display,
+          weight: 800,
+          style: "normal",
+        },
+        { name: "Plus Jakarta Sans", data: text, weight: 600, style: "normal" },
       ],
     },
   );

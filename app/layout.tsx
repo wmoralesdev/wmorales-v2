@@ -1,22 +1,15 @@
 import "./globals.css";
 
 import type { Metadata, Viewport } from "next";
-import { Big_Shoulders, Public_Sans } from "next/font/google";
+import { Plus_Jakarta_Sans } from "next/font/google";
+import { ToolsPanel } from "@/components/tools-panel";
+import { prefsScript } from "@/lib/prefs";
 import { baseMetadata } from "@/lib/seo";
 
-const display = Big_Shoulders({
+const sans = Plus_Jakarta_Sans({
   subsets: ["latin"],
-  weight: ["800"],
-  variable: "--font-big-shoulders",
-  display: "swap",
-  fallback: ["Arial Narrow", "sans-serif"],
-  adjustFontFallback: false,
-});
-
-const sans = Public_Sans({
-  subsets: ["latin"],
-  weight: ["400", "600"],
-  variable: "--font-public-sans",
+  weight: ["400", "600", "700", "800"],
+  variable: "--font-jakarta",
   display: "swap",
 });
 
@@ -36,7 +29,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es" className={`${display.variable} ${sans.variable}`}>
+    <html lang="es" className={sans.variable} suppressHydrationWarning>
+      <head>
+        {/* Applies saved Tools prefs before first paint. */}
+        <script
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: static string built in lib/prefs.ts, no user input.
+          dangerouslySetInnerHTML={{ __html: prefsScript }}
+        />
+      </head>
       <body className="min-h-svh overflow-x-clip">
         <a
           href="#contenido"
@@ -45,6 +45,7 @@ export default function RootLayout({
           Saltar al contenido
         </a>
         {children}
+        <ToolsPanel />
       </body>
     </html>
   );

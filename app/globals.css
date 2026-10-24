@@ -11,13 +11,16 @@
   --color-night: #0b0818;
   --color-night-soft: #b9b4cc;
 
-  --font-display: var(--font-big-shoulders), "Arial Narrow", sans-serif;
-  --font-sans: var(--font-public-sans), system-ui, sans-serif;
+  --font-sans: var(--font-jakarta), system-ui, sans-serif;
+  --font-display: var(--font-sans);
 
   --text-small: clamp(0.8125rem, 0.79rem + 0.1vw, 0.875rem);
   --text-body: clamp(1.0625rem, 1rem + 0.25vw, 1.1875rem);
   --text-lead: clamp(1.25rem, 1.1rem + 0.7vw, 1.625rem);
-  --text-head: clamp(2.75rem, 1.4rem + 5.6vw, 6.5rem);
+  --text-head: calc(
+    clamp(2.5rem, 1.6rem + 3.2vw, 4.5rem) *
+    var(--display-scale)
+  );
 
   --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
   --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -87,13 +90,13 @@
 }
 
 @layer components {
-  /* Condensed display type: tight leading, uppercase, never wraps past two lines. */
+  /* Display type. Case, weight and tracking come from the Tools prefs below. */
   .display {
     font-family: var(--font-display);
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: -0.005em;
-    line-height: 0.88;
+    font-weight: var(--display-weight);
+    text-transform: var(--display-case);
+    letter-spacing: var(--display-tracking);
+    line-height: 0.95;
   }
 
   /* One button shape for the whole site: square, flat, presses down. */
@@ -181,6 +184,70 @@
   .press:active {
     transform: scale(0.97);
   }
+}
+
+/*
+ * Tools prefs. The <head> script in app/layout.tsx copies the saved choices onto
+ * <html> as data attributes before first paint; these rules turn them into
+ * tokens. Unlayered on purpose so they win over the @theme defaults.
+ */
+:root {
+  --display-weight: 700;
+  --display-case: none;
+  --display-tracking: -0.035em;
+  /* Shrinks fixed-size display text when uppercase makes words wider. */
+  --display-fit: 1;
+  --display-scale: 1;
+  --ht-cell: 6px;
+}
+
+html[data-font="helvetica"] {
+  --font-sans: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+html[data-case="upper"] {
+  --display-case: uppercase;
+  --display-tracking: -0.015em;
+  --display-fit: 0.86;
+}
+
+html[data-weight="600"] {
+  --display-weight: 600;
+}
+
+html[data-weight="800"] {
+  --display-weight: 800;
+}
+
+html[data-scale="s"] {
+  --display-scale: 0.85;
+}
+
+html[data-scale="l"] {
+  --display-scale: 1.15;
+}
+
+/* Accents are AA against paper text (4.5:1) so every pairing on the site holds. */
+html[data-accent="cobalt"] {
+  --color-accent: #2551f0;
+  --color-accent-deep: #1636b8;
+  --color-lilac: #cdd7fd;
+}
+
+html[data-accent="orange"] {
+  --color-accent: #c2410c;
+  --color-accent-deep: #8a2c06;
+  --color-lilac: #fbd5c2;
+}
+
+html[data-accent="green"] {
+  --color-accent: #047857;
+  --color-accent-deep: #024d38;
+  --color-lilac: #c3ecdc;
+}
+
+html[data-ht-size="medium"] {
+  --ht-cell: 9px;
 }
 
 /* Masked headline reveal. Pure CSS so it runs off the main thread and needs no JS. */

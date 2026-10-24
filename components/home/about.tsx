@@ -56,14 +56,10 @@ export function About() {
             data-reveal
             className="text-[1.1875rem] leading-[1.4] md:text-[clamp(1.375rem,1.75vw,1.75rem)]"
           >
-            Soy Walter Morales, consultor de inteligencia artificial e ingeniero
-            de software en San Salvador. Fundé Ai Labs para que las empresas de
-            la región dejen de experimentar con IA y empiecen a operarla: casos
-            de uso con retorno claro, agentes que funcionan con datos reales y
-            equipos que saben usarlos. Antes pasé más de seis años construyendo
-            software para clientes de Estados Unidos y Latinoamérica. Como
-            Cursor Ambassador de El Salvador, reúno a más de 550 builders en
-            hackathons, talleres y Cafe Cursor.
+            Cofundé Ai Labs para que las empresas de la región pasen de
+            experimentar con IA a operarla. Llevo más de seis años construyendo
+            software, y hoy soy Regional Lead de SpaceXAI Ambassadors y
+            Ambassador de Codex, Mistral y Cognition.
           </p>
 
           <div className="mt-16 grid gap-10 sm:grid-cols-2 sm:gap-16">

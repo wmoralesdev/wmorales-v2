@@ -25,7 +25,7 @@ export function SiteHeader({
           <span
             className={`block font-normal ${tone === "night" ? "text-night-soft" : "text-muted"}`}
           >
-            Consultor de IA
+            AI Engineer
           </span>
         </span>
       </Link>

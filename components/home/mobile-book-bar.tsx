@@ -38,7 +38,7 @@ export function MobileBookBar() {
     >
       <Link href="/book" className="btn w-full min-h-13 text-[1rem]">
         <Icon icon={Calendar03Icon} size={20} />
-        Agendar una llamada
+        Agendar llamada
       </Link>
     </div>
   );

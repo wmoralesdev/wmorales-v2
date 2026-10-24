@@ -1,12 +1,11 @@
 import { About } from "@/components/home/about";
-import { AiLabs } from "@/components/home/ai-labs";
 import { Community } from "@/components/home/community";
 import { CtaBand } from "@/components/home/cta-band";
+import { Experience } from "@/components/home/experience";
 import { Faq } from "@/components/home/faq";
 import { Hero } from "@/components/home/hero";
 import { MobileBookBar } from "@/components/home/mobile-book-bar";
 import { Services } from "@/components/home/services";
-import { Shelf } from "@/components/home/shelf";
 import { JsonLd } from "@/components/json-ld";
 import { SiteFooter } from "@/components/site-footer";
 import { homeJsonLd } from "@/lib/seo";
@@ -19,8 +18,7 @@ export default function Home() {
         <Hero />
         <About />
         <Services />
-        <AiLabs />
-        <Shelf />
+        <Experience />
         <Community />
         <Faq />
         <CtaBand />

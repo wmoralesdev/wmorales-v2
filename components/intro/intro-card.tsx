@@ -103,7 +103,7 @@ export function IntroCard({
   }
 
   async function share() {
-    const data = { title: "Walter Morales · Consultor de IA", url: SITE_URL };
+    const data = { title: "Walter Morales", url: SITE_URL };
     try {
       if (navigator.share) {
         await navigator.share(data);
@@ -152,12 +152,12 @@ export function IntroCard({
         <div className="px-5 pt-5 pb-6">
           <h1
             id="intro-name"
-            className="display whitespace-nowrap text-[min(11.4vw,3.4rem)]"
+            className="display whitespace-nowrap text-[calc(min(8.6vw,2.6rem)*var(--display-fit))]"
           >
             Walter Morales
           </h1>
           <p className="mt-1.5 font-semibold text-body">
-            Consultor de IA · Fundador de Ai Labs
+            AI Engineer · Co-Founder de Ai Labs
           </p>
           <p className="mt-1 flex items-center gap-1.5 text-muted text-small">
             <Icon icon={Location01Icon} size={16} />

@@ -13,7 +13,7 @@ const columns = [
     title: "Sitio",
     links: [
       { label: "Inicio", href: "/" },
-      { label: "Ai Labs", href: "/#ai-labs" },
+      { label: "Experiencia", href: "/#trayectoria" },
       { label: "Tarjeta de presentación", href: "/intro" },
     ],
   },
@@ -38,7 +38,7 @@ const columns = [
 
 export function SiteFooter() {
   return (
-    <footer className="sticky bottom-0 z-0 grid min-h-svh grid-cols-[minmax(0,1fr)] grid-rows-[auto_1fr_auto] bg-night px-4 pt-10 pb-[max(1.25rem,env(safe-area-inset-bottom))] text-paper sm:px-7">
+    <footer className="sticky bottom-0 z-0 grid grid-cols-[minmax(0,1fr)] gap-y-16 bg-night px-4 pt-10 pb-[max(1.25rem,env(safe-area-inset-bottom))] text-paper sm:px-7">
       <div className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-12 md:gap-x-8">
         {columns.map((col) => (
           <div key={col.title} className="md:col-span-3">
@@ -73,18 +73,9 @@ export function SiteFooter() {
           </div>
         ))}
       </div>
-      <div />
       <div>
-        <p
-          aria-hidden="true"
-          className="display text-center text-[24vw] leading-[0.82] md:text-[13.4vw]"
-        >
-          Walter <br className="md:hidden" />
-          Morales
-        </p>
-        <p className="mt-5 text-night-soft text-small">
-          © {new Date().getFullYear()} Walter Morales · Consultor de IA ·
-          Fundador de Ai Labs
+        <p className="text-night-soft text-small">
+          © {new Date().getFullYear()} Walter Morales · Co-Founder de Ai Labs
         </p>
       </div>
     </footer>

@@ -1,3 +1,5 @@
+import type { ShapeName } from "@/lib/halftone-shapes";
+
 // Single source of truth for every fact on the site. Pages, JSON-LD, llms.txt and
 // the intro card all read from here so search engines and answer engines see one
 // consistent story.
@@ -16,9 +18,18 @@ export const person = {
   name: "Walter Morales",
   givenName: "Walter",
   familyName: "Morales",
-  role: "Consultor de IA",
-  roleEn: "AI Consultant",
-  headline: "Consultor de IA y fundador de Ai Labs",
+  role: "AI Engineer",
+  headline: "AI Engineer y Co-Founder de Ai Labs",
+  // Everything he is publicly, in the order he introduces himself. Rendered in
+  // JSON-LD; the visible site only shows the headline.
+  roles: [
+    "Co-Founder de Ai Labs",
+    "AI Engineer",
+    "SpaceXAI Ambassadors Regional Lead",
+    "Codex Ambassador",
+    "Mistral Ambassador",
+    "Cognition Ambassador",
+  ],
   location: "San Salvador, El Salvador",
   city: "San Salvador",
   country: "El Salvador",
@@ -26,7 +37,7 @@ export const person = {
   email: "hello@wmorales.dev",
   image: "/photos/walter-morales.jpg",
   summary:
-    "Walter Morales es consultor de inteligencia artificial e ingeniero de software en El Salvador, fundador de Ai Labs y Cursor Ambassador para El Salvador. Ayuda a empresas de Latinoamérica y Estados Unidos a llevar la IA a producción: estrategia, agentes, producto y adopción de herramientas como Cursor.",
+    "Walter Morales es AI Engineer y Co-Founder de Ai Labs, en El Salvador. Es Regional Lead de SpaceXAI Ambassadors y Ambassador de Codex, Mistral y Cognition. Ayuda a empresas de Latinoamérica y Estados Unidos a llevar la IA a producción: estrategia, agentes y producto.",
   education: "Universidad Centroamericana José Simeón Cañas (UCA)",
   languages: ["Español", "English"],
   social: {
@@ -42,13 +53,13 @@ export const aiLabs = {
   wordmark: "Ai /abs",
   logo: "/ailabs-lockup-horizontal.svg",
   description:
-    "Ai Labs es el estudio que Walter Morales fundó en El Salvador para diseñar y construir productos con inteligencia artificial: estrategia, prototipos y software en producción para empresas de Latinoamérica.",
+    "Ai Labs es el estudio que Walter Morales cofundó en El Salvador para diseñar y construir productos con inteligencia artificial: estrategia, prototipos y software en producción para empresas de Latinoamérica.",
 } as const;
 
 export const facts = [
   { label: "Con base en", value: "San Salvador, El Salvador" },
-  { label: "Fundador de", value: "Ai Labs" },
-  { label: "Comunidad", value: "550+ builders en Cursor SV" },
+  { label: "Co-Founder de", value: "Ai Labs" },
+  { label: "Ambassador", value: "SpaceXAI, Codex, Mistral, Cognition" },
 ] as const;
 
 export const stats = [
@@ -58,155 +69,168 @@ export const stats = [
   { value: 450, suffix: "+", label: "asistentes presenciales en 2025" },
 ] as const;
 
-export const services = [
+export const services: {
+  name: string;
+  icon: ShapeName;
+  description: string;
+}[] = [
   {
     name: "Estrategia de IA",
+    icon: "target",
     description:
       "Diagnóstico de dónde la IA mueve números en tu operación y un plan priorizado para llegar ahí, sin humo.",
   },
   {
     name: "Agentes y automatización",
+    icon: "sparkle",
     description:
       "Agentes con LLMs conectados a tus datos y herramientas, con evaluación y límites claros desde el primer día.",
   },
   {
     name: "Producto con IA",
+    icon: "tiles",
     description:
       "Funcionalidades con IA dentro de productos web reales, del prototipo a producción con Next.js y la nube.",
   },
   {
     name: "Adopción de Cursor",
+    icon: "cursor",
     description:
       "Talleres y acompañamiento para que tu equipo de ingeniería trabaje con agentes de código sin perder calidad.",
   },
   {
     name: "Arquitectura cloud",
+    icon: "cloud",
     description:
       "Modelos integrados en AWS y Azure, migraciones y sistemas que aguantan carga de verdad.",
   },
   {
     name: "Charlas y talleres",
+    icon: "chat",
     description:
       "Workshops para equipos, universidades y comunidades, en español o en inglés.",
   },
+];
+
+// Career and community are separate stories: the Experience section reads the
+// first three, the Community bento reads the events.
+
+export const aiLabsLine =
+  "Estudio de IA que cofundé en El Salvador. Llevamos productos con IA de la estrategia a producción y somos la casa de Cafe Cursor.";
+
+export const ambassadorships = [
+  { name: "SpaceXAI Ambassadors", role: "Regional Lead" },
+  { name: "Codex", role: "Ambassador" },
+  { name: "Mistral", role: "Ambassador" },
+  { name: "Cognition", role: "Ambassador" },
 ] as const;
 
-export type IndexEntry = {
+export type Job = {
   name: string;
-  kind: "Consultoría" | "Ingeniería" | "Comunidad" | "Evento";
+  role: string;
   year: string;
   detail: string;
-  href?: string;
 };
 
-export const experience: IndexEntry[] = [
+export const experience: Job[] = [
   {
-    name: "Ai Labs",
-    kind: "Consultoría",
-    year: "Hoy",
-    detail: "Fundador. Estrategia y producto con IA.",
-  },
-  {
-    name: "Cursor Ambassador",
-    kind: "Comunidad",
+    name: "Cursor",
+    role: "Ambassador, El Salvador",
     year: "2025",
-    detail: "Embajador de Cursor para El Salvador.",
-    href: "https://cursor.com",
+    detail: "Comunidad de más de 550 builders y siete eventos.",
   },
   {
     name: "SOUTHWORKS",
-    kind: "Ingeniería",
+    role: "Senior Software Engineer",
     year: "2023",
-    detail:
-      "Senior Software Engineer. Integración de IA y migraciones cloud en AWS y Azure.",
+    detail: "Integración de IA y migraciones cloud en AWS y Azure.",
   },
   {
     name: "Freelance",
-    kind: "Consultoría",
+    role: "Product Engineer",
     year: "2023",
-    detail:
-      "Product engineer para clientes internacionales. Arquitectura y entrega.",
+    detail: "Arquitectura y entrega para clientes internacionales.",
   },
   {
     name: "Ravn",
-    kind: "Ingeniería",
+    role: "Senior Software Developer",
     year: "2023",
-    detail: "Senior Software Developer. Migración de servicios de Rust a .NET.",
+    detail: "Migración de servicios de Rust a .NET.",
   },
   {
     name: "Resultier",
-    kind: "Ingeniería",
+    role: "Full Stack Engineer",
     year: "2022",
-    detail: "Full Stack Engineer. Analítica de salud con modelos de ML.",
+    detail: "Analítica de salud con modelos de ML.",
   },
   {
     name: "innRoad",
-    kind: "Ingeniería",
+    role: "Full Stack Developer",
     year: "2021",
-    detail: "Full Stack Developer. Sistemas de reservas en .NET y React.",
+    detail: "Sistemas de reservas en .NET y React.",
   },
   {
     name: "Elaniin",
-    kind: "Ingeniería",
+    role: "Developer",
     year: "2020",
-    detail: "Developer. Aplicaciones ASP.NET y Blazor.",
+    detail: "Aplicaciones ASP.NET y Blazor.",
   },
   {
     name: "Vincu Hub",
-    kind: "Ingeniería",
+    role: "Backend Developer",
     year: "2019",
-    detail: "Backend Developer. APIs con Clean Architecture y CQRS.",
+    detail: "APIs con Clean Architecture y CQRS.",
   },
 ];
 
-export const events: IndexEntry[] = [
+export type CommunityEvent = {
+  name: string;
+  year: string;
+  photo: keyof typeof photos;
+  href: string;
+};
+
+export const events: CommunityEvent[] = [
   {
     name: "Cursor Hackathon II",
-    kind: "Evento",
     year: "2026",
-    detail: "San Salvador",
+    photo: "hackathon2",
     href: "https://photos.app.goo.gl/qNSHWVYZwThjrUuY9",
   },
   {
     name: "Cafe Cursor III",
-    kind: "Evento",
     year: "2025",
-    detail: "San Salvador",
+    photo: "cafe3",
     href: "https://photos.app.goo.gl/X4gF3SAVKAG665gb9",
   },
   {
     name: "Cafe Cursor II",
-    kind: "Evento",
     year: "2025",
-    detail: "San Salvador",
+    photo: "cafe2",
     href: "https://photos.app.goo.gl/AFHgh6CAZzCq6jm79",
   },
   {
     name: "Cursor Workshop",
-    kind: "Evento",
     year: "2025",
-    detail: "San Salvador",
+    photo: "workshop",
     href: "https://photos.app.goo.gl/DYiKX3hxjghCak349",
   },
   {
     name: "Cafe Cursor I",
-    kind: "Evento",
     year: "2025",
-    detail: "San Salvador",
+    photo: "cafe1",
     href: "https://photos.app.goo.gl/WHd8v7hVQ9vBGTvFA",
   },
   {
     name: "Cursor Hackathon",
-    kind: "Evento",
     year: "2025",
-    detail: "San Salvador",
+    photo: "hackathon",
     href: "https://photos.app.goo.gl/do6sTx3BsPEaNcLQ7",
   },
   {
     name: "Cursor Meetup",
-    kind: "Evento",
     year: "2025",
-    detail: "San Salvador",
+    photo: "meetup",
     href: "https://photos.app.goo.gl/hVpWW3GdN2wsqdhN7",
   },
 ];
@@ -214,7 +238,7 @@ export const events: IndexEntry[] = [
 export const photos = {
   portrait: {
     src: "walter-morales",
-    alt: "Retrato de Walter Morales, consultor de IA y fundador de Ai Labs",
+    alt: "Retrato de Walter Morales, AI Engineer y Co-Founder de Ai Labs",
     width: 864,
     height: 1184,
   },
@@ -266,16 +290,12 @@ export type Photo = (typeof photos)[keyof typeof photos];
 
 export const faqs = [
   {
-    q: "¿Qué hace un consultor de IA?",
-    a: "Un consultor de IA identifica dónde la inteligencia artificial genera valor medible en una empresa, define la estrategia y acompaña la implementación: elegir casos de uso, construir agentes o funcionalidades con modelos de lenguaje, integrarlos con los sistemas existentes y entrenar al equipo para usarlos bien.",
-  },
-  {
     q: "¿Quién es Walter Morales?",
-    a: "Walter Morales es un consultor de IA e ingeniero de software de El Salvador con más de seis años de experiencia. Es fundador de Ai Labs, Cursor Ambassador para El Salvador y organizador de una comunidad de más de 550 builders que se reúne en hackathons, talleres y Cafe Cursor.",
+    a: "Walter Morales es AI Engineer y Co-Founder de Ai Labs, con más de seis años construyendo software. Es Regional Lead de SpaceXAI Ambassadors, Ambassador de Codex, Mistral y Cognition, y organiza una comunidad de más de 550 builders en El Salvador.",
   },
   {
     q: "¿Qué es Ai Labs?",
-    a: "Ai Labs es el estudio de inteligencia artificial fundado por Walter Morales en El Salvador. Diseña y construye productos con IA para empresas de Latinoamérica: desde la estrategia y los prototipos hasta el software en producción.",
+    a: "Ai Labs es el estudio de inteligencia artificial cofundado por Walter Morales en El Salvador. Diseña y construye productos con IA para empresas de Latinoamérica: desde la estrategia y los prototipos hasta el software en producción.",
   },
   {
     q: "¿Trabajás con empresas fuera de El Salvador?",

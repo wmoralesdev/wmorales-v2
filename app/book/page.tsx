@@ -1,17 +1,19 @@
 import { Mail01Icon } from "@hugeicons/core-free-icons";
 import type { Metadata } from "next";
 import { BookingFrame } from "@/components/book/booking-frame";
+import { HalftoneIcon } from "@/components/halftone-icon";
 import { Icon } from "@/components/icon";
 import { JsonLd } from "@/components/json-ld";
 import { Reveal } from "@/components/motion/reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
+import type { ShapeName } from "@/lib/halftone-shapes";
 import { bookJsonLd } from "@/lib/seo";
 import { BOOKING_EMBED_URL, BOOKING_URL, person } from "@/lib/site";
 
-const title = "Agendá una llamada con un consultor de IA";
+const title = "Agendar una llamada";
 const description =
-  "Reservá una llamada con Walter Morales, consultor de IA y fundador de Ai Labs. Contame tu caso y salí con un diagnóstico inicial y próximos pasos claros.";
+  "Reservá una llamada con Walter Morales, AI Engineer y Co-Founder de Ai Labs. Contame tu caso y salí con un diagnóstico inicial y próximos pasos claros.";
 
 export const metadata: Metadata = {
   title,
@@ -21,16 +23,19 @@ export const metadata: Metadata = {
   twitter: { title, description },
 };
 
-const steps = [
+const steps: { icon: ShapeName; title: string; body: string }[] = [
   {
+    icon: "calendar",
     title: "Elegí un horario",
     body: "El calendario muestra mi disponibilidad en tu zona horaria. Recibís la invitación por correo.",
   },
   {
+    icon: "chat",
     title: "Contame tu contexto",
     body: "Qué querés resolver con IA, qué intentaron antes y qué datos o herramientas ya tienen.",
   },
   {
+    icon: "arrow",
     title: "Salí con un plan",
     body: "Un diagnóstico inicial y próximos pasos. Si hay fit, te preparo una propuesta.",
   },
@@ -47,7 +52,7 @@ export default function BookPage() {
         <SiteHeader action={{ href: "/", label: "Volver al inicio" }} />
         <Reveal className="grid gap-12 px-4 pt-12 sm:px-7 md:grid-cols-12 md:grid-rows-[auto_1fr] md:gap-x-8 md:pt-20">
           <div className="md:col-span-5 md:row-start-1 lg:col-span-4">
-            <h1 className="display text-[clamp(3.25rem,15vw,5rem)] md:text-[clamp(3.5rem,6vw,6.5rem)]">
+            <h1 className="display text-[calc(clamp(2.75rem,12vw,4.25rem)*var(--display-fit)*var(--display-scale))] md:text-[calc(clamp(3rem,5.4vw,5.5rem)*var(--display-fit)*var(--display-scale))]">
               <span className="mask-line">
                 <span>Agendá una</span>
               </span>
@@ -77,10 +82,19 @@ export default function BookPage() {
                 <li
                   key={s.title}
                   data-reveal
-                  className="border-accent border-l-4 pl-4"
+                  data-icon-hover
+                  className="grid grid-cols-[2.5rem_1fr] gap-x-4"
                 >
-                  <h2 className="font-semibold text-body">{s.title}</h2>
-                  <p className="mt-1 text-muted text-body">{s.body}</p>
+                  <HalftoneIcon
+                    shape={s.icon}
+                    grid={7}
+                    motion="hover"
+                    className="size-10 text-accent"
+                  />
+                  <div>
+                    <h2 className="font-semibold text-body">{s.title}</h2>
+                    <p className="mt-1 text-muted text-body">{s.body}</p>
+                  </div>
                 </li>
               ))}
             </ol>

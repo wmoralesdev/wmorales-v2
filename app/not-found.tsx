@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { HalftoneIcon } from "@/components/halftone-icon";
 import { SiteHeader } from "@/components/site-header";
 
 export default function NotFound() {
@@ -6,7 +7,13 @@ export default function NotFound() {
     <main id="contenido" className="flex min-h-svh flex-col bg-paper">
       <SiteHeader />
       <div className="flex flex-1 flex-col justify-center px-4 pb-16 sm:px-7">
-        <h1 className="display text-[clamp(4rem,22vw,16rem)] text-accent">
+        <HalftoneIcon
+          shape={["ring", "plus", "sparkle", "dot"]}
+          grid={11}
+          motion="morph"
+          className="mb-8 size-28 text-accent"
+        />
+        <h1 className="display text-[calc(clamp(4rem,20vw,13rem)*var(--display-fit)*var(--display-scale))] text-accent">
           404
         </h1>
         <p className="mt-4 max-w-[32rem] text-lead">

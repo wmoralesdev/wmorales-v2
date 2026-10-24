@@ -2,9 +2,9 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "Walter Morales · Consultor de IA",
+    name: "Walter Morales",
     short_name: "Walter Morales",
-    description: "Consultor de IA y fundador de Ai Labs en El Salvador.",
+    description: "AI Engineer y Co-Founder de Ai Labs.",
     start_url: "/",
     display: "standalone",
     background_color: "#f3f2f7",

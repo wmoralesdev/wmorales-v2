@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
 import { aiLabs, faqs, person, SITE_URL, services } from "@/lib/site";
 
-export const TITLE =
-  "Walter Morales — Consultor de IA en El Salvador · Fundador de Ai Labs";
+export const TITLE = "Walter Morales";
+// Search snippet only. "Consultoría de IA" is the query we want to rank for; it
+// lives here and in the JSON-LD service nodes, never as Walter's visible title.
 export const DESCRIPTION =
-  "Walter Morales es consultor de inteligencia artificial y fundador de Ai Labs. Estrategia de IA, agentes, producto y adopción de Cursor para empresas de Latinoamérica y EE. UU. Agendá una llamada.";
+  "AI Engineer y Co-Founder de Ai Labs. Consultoría de IA para empresas de Latinoamérica y EE. UU.: estrategia, agentes y producto en producción.";
 
 export const KEYWORDS = [
   "consultor de IA",
@@ -16,8 +17,8 @@ export const KEYWORDS = [
   "AI consultant El Salvador",
   "Walter Morales",
   "Ai Labs",
-  "fundador de Ai Labs",
-  "Cursor Ambassador El Salvador",
+  "Co-Founder de Ai Labs",
+  "AI Engineer El Salvador",
   "agentes de IA",
   "automatización con IA",
   "estrategia de IA",
@@ -86,27 +87,25 @@ const personNode = {
   givenName: person.givenName,
   familyName: person.familyName,
   alternateName: ["wmoralesdev"],
-  jobTitle: [
-    person.role,
-    person.roleEn,
-    "Fundador de Ai Labs",
-    "Cursor Ambassador",
-  ],
+  jobTitle: person.roles,
   description: person.summary,
   url: SITE_URL,
   image: `${SITE_URL}${person.image}`,
   email: `mailto:${person.email}`,
   founder: { "@id": ids.org },
   affiliation: { "@id": ids.org },
-  memberOf: {
+  memberOf: [
+    ["SpaceXAI Ambassadors", "SpaceXAI", "Regional Lead"],
+    ["Codex Ambassadors", "OpenAI", "Ambassador"],
+    ["Mistral Ambassadors", "Mistral AI", "Ambassador"],
+    ["Cognition Ambassadors", "Cognition", "Ambassador"],
+    ["Cursor Ambassadors", "Cursor", "Ambassador"],
+  ].map(([programName, org, roleName]) => ({
     "@type": "ProgramMembership",
-    programName: "Cursor Ambassador Program",
-    hostingOrganization: {
-      "@type": "Organization",
-      name: "Cursor",
-      url: "https://cursor.com",
-    },
-  },
+    programName,
+    roleName,
+    hostingOrganization: { "@type": "Organization", name: org },
+  })),
   alumniOf: { "@type": "CollegeOrUniversity", name: person.education },
   homeLocation: {
     "@type": "Place",
@@ -120,6 +119,7 @@ const personNode = {
   knowsLanguage: ["es", "en"],
   knowsAbout: [
     "Inteligencia artificial",
+    "Consultoría de IA",
     "Artificial intelligence consulting",
     "Large language models",
     "AI agents",
@@ -133,7 +133,7 @@ const personNode = {
   ],
   hasOccupation: {
     "@type": "Occupation",
-    name: "Consultor de inteligencia artificial",
+    name: "AI Engineer",
     occupationLocation: { "@type": "Country", name: person.country },
     skills: services.map((s) => s.name).join(", "),
   },
@@ -156,7 +156,7 @@ const orgNode = {
 const serviceNode = {
   "@type": "ProfessionalService",
   "@id": ids.service,
-  name: "Walter Morales · Consultoría de IA",
+  name: "Ai Labs · Consultoría de IA",
   description: DESCRIPTION,
   url: SITE_URL,
   image: `${SITE_URL}${person.image}`,
@@ -245,7 +245,7 @@ export function bookJsonLd() {
         "@type": "WebPage",
         "@id": `${SITE_URL}/book#page`,
         url: `${SITE_URL}/book`,
-        name: "Agendá una llamada con Walter Morales, consultor de IA",
+        name: "Agendá una llamada con Walter Morales",
         inLanguage: "es",
         isPartOf: { "@id": ids.website },
         about: { "@id": ids.service },
