@@ -10,7 +10,7 @@ Landing de Walter Morales, consultor de IA y fundador de Ai Labs. Next.js 16 (Ap
 | `/book`  | Calendario de Google embebido dentro de un marco con el estilo del sitio    |
 | `/intro` | Tarjeta de presentación con QR (sitio, agenda o vCard). `noindex`           |
 
-Las rutas del sitio anterior (`/blog`, `/slides`, `/r/:code`, etc.) redirigen con 308 a `/`.
+Las rutas del sitio anterior (`/blog`, `/slides`, etc.) redirigen con 308 a `/`. Los short links impresos en QR (`/r/<code>`) viven en `shortLinks` dentro de `next.config.ts`; códigos desconocidos dan 404.
 
 ## Desarrollo
 

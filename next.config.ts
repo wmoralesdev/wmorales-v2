@@ -8,8 +8,12 @@ const gone = [
   "/design-system",
   "/slides",
   "/slides/:path*",
-  "/r/:code",
 ];
+
+// Short links printed on QR codes (tent cards, flyers). Temporary so targets can change.
+const shortLinks: Record<string, string> = {
+  "tent-card-front-01": "https://cursorelsalvador.com/cafe-cursor-jet#menu",
+};
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
@@ -19,11 +23,18 @@ const nextConfig: NextConfig = {
   },
   // The previous site's sections no longer exist; keep their link equity on the home page.
   async redirects() {
-    return gone.map((source) => ({
-      source,
-      destination: "/",
-      permanent: true,
-    }));
+    return [
+      ...Object.entries(shortLinks).map(([code, destination]) => ({
+        source: `/r/${code}`,
+        destination,
+        permanent: false,
+      })),
+      ...gone.map((source) => ({
+        source,
+        destination: "/",
+        permanent: true,
+      })),
+    ];
   },
   async headers() {
     return [
