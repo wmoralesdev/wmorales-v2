@@ -4,12 +4,6 @@ import { useEffect, useRef } from "react";
 import { portraitDots } from "@/lib/portrait-dots";
 import { onThemeChange } from "@/lib/theme";
 
-/** Smoothstep on 0..1: eases the edge fade in and out. */
-function smooth(t: number) {
-  const c = Math.min(Math.max(t, 0), 1);
-  return c * c * (3 - 2 * c);
-}
-
 type Ripple = { x: number; y: number; t0: number };
 
 const RIPPLE_MS = 1400;
@@ -22,12 +16,9 @@ export function PortraitCanvas({
   className = "",
   light = false,
   decorative = false,
-  fadeEdges = false,
 }: {
   className?: string;
   light?: boolean;
-  /** Shrinks the dots toward the top and sides, so the print has no hard edge. */
-  fadeEdges?: boolean;
   /** A twin print (e.g. the copy below the hero waterline); hidden from assistive tech. */
   decorative?: boolean;
 }) {
@@ -76,11 +67,6 @@ export function PortraitCanvas({
         const lum = data[i] / 99;
         // Light ink on a dark field prints the highlights; dark ink prints the shadows.
         base[i] = (light ? lum ** 0.85 : (1 - lum) ** 1.15) * cell * 0.62;
-        if (fadeEdges) {
-          const u = (i % cols) / (cols - 1);
-          const v = Math.floor(i / cols) / (rows - 1);
-          base[i] *= smooth(Math.min(u, 1 - u) / 0.16) * smooth(v / 0.12);
-        }
       }
       cur = base.slice();
       draw();
@@ -205,7 +191,7 @@ export function PortraitCanvas({
       surface.removeEventListener("pointerleave", onLeave);
       surface.removeEventListener("pointerdown", onDown);
     };
-  }, [light, fadeEdges]);
+  }, [light]);
 
   return (
     <canvas

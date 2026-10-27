@@ -40,24 +40,18 @@ function Headline({
 
 /**
  * The portrait is printed twice, once per ink, and each copy is clipped to its side
- * of the seam. It always prints in the light palette, its dots shrink away toward
- * the edges, and the copy above the water keeps a soft sheet of paper behind it, so
- * the face reads the same in the dark theme without a hard rectangle.
+ * of the seam. It always prints in the light palette, and the copy above the water
+ * keeps its own paper behind it, so the face reads the same in the dark theme.
  */
 function Portrait({ below }: { below?: boolean }) {
   return (
-    <div className="theme-light absolute top-[30%] right-0 w-[64vw] sm:right-7 md:top-auto md:bottom-0 md:w-[min(42vw,62svh)]">
-      {!below && (
-        <div
-          aria-hidden="true"
-          className="absolute inset-0 bg-paper [mask-composite:intersect] [mask-image:linear-gradient(to_right,transparent_10%,#000_32%,#000_68%,transparent_90%),linear-gradient(to_bottom,transparent_8%,#000_28%)]"
-        />
-      )}
+    <div
+      className={`theme-light absolute top-[30%] right-0 w-[64vw] sm:right-7 md:top-auto md:bottom-0 md:w-[min(42vw,62svh)] [&_canvas]:block ${below ? "" : "bg-paper"}`}
+    >
       <PortraitCanvas
         light={below}
         decorative={below}
-        fadeEdges
-        className={`relative ${below ? "text-snow" : "text-accent"}`}
+        className={below ? "text-snow" : "text-accent"}
       />
     </div>
   );
