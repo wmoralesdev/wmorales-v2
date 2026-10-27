@@ -295,68 +295,6 @@
   }
 }
 
-/*
- * Halftone brand logos (components/halftone-logo.tsx). --dot-r is registered so
- * the dot size can animate: the logo prints in as it scrolls into view and the
- * dots pulse on hover.
- */
-@property --dot-r {
-  syntax: "<percentage>";
-  inherits: true;
-  initial-value: 28%;
-}
-
-.halftone-logo {
-  --dot: currentColor;
-  --dot-size: 3px;
-  --dot-r: 42%;
-  -webkit-mask-position: center;
-  mask-position: center;
-  -webkit-mask-repeat: no-repeat;
-  mask-repeat: no-repeat;
-  -webkit-mask-size: contain;
-  mask-size: contain;
-}
-
-@keyframes logo-print {
-  from {
-    --dot-r: 0%;
-  }
-  to {
-    --dot-r: 42%;
-  }
-}
-
-@keyframes logo-pulse {
-  0%,
-  100% {
-    --dot-r: 42%;
-  }
-  35% {
-    --dot-r: 16%;
-  }
-  65% {
-    --dot-r: 50%;
-  }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  @supports (animation-timeline: view()) {
-    .halftone-logo {
-      animation: logo-print linear both;
-      animation-timeline: view();
-      animation-range: entry 0% entry 90%;
-    }
-  }
-
-  @media (hover: hover) and (pointer: fine) {
-    .group:hover .halftone-logo {
-      animation: logo-pulse 900ms var(--ease-out);
-      animation-timeline: auto;
-    }
-  }
-}
-
 /* Smooth open for <details> where supported. */
 @supports (interpolate-size: allow-keywords) {
   :root {

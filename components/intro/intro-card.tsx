@@ -341,14 +341,14 @@ export function IntroCard({
             {ambassadorships.map((a, i) => (
               <li
                 key={a.name}
+                data-icon-hover
                 className={`group flex aspect-square flex-col justify-between p-3.5 ${
                   i === 0 ? "bg-accent text-snow" : "bg-ink text-paper"
                 }`}
               >
                 <HalftoneLogo
-                  src={a.logo}
-                  scale={a.scale}
-                  className={`size-14 ${i === 0 ? "text-snow" : "text-lilac"}`}
+                  name={a.logo}
+                  className={`size-16 ${i === 0 ? "text-snow" : "text-lilac"}`}
                 />
                 <div>
                   <p className="font-semibold text-body leading-tight">

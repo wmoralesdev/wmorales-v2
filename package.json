@@ -10,7 +10,8 @@
     "typecheck": "tsc --noEmit",
     "lint": "biome check .",
     "format": "biome format --write .",
-    "halftone": "node scripts/halftone.mjs"
+    "halftone": "node scripts/halftone.mjs",
+    "halftone:logos": "node scripts/logo-dots.mjs"
   },
   "packageManager": "pnpm@10.19.0",
   "dependencies": {

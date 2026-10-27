@@ -1,29 +1,28 @@
 import { HalftoneIcon } from "@/components/halftone-icon";
 import { HalftoneLogo } from "@/components/halftone-logo";
 import { Reveal } from "@/components/motion/reveal";
+import type { LogoName } from "@/lib/logo-dots";
 import { facts } from "@/lib/site";
 
 // The AI tools he works with every day, printed as halftone logos. Logos live in
 // /public/logos; the last tile stands for everything else.
-const tools: { name: string; note: string; logo: string; scale?: number }[] = [
-  { name: "Cursor", note: "Agentes de código", logo: "/logos/cursor.svg" },
+const tools: { name: string; note: string; logo: LogoName }[] = [
+  { name: "Cursor", note: "Agentes de código", logo: "cursor" },
   {
     name: "Claude Code",
     note: "Agentes de código",
-    logo: "/logos/claudecode.svg",
-    scale: 1.15,
+    logo: "claudecode",
   },
-  { name: "Codex", note: "Agentes de código", logo: "/logos/codex.svg" },
+  { name: "Codex", note: "Agentes de código", logo: "codex" },
   {
     name: "Cognition",
     note: "Agentes autónomos",
-    logo: "/logos/cognition.svg",
-    scale: 1.3,
+    logo: "cognition",
   },
-  { name: "OpenAI", note: "Modelos", logo: "/logos/openai.svg", scale: 1.45 },
-  { name: "Mistral", note: "Modelos abiertos", logo: "/logos/mistral.svg" },
-  { name: "Grok", note: "Modelos y bots", logo: "/logos/grok.svg" },
-  { name: "ElevenLabs", note: "Voz", logo: "/logos/elevenlabs.svg" },
+  { name: "OpenAI", note: "Modelos", logo: "openai" },
+  { name: "Mistral", note: "Modelos abiertos", logo: "mistral" },
+  { name: "Grok", note: "Modelos y bots", logo: "grok" },
+  { name: "ElevenLabs", note: "Voz", logo: "elevenlabs" },
 ];
 
 export function About() {
@@ -70,21 +69,25 @@ export function About() {
               {tools.map((t) => (
                 <li
                   key={t.name}
+                  data-icon-hover
                   className="group flex min-h-36 flex-col justify-between gap-6 bg-surface p-4"
                 >
-                  <HalftoneLogo
-                    src={t.logo}
-                    scale={t.scale}
-                    className="size-10 text-accent"
-                  />
+                  <HalftoneLogo name={t.logo} className="size-16 text-accent" />
                   <div>
                     <p className="font-semibold text-small">{t.name}</p>
                     <p className="text-muted text-small">{t.note}</p>
                   </div>
                 </li>
               ))}
-              <li className="flex min-h-36 flex-col justify-between gap-6 bg-ink p-4 text-paper">
-                <HalftoneIcon shape="plus" className="size-10 text-lilac" />
+              <li
+                data-icon-hover
+                className="flex min-h-36 flex-col justify-between gap-6 bg-ink p-4 text-paper"
+              >
+                <HalftoneIcon
+                  shape="plus"
+                  motion="hover"
+                  className="size-16 text-lilac"
+                />
                 <div>
                   <p className="font-semibold text-small">Y más</p>
                   <p className="text-small opacity-70">Supabase, evals, MCP</p>

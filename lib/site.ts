@@ -1,4 +1,5 @@
 import type { ShapeName } from "@/lib/halftone-shapes";
+import type { LogoName } from "@/lib/logo-dots";
 
 // Single source of truth for every fact on the site. Pages, JSON-LD, llms.txt and
 // the intro card all read from here so search engines and answer engines see one
@@ -137,38 +138,35 @@ export const mediconecto = {
 export const ambassadorships: {
   name: string;
   role: string;
-  logo: string;
+  logo: LogoName;
   host: string;
   line: string;
-  /** Optical size correction for thin marks; see HalftoneLogo. */
-  scale?: number;
 }[] = [
   {
     name: "SpaceXAI Ambassadors",
     role: "Regional Lead",
-    logo: "/logos/xai.svg",
+    logo: "xai",
     host: "SpaceXAI",
     line: "Lidera el programa de embajadores en la región: comunidad, eventos y adopción de sus modelos.",
   },
   {
     name: "Codex",
     role: "Ambassador",
-    logo: "/logos/codex.svg",
+    logo: "codex",
     host: "OpenAI",
     line: "Embajador del agente de código de OpenAI: talleres y adopción en equipos de ingeniería.",
   },
   {
     name: "Mistral",
     role: "Ambassador",
-    logo: "/logos/mistral.svg",
+    logo: "mistral",
     host: "Mistral AI",
     line: "Embajador de Mistral AI y sus modelos abiertos, una opción fuerte cuando los datos no pueden salir de casa.",
   },
   {
     name: "Cognition",
     role: "Ambassador",
-    logo: "/logos/cognition.svg",
-    scale: 1.3,
+    logo: "cognition",
     host: "Cognition",
     line: "Embajador de Cognition, el equipo detrás de Devin y Windsurf, agentes que escriben software.",
   },

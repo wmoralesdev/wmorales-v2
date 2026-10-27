@@ -89,11 +89,10 @@ export function Experience() {
 
         <ul className="grid grid-cols-2 gap-x-6 gap-y-5 md:col-span-4">
           {ambassadorships.map((a) => (
-            <li key={a.name} data-reveal className="group">
+            <li key={a.name} data-reveal data-icon-hover className="group">
               <HalftoneLogo
-                src={a.logo}
-                scale={a.scale}
-                className="mb-3 size-12 text-accent"
+                name={a.logo}
+                className="mb-3 size-16 text-accent"
               />
               <p className="font-semibold text-body leading-tight">{a.name}</p>
               <p className="mt-0.5 text-muted text-small">{a.role}</p>

@@ -167,10 +167,11 @@ export default function ConsultantPage() {
               <li
                 key={a.name}
                 data-reveal
+                data-icon-hover
                 className="border-paper/20 border-t pt-6"
               >
                 <HalftoneLogo
-                  src={a.logo}
+                  name={a.logo}
                   className="mb-8 size-20 text-accent"
                 />
                 <p className="text-small opacity-70">{a.host}</p>
