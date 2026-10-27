@@ -6,7 +6,13 @@ import { useEffect, useState } from "react";
 import { Icon } from "@/components/icon";
 
 /** Thumb-reach booking action on phones, between the hero and the closing band. */
-export function MobileBookBar() {
+export function MobileBookBar({
+  href,
+  label,
+}: {
+  href: string;
+  label: string;
+}) {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
@@ -36,10 +42,13 @@ export function MobileBookBar() {
           : "translate-y-[calc(100%+1.5rem)] opacity-0"
       }`}
     >
-      <Link href="/book" className="btn w-full min-h-13 text-[1rem]">
-        <Icon icon={Calendar03Icon} size={20} />
-        Agendar llamada
-      </Link>
+      {/* Frosted tray (a web approximation of Apple's glass) around the pill. */}
+      <div className=" border border-paper/40 bg-paper/65 p-1.5 shadow-[0_12px_40px_-12px_rgb(18_13_38/0.35)] backdrop-blur-xl backdrop-saturate-150 [@media(prefers-reduced-transparency:reduce)]:bg-paper">
+        <Link href={href} className="btn w-full min-h-13 text-[1rem]">
+          <Icon icon={Calendar03Icon} size={20} />
+          {label}
+        </Link>
+      </div>
     </div>
   );
 }

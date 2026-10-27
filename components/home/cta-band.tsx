@@ -6,9 +6,10 @@ import Link from "next/link";
 import type { PointerEvent } from "react";
 import { HalftoneField } from "@/components/halftone-field";
 import { Icon } from "@/components/icon";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
-/** The whole band is the button. The arrow leans toward the pointer on a spring. */
-export function CtaBand() {
+/** The whole tile is the button, the closing partner of the lit tile on the services wall. The arrow leans toward the pointer on a spring. */
+export function CtaBand({ t, href }: { t: Dictionary["cta"]; href: string }) {
   const reduce = useReducedMotion();
   const x = useSpring(0, { stiffness: 180, damping: 18, mass: 0.6 });
   const y = useSpring(0, { stiffness: 180, damping: 18, mass: 0.6 });
@@ -28,10 +29,10 @@ export function CtaBand() {
   return (
     <section id="contacto" aria-labelledby="contacto-title">
       <Link
-        href="/book"
+        href={href}
         onPointerMove={onMove}
         onPointerLeave={onLeave}
-        className="group relative flex min-h-[18rem] flex-col gap-16 justify-between overflow-clip bg-accent px-4 pt-5 pb-6 text-snow outline-offset-[-6px] transition-colors duration-500 ease-(--ease-out) motion-reduce:transition-none focus-visible:bg-night sm:px-7 md:min-h-[24rem] md:hover:bg-night"
+        className="group relative flex min-h-[18rem] flex-col gap-16 justify-between overflow-clip bg-accent px-5 pt-6 pb-6 text-snow outline-offset-[-6px] transition-colors duration-500 ease-(--ease-out) motion-reduce:transition-none focus-visible:bg-night sm:px-7 md:min-h-[24rem] md:hover:bg-night"
       >
         <HalftoneField
           seed={2.4}
@@ -40,8 +41,7 @@ export function CtaBand() {
         />
         <div className="relative flex items-start justify-between gap-6">
           <p className="max-w-[22rem] text-[1.0625rem] leading-snug md:text-[1.25rem]">
-            Agendá una llamada. Salís con un diagnóstico inicial y próximos
-            pasos claros para tu equipo.
+            {t.lead}
           </p>
           <motion.span style={{ x, y }} className="shrink-0">
             <Icon
@@ -56,7 +56,7 @@ export function CtaBand() {
           id="contacto-title"
           className="display relative -mb-[0.08em] text-[16vw] leading-[0.85] text-snow md:text-[clamp(5rem,10vw,9rem)]"
         >
-          Hablemos
+          {t.title}
         </h2>
       </Link>
     </section>

@@ -32,8 +32,10 @@ import { HalftoneLogo } from "@/components/halftone-logo";
 import { PortraitCanvas } from "@/components/home/portrait-canvas";
 import { Icon } from "@/components/icon";
 import { printName, weightWave } from "@/components/name-motion";
+import type { Locale } from "@/lib/i18n/config";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 import {
-  aiLabsLine,
+  aiLabs,
   ambassadorships,
   experience,
   mediconecto,
@@ -51,12 +53,21 @@ export type QrTarget = {
   svg?: string;
 };
 
-const links = [
-  { label: "Sitio", value: "wmorales.dev", href: "/", icon: Globe02Icon },
+type Paths = { site: string; book: string; intro: string };
+
+const bare = (p: string) => `wmorales.dev${p === "/" ? "" : p}`;
+
+const linksFor = (t: Dictionary["intro"], paths: Paths) => [
   {
-    label: "Agendar llamada",
-    value: "wmorales.dev/book",
-    href: "/book",
+    label: t.site,
+    value: bare(paths.site),
+    href: paths.site,
+    icon: Globe02Icon,
+  },
+  {
+    label: t.bookCall,
+    value: bare(paths.book),
+    href: paths.book,
     icon: Calendar03Icon,
   },
   {
@@ -84,18 +95,14 @@ const links = [
     icon: InstagramIcon,
   },
   {
-    label: "Correo",
+    label: t.email,
     value: person.email,
     href: `mailto:${person.email}`,
     icon: Mail01Icon,
   },
 ];
 
-const devStats = [
-  { value: "6+", label: "años en software" },
-  { value: "1K+", label: "builders" },
-  { value: "75+", label: "eventos" },
-];
+const devStatValues = ["6+", "1K+", "75+"];
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -116,10 +123,21 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 export function IntroCard({
   targets,
   vcard,
+  t,
+  lang,
+  paths,
 }: {
   targets: QrTarget[];
   vcard: string;
+  t: Dictionary["intro"];
+  lang: Locale;
+  paths: Paths;
 }) {
+  const links = linksFor(t, paths);
+  const devStats = devStatValues.map((value, i) => ({
+    value,
+    label: t.devStats[i],
+  }));
   const [active, setActive] = useState(0);
   const [shared, setShared] = useState(false);
   const reduce = useReducedMotion();
@@ -192,8 +210,8 @@ export function IntroCard({
   async function share() {
     const data = {
       title: person.name,
-      text: person.headline,
-      url: `${SITE_URL}/intro`,
+      text: person.headline[lang],
+      url: `${SITE_URL}${paths.intro}`,
     };
     try {
       if (navigator.share) {
@@ -225,7 +243,10 @@ export function IntroCard({
           className="absolute inset-0 text-accent-deep"
         />
         <div className="relative z-10 flex items-center justify-between px-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-7 lg:px-10 lg:pt-8">
-          <Link href="/" className="link-underline font-semibold text-small">
+          <Link
+            href={paths.site}
+            className="link-underline font-semibold text-small"
+          >
             wmorales.dev
           </Link>
           <p className="flex items-center gap-1 text-small">
@@ -239,7 +260,7 @@ export function IntroCard({
           transition={{ type: "spring", duration: 0.9, bounce: 0.1 }}
           className="theme-light relative ml-auto -mt-2 w-[min(82%,28rem)] [mask-composite:intersect] lg:absolute lg:right-0 lg:bottom-0 lg:mt-0 lg:w-[min(88%,72svh)] [mask-image:linear-gradient(to_right,transparent,#000_40%),linear-gradient(to_bottom,transparent,#000_25%)]"
         >
-          <PortraitCanvas light className="text-snow" />
+          <PortraitCanvas light label={t.portrait} className="text-snow" />
         </motion.div>
         <h1
           ref={nameRef}
@@ -254,17 +275,12 @@ export function IntroCard({
 
       <div className="lg:pt-6">
         <div className="px-4 pt-5 pb-8 sm:px-7 lg:px-12 lg:pt-12 lg:pb-12">
-          <p className="font-semibold text-lead leading-tight">
-            AI Engineer y Co-Founder de Ai Labs.
-          </p>
-          <p className="mt-2 text-muted text-body leading-snug">
-            Llevo la inteligencia artificial a producción en empresas de
-            Latinoamérica, y organizo una comunidad de builders en El Salvador.
-          </p>
+          <p className="font-semibold text-lead leading-tight">{t.headline}</p>
+          <p className="mt-2 text-muted text-body leading-snug">{t.blurb}</p>
           <div className="mt-5 grid gap-2 lg:grid-cols-[1fr_auto]">
-            <Link href="/book" className="btn lg:col-span-2">
+            <Link href={paths.book} className="btn lg:col-span-2">
               <Icon icon={Calendar03Icon} size={18} />
-              Agendar una llamada
+              {t.bookCall}
             </Link>
             {/* From lg the action bar is gone, so its buttons live here. */}
             <button
@@ -273,12 +289,12 @@ export function IntroCard({
               className="btn hidden [--btn-bg:var(--color-ink)] [--btn-fg:var(--color-paper)] [--btn-bg-hover:var(--color-accent)] [--btn-fg-hover:var(--color-snow)] lg:inline-flex"
             >
               <Icon icon={UserAdd01Icon} size={18} />
-              Guardar contacto
+              {t.save}
             </button>
             <button
               type="button"
               onClick={share}
-              aria-label={shared ? "Link copiado" : "Compartir"}
+              aria-label={shared ? t.copied : t.share}
               className="btn hidden aspect-square px-0 [--btn-bg:var(--color-surface)] [--btn-fg:var(--color-ink)] [--btn-bg-hover:var(--color-lilac)] [--btn-fg-hover:var(--color-ink)] lg:inline-flex"
             >
               <Icon
@@ -289,11 +305,11 @@ export function IntroCard({
           </div>
         </div>
 
-        <Section title="Ahora">
+        <Section title={t.now}>
           <ul className="space-y-6">
             <li>
               <Link
-                href="/#ai-labs"
+                href={`${paths.site}#ai-labs`}
                 className="press grid grid-cols-[3rem_1fr_auto] items-start gap-x-4"
               >
                 <HalftoneIcon shape="sparkle" className="size-12 text-accent" />
@@ -305,7 +321,7 @@ export function IntroCard({
                   />
                   <p className="mt-2 font-semibold text-small">Co-Founder</p>
                   <p className="mt-0.5 text-muted text-small leading-snug">
-                    {aiLabsLine}
+                    {aiLabs.line[lang]}
                   </p>
                 </div>
                 <Icon icon={ArrowUpRight01Icon} size={18} />
@@ -327,7 +343,7 @@ export function IntroCard({
                     {mediconecto.role}
                   </p>
                   <p className="mt-0.5 text-muted text-small leading-snug">
-                    {mediconecto.line}
+                    {mediconecto.line[lang]}
                   </p>
                 </div>
                 <Icon icon={ArrowUpRight01Icon} size={18} />
@@ -336,7 +352,7 @@ export function IntroCard({
           </ul>
         </Section>
 
-        <Section title="Embajador">
+        <Section title={t.ambassador}>
           <ul className="grid grid-cols-2 gap-1.5">
             {ambassadorships.map((a, i) => (
               <li
@@ -361,7 +377,7 @@ export function IntroCard({
           </ul>
         </Section>
 
-        <Section title="Como developer">
+        <Section title={t.developer}>
           <dl className="grid grid-cols-3 gap-3">
             {devStats.map((s) => (
               <div key={s.label}>
@@ -396,11 +412,11 @@ export function IntroCard({
             className="link-underline mt-4 inline-flex items-center gap-1.5 font-semibold text-small"
           >
             <Icon icon={GithubIcon} size={16} />
-            Ver código en GitHub
+            {t.github}
           </a>
         </Section>
 
-        <Section title="Escaneá">
+        <Section title={t.scan}>
           <div
             id="qr-panel"
             role="tabpanel"
@@ -411,7 +427,7 @@ export function IntroCard({
               <motion.div
                 key={current.id}
                 role="img"
-                aria-label={`Código QR: ${current.caption}`}
+                aria-label={`${t.qrCode}: ${current.caption}`}
                 initial={
                   reduce
                     ? { opacity: 0 }
@@ -433,7 +449,7 @@ export function IntroCard({
 
           <div
             role="tablist"
-            aria-label="Qué abre el código"
+            aria-label={t.qrTabs}
             onKeyDown={onKey}
             className="relative mt-2 grid grid-cols-3 bg-surface p-1 mx-auto max-w-[24rem]"
           >
@@ -470,7 +486,7 @@ export function IntroCard({
           </p>
         </Section>
 
-        <Section title="Links">
+        <Section title={t.links}>
           <ul className="divide-y divide-ink/10 border-ink/10 border-y">
             {links.map((l) => {
               const external = l.href.startsWith("http");
@@ -518,12 +534,12 @@ export function IntroCard({
               className="btn [--btn-bg-hover:var(--color-accent-deep)]"
             >
               <Icon icon={UserAdd01Icon} size={18} />
-              Guardar contacto
+              {t.save}
             </button>
             <button
               type="button"
               onClick={share}
-              aria-label={shared ? "Link copiado" : "Compartir"}
+              aria-label={shared ? t.copied : t.share}
               className="btn aspect-square px-0 [--btn-bg:var(--color-paper)] [--btn-fg:var(--color-ink)] [--btn-bg-hover:var(--color-lilac)] [--btn-fg-hover:var(--color-ink)]"
             >
               <Icon

@@ -3,19 +3,15 @@ import { HalftoneIcon } from "@/components/halftone-icon";
 import { HalftoneLogo } from "@/components/halftone-logo";
 import { Icon } from "@/components/icon";
 import { Reveal } from "@/components/motion/reveal";
-import {
-  aiLabs,
-  aiLabsLine,
-  ambassadorships,
-  experience,
-  mediconecto,
-} from "@/lib/site";
+import { getDictionary } from "@/lib/i18n/server";
+import { aiLabs, ambassadorships, experience, mediconecto } from "@/lib/site";
 
 /**
  * Career only: what Walter does now, then where he worked before. Community
  * events live in their own section.
  */
-export function Experience() {
+export async function Experience() {
+  const t = await getDictionary();
   return (
     <Reveal
       as="section"
@@ -24,13 +20,13 @@ export function Experience() {
       className="px-4 py-24 sm:px-7 md:py-32"
     >
       <h2 id="trayectoria-title" data-reveal className="display text-head">
-        Experiencia
+        {t.experience.title}
       </h2>
 
       {/* Now */}
       <div className="mt-12 grid gap-x-8 gap-y-10 border-ink/15 border-t pt-8 md:mt-16 md:grid-cols-12">
         <h3 data-reveal className="text-muted text-small md:col-span-2">
-          Ahora
+          {t.experience.now}
         </h3>
 
         <div className="space-y-10 md:col-span-6">
@@ -48,12 +44,12 @@ export function Experience() {
             <div>
               <div
                 role="img"
-                aria-label={`Logotipo de ${aiLabs.name}`}
+                aria-label={t.logo(aiLabs.name)}
                 className="aspect-[1295/324] w-44 bg-ink [mask:url(/ailabs-lockup-horizontal.svg)_left/contain_no-repeat]"
               />
               <p className="mt-3 font-semibold text-body">Co-Founder</p>
               <p className="mt-1 max-w-[46ch] text-muted text-body">
-                {aiLabsLine}
+                {aiLabs.line[t.lang]}
               </p>
             </div>
           </article>
@@ -81,7 +77,7 @@ export function Experience() {
               </a>
               <p className="mt-3 font-semibold text-body">{mediconecto.role}</p>
               <p className="mt-1 max-w-[46ch] text-muted text-body">
-                {mediconecto.line}
+                {mediconecto.line[t.lang]}
               </p>
             </div>
           </article>
@@ -104,7 +100,7 @@ export function Experience() {
       {/* Before */}
       <div className="mt-14 grid gap-x-8 gap-y-8 border-ink/15 border-t pt-8 md:grid-cols-12">
         <h3 data-reveal className="text-muted text-small md:col-span-2">
-          Antes
+          {t.experience.before}
         </h3>
         <ol className="grid gap-x-10 gap-y-7 sm:grid-cols-2 md:col-span-10">
           {experience.map((job) => (
@@ -121,7 +117,9 @@ export function Experience() {
                   <span className="font-semibold">{job.name}</span>
                   <span className="text-muted">, {job.role}</span>
                 </p>
-                <p className="mt-1 text-muted text-small">{job.detail}</p>
+                <p className="mt-1 text-muted text-small">
+                  {job.detail[t.lang]}
+                </p>
               </div>
             </li>
           ))}

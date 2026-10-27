@@ -4,7 +4,8 @@ export default function manifest(): MetadataRoute.Manifest {
   return {
     name: "Walter Morales",
     short_name: "Walter Morales",
-    description: "AI Engineer y Co-Founder de Ai Labs.",
+    description:
+      "AI Engineer y Co-Founder de Ai Labs · AI Engineer and Co-Founder of Ai Labs.",
     start_url: "/",
     display: "standalone",
     background_color: "#f3f2f7",

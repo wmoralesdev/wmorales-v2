@@ -8,6 +8,7 @@ import Link from "next/link";
 import { useRef } from "react";
 import { printName, weightWave } from "@/components/name-motion";
 import { SiteHeader } from "@/components/site-header";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 import { PortraitCanvas } from "./portrait-canvas";
 
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
@@ -43,12 +44,13 @@ function Headline({
  * of the seam. It always prints in the light palette, and the copy above the water
  * keeps its own paper behind it, so the face reads the same in the dark theme.
  */
-function Portrait({ below }: { below?: boolean }) {
+function Portrait({ below, label }: { below?: boolean; label: string }) {
   return (
     <div
       className={`theme-light absolute top-[30%] right-0 w-[64vw] sm:right-7 md:top-auto md:bottom-0 md:w-[min(42vw,62svh)] [&_canvas]:block ${below ? "" : "bg-paper"}`}
     >
       <PortraitCanvas
+        label={label}
         light={below}
         decorative={below}
         className={below ? "text-snow" : "text-accent"}
@@ -136,7 +138,15 @@ function tide(
  * are submerged. On top of that, three ambient motions run on their own: the name
  * prints in as halftone, the tide moves the seam, and a weight wave rolls through.
  */
-export function Hero() {
+export function Hero({
+  t,
+  book,
+  home,
+}: {
+  t: Dictionary["hero"];
+  book: { href: string; label: string };
+  home: string;
+}) {
   const root = useRef<HTMLElement>(null);
   const aboveRef = useRef<HTMLDivElement>(null);
   const belowRef = useRef<HTMLDivElement>(null);
@@ -200,7 +210,7 @@ export function Hero() {
           <div className="dot-screen h-1 [--dot-r:28%] [--dot-size:4px]" />
           <div className="dot-screen h-1 [--dot-r:36%] [--dot-size:4px]" />
         </div>
-        <Portrait />
+        <Portrait label={t.portrait} />
         <Headline as="h1" id="hero-title" />
       </div>
 
@@ -209,25 +219,24 @@ export function Hero() {
         ref={belowRef}
         className="absolute inset-0 bg-accent text-night [clip-path:inset(var(--seam)_0_0_0)]"
       >
-        <Portrait below />
+        <Portrait below label={t.portrait} />
         <Headline as="p" hidden />
       </div>
 
       <div className="absolute inset-x-0 top-0">
-        <SiteHeader />
+        <SiteHeader home={home} action={book} />
       </div>
 
       <div className="fade-in-late absolute inset-x-4 bottom-[max(1.5rem,env(safe-area-inset-bottom))] text-snow sm:left-7 md:right-auto md:bottom-10 md:max-w-[min(44vw,30rem)]">
         <div className="flex flex-col items-start gap-5">
           <p className="text-[1.0625rem] leading-snug sm:text-lead">
-            AI Engineer y Co-Founder de Ai Labs. Llevo la inteligencia
-            artificial a producción en empresas de Latinoamérica.
+            {t.tagline}
           </p>
           <Link
-            href="/book"
+            href={book.href}
             className="btn [--btn-bg:var(--color-paper)] [--btn-fg:var(--color-ink)]"
           >
-            Agendar llamada
+            {book.label}
           </Link>
         </div>
       </div>

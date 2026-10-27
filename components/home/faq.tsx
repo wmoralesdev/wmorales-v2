@@ -2,9 +2,11 @@ import { ArrowDown01Icon } from "@hugeicons/core-free-icons";
 import { HalftoneIcon } from "@/components/halftone-icon";
 import { Icon } from "@/components/icon";
 import { Reveal } from "@/components/motion/reveal";
+import { getDictionary } from "@/lib/i18n/server";
 import { faqs } from "@/lib/site";
 
-export function Faq() {
+export async function Faq() {
+  const t = await getDictionary();
   return (
     <Reveal
       as="section"
@@ -13,7 +15,7 @@ export function Faq() {
       className="px-4 py-24 sm:px-7 md:py-40"
     >
       <h2 id="preguntas-title" data-reveal className="display text-head">
-        Preguntas frecuentes
+        {t.faq.title}
       </h2>
       <div className="mt-12 md:mt-20 md:grid md:grid-cols-12 md:gap-x-8">
         <div className="hidden md:col-span-3 md:block">
@@ -25,7 +27,7 @@ export function Faq() {
           />
         </div>
         <div className="space-y-2 md:col-span-8 md:col-start-5 md:space-y-4">
-          {faqs.map((f) => (
+          {faqs[t.lang].map((f) => (
             <details
               key={f.q}
               data-reveal

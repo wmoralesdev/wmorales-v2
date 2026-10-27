@@ -15,75 +15,49 @@ import { Reveal } from "@/components/motion/reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import type { ShapeName } from "@/lib/halftone-shapes";
-import {
-  CONSULTANT_DESCRIPTION,
-  CONSULTANT_PATH,
-  CONSULTANT_TITLE,
-  consultantJsonLd,
-} from "@/lib/seo";
+import { path } from "@/lib/i18n/config";
+import { getDictionary, getLocale } from "@/lib/i18n/server";
+import { consultantJsonLd, pageMetadata } from "@/lib/seo";
 import {
   aiLabs,
   ambassadorships,
   consultantFaqs,
   person,
-  photos,
+  photo,
   services,
+  stats,
 } from "@/lib/site";
 
-// Landing for the "consultor de IA" query. Deliberately left out of the hero and
-// the navigation: the sitemap and search results are its only way in.
-export const metadata: Metadata = {
-  title: CONSULTANT_TITLE,
-  description: CONSULTANT_DESCRIPTION,
-  alternates: { canonical: CONSULTANT_PATH },
-  openGraph: {
-    title: `${CONSULTANT_TITLE} · Walter Morales`,
-    description: CONSULTANT_DESCRIPTION,
-    url: CONSULTANT_PATH,
-    type: "website",
-  },
-  twitter: {
-    title: `${CONSULTANT_TITLE} · Walter Morales`,
-    description: CONSULTANT_DESCRIPTION,
-  },
-};
+// Landing for the "consultor de IA" / "AI consultant" query, served at
+// /consultor-de-ia and /en/ai-consultant. Deliberately left out of the hero and the
+// navigation: the sitemap and search results are its only way in.
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getLocale();
+  const { consultant } = await getDictionary();
+  const meta = pageMetadata(lang, "consultant", consultant);
+  const title = `${consultant.title} · Walter Morales`;
+  return {
+    ...meta,
+    openGraph: { ...meta.openGraph, title, type: "website" },
+    twitter: { ...meta.twitter, title },
+  };
+}
 
-const figures = [
-  { value: 6, suffix: "+", label: "años construyendo software" },
-  { value: 1, suffix: "K+", label: "builders en la comunidad" },
-  { value: 75, suffix: "+", label: "eventos realizados" },
-  { value: 3, suffix: "K+", label: "asistentes diferentes" },
-];
+const icons: ShapeName[] = ["chat", "target", "tiles", "sparkle"];
 
-const steps: { icon: ShapeName; title: string; body: string }[] = [
-  {
-    icon: "chat",
-    title: "Llamada inicial",
-    body: "Me contás qué querés resolver, qué intentaron antes y con qué datos cuentan. Sin costo.",
-  },
-  {
-    icon: "target",
-    title: "Diagnóstico",
-    body: "Dónde la IA mueve números en tu operación, ordenado por valor y esfuerzo.",
-  },
-  {
-    icon: "tiles",
-    title: "Propuesta",
-    body: "Alcance, tiempos y entregables cerrados antes de empezar. Sin sorpresas.",
-  },
-  {
-    icon: "sparkle",
-    title: "Implementación",
-    body: "Agentes, producto o adopción en tu equipo, medidos contra el objetivo del diagnóstico.",
-  },
-];
-
-export default function ConsultantPage() {
+export default async function ConsultantPage() {
+  const t = await getDictionary();
+  const c = t.consultant;
+  const lang = t.lang;
+  const steps = c.steps.map((s, i) => ({ ...s, icon: icons[i] }));
   return (
     <>
-      <JsonLd data={consultantJsonLd()} />
+      <JsonLd data={consultantJsonLd(lang)} />
       <main id="contenido" className="relative z-10 bg-paper">
-        <SiteHeader />
+        <SiteHeader
+          home={path(lang, "home")}
+          action={{ href: path(lang, "book"), label: t.bookCall }}
+        />
 
         {/* Intro */}
         <Reveal
@@ -93,31 +67,28 @@ export default function ConsultantPage() {
         >
           <div className="md:col-span-7">
             <p data-reveal className="text-muted text-small">
-              {person.name} · {person.headline}
+              {person.name} · {person.headline[lang]}
             </p>
             <h1
               id="consultor-title"
               className="display mt-4 text-[clamp(2.75rem,11vw,4.25rem)] md:text-[clamp(3.5rem,6vw,6.5rem)]"
             >
               <span className="mask-line">
-                <span>Consultor de IA</span>
+                <span>{c.heading[0]}</span>
               </span>
               <span
                 className="mask-line"
                 style={{ "--i": 1 } as React.CSSProperties}
               >
-                <span>en El Salvador</span>
+                <span>{c.heading[1]}</span>
               </span>
             </h1>
             <p className="fade-in-late mt-8 max-w-[38rem] text-lead leading-snug">
-              Ayudo a empresas de El Salvador, Latinoamérica y Estados Unidos a
-              pasar de experimentar con inteligencia artificial a operarla:
-              estrategia, agentes y capacitación, con el respaldo de los
-              programas de embajadores de SpaceXAI, OpenAI, Mistral y Cognition.
+              {c.lead}
             </p>
             <div className="fade-in-late mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
-              <Link href="/book" className="btn">
-                Agendar llamada
+              <Link href={path(lang, "book")} className="btn">
+                {t.bookCall}
               </Link>
               <a
                 href={`mailto:${person.email}`}
@@ -130,7 +101,7 @@ export default function ConsultantPage() {
           </div>
           <div className="relative max-w-[26rem] md:col-span-4 md:col-start-9">
             <HalftonePhoto
-              photo={photos.portrait}
+              photo={photo("portrait", lang)}
               tone="bg-lilac text-accent"
               className="aspect-[864/1184]"
               sizes="(min-width: 768px) 30vw, 90vw"
@@ -151,15 +122,13 @@ export default function ConsultantPage() {
               data-reveal
               className="display text-head md:col-span-7"
             >
-              Embajador de los laboratorios que construyen la IA
+              {c.ambassadorTitle}
             </h2>
             <p
               data-reveal
               className="max-w-[34rem] text-body opacity-80 md:col-span-5 md:self-end"
             >
-              Un consultor de IA que solo lee anuncios llega tarde. Como
-              embajador pruebo los modelos y agentes antes y a fondo, conozco
-              sus límites reales y llevo a tu equipo lo que de verdad funciona.
+              {c.ambassadorBody}
             </p>
           </div>
           <ul className="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 md:mt-20 lg:grid-cols-4">
@@ -179,7 +148,7 @@ export default function ConsultantPage() {
                   {a.role}
                 </h3>
                 <p className="mt-1 font-semibold text-body">{a.name}</p>
-                <p className="mt-4 text-body opacity-80">{a.line}</p>
+                <p className="mt-4 text-body opacity-80">{a.line[lang]}</p>
               </li>
             ))}
           </ul>
@@ -187,28 +156,23 @@ export default function ConsultantPage() {
             data-reveal
             className="mt-16 max-w-[46rem] text-body opacity-80 md:mt-20"
           >
-            La comunidad empezó en 2025 como Cursor Ambassador en El Salvador y
-            hoy reúne a más de mil builders en talleres, hackathons y meetups.
+            {c.communityNote}
           </p>
         </Reveal>
 
         {/* Figures */}
-        <Reveal
-          as="section"
-          aria-label="Comunidad en números"
-          className="px-2 pt-2"
-        >
+        <Reveal as="section" aria-label={c.figures} className="px-2 pt-2">
           <dl className="grid grid-cols-2 gap-1.5 sm:gap-2 lg:grid-cols-4">
-            {figures.map((f, i) => (
+            {stats.map((f, i) => (
               <div
-                key={f.label}
+                key={f.value}
                 data-reveal
                 className={`grid aspect-square place-items-center p-3 text-center sm:aspect-[4/3] ${
                   i % 2 ? "bg-lilac text-ink" : "bg-accent text-snow"
                 }`}
               >
                 <dt className="order-last text-small leading-tight">
-                  {f.label}
+                  {f.label[lang]}
                 </dt>
                 <dd className="display text-[15vw] leading-none sm:text-[clamp(2.75rem,6.4vw,7rem)] lg:text-[clamp(2.75rem,5vw,6rem)]">
                   <span data-count={f.value}>{f.value}</span>
@@ -226,12 +190,12 @@ export default function ConsultantPage() {
           className="px-4 py-24 sm:px-7 md:py-32"
         >
           <h2 id="servicios-title" data-reveal className="display text-head">
-            Qué incluye la consultoría de IA
+            {c.servicesTitle}
           </h2>
           <ul className="mt-12 grid gap-x-8 gap-y-10 md:mt-16 md:grid-cols-2 lg:grid-cols-3">
             {services.map((s) => (
               <li
-                key={s.name}
+                key={s.name.es}
                 data-reveal
                 data-icon-hover
                 className="border-ink/15 border-t pt-5"
@@ -242,10 +206,10 @@ export default function ConsultantPage() {
                   className="mb-6 size-16 text-accent"
                 />
                 <h3 className="display text-[clamp(1.75rem,1.4rem+1vw,2.375rem)] leading-[0.95]">
-                  {s.name}
+                  {s.name[lang]}
                 </h3>
                 <p className="mt-3 max-w-[38ch] text-muted text-body">
-                  {s.description}
+                  {s.description[lang]}
                 </p>
               </li>
             ))}
@@ -259,7 +223,7 @@ export default function ConsultantPage() {
           className="bg-surface px-4 py-24 sm:px-7 md:py-32"
         >
           <h2 id="proceso-title" data-reveal className="display text-head">
-            Cómo es trabajar conmigo
+            {c.processTitle}
           </h2>
           <ol className="mt-12 grid gap-x-8 gap-y-10 md:mt-16 md:grid-cols-2 lg:grid-cols-4">
             {steps.map((s, i) => (
@@ -296,7 +260,7 @@ export default function ConsultantPage() {
           <div className="md:col-span-5">
             <div
               role="img"
-              aria-label={`Logotipo de ${aiLabs.name}`}
+              aria-label={t.logo(aiLabs.name)}
               data-reveal
               className="aspect-[1295/324] w-52 bg-ink [mask:url(/ailabs-lockup-horizontal.svg)_left/contain_no-repeat]"
             />
@@ -305,15 +269,12 @@ export default function ConsultantPage() {
               data-reveal
               className="display mt-8 text-head"
             >
-              Cuando hay que construir
+              {c.buildTitle}
             </h2>
           </div>
           <div className="md:col-span-6 md:col-start-7 md:self-end">
             <p data-reveal className="text-lead leading-snug">
-              Si el proyecto pide producto y no solo estrategia, lo ejecutamos
-              con {aiLabs.name}, el estudio de IA que cofundé en El Salvador:
-              del prototipo al software en producción, con el mismo criterio de
-              la consultoría.
+              {c.buildBody(aiLabs.name)}
             </p>
             <a
               href={aiLabs.url}
@@ -322,7 +283,7 @@ export default function ConsultantPage() {
               data-reveal
               className="link-underline mt-8 inline-flex items-center gap-1.5 font-semibold text-body"
             >
-              Conocé {aiLabs.name}
+              {c.buildLink(aiLabs.name)}
               <Icon icon={ArrowUpRight01Icon} size={18} />
             </a>
           </div>
@@ -340,10 +301,10 @@ export default function ConsultantPage() {
               data-reveal
               className="display text-head md:col-span-4"
             >
-              Preguntas sobre consultoría de IA
+              {c.faqTitle}
             </h2>
             <div className="mt-12 space-y-2 md:col-span-8 md:col-start-5 md:mt-0 md:space-y-4">
-              {consultantFaqs.map((f) => (
+              {consultantFaqs[lang].map((f) => (
                 <details
                   key={f.q}
                   data-reveal
@@ -367,9 +328,9 @@ export default function ConsultantPage() {
           </div>
         </Reveal>
 
-        <CtaBand />
+        <CtaBand t={t.cta} href={path(lang, "book")} />
       </main>
-      <SiteFooter />
+      <SiteFooter route="consultant" />
     </>
   );
 }

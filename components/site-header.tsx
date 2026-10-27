@@ -4,19 +4,20 @@ import { Icon } from "@/components/icon";
 
 type Props = {
   tone?: "paper" | "night";
-  action?: { href: string; label: string };
+  /** Home URL in the page's language. */
+  home: string;
+  /** Booking, or the way back home on the booking page itself. */
+  action: { href: string; label: string; back?: boolean };
 };
 
-export function SiteHeader({
-  tone = "paper",
-  action = { href: "/book", label: "Agendar llamada" },
-}: Props) {
+// Hero renders this from a client component, so it takes its copy as props.
+export function SiteHeader({ tone = "paper", home, action }: Props) {
   const ink = tone === "night" ? "text-snow" : "text-ink";
   return (
     <header
       className={`relative z-20 flex items-center justify-between gap-4 px-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-7 sm:pt-7 ${ink}`}
     >
-      <Link href="/" className="press group flex items-center gap-2.5">
+      <Link href={home} className="press group flex items-center gap-2.5">
         <span className="display grid size-9 place-items-center bg-ink text-[1.15rem] text-paper leading-none">
           WM
         </span>
@@ -30,10 +31,7 @@ export function SiteHeader({
         </span>
       </Link>
       <Link href={action.href} className="btn">
-        <Icon
-          icon={action.href === "/book" ? Calendar03Icon : ArrowLeft01Icon}
-          size={18}
-        />
+        <Icon icon={action.back ? ArrowLeft01Icon : Calendar03Icon} size={18} />
         {action.label}
       </Link>
     </header>

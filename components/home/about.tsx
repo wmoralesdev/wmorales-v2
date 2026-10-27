@@ -1,31 +1,39 @@
+import { type CSSProperties, Fragment } from "react";
 import { HalftoneIcon } from "@/components/halftone-icon";
 import { HalftoneLogo } from "@/components/halftone-logo";
 import { Reveal } from "@/components/motion/reveal";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
+import { getDictionary } from "@/lib/i18n/server";
 import type { LogoName } from "@/lib/logo-dots";
 import { facts } from "@/lib/site";
 
+type Note = keyof Dictionary["about"]["notes"];
+
 // The AI tools he works with every day, printed as halftone logos. Logos live in
 // /public/logos; the last tile stands for everything else.
-const tools: { name: string; note: string; logo: LogoName }[] = [
-  { name: "Cursor", note: "Agentes de código", logo: "cursor" },
-  {
-    name: "Claude Code",
-    note: "Agentes de código",
-    logo: "claudecode",
-  },
-  { name: "Codex", note: "Agentes de código", logo: "codex" },
-  {
-    name: "Cognition",
-    note: "Agentes autónomos",
-    logo: "cognition",
-  },
-  { name: "OpenAI", note: "Modelos", logo: "openai" },
-  { name: "Mistral", note: "Modelos abiertos", logo: "mistral" },
-  { name: "Grok", note: "Modelos y bots", logo: "grok" },
-  { name: "ElevenLabs", note: "Voz", logo: "elevenlabs" },
+const tools: { name: string; note: Note; logo: LogoName }[] = [
+  { name: "Cursor", note: "code", logo: "cursor" },
+  { name: "Claude Code", note: "code", logo: "claudecode" },
+  { name: "Codex", note: "code", logo: "codex" },
+  { name: "Cognition", note: "autonomous", logo: "cognition" },
+  { name: "OpenAI", note: "models", logo: "openai" },
+  { name: "Mistral", note: "open", logo: "mistral" },
+  { name: "Grok", note: "bots", logo: "grok" },
+  { name: "ElevenLabs", note: "voice", logo: "elevenlabs" },
 ];
 
-export function About() {
+// Split for the scroll-lit read: each word lights up in turn as the paragraph
+// crosses the viewport (see .lit in globals.css).
+const split = (text: string) =>
+  text.split(" ").map((word, i, all) => ({
+    key: `${i}-${word}`,
+    text: word,
+    p: i / (all.length - 1),
+  }));
+
+export async function About() {
+  const t = await getDictionary();
+  const words = split(t.about.intro);
   return (
     <Reveal
       as="section"
@@ -40,13 +48,13 @@ export function About() {
             data-reveal
             className="display text-head text-ink"
           >
-            Quién soy
+            {t.about.title}
           </h2>
           <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-5 md:grid-cols-1">
             {facts.map((f) => (
-              <div key={f.label} data-reveal>
-                <dt className="text-muted text-small">{f.label}</dt>
-                <dd className="font-semibold text-small">{f.value}</dd>
+              <div key={f.label.es} data-reveal>
+                <dt className="text-muted text-small">{f.label[t.lang]}</dt>
+                <dd className="font-semibold text-small">{f.value[t.lang]}</dd>
               </div>
             ))}
           </dl>
@@ -55,33 +63,44 @@ export function About() {
         <div className="md:col-span-8 md:col-start-5 lg:col-span-7 lg:col-start-5">
           <p
             data-reveal
-            className="text-[1.1875rem] leading-[1.4] md:text-[clamp(1.375rem,1.75vw,1.75rem)]"
+            className="lit font-semibold text-[1.375rem] leading-[1.25] tracking-[-0.02em] md:text-[clamp(1.75rem,1.1rem+1.4vw,2.5rem)]"
           >
-            Cofundé Ai Labs para que las empresas de la región pasen de
-            experimentar con IA a operarla. Llevo más de seis años construyendo
-            software, y hoy soy Regional Lead de SpaceXAI Ambassadors y
-            Ambassador de Codex, Mistral y Cognition.
+            {words.map((w) => (
+              <Fragment key={w.key}>
+                <span
+                  className="lit-word"
+                  style={{ "--p": w.p } as CSSProperties}
+                >
+                  {w.text}
+                </span>{" "}
+              </Fragment>
+            ))}
           </p>
 
           <div data-reveal className="mt-16">
-            <h3 className="font-semibold text-small">Con IA</h3>
-            <ul className="mt-4 grid grid-cols-2 gap-1.5 sm:grid-cols-3">
-              {tools.map((t) => (
+            <h3 className="font-semibold text-small">{t.about.tools}</h3>
+            <ul className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
+              {tools.map((tool) => (
                 <li
-                  key={t.name}
+                  key={tool.name}
                   data-icon-hover
-                  className="group flex min-h-36 flex-col justify-between gap-6 bg-surface p-4"
+                  className="group flex min-h-36 flex-col justify-between gap-6 bg-surface p-5"
                 >
-                  <HalftoneLogo name={t.logo} className="size-16 text-accent" />
+                  <HalftoneLogo
+                    name={tool.logo}
+                    className="size-16 text-accent"
+                  />
                   <div>
-                    <p className="font-semibold text-small">{t.name}</p>
-                    <p className="text-muted text-small">{t.note}</p>
+                    <p className="font-semibold text-small">{tool.name}</p>
+                    <p className="text-muted text-small">
+                      {t.about.notes[tool.note]}
+                    </p>
                   </div>
                 </li>
               ))}
               <li
                 data-icon-hover
-                className="flex min-h-36 flex-col justify-between gap-6 bg-ink p-4 text-paper"
+                className="flex min-h-36 flex-col justify-between gap-6 bg-ink p-5 text-paper"
               >
                 <HalftoneIcon
                   shape="plus"
@@ -89,7 +108,7 @@ export function About() {
                   className="size-16 text-lilac"
                 />
                 <div>
-                  <p className="font-semibold text-small">Y más</p>
+                  <p className="font-semibold text-small">{t.about.more}</p>
                   <p className="text-small opacity-70">Supabase, evals, MCP</p>
                 </div>
               </li>
@@ -97,8 +116,8 @@ export function About() {
           </div>
 
           <p data-reveal className="mt-10 text-muted text-small">
-            <span className="font-semibold text-ink">Stack:</span> TypeScript
-            con Next.js y React, y .NET, sobre PostgreSQL en AWS y Azure.
+            <span className="font-semibold text-ink">{t.about.stackLabel}</span>{" "}
+            {t.about.stack}
           </p>
         </div>
       </div>

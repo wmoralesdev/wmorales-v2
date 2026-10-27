@@ -3,6 +3,7 @@
 import { ArrowUpRight01Icon, Calendar03Icon } from "@hugeicons/core-free-icons";
 import { useState } from "react";
 import { Icon } from "@/components/icon";
+import type { Dictionary } from "@/lib/i18n/dictionaries";
 
 /**
  * Google Calendar's booking page can't be restyled from outside, so it sits inside a
@@ -12,9 +13,11 @@ import { Icon } from "@/components/icon";
 export function BookingFrame({
   src,
   fallback,
+  t,
 }: {
   src: string;
   fallback: string;
+  t: Dictionary["book"]["frame"];
 }) {
   const [loaded, setLoaded] = useState(false);
 
@@ -23,9 +26,9 @@ export function BookingFrame({
       <div className="flex items-center justify-between gap-4 bg-ink px-4 py-3 text-paper sm:px-5">
         <span className="flex items-center gap-2.5 font-semibold text-small">
           <Icon icon={Calendar03Icon} size={18} />
-          Horarios disponibles
+          {t.available}
         </span>
-        <span className="text-paper/65 text-small">Hora local automática</span>
+        <span className="text-paper/65 text-small">{t.localTime}</span>
       </div>
       <div
         aria-hidden="true"
@@ -35,7 +38,7 @@ export function BookingFrame({
       <div className="relative h-[max(42rem,78svh)] bg-white md:h-[46rem]">
         <iframe
           src={src}
-          title="Calendario para agendar una llamada con Walter Morales"
+          title={t.iframe}
           onLoad={() => setLoaded(true)}
           className="absolute inset-0 size-full border-0"
           loading="eager"
@@ -52,7 +55,7 @@ export function BookingFrame({
             className="relative bg-paper px-3 py-1.5 font-semibold text-small"
             role="status"
           >
-            Cargando horarios…
+            {t.loading}
           </p>
         </div>
       </div>
@@ -63,7 +66,7 @@ export function BookingFrame({
         rel="noopener noreferrer"
         className="press mt-4 inline-flex items-center gap-1.5 self-start text-muted text-small hover:text-ink"
       >
-        ¿No carga? Abrí el calendario en una pestaña nueva
+        {t.fallback}
         <Icon icon={ArrowUpRight01Icon} size={16} />
       </a>
     </div>

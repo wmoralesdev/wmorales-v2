@@ -1,7 +1,17 @@
 import type { Metadata } from "next";
 import {
+  type Locale,
+  languages,
+  locales,
+  ogLocale,
+  path,
+  type RouteKey,
+} from "@/lib/i18n/config";
+import { dictionaries } from "@/lib/i18n/dictionaries";
+import {
   aiLabs,
   consultantFaqs,
+  type Faq,
   faqs,
   mediconecto,
   person,
@@ -9,78 +19,124 @@ import {
   services,
 } from "@/lib/site";
 
-export const TITLE = "Walter Morales";
-// Search snippet only. "Consultoría de IA" is the query we want to rank for; it
-// lives here and in the JSON-LD service nodes, never as Walter's visible title.
-export const DESCRIPTION =
-  "AI Engineer y Co-Founder de Ai Labs. Consultoría de IA para empresas de Latinoamérica y EE. UU.: estrategia, agentes y producto en producción.";
-
-export const KEYWORDS = [
-  "consultor de IA",
-  "consultor de inteligencia artificial",
-  "consultoría de IA",
-  "consultor de IA El Salvador",
-  "consultor de IA Latinoamérica",
-  "AI consultant",
-  "AI consultant El Salvador",
-  "Walter Morales",
-  "Ai Labs",
-  "Co-Founder de Ai Labs",
-  "AI Engineer El Salvador",
-  "agentes de IA",
-  "automatización con IA",
-  "estrategia de IA",
-  "talleres de Cursor",
-];
-
-export const baseMetadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: { default: TITLE, template: "%s · Walter Morales" },
-  description: DESCRIPTION,
-  keywords: KEYWORDS,
-  applicationName: "Walter Morales",
-  authors: [{ name: person.name, url: SITE_URL }],
-  creator: person.name,
-  publisher: person.name,
-  category: "technology",
-  alternates: { canonical: "/" },
-  openGraph: {
-    type: "profile",
-    locale: "es_SV",
-    alternateLocale: ["es_419", "en_US"],
-    url: SITE_URL,
-    siteName: "Walter Morales",
-    title: TITLE,
-    description: DESCRIPTION,
-    firstName: person.givenName,
-    lastName: person.familyName,
-    username: "wmoralesdev",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: TITLE,
-    description: DESCRIPTION,
-    creator: "@wmoralesdev",
-    site: "@wmoralesdev",
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
-    },
-  },
-  icons: {
-    icon: [{ url: "/wm.ico" }, { url: "/wm.svg", type: "image/svg+xml" }],
-    apple: "/wm.png",
-  },
-  formatDetection: { telephone: false, email: false, address: false },
+// Google ignores this tag; Bing and smaller engines still read it. The queries
+// that matter also appear in the title, description, FAQ or JSON-LD.
+const KEYWORDS: Record<Locale, string[]> = {
+  es: [
+    "Walter Morales",
+    "wmoralesdev",
+    "Ai Labs El Salvador",
+    "cofundador de Ai Labs",
+    "fundador de Ai Labs",
+    "ingeniero de IA El Salvador",
+    "AI Engineer El Salvador",
+    "ingeniero de software El Salvador",
+    "consultor de IA El Salvador",
+    "consultoría de inteligencia artificial",
+    "Cursor Ambassador El Salvador",
+    "embajador de Cursor",
+    "embajador de Codex",
+    "Mistral Ambassador",
+    "Cognition Ambassador",
+    "SpaceXAI Ambassadors",
+    "Cafe Cursor",
+    "talleres de Cursor",
+    "capacitación en IA para empresas",
+    "agentes de IA",
+  ],
+  en: [
+    "Walter Morales",
+    "wmoralesdev",
+    "Ai Labs El Salvador",
+    "Ai Labs co-founder",
+    "AI Engineer El Salvador",
+    "AI Engineer Central America",
+    "software engineer El Salvador",
+    "AI consultant El Salvador",
+    "AI consultant Latin America",
+    "Cursor Ambassador El Salvador",
+    "Codex Ambassador",
+    "Mistral Ambassador",
+    "Cognition Ambassador",
+    "SpaceXAI Ambassadors",
+    "Cafe Cursor",
+    "Cursor workshops",
+    "AI training for teams",
+    "AI agents",
+  ],
 };
 
+/** Canonical, hreflang and Open Graph URL for one page in one language. */
+export function pageMetadata(
+  lang: Locale,
+  key: RouteKey,
+  { title, description }: { title: string; description: string },
+): Metadata {
+  const url = path(lang, key);
+  return {
+    title,
+    description,
+    alternates: { canonical: url, languages: languages(key) },
+    openGraph: {
+      title,
+      description,
+      url,
+      locale: ogLocale[lang],
+      alternateLocale: locales
+        .filter((l) => l !== lang)
+        .map((l) => ogLocale[l]),
+    },
+    twitter: { title, description },
+  };
+}
+
+export function baseMetadata(lang: Locale): Metadata {
+  const t = dictionaries[lang];
+  const page = pageMetadata(lang, "home", t.meta);
+  return {
+    ...page,
+    metadataBase: new URL(SITE_URL),
+    title: { default: t.meta.title, template: "%s · Walter Morales" },
+    keywords: KEYWORDS[lang],
+    applicationName: "Walter Morales",
+    authors: [{ name: person.name, url: SITE_URL }],
+    creator: person.name,
+    publisher: person.name,
+    category: "technology",
+    openGraph: {
+      ...page.openGraph,
+      type: "profile",
+      siteName: "Walter Morales",
+      firstName: person.givenName,
+      lastName: person.familyName,
+      username: "wmoralesdev",
+    },
+    twitter: {
+      ...page.twitter,
+      card: "summary_large_image",
+      creator: "@wmoralesdev",
+      site: "@wmoralesdev",
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
+    icons: {
+      icon: [{ url: "/wm.ico" }, { url: "/wm.svg", type: "image/svg+xml" }],
+      apple: "/wm.png",
+    },
+    formatDetection: { telephone: false, email: false, address: false },
+  };
+}
+
+// Entity ids are shared by both languages: it's the same person and company.
 const ids = {
   person: `${SITE_URL}/#walter-morales`,
   org: `${SITE_URL}/#ai-labs`,
@@ -89,217 +145,236 @@ const ids = {
   mediconecto: `${SITE_URL}/#mediconecto`,
 };
 
-const personNode = {
-  "@type": "Person",
-  "@id": ids.person,
-  name: person.name,
-  givenName: person.givenName,
-  familyName: person.familyName,
-  alternateName: ["wmoralesdev"],
-  jobTitle: person.roles,
-  description: person.summary,
-  url: SITE_URL,
-  image: `${SITE_URL}${person.image}`,
-  email: `mailto:${person.email}`,
-  founder: [{ "@id": ids.org }, { "@id": ids.mediconecto }],
-  worksFor: { "@id": ids.org },
-  affiliation: { "@id": ids.org },
-  memberOf: [
-    ["SpaceXAI Ambassadors", "SpaceXAI", "Regional Lead"],
-    ["Codex Ambassadors", "OpenAI", "Ambassador"],
-    ["Mistral Ambassadors", "Mistral AI", "Ambassador"],
-    ["Cognition Ambassadors", "Cognition", "Ambassador"],
-    ["Cursor Ambassadors", "Cursor", "Ambassador"],
-  ].map(([programName, org, roleName]) => ({
-    "@type": "ProgramMembership",
-    programName,
-    roleName,
-    hostingOrganization: { "@type": "Organization", name: org },
-  })),
-  alumniOf: { "@type": "CollegeOrUniversity", name: person.education },
-  homeLocation: {
-    "@type": "Place",
-    address: {
-      "@type": "PostalAddress",
-      addressLocality: person.city,
-      addressCountry: person.countryCode,
-    },
-  },
-  nationality: { "@type": "Country", name: person.country },
-  knowsLanguage: ["es", "en"],
-  knowsAbout: [
-    "Inteligencia artificial",
-    "Consultoría de IA",
-    "Artificial intelligence consulting",
-    "Large language models",
-    "AI agents",
-    "Estrategia de IA",
-    "Cursor",
-    "Next.js",
-    "TypeScript",
-    ".NET",
-    "AWS",
-    "Azure",
-  ],
-  hasOccupation: {
-    "@type": "Occupation",
-    name: "AI Engineer",
-    occupationLocation: { "@type": "Country", name: person.country },
-    skills: services.map((s) => s.name).join(", "),
-  },
-  sameAs: Object.values(person.social),
-};
+const abs = (lang: Locale, key: RouteKey) => `${SITE_URL}${path(lang, key)}`;
 
-const orgNode = {
-  "@type": "Organization",
-  "@id": ids.org,
-  name: aiLabs.name,
-  alternateName: [aiLabs.wordmark, "AI Labs", "Ai Labs El Salvador"],
-  description: aiLabs.description,
-  url: aiLabs.url,
-  sameAs: Object.values(aiLabs.social),
-  logo: `${SITE_URL}${aiLabs.logo}`,
-  founder: { "@id": ids.person },
-  foundingLocation: { "@type": "Place", name: person.location },
-  areaServed: ["Latinoamérica", "Estados Unidos"],
-};
-
-const mediconectoNode = {
-  "@type": "Organization",
-  "@id": ids.mediconecto,
-  name: mediconecto.name,
-  url: mediconecto.url,
-  description: mediconecto.line,
-  founder: { "@id": ids.person },
-  parentOrganization: { "@id": ids.org },
-  areaServed: { "@type": "Country", name: "El Salvador" },
-};
-
-const serviceNode = {
-  "@type": "ProfessionalService",
-  "@id": ids.service,
-  name: "Ai Labs · Consultoría de IA",
-  description: DESCRIPTION,
-  url: SITE_URL,
-  image: `${SITE_URL}${person.image}`,
-  email: person.email,
-  provider: { "@id": ids.person },
-  parentOrganization: { "@id": ids.org },
-  address: {
-    "@type": "PostalAddress",
-    addressLocality: person.city,
-    addressCountry: person.countryCode,
-  },
-  areaServed: [
+function regions(lang: Locale) {
+  const [latam, us] = dictionaries[lang].schema.regions;
+  return [
     { "@type": "Country", name: "El Salvador" },
-    { "@type": "Place", name: "Latinoamérica" },
-    { "@type": "Country", name: "Estados Unidos" },
-  ],
-  availableLanguage: ["es", "en"],
-  potentialAction: {
-    "@type": "ReserveAction",
-    target: `${SITE_URL}/book`,
-    name: "Agendar una llamada",
-  },
-  hasOfferCatalog: {
+    { "@type": "Place", name: latam },
+    { "@type": "Country", name: us },
+  ];
+}
+
+function offerCatalog(lang: Locale) {
+  return {
     "@type": "OfferCatalog",
-    name: "Servicios de consultoría de IA",
+    name: dictionaries[lang].schema.catalog,
     itemListElement: services.map((s) => ({
       "@type": "Offer",
       itemOffered: {
         "@type": "Service",
-        name: s.name,
-        description: s.description,
+        name: s.name[lang],
+        description: s.description[lang],
       },
     })),
-  },
-};
+  };
+}
 
-const websiteNode = {
-  "@type": "WebSite",
-  "@id": ids.website,
-  url: SITE_URL,
-  name: "Walter Morales",
-  description: DESCRIPTION,
-  inLanguage: "es",
-  publisher: { "@id": ids.person },
-};
+function faqPage(id: string, lang: Locale, list: Faq[]) {
+  return {
+    "@type": "FAQPage",
+    "@id": id,
+    inLanguage: lang,
+    mainEntity: list.map((f) => ({
+      "@type": "Question",
+      name: f.q,
+      acceptedAnswer: { "@type": "Answer", text: f.a },
+    })),
+  };
+}
 
-export function homeJsonLd() {
+function breadcrumbs(lang: Locale, key: RouteKey, name: string) {
+  return {
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      {
+        "@type": "ListItem",
+        position: 1,
+        name: dictionaries[lang].meta.home,
+        item: abs(lang, "home"),
+      },
+      { "@type": "ListItem", position: 2, name, item: abs(lang, key) },
+    ],
+  };
+}
+
+function personNode(lang: Locale) {
+  return {
+    "@type": "Person",
+    "@id": ids.person,
+    name: person.name,
+    givenName: person.givenName,
+    familyName: person.familyName,
+    alternateName: ["wmoralesdev", "Walter Morales IA"],
+    jobTitle: person.roles[lang],
+    description: person.summary[lang],
+    url: abs(lang, "home"),
+    image: `${SITE_URL}${person.image}`,
+    email: `mailto:${person.email}`,
+    founder: [{ "@id": ids.org }, { "@id": ids.mediconecto }],
+    worksFor: { "@id": ids.org },
+    affiliation: { "@id": ids.org },
+    memberOf: [
+      ["SpaceXAI Ambassadors", "SpaceXAI", "Regional Lead"],
+      ["Codex Ambassadors", "OpenAI", "Ambassador"],
+      ["Mistral Ambassadors", "Mistral AI", "Ambassador"],
+      ["Cognition Ambassadors", "Cognition", "Ambassador"],
+      ["Cursor Ambassadors", "Cursor", "Ambassador"],
+    ].map(([programName, org, roleName]) => ({
+      "@type": "ProgramMembership",
+      programName,
+      roleName,
+      hostingOrganization: { "@type": "Organization", name: org },
+    })),
+    alumniOf: { "@type": "CollegeOrUniversity", name: person.education },
+    homeLocation: {
+      "@type": "Place",
+      address: {
+        "@type": "PostalAddress",
+        addressLocality: person.city,
+        addressCountry: person.countryCode,
+      },
+    },
+    nationality: { "@type": "Country", name: person.country },
+    knowsLanguage: ["es", "en"],
+    // Both languages on purpose: each is a query someone types.
+    knowsAbout: [
+      "Inteligencia artificial",
+      "Artificial intelligence",
+      "Consultoría de IA",
+      "AI consulting",
+      "Large language models",
+      "AI agents",
+      "Estrategia de IA",
+      "Ingeniería de software",
+      "Software engineering",
+      "Coding agents",
+      "Cursor",
+      "Codex",
+      "Mistral AI",
+      "Devin",
+      "Next.js",
+      "TypeScript",
+      ".NET",
+      "AWS",
+      "Azure",
+    ],
+    hasOccupation: [
+      {
+        "@type": "Occupation",
+        name: "AI Engineer",
+        alternateName: [
+          "Ingeniero de IA",
+          "Ingeniero de inteligencia artificial",
+        ],
+        occupationLocation: { "@type": "Country", name: person.country },
+        skills: services.map((s) => s.name[lang]).join(", "),
+      },
+      {
+        "@type": "Occupation",
+        name: "Software Engineer",
+        alternateName: "Ingeniero de software",
+        occupationLocation: { "@type": "Country", name: person.country },
+        skills: "TypeScript, Next.js, React, .NET, PostgreSQL, AWS, Azure",
+      },
+    ],
+    sameAs: Object.values(person.social),
+  };
+}
+
+function orgNode(lang: Locale) {
+  return {
+    "@type": "Organization",
+    "@id": ids.org,
+    name: aiLabs.name,
+    alternateName: [
+      aiLabs.wordmark,
+      "AI Labs",
+      "Ai Labs El Salvador",
+      "Ai Labs SV",
+    ],
+    description: aiLabs.description[lang],
+    url: aiLabs.url,
+    sameAs: Object.values(aiLabs.social),
+    logo: `${SITE_URL}${aiLabs.logo}`,
+    founder: { "@id": ids.person },
+    foundingLocation: { "@type": "Place", name: person.location },
+    areaServed: dictionaries[lang].schema.regions,
+  };
+}
+
+export function homeJsonLd(lang: Locale) {
+  const t = dictionaries[lang];
+  const url = abs(lang, "home");
   return {
     "@context": "https://schema.org",
     "@graph": [
-      personNode,
-      orgNode,
-      mediconectoNode,
-      serviceNode,
-      websiteNode,
+      personNode(lang),
+      orgNode(lang),
+      {
+        "@type": "Organization",
+        "@id": ids.mediconecto,
+        name: mediconecto.name,
+        url: mediconecto.url,
+        description: mediconecto.line[lang],
+        founder: { "@id": ids.person },
+        parentOrganization: { "@id": ids.org },
+        areaServed: { "@type": "Country", name: "El Salvador" },
+      },
+      {
+        "@type": "ProfessionalService",
+        "@id": ids.service,
+        name: `Ai Labs · ${t.consultant.serviceName}`,
+        description: t.meta.description,
+        url,
+        image: `${SITE_URL}${person.image}`,
+        email: person.email,
+        provider: { "@id": ids.person },
+        parentOrganization: { "@id": ids.org },
+        address: {
+          "@type": "PostalAddress",
+          addressLocality: person.city,
+          addressCountry: person.countryCode,
+        },
+        areaServed: regions(lang),
+        availableLanguage: ["es", "en"],
+        potentialAction: {
+          "@type": "ReserveAction",
+          target: abs(lang, "book"),
+          name: t.schema.reserve,
+        },
+        hasOfferCatalog: offerCatalog(lang),
+      },
+      {
+        "@type": "WebSite",
+        "@id": ids.website,
+        url: SITE_URL,
+        name: "Walter Morales",
+        description: t.meta.description,
+        inLanguage: ["es", "en"],
+        publisher: { "@id": ids.person },
+      },
       {
         "@type": "ProfilePage",
-        "@id": `${SITE_URL}/#profile`,
-        url: SITE_URL,
-        name: TITLE,
-        inLanguage: "es",
+        "@id": `${url}#profile`,
+        url,
+        name: t.meta.title,
+        inLanguage: lang,
         isPartOf: { "@id": ids.website },
         about: { "@id": ids.person },
         mainEntity: { "@id": ids.person },
         primaryImageOfPage: `${SITE_URL}${person.image}`,
         dateModified: new Date().toISOString().slice(0, 10),
       },
-      {
-        "@type": "FAQPage",
-        "@id": `${SITE_URL}/#faq`,
-        inLanguage: "es",
-        mainEntity: faqs.map((f) => ({
-          "@type": "Question",
-          name: f.q,
-          acceptedAnswer: { "@type": "Answer", text: f.a },
-        })),
-      },
+      faqPage(`${url}#faq`, lang, faqs[lang]),
     ],
   };
 }
 
-export function bookJsonLd() {
-  return {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "WebPage",
-        "@id": `${SITE_URL}/book#page`,
-        url: `${SITE_URL}/book`,
-        name: "Agendá una llamada con Walter Morales",
-        inLanguage: "es",
-        isPartOf: { "@id": ids.website },
-        about: { "@id": ids.service },
-        potentialAction: {
-          "@type": "ReserveAction",
-          target: `${SITE_URL}/book`,
-        },
-      },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: "Agendar",
-            item: `${SITE_URL}/book`,
-          },
-        ],
-      },
-    ],
-  };
-}
-
-export const CONSULTANT_PATH = "/consultor-de-ia";
-export const CONSULTANT_TITLE = "Consultor de IA en El Salvador";
-export const CONSULTANT_DESCRIPTION =
-  "Walter Morales, consultor de IA en El Salvador: Regional Lead de SpaceXAI Ambassadors y Ambassador de Codex, Mistral y Cognition. Estrategia, agentes y capacitación en IA para empresas.";
-
-export function consultantJsonLd() {
-  const url = `${SITE_URL}${CONSULTANT_PATH}`;
+export function bookJsonLd(lang: Locale) {
+  const t = dictionaries[lang];
+  const url = abs(lang, "book");
   return {
     "@context": "https://schema.org",
     "@graph": [
@@ -307,9 +382,30 @@ export function consultantJsonLd() {
         "@type": "WebPage",
         "@id": `${url}#page`,
         url,
-        name: `${CONSULTANT_TITLE} · Walter Morales`,
-        description: CONSULTANT_DESCRIPTION,
-        inLanguage: "es",
+        name: t.schema.bookPage,
+        inLanguage: lang,
+        isPartOf: { "@id": ids.website },
+        about: { "@id": ids.service },
+        potentialAction: { "@type": "ReserveAction", target: url },
+      },
+      breadcrumbs(lang, "book", t.schema.bookCrumb),
+    ],
+  };
+}
+
+export function consultantJsonLd(lang: Locale) {
+  const t = dictionaries[lang];
+  const url = abs(lang, "consultant");
+  return {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebPage",
+        "@id": `${url}#page`,
+        url,
+        name: `${t.consultant.title} · Walter Morales`,
+        description: t.consultant.description,
+        inLanguage: lang,
         isPartOf: { "@id": ids.website },
         about: { "@id": `${url}#service` },
         mainEntity: { "@id": `${url}#service` },
@@ -318,61 +414,26 @@ export function consultantJsonLd() {
       {
         "@type": "Service",
         "@id": `${url}#service`,
-        name: "Consultoría de IA",
-        serviceType: "Consultor de inteligencia artificial",
-        description: CONSULTANT_DESCRIPTION,
+        name: t.consultant.serviceName,
+        serviceType: t.consultant.serviceType,
+        description: t.consultant.description,
         url,
         provider: { "@id": ids.person },
         brand: { "@id": ids.org },
-        areaServed: [
-          { "@type": "Country", name: "El Salvador" },
-          { "@type": "Place", name: "Latinoamérica" },
-          { "@type": "Country", name: "Estados Unidos" },
-        ],
+        areaServed: regions(lang),
         availableLanguage: ["es", "en"],
-        hasOfferCatalog: {
-          "@type": "OfferCatalog",
-          name: "Servicios de consultoría de IA",
-          itemListElement: services.map((s) => ({
-            "@type": "Offer",
-            itemOffered: {
-              "@type": "Service",
-              name: s.name,
-              description: s.description,
-            },
-          })),
-        },
+        hasOfferCatalog: offerCatalog(lang),
         potentialAction: {
           "@type": "ReserveAction",
-          target: `${SITE_URL}/book`,
-          name: "Agendar una llamada",
+          target: abs(lang, "book"),
+          name: t.schema.reserve,
         },
       },
       // Repeated here so the page stands on its own when crawled in isolation.
-      personNode,
-      orgNode,
-      {
-        "@type": "FAQPage",
-        "@id": `${url}#faq`,
-        inLanguage: "es",
-        mainEntity: consultantFaqs.map((f) => ({
-          "@type": "Question",
-          name: f.q,
-          acceptedAnswer: { "@type": "Answer", text: f.a },
-        })),
-      },
-      {
-        "@type": "BreadcrumbList",
-        itemListElement: [
-          { "@type": "ListItem", position: 1, name: "Inicio", item: SITE_URL },
-          {
-            "@type": "ListItem",
-            position: 2,
-            name: CONSULTANT_TITLE,
-            item: url,
-          },
-        ],
-      },
+      personNode(lang),
+      orgNode(lang),
+      faqPage(`${url}#faq`, lang, consultantFaqs[lang]),
+      breadcrumbs(lang, "consultant", t.consultant.title),
     ],
   };
 }

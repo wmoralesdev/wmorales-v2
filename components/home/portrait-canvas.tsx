@@ -16,8 +16,11 @@ export function PortraitCanvas({
   className = "",
   light = false,
   decorative = false,
+  label,
 }: {
   className?: string;
+  /** Accessible name; not needed for a decorative twin. */
+  label?: string;
   light?: boolean;
   /** A twin print (e.g. the copy below the hero waterline); hidden from assistive tech. */
   decorative?: boolean;
@@ -198,11 +201,7 @@ export function PortraitCanvas({
       ref={canvasRef}
       role={decorative ? undefined : "img"}
       aria-hidden={decorative || undefined}
-      aria-label={
-        decorative
-          ? undefined
-          : "Retrato de Walter Morales impreso en puntos de semitono"
-      }
+      aria-label={decorative ? undefined : label}
       className={`block w-full cursor-crosshair touch-manipulation ${className}`}
     />
   );

@@ -1,7 +1,9 @@
 import { HalftoneIcon } from "@/components/halftone-icon";
 import { HalftonePhoto } from "@/components/halftone-photo";
 import { Reveal } from "@/components/motion/reveal";
-import { type CommunityEvent, events, photos } from "@/lib/site";
+import type { Localized } from "@/lib/i18n/config";
+import { getDictionary } from "@/lib/i18n/server";
+import { type CommunityEvent, events, photo, stats } from "@/lib/site";
 
 type Tile =
   | { type: "heading"; tone: string }
@@ -9,11 +11,18 @@ type Tile =
       type: "stat";
       value: number;
       suffix: string;
-      caption: string;
+      caption: Localized<string>;
       tone: string;
     }
   | { type: "event"; event: CommunityEvent; tone: string }
   | { type: "icon"; tone: string };
+
+// Stat tiles read the same numbers the rest of the site shows.
+const stat = (value: number) => {
+  const found = stats.find((s) => s.value === value);
+  if (!found) throw new Error(`Unknown stat: ${value}`);
+  return { type: "stat" as const, ...found, caption: found.label };
+};
 
 const event = (name: string) => {
   const found = events.find((e) => e.name === name);
@@ -29,26 +38,14 @@ const tiles: Tile[] = [
     event: event("Cursor Hackathon II"),
     tone: "bg-lilac text-ink",
   },
-  {
-    type: "stat",
-    value: 1,
-    suffix: "K+",
-    caption: "builders en la comunidad",
-    tone: "bg-accent text-snow",
-  },
+  { ...stat(1), tone: "bg-accent text-snow" },
   {
     type: "event",
     event: event("Cafe Cursor III"),
     tone: "bg-surface text-ink",
   },
   { type: "event", event: event("Cursor Meetup"), tone: "bg-surface text-ink" },
-  {
-    type: "stat",
-    value: 3,
-    suffix: "K+",
-    caption: "asistentes diferentes",
-    tone: "bg-lilac text-ink",
-  },
+  { ...stat(3), tone: "bg-lilac text-ink" },
   {
     type: "event",
     event: event("Cursor Workshop"),
@@ -61,13 +58,7 @@ const tiles: Tile[] = [
     event: event("Cursor Hackathon"),
     tone: "bg-surface text-ink",
   },
-  {
-    type: "stat",
-    value: 75,
-    suffix: "+",
-    caption: "eventos realizados",
-    tone: "bg-accent text-snow",
-  },
+  { ...stat(75), tone: "bg-accent text-snow" },
   {
     type: "event",
     event: event("Cafe Cursor II"),
@@ -80,63 +71,64 @@ const big =
 const caption =
   "absolute inset-x-3 bottom-3 text-center text-small leading-tight sm:bottom-[18px]";
 
-export function Community() {
+export async function Community() {
+  const t = await getDictionary();
   return (
     <Reveal
       as="section"
       id="comunidad"
       aria-labelledby="comunidad-title"
-      className="px-2 pb-2 md:pb-2"
+      className="px-2 pb-2 sm:px-3 sm:pb-3"
     >
-      <ul className="grid grid-cols-2 gap-1.5 sm:grid-cols-4 sm:gap-2">
-        {tiles.map((t, i) => (
+      <ul className="grid grid-cols-2 gap-2 sm:grid-cols-4 sm:gap-3">
+        {tiles.map((tile, i) => (
           <li
-            key={t.type === "event" ? t.event.name : `${t.type}-${i}`}
-            data-reveal={t.type === "event" ? undefined : ""}
-            className={`relative aspect-square overflow-clip ${t.tone}`}
+            key={tile.type === "event" ? tile.event.name : `${tile.type}-${i}`}
+            data-reveal={tile.type === "event" ? undefined : ""}
+            className={`relative aspect-square overflow-clip ${tile.tone}`}
           >
-            {t.type === "event" ? (
+            {tile.type === "event" ? (
               <a
-                href={t.event.href}
+                href={tile.event.href}
                 target="_blank"
                 rel="noreferrer"
-                aria-label={`${t.event.name}, ${t.event.year}: ver álbum de fotos`}
+                aria-label={t.community.album(tile.event.name, tile.event.year)}
                 className="group/event flex size-full flex-col"
               >
                 <div className="relative flex-1">
                   <HalftonePhoto
-                    photo={photos[t.event.photo]}
-                    tone={t.tone}
+                    photo={photo(tile.event.photo, t.lang)}
+                    tone={tile.tone}
                     fill
                     sizes="(min-width: 640px) 25vw, 50vw"
                   />
                 </div>
                 <p className="flex items-baseline justify-between gap-2 px-3 py-2.5 text-small leading-tight">
                   <span className="font-semibold group-hover/event:underline">
-                    {t.event.name}
+                    {tile.event.name}
                   </span>
                   <span className="tabular-nums opacity-70">
-                    {t.event.year}
+                    {tile.event.year}
                   </span>
                 </p>
               </a>
-            ) : t.type === "heading" ? (
+            ) : tile.type === "heading" ? (
               <div className="grid size-full place-items-center">
                 <h2
                   id="comunidad-title"
                   className="display text-[7vw] leading-none sm:text-[clamp(1.75rem,3.3vw,3.75rem)]"
                 >
-                  Comunidad
+                  {t.community.title}
                 </h2>
                 <span className={caption}>Cursor El Salvador</span>
               </div>
-            ) : t.type === "stat" ? (
+            ) : tile.type === "stat" ? (
               <div className="grid size-full place-items-center">
                 <p className={big}>
-                  <span data-count={t.value}>{t.value}</span>
-                  {t.suffix}
+                  <span data-count={tile.value}>{tile.value}</span>
+                  {tile.suffix}
                 </p>
-                <span className={caption}>{t.caption}</span>
+                <span className={caption}>{tile.caption[t.lang]}</span>
               </div>
             ) : (
               <div className="grid size-full place-items-center">

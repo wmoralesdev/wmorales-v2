@@ -8,64 +8,52 @@ import { Reveal } from "@/components/motion/reveal";
 import { SiteFooter } from "@/components/site-footer";
 import { SiteHeader } from "@/components/site-header";
 import type { ShapeName } from "@/lib/halftone-shapes";
-import { bookJsonLd } from "@/lib/seo";
+import { path } from "@/lib/i18n/config";
+import { getDictionary, getLocale } from "@/lib/i18n/server";
+import { bookJsonLd, pageMetadata } from "@/lib/seo";
 import { BOOKING_EMBED_URL, BOOKING_URL, person } from "@/lib/site";
 
-const title = "Agendar una llamada";
-const description =
-  "Reservá una llamada con Walter Morales, AI Engineer y Co-Founder de Ai Labs. Contame tu caso y salí con un diagnóstico inicial y próximos pasos claros.";
+export async function generateMetadata(): Promise<Metadata> {
+  const lang = await getLocale();
+  const { book } = await getDictionary();
+  const meta = pageMetadata(lang, "book", book);
+  return { ...meta, openGraph: { ...meta.openGraph, type: "website" } };
+}
 
-export const metadata: Metadata = {
-  title,
-  description,
-  alternates: { canonical: "/book" },
-  openGraph: { title, description, url: "/book", type: "website" },
-  twitter: { title, description },
-};
+const icons: ShapeName[] = ["calendar", "chat", "arrow"];
 
-const steps: { icon: ShapeName; title: string; body: string }[] = [
-  {
-    icon: "calendar",
-    title: "Elegí un horario",
-    body: "El calendario muestra mi disponibilidad en tu zona horaria. Recibís la invitación por correo.",
-  },
-  {
-    icon: "chat",
-    title: "Contame tu contexto",
-    body: "Qué querés resolver con IA, qué intentaron antes y qué datos o herramientas ya tienen.",
-  },
-  {
-    icon: "arrow",
-    title: "Salí con un plan",
-    body: "Un diagnóstico inicial y próximos pasos. Si hay fit, te preparo una propuesta.",
-  },
-];
-
-export default function BookPage() {
+export default async function BookPage() {
+  const t = await getDictionary();
+  const steps = t.book.steps.map((s, i) => ({ ...s, icon: icons[i] }));
+  // hl puts Google's calendar UI in the page's language.
+  const embed = new URL(BOOKING_EMBED_URL);
+  embed.searchParams.set("hl", t.lang);
   return (
     <>
-      <JsonLd data={bookJsonLd()} />
+      <JsonLd data={bookJsonLd(t.lang)} />
       <main
         id="contenido"
         className="relative z-10 min-h-svh bg-paper pb-24 md:pb-32"
       >
-        <SiteHeader action={{ href: "/", label: "Volver al inicio" }} />
+        <SiteHeader
+          home={path(t.lang, "home")}
+          action={{ href: path(t.lang, "home"), label: t.backHome, back: true }}
+        />
         <Reveal className="grid gap-12 px-4 pt-12 sm:px-7 md:grid-cols-12 md:grid-rows-[auto_1fr] md:gap-x-8 md:pt-20">
           <div className="md:col-span-5 md:row-start-1 lg:col-span-4">
             <h1 className="display text-[clamp(2.75rem,12vw,4.25rem)] md:text-[clamp(3rem,5.4vw,5.5rem)]">
               <span className="mask-line">
-                <span>Agendá una</span>
+                <span>{t.book.heading[0]}</span>
               </span>
               <span
                 className="mask-line"
                 style={{ "--i": 1 } as React.CSSProperties}
               >
-                <span>llamada</span>
+                <span>{t.book.heading[1]}</span>
               </span>
             </h1>
             <p className="fade-in-late mt-6 max-w-[30rem] text-lead leading-snug">
-              Hablemos de dónde la IA puede mover números en tu empresa. Sin
-              compromiso y en español o inglés.
+              {t.book.lead}
             </p>
           </div>
 
@@ -73,7 +61,11 @@ export default function BookPage() {
             data-reveal
             className="md:col-span-7 md:col-start-6 md:row-span-2 md:row-start-1 lg:col-span-8 lg:col-start-5"
           >
-            <BookingFrame src={BOOKING_EMBED_URL} fallback={BOOKING_URL} />
+            <BookingFrame
+              src={embed.toString()}
+              fallback={BOOKING_URL}
+              t={t.book.frame}
+            />
           </div>
 
           <div className="md:col-span-5 md:row-start-2 lg:col-span-4">
@@ -100,7 +92,7 @@ export default function BookPage() {
             </ol>
 
             <p data-reveal className="mt-12 text-body">
-              ¿Preferís escribir?{" "}
+              {t.book.write}{" "}
               <a
                 href={`mailto:${person.email}`}
                 className="link-underline inline-flex items-center gap-1.5 font-semibold"
@@ -112,7 +104,7 @@ export default function BookPage() {
           </div>
         </Reveal>
       </main>
-      <SiteFooter />
+      <SiteFooter route="book" />
     </>
   );
 }
