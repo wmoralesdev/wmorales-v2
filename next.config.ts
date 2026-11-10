@@ -24,6 +24,16 @@ const nextConfig: NextConfig = {
   // The previous site's sections no longer exist; keep their link equity on the home page.
   async redirects() {
     return [
+      // intro.wmorales.dev is the address Walter says out loud: every path on it
+      // lands on the intro card. The subdomain must also be added to the Vercel
+      // project (Settings → Domains) for requests to reach this app at all.
+      // Temporary, so the target can change without browsers caching the old one.
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "intro.wmorales.dev" }],
+        destination: "https://wmorales.dev/intro",
+        permanent: false,
+      },
       ...Object.entries(shortLinks).map(([code, destination]) => ({
         source: `/r/${code}`,
         destination,

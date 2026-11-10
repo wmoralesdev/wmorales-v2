@@ -18,6 +18,7 @@ export default function manifest(): MetadataRoute.Manifest {
     shortcuts: [
       { name: "Agendar llamada", url: "/book" },
       { name: "Tarjeta de presentación", url: "/intro" },
+      { name: "Mostrar mi QR", url: "/intro#qr" },
     ],
   };
 }

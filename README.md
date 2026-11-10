@@ -8,7 +8,9 @@ Landing de Walter Morales, consultor de IA y fundador de Ai Labs. Next.js 16 (Ap
 | -------- | --------------------------------------------------------------------------- |
 | `/`      | Home: hero waterline, servicios, Ai Labs, trayectoria, comunidad, FAQ y CTA |
 | `/book`  | Calendario de Google embebido dentro de un marco con el estilo del sitio    |
-| `/intro` | Tarjeta de presentación con QR (sitio, agenda o vCard). `noindex`           |
+| `/intro` | Tarjeta para eventos: contacto, agenda, redes, compartir y QR. `noindex`    |
+
+`/intro#qr` abre directo el QR a pantalla completa (para tenerlo en la pantalla de inicio del teléfono). `/vcard/walter-morales.vcf` (y `-en.vcf`) es el contacto con foto que abre "Guardar contacto". `intro.wmorales.dev` redirige a `/intro` desde `next.config.ts`; el subdominio tiene que estar agregado al proyecto en Vercel.
 
 Las rutas del sitio anterior (`/blog`, `/slides`, etc.) redirigen con 308 a `/`. Los short links impresos en QR (`/r/<code>`) viven en `shortLinks` dentro de `next.config.ts`; códigos desconocidos dan 404.
 
@@ -20,7 +22,7 @@ pnpm dev          # http://localhost:3000
 pnpm build        # todo se prerenderiza como estático
 pnpm lint         # biome
 pnpm typecheck
-pnpm halftone     # regenera public/photos, public/halftone y lib/portrait-dots.ts
+pnpm halftone     # regenera public/photos, public/halftone, lib/portrait-dots.ts y lib/vcard-photo.ts
 ```
 
 ## Contenido

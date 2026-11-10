@@ -67,7 +67,7 @@ const tiles: Tile[] = [
 ];
 
 const big =
-  "display text-[15vw] leading-none sm:text-[clamp(2.75rem,6.4vw,7rem)]";
+  "display text-[13vw] leading-none sm:text-[clamp(2.5rem,5.2vw,5.5rem)]";
 const caption =
   "absolute inset-x-3 bottom-3 text-center text-small leading-tight sm:bottom-[18px]";
 
@@ -116,7 +116,7 @@ export async function Community() {
               <div className="grid size-full place-items-center">
                 <h2
                   id="comunidad-title"
-                  className="display text-[7vw] leading-none sm:text-[clamp(1.75rem,3.3vw,3.75rem)]"
+                  className="display text-[6.5vw] leading-none sm:text-[clamp(1.5rem,2.8vw,3rem)]"
                 >
                   {t.community.title}
                 </h2>

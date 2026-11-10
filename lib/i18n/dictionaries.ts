@@ -34,7 +34,7 @@ const es = {
     // Short on purpose: the facts column already lists the ambassador programs.
     intro:
       "Cofundé Ai Labs para que las empresas pasen de probar la IA a operarla. Llevo más de seis años construyendo software.",
-    tools: "Con IA",
+    tools: "Herramientas de IA",
     notes: {
       code: "Agentes de código",
       autonomous: "Agentes autónomos",
@@ -51,7 +51,12 @@ const es = {
 
   services: { title: "Qué hago" },
 
-  experience: { title: "Experiencia", now: "Ahora", before: "Antes" },
+  experience: {
+    title: "Experiencia",
+    now: "Ahora",
+    ambassador: "Embajador",
+    before: "Antes",
+  },
 
   community: {
     title: "Comunidad",
@@ -167,10 +172,10 @@ const es = {
       "Walter Morales: Ai Labs, MediConecto, programas de embajador y todas las formas de contacto. Guardá su contacto o agendá una llamada.",
     ogNote: "Ai Labs · MediConecto · Embajador",
     qr: {
-      site: "Sitio",
-      book: "Agendar",
+      card: "Tarjeta",
       contact: "Contacto",
-      contactCaption: "Guarda mi contacto en tu teléfono",
+      book: "Agendar",
+      contactCaption: "Guardá mi contacto en tu teléfono",
     },
     headline: "AI Engineer y Co-Founder de Ai Labs.",
     portrait: "Retrato de Walter Morales impreso en puntos de semitono",
@@ -178,17 +183,29 @@ const es = {
       "Llevo la inteligencia artificial a producción en empresas de Latinoamérica, y organizo una comunidad de builders en El Salvador.",
     bookCall: "Agendar una llamada",
     save: "Guardar contacto",
-    share: "Compartir",
+    // The action bar on narrow phones.
+    saveShort: "Guardar",
+    share: "Compartir tarjeta",
+    // What a share sheet sends along with the link. Third person: whoever shares
+    // it is introducing Walter to someone else.
+    shareText:
+      "Te presento a Walter Morales, AI Engineer y Co-Founder de Ai Labs.",
+    copyLink: "Copiar link",
     copied: "Link copiado",
+    showQr: "Mostrar QR",
+    close: "Cerrar",
+    connect: "Redes y contacto",
     now: "Ahora",
     ambassador: "Embajador",
     developer: "Como developer",
     devStats: ["años en software", "builders", "eventos"],
     github: "Ver código en GitHub",
-    scan: "Escaneá",
+    scan: "Escaneá con tu cámara",
     qrTabs: "Qué abre el código",
     qrCode: "Código QR",
-    links: "Links",
+    pass: "Compartir",
+    passBody:
+      "¿Conocés a alguien que debería hablar conmigo? Mandale esta tarjeta.",
     site: "Sitio",
     email: "Correo",
   },
@@ -234,7 +251,7 @@ const en: Dictionary = {
     title: "About me",
     intro:
       "I co-founded Ai Labs so companies can stop experimenting with AI and start running it. I've been building software for more than six years.",
-    tools: "With AI",
+    tools: "AI tools",
     notes: {
       code: "Coding agents",
       autonomous: "Autonomous agents",
@@ -251,7 +268,12 @@ const en: Dictionary = {
 
   services: { title: "What I do" },
 
-  experience: { title: "Experience", now: "Now", before: "Before" },
+  experience: {
+    title: "Experience",
+    now: "Now",
+    ambassador: "Ambassador",
+    before: "Before",
+  },
 
   community: {
     title: "Community",
@@ -366,9 +388,9 @@ const en: Dictionary = {
       "Walter Morales: Ai Labs, MediConecto, ambassador programs and every way to get in touch. Save his contact or book a call.",
     ogNote: "Ai Labs · MediConecto · Ambassador",
     qr: {
-      site: "Site",
-      book: "Book",
+      card: "Card",
       contact: "Contact",
+      book: "Book",
       contactCaption: "Save my contact to your phone",
     },
     headline: "AI Engineer and Co-Founder of Ai Labs.",
@@ -377,17 +399,24 @@ const en: Dictionary = {
       "I take AI into production for companies across Latin America, and I run a builder community in El Salvador.",
     bookCall: "Book a call",
     save: "Save contact",
-    share: "Share",
+    saveShort: "Save",
+    share: "Share this card",
+    shareText: "Meet Walter Morales, AI Engineer and Co-Founder of Ai Labs.",
+    copyLink: "Copy link",
     copied: "Link copied",
+    showQr: "Show QR",
+    close: "Close",
+    connect: "Social and contact",
     now: "Now",
     ambassador: "Ambassador",
     developer: "As a developer",
     devStats: ["years in software", "builders", "events"],
     github: "See code on GitHub",
-    scan: "Scan",
+    scan: "Scan with your camera",
     qrTabs: "What the code opens",
     qrCode: "QR code",
-    links: "Links",
+    pass: "Share",
+    passBody: "Know someone I should talk to? Send them this card.",
     site: "Site",
     email: "Email",
   },

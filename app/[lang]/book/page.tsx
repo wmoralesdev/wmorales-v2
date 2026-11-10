@@ -33,18 +33,18 @@ export default async function BookPage() {
       <JsonLd data={bookJsonLd(t.lang)} />
       <main
         id="contenido"
-        className="relative z-10 min-h-svh bg-paper pb-24 md:pb-32"
+        className="relative z-10 min-h-svh bg-paper pb-16 md:pb-24"
       >
         <SiteHeader
           home={path(t.lang, "home")}
           action={{ href: path(t.lang, "home"), label: t.backHome, back: true }}
         />
-        <Reveal className="grid gap-12 px-4 pt-12 sm:px-7 md:grid-cols-12 md:grid-rows-[auto_1fr] md:gap-x-8 md:pt-20">
+        <Reveal className="grid gap-12 px-4 pt-10 sm:px-7 md:grid-cols-12 md:grid-rows-[auto_1fr] md:gap-x-8 md:pt-14">
           <div className="md:col-span-5 md:row-start-1 lg:col-span-4">
-            <h1 className="display text-[clamp(2.75rem,12vw,4.25rem)] md:text-[clamp(3rem,5.4vw,5.5rem)]">
+            <h1 className="display text-[clamp(2.25rem,10vw,3.5rem)] md:text-[clamp(2.5rem,4.4vw,4.5rem)]">
               <span className="mask-line">
                 <span>{t.book.heading[0]}</span>
-              </span>
+              </span>{" "}
               <span
                 className="mask-line"
                 style={{ "--i": 1 } as React.CSSProperties}

@@ -5,7 +5,8 @@ import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { SplitText } from "gsap/SplitText";
 import Link from "next/link";
-import { useRef } from "react";
+import { Fragment, useRef } from "react";
+import { Cover } from "@/components/cover";
 import { printName, weightWave } from "@/components/name-motion";
 import { SiteHeader } from "@/components/site-header";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
@@ -14,6 +15,10 @@ import { PortraitCanvas } from "./portrait-canvas";
 gsap.registerPlugin(ScrollTrigger, SplitText, useGSAP);
 
 const LINES = ["Walter", "Morales"];
+
+// The waterline only exists from md, and only moves when motion is welcome.
+const WATERLINE =
+  "(min-width: 48rem) and (prefers-reduced-motion: no-preference)";
 
 function Headline({
   as: Tag,
@@ -28,12 +33,15 @@ function Headline({
     <Tag
       id={id}
       aria-hidden={hidden || undefined}
-      className="hero-name display absolute left-4 top-[calc(100%-var(--rest)-1.38em)] text-[12vw] leading-[0.92] sm:left-7 md:text-[min(9.5vw,19svh)]"
+      className="hero-name display absolute top-[calc(100%-var(--rest)-1.38em)] left-7 text-[min(8.25vw,17svh)] leading-[0.92]"
     >
-      {LINES.map((line) => (
-        <span key={line} className="block">
-          {line}
-        </span>
+      {/* The space keeps the name two words for anything that reads the text
+          without the layout (crawlers, link previews, copy and paste). */}
+      {LINES.map((line, i) => (
+        <Fragment key={line}>
+          {i > 0 && " "}
+          <span className="block">{line}</span>
+        </Fragment>
       ))}
     </Tag>
   );
@@ -47,7 +55,7 @@ function Headline({
 function Portrait({ below, label }: { below?: boolean; label: string }) {
   return (
     <div
-      className={`theme-light absolute top-[30%] right-0 w-[64vw] sm:right-7 md:top-auto md:bottom-0 md:w-[min(42vw,62svh)] [&_canvas]:block ${below ? "" : "bg-paper"}`}
+      className={`theme-light absolute right-7 bottom-0 w-[min(40vw,60svh)] [&_canvas]:block ${below ? "" : "bg-paper"}`}
     >
       <PortraitCanvas
         label={label}
@@ -133,10 +141,17 @@ function tide(
 }
 
 /**
- * Waterline hero: two flat fields meet at the seam, and the name and the halftone
- * portrait change ink where they cross it. Scrolling raises the water until both
- * are submerged. On top of that, three ambient motions run on their own: the name
- * prints in as halftone, the tide moves the seam, and a weight wave rolls through.
+ * The first screen, in two builds.
+ *
+ * From md, the waterline: two flat fields meet at the seam, and the name and the
+ * halftone portrait change ink where they cross it. Scrolling raises the water
+ * until both are submerged. On top of that, three ambient motions run on their
+ * own: the name prints in as halftone, the tide moves the seam, and a weight wave
+ * rolls through.
+ *
+ * On phones, the cover from the intro card: the portrait and the name on the accent
+ * field, then the tagline and the booking button on paper, in thumb reach. The two
+ * never run together; the waterline's motion only starts from md.
  */
 export function Hero({
   t,
@@ -147,7 +162,7 @@ export function Hero({
   book: { href: string; label: string };
   home: string;
 }) {
-  const root = useRef<HTMLElement>(null);
+  const root = useRef<HTMLDivElement>(null);
   const aboveRef = useRef<HTMLDivElement>(null);
   const belowRef = useRef<HTMLDivElement>(null);
 
@@ -156,7 +171,7 @@ export function Hero({
       const el = root.current;
       if (!el || !aboveRef.current || !belowRef.current) return;
       const mm = gsap.matchMedia();
-      mm.add("(prefers-reduced-motion: no-preference)", () => {
+      mm.add(WATERLINE, () => {
         gsap.to(el, {
           "--water": "100%",
           ease: "none",
@@ -188,56 +203,77 @@ export function Hero({
   );
 
   return (
-    <section
-      ref={root}
-      id="inicio"
-      aria-labelledby="hero-title"
-      data-portrait-pointer
-      className="relative h-svh min-h-[36rem] overflow-clip bg-paper [--seam:calc(100%-var(--water))] [--rest:44%] [--water:var(--rest)] md:[--rest:46%]"
-    >
-      {/* Above the water: accent ink on paper. */}
-      <div
-        ref={aboveRef}
-        className="absolute inset-0 text-accent [clip-path:inset(0_0_var(--water)_0)]"
-      >
-        {/* Halftone seam: rows of growing dots, like ink bleeding on newsprint. */}
-        <div
-          aria-hidden="true"
-          className="seam-strip absolute inset-x-0 top-[var(--seam)] -translate-y-full"
+    <section id="inicio" aria-label="Walter Morales" className="bg-paper">
+      {/* Phones: the cover takes the screen less the room the words under it
+          need, so the button ends the first screen. */}
+      <div className="md:hidden">
+        <Cover
+          nameId="hero-title-phone"
+          portraitLabel={t.portrait}
+          className="[--cover:max(18rem,calc(100svh-12.5rem))]"
         >
-          <div className="dot-screen h-1 [--dot-r:12%] [--dot-size:4px]" />
-          <div className="dot-screen h-1 [--dot-r:20%] [--dot-size:4px]" />
-          <div className="dot-screen h-1 [--dot-r:28%] [--dot-size:4px]" />
-          <div className="dot-screen h-1 [--dot-r:36%] [--dot-size:4px]" />
-        </div>
-        <Portrait label={t.portrait} />
-        <Headline as="h1" id="hero-title" />
-      </div>
-
-      {/* Below the water: night ink on the accent field, in either theme. */}
-      <div
-        ref={belowRef}
-        className="absolute inset-0 bg-accent text-night [clip-path:inset(var(--seam)_0_0_0)]"
-      >
-        <Portrait below label={t.portrait} />
-        <Headline as="p" hidden />
-      </div>
-
-      <div className="absolute inset-x-0 top-0">
-        <SiteHeader home={home} action={book} />
-      </div>
-
-      <div className="fade-in-late absolute inset-x-4 bottom-[max(1.5rem,env(safe-area-inset-bottom))] text-snow sm:left-7 md:right-auto md:bottom-10 md:max-w-[min(44vw,30rem)]">
-        <div className="flex flex-col items-start gap-5">
-          <p className="text-[1.0625rem] leading-snug sm:text-lead">
-            {t.tagline}
-          </p>
+          <SiteHeader tone="accent" home={home} action={book} />
+        </Cover>
+        {/* The button stops short of the corner, where the Tools button sits. */}
+        <div className="fade-in-late px-4 pt-5 pb-[max(1rem,env(safe-area-inset-bottom))] sm:px-7">
+          <p className="text-lead leading-snug">{t.tagline}</p>
           <Link
             href={book.href}
-            className="btn [--btn-bg:var(--color-paper)] [--btn-fg:var(--color-ink)]"
+            className="btn mt-5 mr-[3.75rem] flex min-h-12"
           >
             {book.label}
           </Link>
+        </div>
+      </div>
+
+      {/* From md: the waterline. */}
+      <div
+        ref={root}
+        data-portrait-pointer
+        className="relative hidden h-svh min-h-[36rem] overflow-clip bg-paper [--rest:46%] [--seam:calc(100%-var(--water))] [--water:var(--rest)] md:block"
+      >
+        {/* Above the water: accent ink on paper. */}
+        <div
+          ref={aboveRef}
+          className="absolute inset-0 text-accent [clip-path:inset(0_0_var(--water)_0)]"
+        >
+          {/* Halftone seam: rows of growing dots, like ink bleeding on newsprint. */}
+          <div
+            aria-hidden="true"
+            className="seam-strip absolute inset-x-0 top-[var(--seam)] -translate-y-full"
+          >
+            <div className="dot-screen h-1 [--dot-r:12%] [--dot-size:4px]" />
+            <div className="dot-screen h-1 [--dot-r:20%] [--dot-size:4px]" />
+            <div className="dot-screen h-1 [--dot-r:28%] [--dot-size:4px]" />
+            <div className="dot-screen h-1 [--dot-r:36%] [--dot-size:4px]" />
+          </div>
+          <Portrait label={t.portrait} />
+          <Headline as="h1" id="hero-title" />
+        </div>
+
+        {/* Below the water: night ink on the accent field, in either theme. */}
+        <div
+          ref={belowRef}
+          className="absolute inset-0 bg-accent text-night [clip-path:inset(var(--seam)_0_0_0)]"
+        >
+          <Portrait below label={t.portrait} />
+          <Headline as="p" hidden />
+        </div>
+
+        <div className="absolute inset-x-0 top-0">
+          <SiteHeader home={home} action={book} />
+        </div>
+
+        <div className="fade-in-late absolute bottom-10 left-7 max-w-[min(44vw,30rem)] text-snow">
+          <div className="flex flex-col items-start gap-5">
+            <p className="text-lead leading-snug">{t.tagline}</p>
+            <Link
+              href={book.href}
+              className="btn [--btn-bg:var(--color-paper)] [--btn-fg:var(--color-ink)]"
+            >
+              {book.label}
+            </Link>
+          </div>
         </div>
       </div>
     </section>

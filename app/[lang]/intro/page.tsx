@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
 import QRCode from "qrcode";
-import { IntroCard, type QrTarget } from "@/components/intro/intro-card";
+import { IntroCard } from "@/components/intro/intro-card";
+import type { QrTarget } from "@/components/intro/qr-panel";
+import { SiteFooter } from "@/components/site-footer";
 import { path } from "@/lib/i18n/config";
 import { getDictionary, getLocale } from "@/lib/i18n/server";
 import { pageMetadata } from "@/lib/seo";
 import { SITE_URL } from "@/lib/site";
-import { vcard } from "@/lib/vcard";
+import { vcard, vcardPath } from "@/lib/vcard";
 
 export async function generateMetadata(): Promise<Metadata> {
   const lang = await getLocale();
@@ -36,20 +38,17 @@ export default async function IntroPage() {
   const q = t.intro.qr;
   const site = path(lang, "home");
   const book = path(lang, "book");
+  const intro = path(lang, "intro");
   // The cleaned-up URL people see under the QR, without the protocol.
   const bare = (p: string) => `wmorales.dev${p === "/" ? "" : p}`;
+  // The card itself comes first: it's what Walter shows across a table, and what
+  // someone who already has it shows the person next to them.
   const targets: QrTarget[] = [
     {
-      id: "sitio",
-      label: q.site,
-      caption: bare(site),
-      value: `${SITE_URL}${site}?${utm}`,
-    },
-    {
-      id: "agendar",
-      label: q.book,
-      caption: bare(book),
-      value: `${SITE_URL}${book}?${utm}`,
+      id: "tarjeta",
+      label: q.card,
+      caption: bare(intro),
+      value: `${SITE_URL}${intro}?${utm}`,
     },
     {
       id: "contacto",
@@ -57,17 +56,26 @@ export default async function IntroPage() {
       caption: q.contactCaption,
       value: vcard(lang),
     },
+    {
+      id: "agendar",
+      label: q.book,
+      caption: bare(book),
+      value: `${SITE_URL}${book}?${utm}`,
+    },
   ];
   const withSvg = await Promise.all(
     targets.map(async (t) => ({ ...t, svg: await qr(t.value) })),
   );
   return (
-    <IntroCard
-      targets={withSvg}
-      vcard={vcard(lang)}
-      t={t.intro}
-      lang={lang}
-      paths={{ site, book, intro: path(lang, "intro") }}
-    />
+    <>
+      <IntroCard
+        targets={withSvg}
+        vcf={vcardPath(lang)}
+        t={t.intro}
+        lang={lang}
+        paths={{ site, book, intro }}
+      />
+      <SiteFooter route="intro" bar />
+    </>
   );
 }

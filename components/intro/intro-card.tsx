@@ -1,10 +1,11 @@
 "use client";
 
-import { useGSAP } from "@gsap/react";
 import {
   ArrowUpRight01Icon,
   Calendar03Icon,
+  Cancel01Icon,
   CheckmarkCircle02Icon,
+  Copy01Icon,
   GithubIcon,
   Globe02Icon,
   InstagramIcon,
@@ -12,26 +13,18 @@ import {
   Location01Icon,
   Mail01Icon,
   NewTwitterIcon,
+  QrCodeIcon,
   Share08Icon,
   UserAdd01Icon,
 } from "@hugeicons/core-free-icons";
-import gsap from "gsap";
-import { SplitText } from "gsap/SplitText";
-import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import Link from "next/link";
-import {
-  type KeyboardEvent,
-  type ReactNode,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { type ReactNode, useEffect, useRef, useState } from "react";
+import { Cover } from "@/components/cover";
 import { HalftoneField } from "@/components/halftone-field";
 import { HalftoneIcon } from "@/components/halftone-icon";
 import { HalftoneLogo } from "@/components/halftone-logo";
-import { PortraitCanvas } from "@/components/home/portrait-canvas";
 import { Icon } from "@/components/icon";
-import { printName, weightWave } from "@/components/name-motion";
+import { QrPanel, type QrTarget } from "@/components/intro/qr-panel";
 import type { Locale } from "@/lib/i18n/config";
 import type { Dictionary } from "@/lib/i18n/dictionaries";
 import {
@@ -43,66 +36,27 @@ import {
   SITE_URL,
 } from "@/lib/site";
 
-gsap.registerPlugin(SplitText, useGSAP);
-
-export type QrTarget = {
-  id: string;
-  label: string;
-  caption: string;
-  value: string;
-  svg?: string;
-};
-
 type Paths = { site: string; book: string; intro: string };
 
-const bare = (p: string) => `wmorales.dev${p === "/" ? "" : p}`;
-
-const linksFor = (t: Dictionary["intro"], paths: Paths) => [
-  {
-    label: t.site,
-    value: bare(paths.site),
-    href: paths.site,
-    icon: Globe02Icon,
-  },
-  {
-    label: t.bookCall,
-    value: bare(paths.book),
-    href: paths.book,
-    icon: Calendar03Icon,
-  },
-  {
-    label: "LinkedIn",
-    value: "in/wmoralesdev",
-    href: person.social.linkedin,
-    icon: Linkedin01Icon,
-  },
-  {
-    label: "GitHub",
-    value: "wmoralesdev",
-    href: person.social.github,
-    icon: GithubIcon,
-  },
-  {
-    label: "X",
-    value: "@wmoralesdev",
-    href: person.social.x,
-    icon: NewTwitterIcon,
-  },
-  {
-    label: "Instagram",
-    value: "@wmoralesdev",
-    href: person.social.instagram,
-    icon: InstagramIcon,
-  },
-  {
-    label: t.email,
-    value: person.email,
-    href: `mailto:${person.email}`,
-    icon: Mail01Icon,
-  },
+// One tap each, in the order people reach for them after an event.
+const channelsFor = (t: Dictionary["intro"], paths: Paths) => [
+  { label: "LinkedIn", href: person.social.linkedin, icon: Linkedin01Icon },
+  { label: t.email, href: `mailto:${person.email}`, icon: Mail01Icon },
+  { label: "GitHub", href: person.social.github, icon: GithubIcon },
+  { label: "X", href: person.social.x, icon: NewTwitterIcon },
+  { label: "Instagram", href: person.social.instagram, icon: InstagramIcon },
+  { label: t.site, href: paths.site, icon: Globe02Icon },
 ];
 
 const devStatValues = ["6+", "1K+", "75+"];
+
+// Inverted and quiet variants of the one button shape.
+const inkBtn =
+  "[--btn-bg:var(--color-ink)] [--btn-fg:var(--color-paper)] [--btn-bg-hover:var(--color-accent)] [--btn-fg-hover:var(--color-snow)]";
+const quietBtn =
+  "[--btn-bg:var(--color-surface)] [--btn-fg:var(--color-ink)] [--btn-bg-hover:var(--color-lilac)] [--btn-fg-hover:var(--color-ink)]";
+const paperBtn =
+  "[--btn-bg:var(--color-paper)] [--btn-fg:var(--color-ink)] [--btn-bg-hover:var(--color-lilac)] [--btn-fg-hover:var(--color-ink)]";
 
 function Section({ title, children }: { title: string; children: ReactNode }) {
   return (
@@ -114,59 +68,40 @@ function Section({ title, children }: { title: string; children: ReactNode }) {
 }
 
 /**
- * A pocket profile, built for a phone held out across a table: who Walter is, what
- * he runs, the programs he represents, and every way to keep in touch. The screen
- * stays awake while it's open, and the QR can point to the site, the calendar or a
- * vCard. Phones get a cover on top and a fixed action bar; from lg the cover stays
- * pinned on the left while the profile scrolls on the right.
+ * A pocket profile for the minute after "nice to meet you". It serves three people:
+ *
+ * - Walter, holding his phone out: the QR button in the action bar opens a sheet
+ *   with the code at full size, and /intro#qr lands straight on it.
+ * - Whoever just scanned it: who he is on the first screen, then one tap to save
+ *   his contact, book a call or reach him on any channel.
+ * - That person passing him on: Share sends the card through the phone's own share
+ *   sheet, and the same QR sheet lets them show it to someone next to them.
+ *
+ * Phones get a short cover and a fixed action bar in thumb reach. From lg the
+ * cover is pinned on the left, the actions sit in the page and the QR is inline,
+ * ready to scan with a phone. The screen stays awake while the card is open.
  */
 export function IntroCard({
   targets,
-  vcard,
+  vcf,
   t,
   lang,
   paths,
 }: {
   targets: QrTarget[];
-  vcard: string;
+  /** URL of the downloadable vCard in the page's language. */
+  vcf: string;
   t: Dictionary["intro"];
   lang: Locale;
   paths: Paths;
 }) {
-  const links = linksFor(t, paths);
+  const channels = channelsFor(t, paths);
   const devStats = devStatValues.map((value, i) => ({
     value,
     label: t.devStats[i],
   }));
-  const [active, setActive] = useState(0);
-  const [shared, setShared] = useState(false);
-  const reduce = useReducedMotion();
-  const tabs = useRef<(HTMLButtonElement | null)[]>([]);
-  const nameRef = useRef<HTMLHeadingElement>(null);
-  const current = targets[active];
-
-  // Same name motion as the home hero: it prints in as halftone, then a ripple
-  // and a weight wave pass through it now and then.
-  useGSAP(() => {
-    const name = nameRef.current;
-    if (!name) return;
-    const mm = gsap.matchMedia();
-    mm.add("(prefers-reduced-motion: no-preference)", () => {
-      const split = SplitText.create(name, {
-        type: "chars",
-        charsClass: "ht-char",
-      });
-      name.dataset.split = "";
-      const letters = split.chars.map((c) => [c as HTMLElement]);
-      printName(letters);
-      weightWave(letters);
-      return () => {
-        split.revert();
-        delete name.dataset.split;
-      };
-    });
-    return () => mm.revert();
-  });
+  const [copied, setCopied] = useState(false);
+  const sheetRef = useRef<HTMLDialogElement>(null);
 
   // Keep the screen on while someone is scanning.
   useEffect(() => {
@@ -187,40 +122,45 @@ export function IntroCard({
     };
   }, []);
 
-  function onKey(e: KeyboardEvent) {
-    const dir = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
-    if (!dir) return;
-    e.preventDefault();
-    const next = (active + dir + targets.length) % targets.length;
-    setActive(next);
-    tabs.current[next]?.focus();
+  function showQr() {
+    const sheet = sheetRef.current;
+    if (sheet && !sheet.open) sheet.showModal();
   }
 
-  function saveContact() {
-    const url = URL.createObjectURL(
-      new Blob([vcard], { type: "text/vcard;charset=utf-8" }),
-    );
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "walter-morales.vcf";
-    a.click();
-    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  // /intro#qr opens with the code already up: the link Walter keeps on his home
+  // screen. From lg the code is inline and the browser scrolls to it instead.
+  useEffect(() => {
+    const fromHash = () => {
+      if (window.location.hash !== "#qr") return;
+      if (window.matchMedia("(min-width: 64rem)").matches) return;
+      const sheet = sheetRef.current;
+      if (sheet && !sheet.open) sheet.showModal();
+    };
+    fromHash();
+    window.addEventListener("hashchange", fromHash);
+    return () => window.removeEventListener("hashchange", fromHash);
+  }, []);
+
+  const cardUrl = `${SITE_URL}${paths.intro}`;
+
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(cardUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 1800);
+    } catch {
+      // Clipboard blocked: nothing to confirm.
+    }
   }
 
   async function share() {
-    const data = {
-      title: person.name,
-      text: person.headline[lang],
-      url: `${SITE_URL}${paths.intro}`,
-    };
+    if (!navigator.share) return copyLink();
     try {
-      if (navigator.share) {
-        await navigator.share(data);
-        return;
-      }
-      await navigator.clipboard.writeText(data.url);
-      setShared(true);
-      setTimeout(() => setShared(false), 1800);
+      await navigator.share({
+        title: person.name,
+        text: t.shareText,
+        url: cardUrl,
+      });
     } catch {
       // The visitor closed the share sheet.
     }
@@ -229,80 +169,96 @@ export function IntroCard({
   return (
     <main
       id="contenido"
-      className="min-h-svh bg-paper text-ink lg:grid lg:grid-cols-2"
+      className="relative z-10 min-h-svh bg-paper text-ink lg:grid lg:grid-cols-2"
     >
-      {/* Cover: the portrait printed in snow ink on the accent field. Not selectable,
-          so dragging across the portrait doesn't highlight the name. */}
-      <header
-        data-portrait-pointer
-        className="relative overflow-clip bg-accent text-snow select-none lg:sticky lg:top-0 lg:h-svh"
+      {/* Short on phones, so the actions under it land on the first screen;
+          pinned and a full screen tall from lg. */}
+      <Cover
+        as="header"
+        nameId="intro-name"
+        portraitLabel={t.portrait}
+        className="[--cover:max(15rem,min(46svh,24rem))] lg:sticky lg:top-0 lg:[--cover:100svh]"
       >
-        <HalftoneField
-          seed={1.3}
-          fade="down"
-          className="absolute inset-0 text-accent-deep"
-        />
-        <div className="relative z-10 flex items-center justify-between px-4 pt-[max(1rem,env(safe-area-inset-top))] sm:px-7 lg:px-10 lg:pt-8">
+        <div className="relative z-10 flex items-center justify-between px-4 pt-[max(0.5rem,env(safe-area-inset-top))] sm:px-7 lg:px-10 lg:pt-8">
           <Link
             href={paths.site}
-            className="link-underline font-semibold text-small"
+            className="inline-flex min-h-11 items-center font-semibold text-small"
           >
-            wmorales.dev
+            <span className="link-underline">wmorales.dev</span>
           </Link>
           <p className="flex items-center gap-1 text-small">
             <Icon icon={Location01Icon} size={16} />
             {person.city}
           </p>
         </div>
-        <motion.div
-          initial={reduce ? { opacity: 0 } : { opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ type: "spring", duration: 0.9, bounce: 0.1 }}
-          className="theme-light relative ml-auto -mt-2 w-[min(82%,28rem)] [mask-composite:intersect] lg:absolute lg:right-0 lg:bottom-0 lg:mt-0 lg:w-[min(88%,72svh)] [mask-image:linear-gradient(to_right,transparent,#000_40%),linear-gradient(to_bottom,transparent,#000_25%)]"
-        >
-          <PortraitCanvas light label={t.portrait} className="text-snow" />
-        </motion.div>
-        <h1
-          ref={nameRef}
-          id="intro-name"
-          className="hero-name display absolute bottom-4 left-4 text-[3.4rem] leading-[0.88] sm:left-7 sm:text-[4.5rem] lg:bottom-10 lg:left-10 lg:text-[clamp(4.5rem,7.5vw,8rem)]"
-        >
-          Walter
-          <br />
-          Morales
-        </h1>
-      </header>
+      </Cover>
 
       <div className="lg:pt-6">
         <div className="px-4 pt-5 pb-8 sm:px-7 lg:px-12 lg:pt-12 lg:pb-12">
           <p className="font-semibold text-lead leading-tight">{t.headline}</p>
           <p className="mt-2 text-muted text-body leading-snug">{t.blurb}</p>
-          <div className="mt-5 grid gap-2 lg:grid-cols-[1fr_auto]">
-            <Link href={paths.book} className="btn lg:col-span-2">
+
+          <div className="mt-5 grid grid-cols-[1fr_auto_auto] gap-2">
+            <Link href={paths.book} className="btn col-span-3 min-h-12">
               <Icon icon={Calendar03Icon} size={18} />
               {t.bookCall}
             </Link>
-            {/* From lg the action bar is gone, so its buttons live here. */}
-            <button
-              type="button"
-              onClick={saveContact}
-              className="btn hidden [--btn-bg:var(--color-ink)] [--btn-fg:var(--color-paper)] [--btn-bg-hover:var(--color-accent)] [--btn-fg-hover:var(--color-snow)] lg:inline-flex"
-            >
+            {/* From lg the action bar is gone, so its actions live here. */}
+            <a href={vcf} className={`btn hidden lg:inline-flex ${inkBtn}`}>
               <Icon icon={UserAdd01Icon} size={18} />
               {t.save}
-            </button>
+            </a>
             <button
               type="button"
               onClick={share}
-              aria-label={shared ? t.copied : t.share}
-              className="btn hidden aspect-square px-0 [--btn-bg:var(--color-surface)] [--btn-fg:var(--color-ink)] [--btn-bg-hover:var(--color-lilac)] [--btn-fg-hover:var(--color-ink)] lg:inline-flex"
+              className={`btn hidden lg:inline-flex ${quietBtn}`}
+            >
+              <Icon icon={Share08Icon} size={18} />
+              {t.share}
+            </button>
+            <button
+              type="button"
+              onClick={copyLink}
+              aria-label={copied ? t.copied : t.copyLink}
+              className={`btn hidden aspect-square px-0 lg:inline-flex ${quietBtn}`}
             >
               <Icon
-                icon={shared ? CheckmarkCircle02Icon : Share08Icon}
+                icon={copied ? CheckmarkCircle02Icon : Copy01Icon}
                 size={18}
               />
             </button>
           </div>
+
+          {/* Every channel, one tap away. */}
+          <nav aria-label={t.connect} className="mt-2">
+            <ul className="grid grid-cols-3 gap-2">
+              {channels.map((c) => {
+                const external = c.href.startsWith("http");
+                return (
+                  <li key={c.label}>
+                    <a
+                      href={c.href}
+                      target={external ? "_blank" : undefined}
+                      rel={external ? "noreferrer" : undefined}
+                      className="press flex min-h-[4.25rem] flex-col justify-between bg-surface p-3 transition-colors duration-200 hover:bg-ink hover:text-paper"
+                    >
+                      <span className="flex items-start justify-between">
+                        <Icon icon={c.icon} size={20} />
+                        <Icon
+                          icon={ArrowUpRight01Icon}
+                          size={14}
+                          className="opacity-50"
+                        />
+                      </span>
+                      <span className="font-semibold text-small">
+                        {c.label}
+                      </span>
+                    </a>
+                  </li>
+                );
+              })}
+            </ul>
+          </nav>
         </div>
 
         <Section title={t.now}>
@@ -336,7 +292,7 @@ export function IntroCard({
               >
                 <HalftoneIcon shape="plus" className="size-12 text-accent" />
                 <div>
-                  <p className="display text-[1.5rem] leading-none">
+                  <p className="display text-[1.375rem] leading-none">
                     {mediconecto.name}
                   </p>
                   <p className="mt-2 font-semibold text-small">
@@ -358,13 +314,13 @@ export function IntroCard({
               <li
                 key={a.name}
                 data-icon-hover
-                className={`group flex aspect-square flex-col justify-between p-3.5 ${
+                className={`group flex aspect-[4/3] flex-col justify-between p-3.5 ${
                   i === 0 ? "bg-accent text-snow" : "bg-ink text-paper"
                 }`}
               >
                 <HalftoneLogo
                   name={a.logo}
-                  className={`size-16 ${i === 0 ? "text-snow" : "text-lilac"}`}
+                  className={`size-12 ${i === 0 ? "text-snow" : "text-lilac"}`}
                 />
                 <div>
                   <p className="font-semibold text-body leading-tight">
@@ -382,7 +338,7 @@ export function IntroCard({
             {devStats.map((s) => (
               <div key={s.label}>
                 <dt className="sr-only">{s.label}</dt>
-                <dd className="display text-[2.25rem] leading-none text-accent">
+                <dd className="display text-[2rem] leading-none text-accent">
                   {s.value}
                 </dd>
                 <dd className="mt-1 text-muted text-small">{s.label}</dd>
@@ -409,147 +365,138 @@ export function IntroCard({
             href={person.social.github}
             target="_blank"
             rel="noreferrer"
-            className="link-underline mt-4 inline-flex items-center gap-1.5 font-semibold text-small"
+            className="mt-2 inline-flex min-h-11 items-center gap-1.5 font-semibold text-small"
           >
             <Icon icon={GithubIcon} size={16} />
-            {t.github}
+            <span className="link-underline">{t.github}</span>
           </a>
         </Section>
 
-        <Section title={t.scan}>
-          <div
-            id="qr-panel"
-            role="tabpanel"
-            aria-label={current.label}
-            className="relative grid aspect-square place-items-center overflow-clip bg-snow p-7 mx-auto max-w-[24rem]"
-          >
-            <AnimatePresence mode="popLayout" initial={false}>
-              <motion.div
-                key={current.id}
-                role="img"
-                aria-label={`${t.qrCode}: ${current.caption}`}
-                initial={
-                  reduce
-                    ? { opacity: 0 }
-                    : { opacity: 0, scale: 0.97, filter: "blur(4px)" }
-                }
-                animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-                exit={
-                  reduce
-                    ? { opacity: 0 }
-                    : { opacity: 0, scale: 0.97, filter: "blur(4px)" }
-                }
-                transition={{ duration: 0.22, ease: [0.23, 1, 0.32, 1] }}
-                className="size-full [&_svg]:size-full"
-                // biome-ignore lint/security/noDangerouslySetInnerHtml: SVG generated on the server by the qrcode library.
-                dangerouslySetInnerHTML={{ __html: current.svg ?? "" }}
+        {/* The hand-off: whoever read this far can pass the card on. */}
+        <Section title={t.pass}>
+          <div className="lg:grid lg:grid-cols-[1fr_15rem] lg:items-start lg:gap-10">
+            <div>
+              <p className="max-w-[26ch] font-semibold text-lead leading-tight">
+                {t.passBody}
+              </p>
+              <div className="mt-5 grid grid-cols-2 gap-2">
+                <button
+                  type="button"
+                  onClick={share}
+                  className="btn col-span-2 min-h-12"
+                >
+                  <Icon icon={Share08Icon} size={18} />
+                  {t.share}
+                </button>
+                <button
+                  type="button"
+                  onClick={copyLink}
+                  className={`btn max-lg:px-3 lg:col-span-2 ${quietBtn}`}
+                >
+                  <Icon
+                    icon={copied ? CheckmarkCircle02Icon : Copy01Icon}
+                    size={18}
+                  />
+                  {copied ? t.copied : t.copyLink}
+                </button>
+                <button
+                  type="button"
+                  onClick={showQr}
+                  className={`btn max-lg:px-3 lg:hidden ${inkBtn}`}
+                >
+                  <Icon icon={QrCodeIcon} size={18} />
+                  {t.showQr}
+                </button>
+              </div>
+              <p aria-live="polite" className="sr-only">
+                {copied ? t.copied : ""}
+              </p>
+            </div>
+            <div id="qr" className="hidden scroll-mt-8 lg:block">
+              <QrPanel
+                id="qr-inline"
+                targets={targets}
+                tabsLabel={t.qrTabs}
+                codeLabel={t.qrCode}
               />
-            </AnimatePresence>
+            </div>
           </div>
-
-          <div
-            role="tablist"
-            aria-label={t.qrTabs}
-            onKeyDown={onKey}
-            className="relative mt-2 grid grid-cols-3 bg-surface p-1 mx-auto max-w-[24rem]"
-          >
-            <span
-              aria-hidden="true"
-              className="absolute inset-y-1 left-1 w-[calc((100%-0.5rem)/3)] bg-ink transition-transform duration-250 ease-(--ease-out)"
-              style={{ transform: `translateX(${active * 100}%)` }}
-            />
-            {targets.map((t, i) => (
-              <button
-                key={t.id}
-                ref={(el) => {
-                  tabs.current[i] = el;
-                }}
-                type="button"
-                role="tab"
-                aria-selected={i === active}
-                aria-controls="qr-panel"
-                tabIndex={i === active ? 0 : -1}
-                onClick={() => setActive(i)}
-                className={`press relative z-10 min-h-11 font-semibold text-small transition-colors duration-200 ${
-                  i === active ? "text-paper" : "text-ink"
-                }`}
-              >
-                {t.label}
-              </button>
-            ))}
-          </div>
-          <p
-            className="mt-3 text-center text-muted text-small mx-auto max-w-[24rem]"
-            aria-live="polite"
-          >
-            {current.caption}
-          </p>
         </Section>
 
-        <Section title={t.links}>
-          <ul className="divide-y divide-ink/10 border-ink/10 border-y">
-            {links.map((l) => {
-              const external = l.href.startsWith("http");
-              return (
-                <li key={l.label}>
-                  <a
-                    href={l.href}
-                    target={external ? "_blank" : undefined}
-                    rel={external ? "noreferrer" : undefined}
-                    className="press flex min-h-13 items-center gap-3 py-2"
-                  >
-                    <Icon icon={l.icon} size={20} />
-                    <span className="font-semibold text-small">{l.label}</span>
-                    <span className="ml-auto truncate text-muted text-small">
-                      {l.value}
-                    </span>
-                    <Icon
-                      icon={ArrowUpRight01Icon}
-                      size={16}
-                      className="shrink-0 opacity-50"
-                    />
-                  </a>
-                </li>
-              );
-            })}
-          </ul>
-        </Section>
-
-        {/* Room for the action bar. */}
-        <div className="relative h-40 overflow-clip bg-accent lg:h-28">
+        {/* A closing band of the cover's field; the footer under it leaves the
+            room the action bar needs. */}
+        <div className="relative h-24 overflow-clip bg-accent lg:h-28">
           <HalftoneField
             seed={3.1}
             fade="up"
             className="absolute inset-0 text-accent-deep"
           />
         </div>
+      </div>
 
-        {/* Action bar: what people do with a business card. It leaves the right
-            corner to the Tools button, which sits in the same row. */}
-        <div className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-3 right-[4.75rem] z-30 md:right-[5.25rem] lg:hidden">
-          <div className="grid grid-cols-[1fr_auto] gap-2 bg-ink p-1.5 shadow-[0_18px_50px_-12px_rgb(18_13_38/0.5)]">
-            <button
-              type="button"
-              onClick={saveContact}
-              className="btn [--btn-bg-hover:var(--color-accent-deep)]"
-            >
-              <Icon icon={UserAdd01Icon} size={18} />
-              {t.save}
-            </button>
-            <button
-              type="button"
-              onClick={share}
-              aria-label={shared ? t.copied : t.share}
-              className="btn aspect-square px-0 [--btn-bg:var(--color-paper)] [--btn-fg:var(--color-ink)] [--btn-bg-hover:var(--color-lilac)] [--btn-fg-hover:var(--color-ink)]"
-            >
-              <Icon
-                icon={shared ? CheckmarkCircle02Icon : Share08Icon}
-                size={18}
-              />
-            </button>
-          </div>
+      {/* Action bar, in thumb reach: keep him, show him, pass him on. It leaves
+          the right corner to the Tools button, which sits in the same row. */}
+      <div className="fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-3 right-[4.75rem] z-30 md:right-[5.25rem] lg:hidden">
+        <div className="grid grid-cols-[1fr_auto_auto] gap-1.5 bg-ink p-1.5 shadow-[0_18px_50px_-12px_rgb(18_13_38/0.5)]">
+          <a
+            href={vcf}
+            className="btn px-3 [--btn-bg-hover:var(--color-accent-deep)]"
+          >
+            <Icon icon={UserAdd01Icon} size={18} />
+            <span className="min-[380px]:hidden">{t.saveShort}</span>
+            <span className="max-[379px]:hidden">{t.save}</span>
+          </a>
+          <button
+            type="button"
+            onClick={showQr}
+            aria-label={t.showQr}
+            className={`btn aspect-square px-0 ${paperBtn}`}
+          >
+            <Icon icon={QrCodeIcon} size={20} />
+          </button>
+          <button
+            type="button"
+            onClick={share}
+            aria-label={t.share}
+            className={`btn aspect-square px-0 ${paperBtn}`}
+          >
+            <Icon icon={Share08Icon} size={20} />
+          </button>
         </div>
       </div>
+
+      {/* The QR at full size: a bottom sheet on phones, a centred card on tablets.
+          A native dialog, so Escape, focus and the backdrop come with it. */}
+      {/* biome-ignore lint/a11y/useKeyWithClickEvents: the click only closes on the backdrop; the dialog handles Escape itself. */}
+      <dialog
+        ref={sheetRef}
+        aria-labelledby="qr-sheet-title"
+        onClick={(e) => e.target === e.currentTarget && e.currentTarget.close()}
+        className="fixed inset-x-0 top-auto bottom-0 m-0 max-h-none w-full max-w-none border-0 bg-transparent p-0 text-ink backdrop:bg-night/75 open:animate-sheet-up motion-reduce:animate-none sm:inset-0 sm:m-auto sm:max-w-[26rem]"
+      >
+        <div className="bg-paper px-4 pt-3 pb-[max(1rem,env(safe-area-inset-bottom))]">
+          <div className="mb-3 flex items-center justify-between gap-4">
+            <h2 id="qr-sheet-title" className="font-semibold text-body">
+              {t.scan}
+            </h2>
+            <button
+              type="button"
+              onClick={() => sheetRef.current?.close()}
+              aria-label={t.close}
+              className="press grid size-11 place-items-center bg-surface"
+            >
+              <Icon icon={Cancel01Icon} size={18} />
+            </button>
+          </div>
+          <QrPanel
+            id="qr-sheet"
+            targets={targets}
+            tabsLabel={t.qrTabs}
+            codeLabel={t.qrCode}
+            className="mx-auto max-w-[min(100%,58svh)]"
+          />
+        </div>
+      </dialog>
     </main>
   );
 }

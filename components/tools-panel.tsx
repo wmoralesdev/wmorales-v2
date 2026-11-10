@@ -105,16 +105,15 @@ export function ToolsPanel({
   }
 
   const links = shortcuts.filter((s) => s.key !== here);
-  // On /intro's phone layout the button shares a row with the action bar.
-  // Matches both the public URL and the rewritten one.
-  const place = pathname.endsWith("/intro")
-    ? "bottom-[max(0.75rem,env(safe-area-inset-bottom))] lg:bottom-5"
-    : "bottom-[max(5rem,calc(env(safe-area-inset-bottom)+4.5rem))] md:bottom-5";
+  // Always the bottom-right corner. On phones the action bars (the booking bar on
+  // the home page, the card's bar on /intro) stop short of it and share its row.
+  // /intro keeps its phone layout up to lg. Matches the public and rewritten URL.
+  const place = pathname.endsWith("/intro") ? "lg:bottom-5" : "md:bottom-5";
 
   return (
     <div
       ref={rootRef}
-      className={`fixed right-3 z-40 flex flex-col items-end gap-2 font-sans md:right-5 ${place}`}
+      className={`fixed right-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-40 flex flex-col items-end gap-2 font-sans md:right-5 ${place}`}
     >
       {open && (
         <section

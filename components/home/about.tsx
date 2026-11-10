@@ -1,4 +1,3 @@
-import { type CSSProperties, Fragment } from "react";
 import { HalftoneIcon } from "@/components/halftone-icon";
 import { HalftoneLogo } from "@/components/halftone-logo";
 import { Reveal } from "@/components/motion/reveal";
@@ -22,27 +21,18 @@ const tools: { name: string; note: Note; logo: LogoName }[] = [
   { name: "ElevenLabs", note: "voice", logo: "elevenlabs" },
 ];
 
-// Split for the scroll-lit read: each word lights up in turn as the paragraph
-// crosses the viewport (see .lit in globals.css).
-const split = (text: string) =>
-  text.split(" ").map((word, i, all) => ({
-    key: `${i}-${word}`,
-    text: word,
-    p: i / (all.length - 1),
-  }));
-
 export async function About() {
   const t = await getDictionary();
-  const words = split(t.about.intro);
   return (
     <Reveal
       as="section"
       id="sobre-mi"
       aria-labelledby="sobre-mi-title"
-      className="px-4 py-24 sm:px-7 md:py-40"
+      className="px-4 py-16 sm:px-7 md:py-24"
     >
       <div className="grid gap-y-12 md:grid-cols-12 md:gap-x-8">
-        <div className="md:col-span-4">
+        {/* Stays in view beside the taller column, so the left side is never empty. */}
+        <div className="md:sticky md:top-10 md:col-span-4 md:self-start">
           <h2
             id="sobre-mi-title"
             data-reveal
@@ -50,7 +40,7 @@ export async function About() {
           >
             {t.about.title}
           </h2>
-          <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-5 md:grid-cols-1">
+          <dl className="mt-8 grid grid-cols-2 gap-x-6 gap-y-5 md:grid-cols-1">
             {facts.map((f) => (
               <div key={f.label.es} data-reveal>
                 <dt className="text-muted text-small">{f.label[t.lang]}</dt>
@@ -60,35 +50,26 @@ export async function About() {
           </dl>
         </div>
 
-        <div className="md:col-span-8 md:col-start-5 lg:col-span-7 lg:col-start-5">
+        <div className="md:col-span-8 md:col-start-5">
           <p
             data-reveal
-            className="lit font-semibold text-[1.375rem] leading-[1.25] tracking-[-0.02em] md:text-[clamp(1.75rem,1.1rem+1.4vw,2.5rem)]"
+            className="max-w-[24em] font-semibold text-[1.25rem] leading-[1.25] tracking-[-0.02em] md:text-[clamp(1.5rem,1rem+1.1vw,2rem)]"
           >
-            {words.map((w) => (
-              <Fragment key={w.key}>
-                <span
-                  className="lit-word"
-                  style={{ "--p": w.p } as CSSProperties}
-                >
-                  {w.text}
-                </span>{" "}
-              </Fragment>
-            ))}
+            {t.about.intro}
           </p>
 
-          <div data-reveal className="mt-16">
+          <div data-reveal className="mt-12">
             <h3 className="font-semibold text-small">{t.about.tools}</h3>
             <ul className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3">
               {tools.map((tool) => (
                 <li
                   key={tool.name}
                   data-icon-hover
-                  className="group flex min-h-36 flex-col justify-between gap-6 bg-surface p-5"
+                  className="group flex min-h-32 flex-col justify-between gap-5 bg-surface p-4"
                 >
                   <HalftoneLogo
                     name={tool.logo}
-                    className="size-16 text-accent"
+                    className="size-12 text-accent"
                   />
                   <div>
                     <p className="font-semibold text-small">{tool.name}</p>
@@ -100,12 +81,12 @@ export async function About() {
               ))}
               <li
                 data-icon-hover
-                className="flex min-h-36 flex-col justify-between gap-6 bg-ink p-5 text-paper"
+                className="col-span-2 flex items-center gap-4 bg-ink p-4 text-paper sm:col-span-1 sm:min-h-32 sm:flex-col sm:items-stretch sm:justify-between sm:gap-5"
               >
                 <HalftoneIcon
                   shape="plus"
                   motion="hover"
-                  className="size-16 text-lilac"
+                  className="size-12 shrink-0 text-lilac"
                 />
                 <div>
                   <p className="font-semibold text-small">{t.about.more}</p>
@@ -115,7 +96,7 @@ export async function About() {
             </ul>
           </div>
 
-          <p data-reveal className="mt-10 text-muted text-small">
+          <p data-reveal className="mt-8 text-muted text-small">
             <span className="font-semibold text-ink">{t.about.stackLabel}</span>{" "}
             {t.about.stack}
           </p>

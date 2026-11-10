@@ -63,7 +63,7 @@ export default async function ConsultantPage() {
         <Reveal
           as="section"
           aria-labelledby="consultor-title"
-          className="grid gap-12 px-4 pt-12 pb-24 sm:px-7 md:grid-cols-12 md:gap-x-8 md:pt-20 md:pb-32"
+          className="grid gap-12 px-4 pt-10 pb-16 sm:px-7 md:grid-cols-12 md:gap-x-8 md:pt-14 md:pb-24"
         >
           <div className="md:col-span-7">
             <p data-reveal className="text-muted text-small">
@@ -71,11 +71,11 @@ export default async function ConsultantPage() {
             </p>
             <h1
               id="consultor-title"
-              className="display mt-4 text-[clamp(2.75rem,11vw,4.25rem)] md:text-[clamp(3.5rem,6vw,6.5rem)]"
+              className="display mt-4 text-[clamp(2.25rem,9.5vw,3.5rem)] md:text-[clamp(2.75rem,4.8vw,5.25rem)]"
             >
               <span className="mask-line">
                 <span>{c.heading[0]}</span>
-              </span>
+              </span>{" "}
               <span
                 className="mask-line"
                 style={{ "--i": 1 } as React.CSSProperties}
@@ -114,7 +114,7 @@ export default async function ConsultantPage() {
         <Reveal
           as="section"
           aria-labelledby="embajador-title"
-          className="bg-ink px-4 py-24 text-paper sm:px-7 md:py-32"
+          className="bg-ink px-4 py-16 text-paper sm:px-7 md:py-24"
         >
           <div className="grid gap-y-8 md:grid-cols-12 md:gap-x-8">
             <h2
@@ -131,7 +131,7 @@ export default async function ConsultantPage() {
               {c.ambassadorBody}
             </p>
           </div>
-          <ul className="mt-14 grid gap-x-8 gap-y-12 sm:grid-cols-2 md:mt-20 lg:grid-cols-4">
+          <ul className="mt-10 grid gap-x-8 gap-y-10 sm:grid-cols-2 md:mt-14 lg:grid-cols-4">
             {ambassadorships.map((a) => (
               <li
                 key={a.name}
@@ -141,10 +141,10 @@ export default async function ConsultantPage() {
               >
                 <HalftoneLogo
                   name={a.logo}
-                  className="mb-8 size-20 text-accent"
+                  className="mb-6 size-14 text-accent"
                 />
                 <p className="text-small opacity-70">{a.host}</p>
-                <h3 className="display mt-1 text-[clamp(1.75rem,1.4rem+1vw,2.375rem)] leading-[0.95]">
+                <h3 className="display mt-1 text-[clamp(1.375rem,1.15rem+0.7vw,1.75rem)] leading-none">
                   {a.role}
                 </h3>
                 <p className="mt-1 font-semibold text-body">{a.name}</p>
@@ -154,7 +154,7 @@ export default async function ConsultantPage() {
           </ul>
           <p
             data-reveal
-            className="mt-16 max-w-[46rem] text-body opacity-80 md:mt-20"
+            className="mt-12 max-w-[46rem] text-body opacity-80 md:mt-14"
           >
             {c.communityNote}
           </p>
@@ -174,7 +174,7 @@ export default async function ConsultantPage() {
                 <dt className="order-last text-small leading-tight">
                   {f.label[lang]}
                 </dt>
-                <dd className="display text-[15vw] leading-none sm:text-[clamp(2.75rem,6.4vw,7rem)] lg:text-[clamp(2.75rem,5vw,6rem)]">
+                <dd className="display text-[13vw] leading-none sm:text-[clamp(2.5rem,5.2vw,5.5rem)] lg:text-[clamp(2.5rem,4.2vw,4.75rem)]">
                   <span data-count={f.value}>{f.value}</span>
                   {f.suffix}
                 </dd>
@@ -187,12 +187,12 @@ export default async function ConsultantPage() {
         <Reveal
           as="section"
           aria-labelledby="servicios-title"
-          className="px-4 py-24 sm:px-7 md:py-32"
+          className="px-4 py-16 sm:px-7 md:py-24"
         >
           <h2 id="servicios-title" data-reveal className="display text-head">
             {c.servicesTitle}
           </h2>
-          <ul className="mt-12 grid gap-x-8 gap-y-10 md:mt-16 md:grid-cols-2 lg:grid-cols-3">
+          <ul className="mt-8 grid gap-x-8 gap-y-8 md:mt-12 md:grid-cols-2 lg:grid-cols-3">
             {services.map((s) => (
               <li
                 key={s.name.es}
@@ -203,12 +203,12 @@ export default async function ConsultantPage() {
                 <HalftoneIcon
                   shape={s.icon}
                   motion="hover"
-                  className="mb-6 size-16 text-accent"
+                  className="mb-4 size-12 text-accent"
                 />
-                <h3 className="display text-[clamp(1.75rem,1.4rem+1vw,2.375rem)] leading-[0.95]">
+                <h3 className="display text-[clamp(1.375rem,1.15rem+0.7vw,1.75rem)] leading-none">
                   {s.name[lang]}
                 </h3>
-                <p className="mt-3 max-w-[38ch] text-muted text-body">
+                <p className="mt-2 max-w-[38ch] text-muted text-body">
                   {s.description[lang]}
                 </p>
               </li>
@@ -220,12 +220,12 @@ export default async function ConsultantPage() {
         <Reveal
           as="section"
           aria-labelledby="proceso-title"
-          className="bg-surface px-4 py-24 sm:px-7 md:py-32"
+          className="bg-surface px-4 py-16 sm:px-7 md:py-24"
         >
           <h2 id="proceso-title" data-reveal className="display text-head">
             {c.processTitle}
           </h2>
-          <ol className="mt-12 grid gap-x-8 gap-y-10 md:mt-16 md:grid-cols-2 lg:grid-cols-4">
+          <ol className="mt-8 grid gap-x-8 gap-y-8 md:mt-12 md:grid-cols-2 lg:grid-cols-4">
             {steps.map((s, i) => (
               <li
                 key={s.title}
@@ -255,19 +255,19 @@ export default async function ConsultantPage() {
         <Reveal
           as="section"
           aria-labelledby="ai-labs-title"
-          className="grid gap-y-8 px-4 py-24 sm:px-7 md:grid-cols-12 md:gap-x-8 md:py-32"
+          className="grid gap-y-8 px-4 py-16 sm:px-7 md:grid-cols-12 md:gap-x-8 md:py-24"
         >
           <div className="md:col-span-5">
             <div
               role="img"
               aria-label={t.logo(aiLabs.name)}
               data-reveal
-              className="aspect-[1295/324] w-52 bg-ink [mask:url(/ailabs-lockup-horizontal.svg)_left/contain_no-repeat]"
+              className="aspect-[1295/324] w-40 bg-ink [mask:url(/ailabs-lockup-horizontal.svg)_left/contain_no-repeat]"
             />
             <h2
               id="ai-labs-title"
               data-reveal
-              className="display mt-8 text-head"
+              className="display mt-6 text-head"
             >
               {c.buildTitle}
             </h2>
@@ -293,7 +293,7 @@ export default async function ConsultantPage() {
         <Reveal
           as="section"
           aria-labelledby="preguntas-title"
-          className="border-ink/15 border-t px-4 py-24 sm:px-7 md:py-40"
+          className="border-ink/15 border-t px-4 py-16 sm:px-7 md:py-24"
         >
           <div className="md:grid md:grid-cols-12 md:gap-x-8">
             <h2
@@ -303,23 +303,23 @@ export default async function ConsultantPage() {
             >
               {c.faqTitle}
             </h2>
-            <div className="mt-12 space-y-2 md:col-span-8 md:col-start-5 md:mt-0 md:space-y-4">
+            <div className="mt-12 space-y-2 md:col-span-8 md:col-start-5 md:mt-0 md:space-y-2">
               {consultantFaqs[lang].map((f) => (
                 <details
                   key={f.q}
                   data-reveal
-                  className="group -mx-4 px-4 py-4 transition-colors duration-200 open:bg-surface sm:-mx-6 sm:px-6 sm:py-5"
+                  className="group -mx-4 transition-colors duration-200 open:bg-surface sm:-mx-6"
                 >
-                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-[1.1875rem] leading-snug md:text-[1.4375rem] [&::-webkit-details-marker]:hidden">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6 px-4 py-4 text-[1.0625rem] leading-snug sm:px-6 md:text-[1.25rem] [&::-webkit-details-marker]:hidden">
                     <h3 className="font-normal">{f.q}</h3>
                     <Icon
                       icon={ArrowDown01Icon}
-                      size={24}
+                      size={20}
                       strokeWidth={2}
                       className="shrink-0 transition-transform duration-300 ease-(--ease-out) group-open:-rotate-180"
                     />
                   </summary>
-                  <p className="max-w-[56ch] pt-4 text-[1rem] md:text-[1.0625rem]">
+                  <p className="max-w-[calc(56ch+2rem)] px-4 pb-4 text-[0.9375rem] sm:max-w-[calc(56ch+3rem)] sm:px-6 sm:pb-5 md:text-[1rem]">
                     {f.a}
                   </p>
                 </details>

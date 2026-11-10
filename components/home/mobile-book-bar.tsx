@@ -36,16 +36,20 @@ export function MobileBookBar({
   return (
     <div
       inert={!show}
-      className={`fixed inset-x-3 bottom-[max(0.75rem,env(safe-area-inset-bottom))] z-30 transition-[transform,opacity] duration-300 ease-(--ease-drawer) md:hidden ${
+      className={`fixed bottom-[max(0.75rem,env(safe-area-inset-bottom))] left-3 right-[4.75rem] z-30 transition-[transform,opacity] duration-300 ease-(--ease-drawer) motion-reduce:transition-none md:hidden ${
         show
           ? "translate-y-0 opacity-100"
           : "translate-y-[calc(100%+1.5rem)] opacity-0"
       }`}
     >
-      {/* Frosted tray (a web approximation of Apple's glass) around the pill. */}
-      <div className=" border border-paper/40 bg-paper/65 p-1.5 shadow-[0_12px_40px_-12px_rgb(18_13_38/0.35)] backdrop-blur-xl backdrop-saturate-150 [@media(prefers-reduced-transparency:reduce)]:bg-paper">
-        <Link href={href} className="btn w-full min-h-13 text-[1rem]">
-          <Icon icon={Calendar03Icon} size={20} />
+      {/* The same tray as the card's bar on /intro; the Tools button sits in the
+          corner beside it. */}
+      <div className="bg-ink p-1.5 shadow-[0_18px_50px_-12px_rgb(18_13_38/0.5)]">
+        <Link
+          href={href}
+          className="btn w-full [--btn-bg-hover:var(--color-accent-deep)]"
+        >
+          <Icon icon={Calendar03Icon} size={18} />
           {label}
         </Link>
       </div>

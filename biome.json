@@ -4,11 +4,13 @@
     "includes": [
       "**",
       "!lib/portrait-dots.ts",
+      "!lib/vcard-photo.ts",
       "!.next",
       "!node_modules",
       "!.agents",
       "!.cursor",
-      "!public"
+      "!public",
+      "!.taste-skill"
     ]
   },
   "formatter": { "indentStyle": "space", "indentWidth": 2 },

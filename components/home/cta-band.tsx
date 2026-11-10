@@ -32,7 +32,7 @@ export function CtaBand({ t, href }: { t: Dictionary["cta"]; href: string }) {
         href={href}
         onPointerMove={onMove}
         onPointerLeave={onLeave}
-        className="group relative flex min-h-[18rem] flex-col gap-16 justify-between overflow-clip bg-accent px-5 pt-6 pb-6 text-snow outline-offset-[-6px] transition-colors duration-500 ease-(--ease-out) motion-reduce:transition-none focus-visible:bg-night sm:px-7 md:min-h-[24rem] md:hover:bg-night"
+        className="group relative flex min-h-[15rem] flex-col justify-between gap-12 overflow-clip bg-accent px-5 pt-6 pb-6 text-snow outline-offset-[-6px] transition-colors duration-500 ease-(--ease-out) motion-reduce:transition-none focus-visible:bg-night sm:px-7 md:min-h-[20rem] md:hover:bg-night"
       >
         <HalftoneField
           seed={2.4}
@@ -40,21 +40,21 @@ export function CtaBand({ t, href }: { t: Dictionary["cta"]; href: string }) {
           className="absolute inset-0 text-accent-deep transition-opacity duration-500 ease-(--ease-out) group-hover:opacity-40"
         />
         <div className="relative flex items-start justify-between gap-6">
-          <p className="max-w-[22rem] text-[1.0625rem] leading-snug md:text-[1.25rem]">
+          <p className="max-w-[20rem] text-[1rem] leading-snug md:text-[1.125rem]">
             {t.lead}
           </p>
           <motion.span style={{ x, y }} className="shrink-0">
             <Icon
               icon={ArrowUpRight01Icon}
-              size={48}
+              size={40}
               strokeWidth={1.6}
-              className="size-8 md:size-12"
+              className="size-7 md:size-10"
             />
           </motion.span>
         </div>
         <h2
           id="contacto-title"
-          className="display relative -mb-[0.08em] text-[16vw] leading-[0.85] text-snow md:text-[clamp(5rem,10vw,9rem)]"
+          className="display relative -mb-[0.08em] text-[14vw] leading-[0.85] text-snow md:text-[clamp(4rem,8vw,7rem)]"
         >
           {t.title}
         </h2>

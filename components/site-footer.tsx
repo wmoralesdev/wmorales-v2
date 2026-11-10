@@ -4,8 +4,23 @@ import { path, type RouteKey } from "@/lib/i18n/config";
 import { getDictionary } from "@/lib/i18n/server";
 import { person } from "@/lib/site";
 
-/** `route` is the page being rendered, so the language link lands on its twin. */
-export async function SiteFooter({ route }: { route: RouteKey }) {
+// Every row is 36px tall on phones: enough for a thumb, without the footer
+// taking a whole screen. Compact again from md, where a pointer does the work.
+// The underline sits on the label, not on the taller box.
+const row = "flex min-h-9 items-center md:min-h-0";
+const tap = "inline-flex min-h-9 items-center hover:text-snow md:min-h-0";
+
+/**
+ * `route` is the page being rendered, so the language link lands on its twin.
+ * `bar` leaves room under the footer for a page's fixed action bar on phones.
+ */
+export async function SiteFooter({
+  route,
+  bar = false,
+}: {
+  route: RouteKey;
+  bar?: boolean;
+}) {
   const t = await getDictionary();
   const f = t.footer;
   const other = t.lang === "es" ? "en" : "es";
@@ -48,12 +63,18 @@ export async function SiteFooter({ route }: { route: RouteKey }) {
   ];
 
   return (
-    <footer className="sticky bottom-0 z-0 grid grid-cols-[minmax(0,1fr)] gap-y-16 bg-night px-4 pt-10 pb-[max(1.25rem,env(safe-area-inset-bottom))] text-snow sm:px-7">
-      <div className="grid grid-cols-2 gap-x-6 gap-y-8 md:grid-cols-12 md:gap-x-8">
+    <footer
+      className={`sticky bottom-0 z-0 grid grid-cols-[minmax(0,1fr)] gap-y-8 bg-night px-4 pt-8 text-small text-snow sm:px-7 md:gap-y-12 md:pt-10 ${
+        bar
+          ? "pb-[max(5.5rem,calc(env(safe-area-inset-bottom)+4.75rem))] lg:pb-5"
+          : "pb-[max(1.25rem,env(safe-area-inset-bottom))]"
+      }`}
+    >
+      <div className="grid grid-cols-2 gap-x-6 gap-y-6 md:grid-cols-12 md:gap-x-8">
         {columns.map((col) => (
           <div key={col.title} className="md:col-span-3">
-            <h2 className="font-semibold text-[0.9375rem]">{col.title}</h2>
-            <ul className="mt-2 space-y-1.5 text-[0.9375rem] text-night-soft">
+            <h2 className="font-semibold">{col.title}</h2>
+            <ul className="mt-1 text-night-soft md:mt-2 md:space-y-1.5">
               {col.links.map((l) => (
                 <li key={l.label}>
                   {l.href ? (
@@ -62,20 +83,17 @@ export async function SiteFooter({ route }: { route: RouteKey }) {
                         href={l.href}
                         rel="me noopener noreferrer"
                         target="_blank"
-                        className="link-underline hover:text-snow"
+                        className={tap}
                       >
-                        {l.label}
+                        <span className="link-underline">{l.label}</span>
                       </a>
                     ) : (
-                      <Link
-                        href={l.href}
-                        className="link-underline hover:text-snow"
-                      >
-                        {l.label}
+                      <Link href={l.href} className={tap}>
+                        <span className="link-underline">{l.label}</span>
                       </Link>
                     )
                   ) : (
-                    l.label
+                    <span className={row}>{l.label}</span>
                   )}
                 </li>
               ))}
@@ -83,16 +101,19 @@ export async function SiteFooter({ route }: { route: RouteKey }) {
           </div>
         ))}
       </div>
-      <div className="flex flex-wrap items-baseline justify-between gap-4">
-        <p className="text-night-soft text-small">
-          © {new Date().getFullYear()} Walter Morales · {f.role}
+      {/* The right end stays clear of the Tools button, which sits on this corner. */}
+      <div className="flex flex-wrap items-center justify-between gap-x-4 pr-16 md:pr-20">
+        <p className="text-night-soft">
+          © {new Date().getFullYear()} Walter Morales
+          {/* The role would wrap the row on phones; the page already says it. */}
+          <span className="max-sm:hidden"> · {f.role}</span>
         </p>
         <LangLink
           lang={other}
           href={path(other, route)}
-          className="link-underline text-night-soft text-small hover:text-snow"
+          className={`${tap} text-night-soft`}
         >
-          {f.language}
+          <span className="link-underline">{f.language}</span>
         </LangLink>
       </div>
     </footer>
